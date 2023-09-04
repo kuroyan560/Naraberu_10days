@@ -177,8 +177,13 @@ xcopy "$(SolutionDir)dxil.dll" $(TargetDir) /Y</Command>
     <ClCompile Include="..\..\src\engine\Render\RenderObject\ModelInfo\Skeleton.cpp" />
     <ClCompile Include="..\..\src\engine\Render\RenderObject\SpriteMesh.cpp" />
     <ClCompile Include="..\..\src\engine\Render\ShadowMapDevice.cpp" />
+    <ClCompile Include="BattleScene.cpp" />
+    <ClCompile Include="BattleTurnMgr.cpp" />
+    <ClCompile Include="Enemy.cpp" />
+    <ClCompile Include="Player.cpp" />
     <ClCompile Include="src\main.cpp" />
     <ClCompile Include="src\GameScene.cpp" />
+    <ClCompile Include="UnitBase.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="..\..\lib\dxcompiler\inc\d3d12shader.h" />
@@ -268,7 +273,14 @@ xcopy "$(SolutionDir)dxil.dll" $(TargetDir) /Y</Command>
     <ClInclude Include="..\..\src\engine\Render\RenderObject\SpriteMesh.h" />
     <ClInclude Include="..\..\src\engine\Render\ShadowMapDevice.h" />
     <ClInclude Include="..\..\src\engine\resource.h" />
+    <ClInclude Include="BattleScene.h" />
+    <ClInclude Include="BattleTurnMgr.h" />
+    <ClInclude Include="Enemy.h" />
+    <ClInclude Include="EnemyActList.h" />
+    <ClInclude Include="EnemysData.h" />
+    <ClInclude Include="Player.h" />
     <ClInclude Include="src\GameScene.h" />
+    <ClInclude Include="UnitBase.h" />
   </ItemGroup>
   <ItemGroup>
     <ResourceCompile Include="Game.rc" />
