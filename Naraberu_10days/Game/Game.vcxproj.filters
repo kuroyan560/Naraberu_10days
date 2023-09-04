@@ -274,11 +274,8 @@
     <ClCompile Include="src\main.cpp">
       <Filter>src\user</Filter>
     </ClCompile>
-    <ClCompile Include="src\HUD\InGameUI.cpp">
-      <Filter>src</Filter>
-    </ClCompile>
-    <ClCompile Include="src\HUD\StageInfoUI.cpp">
-      <Filter>src</Filter>
+    <ClCompile Include="BattleScene.cpp">
+      <Filter>src\user</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
@@ -540,27 +537,17 @@
     <ClInclude Include="..\..\src\engine\ForUser\PostEffect\DOF.h">
       <Filter>src\engine\ForUser\PostEffect</Filter>
     </ClInclude>
-    <ClInclude Include="src\Stage\Stage.h" />
-    <ClInclude Include="src\Stage\StageManager.h" />
     <ClInclude Include="..\..\src\engine\ForUser\PostEffect\Fog.h">
       <Filter>src\engine\ForUser\PostEffect</Filter>
     </ClInclude>
     <ClInclude Include="..\..\src\engine\ForUser\PostEffect\Fog.h">
       <Filter>src\engine\ForUser\PostEffect</Filter>
     </ClInclude>
-    <ClInclude Include="src\GPUParticle\FireFlyOutStage.h" />
-    <ClInclude Include="src\Stage\Grass.h">
-      <Filter>src\user\Plant</Filter>
-    </ClInclude>
-    <ClInclude Include="src\SoundConfig.h">
-      <Filter>src\user</Filter>
-    </ClInclude>
-    <ClInclude Include="src\HUD\InGameUI.h" />
-    <ClInclude Include="src\HUD\StageInfoUI.h" />
-    <ClInclude Include="src\Stage\CheckPointHitFlag.h" />
-    <ClInclude Include="src\Stage\CheckPointPillar.h" />
     <ClInclude Include="..\..\src\engine\resource.h">
       <Filter>リソースファイル</Filter>
+    </ClInclude>
+    <ClInclude Include="BattleScene.h">
+      <Filter>src\user</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>
