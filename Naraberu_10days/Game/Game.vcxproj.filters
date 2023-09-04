@@ -65,6 +65,12 @@
     <Filter Include="リソースファイル">
       <UniqueIdentifier>{eef69f9a-36b8-40b7-967d-8def5a135e5b}</UniqueIdentifier>
     </Filter>
+    <Filter Include="src\user\BattleManager">
+      <UniqueIdentifier>{d858c912-94a4-431a-bb81-b0ffbeccdfea}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="src\user\BattleManager\Enemy">
+      <UniqueIdentifier>{b1ce7603-4e1e-4bc8-9453-afe4e30fe526}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="..\..\src\engine\KuroEngineDevice.cpp">
@@ -276,6 +282,18 @@
     </ClCompile>
     <ClCompile Include="BattleScene.cpp">
       <Filter>src\user</Filter>
+    </ClCompile>
+    <ClCompile Include="UnitBase.cpp">
+      <Filter>src\user\BattleManager</Filter>
+    </ClCompile>
+    <ClCompile Include="Player.cpp">
+      <Filter>src\user\BattleManager</Filter>
+    </ClCompile>
+    <ClCompile Include="BattleTurnMgr.cpp">
+      <Filter>src\user\BattleManager</Filter>
+    </ClCompile>
+    <ClCompile Include="Enemy.cpp">
+      <Filter>src\user\BattleManager\Enemy</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
@@ -548,6 +566,24 @@
     </ClInclude>
     <ClInclude Include="BattleScene.h">
       <Filter>src\user</Filter>
+    </ClInclude>
+    <ClInclude Include="UnitBase.h">
+      <Filter>src\user\BattleManager</Filter>
+    </ClInclude>
+    <ClInclude Include="Player.h">
+      <Filter>src\user\BattleManager</Filter>
+    </ClInclude>
+    <ClInclude Include="BattleTurnMgr.h">
+      <Filter>src\user\BattleManager</Filter>
+    </ClInclude>
+    <ClInclude Include="Enemy.h">
+      <Filter>src\user\BattleManager\Enemy</Filter>
+    </ClInclude>
+    <ClInclude Include="EnemysData.h">
+      <Filter>src\user\BattleManager\Enemy</Filter>
+    </ClInclude>
+    <ClInclude Include="EnemyActList.h">
+      <Filter>src\user\BattleManager\Enemy</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>

@@ -17,6 +17,7 @@
 #include"ForUser/Debugger.h"
 
 #include"GameScene.h"
+#include "../BattleScene.h"
 
 #ifdef _DEBUG
 int main()
@@ -49,9 +50,10 @@ int WINAPI WinMain(HINSTANCE, HINSTANCE, LPSTR, int)
 	//シーンリスト（ユーザー設定）=========
 	std::map<std::string, KuroEngine::BaseScene*>sceneList =
 	{
-		{"ProtoType",new GameScene()}
+		{"Battle",new BattleScene()}
+		//{"ProtoType",new GameScene()}
 	};
-	std::string awakeScene = "ProtoType";	//開始時のシーンキー
+	std::string awakeScene = "Battle";	//開始時のシーンキー
 	//================================
 
 	//エンジンにシーンリストを渡す
