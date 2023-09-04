@@ -14,8 +14,14 @@ void GameScene::OnUpdate()
 {
 }
 
+#include"ForUser/DrawFunc/2D/DrawFunc2D.h"
 void GameScene::OnDraw()
 {
+	using namespace KuroEngine;
+
+	KuroEngineDevice::Instance()->Graphics().SetRenderTargets({
+		D3D12App::Instance()->GetBackBuffRenderTarget()
+		});
 }
 
 void GameScene::OnImguiDebug()
