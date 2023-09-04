@@ -1,4 +1,5 @@
 #pragma once
+#include <memory>
 
 class UnitBase
 {
@@ -15,6 +16,7 @@ public:
 
 	virtual void OnInitialize() = 0;
 	virtual void OnUpdate() = 0;
+	virtual void OnAlwaysUpdate() = 0;
 	virtual void OnDraw() = 0;
 	virtual void OnImguiDebug() = 0;
 	virtual void OnFinalize() = 0;
@@ -35,7 +37,7 @@ public:
 /// <param name="Unit">キャストしたいUnitBase*オブジェクト</param>
 /// <returns></returns>
 template <class T>
-static T GetUnitPtr(UnitBase* Unit) { return dynamic_cast<T>(Unit); }
+static std::shared_ptr<T> GetUnitPtr(std::shared_ptr<UnitBase> Unit) { return std::dynamic_pointer_cast<T>(Unit); }
 // 使用例
 // Unit.emplace_back(new Enemy);
 // Enemy* EnemyPtr = GetUnitPtr<Enemy*>(Unit);

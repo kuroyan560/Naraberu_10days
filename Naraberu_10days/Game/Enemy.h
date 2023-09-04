@@ -14,6 +14,7 @@ public:
 public:
 	void OnInitialize()override;
 	void OnUpdate()override;
+	void OnAlwaysUpdate()override;
 	void OnDraw()override;
 	void OnImguiDebug()override;
 	void OnFinalize()override;
@@ -21,5 +22,8 @@ public:
 	void SetEnemyData(EnemysData::EnemyData Data);
 
 	EnemysData::EnemyData GetEnemyData() { return m_Data; }
+
+	// •`‰æ
+	void Draw(int Index);
 };
 

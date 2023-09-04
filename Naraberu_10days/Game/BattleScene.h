@@ -8,11 +8,15 @@
 class BattleScene :
     public KuroEngine::BaseScene
 {
-
-	Player Pl;
-	std::vector<UnitBase*> En;
-
+	// プレイヤー
+	std::shared_ptr<Player> Pl;
+	// 敵リスト
+	std::vector<std::shared_ptr<UnitBase>> En;
+	// バトル
 	BattleTurnMgr Mgr;
+	// 背景
+	std::shared_ptr<KuroEngine::TextureBuffer> m_SukasiTex;
+	std::shared_ptr<KuroEngine::TextureBuffer> m_BackTex;
 
 	void OnInitialize()override;
 	void OnUpdate()override;
