@@ -1,0 +1,339 @@
+{
+  "BasicDraw": {
+    "DefaultDrawParam": {
+      "BrightMulColor": [
+        0.42553597688674927,
+        0.871999979019165,
+        0.7327032089233398,
+        0.8563535809516907
+      ],
+      "DarkMulColor": [
+        0.2934880256652832,
+        0.8840000033378601,
+        0.8840000033378601,
+        0.4364640712738037
+      ],
+      "EdgeColor": [
+        0.05644799396395683,
+        0.5040000081062317,
+        0.21398620307445526,
+        1.0
+      ],
+      "FillColor": [
+        1.0,
+        1.0,
+        1.0,
+        0.0
+      ]
+    },
+    "Edge": {
+      "DepthDifferenceThreshold": 0.10000000149011612
+    },
+    "Toon": {
+      "BrightThreshold": {
+        "Low": 0.6000000238418579,
+        "Range": -0.6000000238418579
+      },
+      "MonochromeRate": 0.3499999940395355
+    },
+    "debuggerSetting": {
+      "active": false,
+      "customParamActive": true,
+      "imageColor": [
+        0.3920130133628845,
+        0.1807064712047577,
+        0.875,
+        1.0
+      ],
+      "textColorFlg": false
+    }
+  },
+  "CameraController": {
+    "FollowLerpRate": 0.800000011920929,
+    "InitializedParameter": {
+      "posOffsetZ": -18.0
+    },
+    "PosLerpRate": 0.800000011920929,
+    "debuggerSetting": {
+      "active": false,
+      "customParamActive": true,
+      "imageColor": [
+        0.1879725158214569,
+        0.8130200505256653,
+        0.9347826242446899,
+        1.0
+      ],
+      "textColorFlg": false
+    },
+    "gazePointOffset": [
+      0.0,
+      0.5,
+      0.0
+    ],
+    "posOffsetDepth": {
+      "max": -0.10000000149011612,
+      "min": -18.0
+    }
+  },
+  "DOF": {
+    "Config": {
+      "Blur": 0.6000000238418579,
+      "farPint": 30.0,
+      "nearPint": 10.600000381469727,
+      "pintLength": 30.0
+    },
+    "debuggerSetting": {
+      "active": false,
+      "customParamActive": true,
+      "imageColor": [
+        0.800000011920929,
+        0.800000011920929,
+        0.800000011920929,
+        1.0
+      ],
+      "textColorFlg": false
+    }
+  },
+  "EnemyDebug": {
+    "common": {
+      "draw_HitBox": false,
+      "draw_Sight": false
+    },
+    "debuggerSetting": {
+      "active": false,
+      "customParamActive": true,
+      "imageColor": [
+        0.800000011920929,
+        0.800000011920929,
+        0.800000011920929,
+        1.0
+      ],
+      "textColorFlg": false
+    },
+    "dossun_normal": {
+      "status": {
+        "attackCoolTime": 60,
+        "attackHitBoxRadius": 50.099998474121094,
+        "attackTime": 120,
+        "hitBoxRadius": 1.0,
+        "sightRadius": 6.25
+      }
+    }
+  },
+  "Fog": {
+    "Color": {
+      "fogColor": {
+        "far": [
+          0.15314602851867676,
+          0.4736841917037964,
+          0.40861254930496216,
+          1.0
+        ],
+        "near": [
+          0.0,
+          0.0,
+          0.0,
+          1.0
+        ]
+      },
+      "useTex": 0
+    },
+    "Config": {
+      "distMax": 35.75,
+      "distMin": 0.30000001192092896,
+      "intensity": 0.4000000059604645,
+      "opacityMax": 0.699999988079071
+    },
+    "debuggerSetting": {
+      "active": false,
+      "customParamActive": true,
+      "imageColor": [
+        0.800000011920929,
+        0.800000011920929,
+        0.800000011920929,
+        1.0
+      ],
+      "textColorFlg": false
+    }
+  },
+  "Fps": {
+    "debuggerSetting": {
+      "active": false,
+      "customParamActive": false,
+      "imageColor": [
+        0.800000011920929,
+        0.800000011920929,
+        0.800000011920929,
+        1.0
+      ],
+      "textColorFlg": false
+    }
+  },
+  "LightManager": {
+    "debuggerSetting": {
+      "active": false,
+      "customParamActive": false,
+      "imageColor": [
+        0.800000011920929,
+        0.800000011920929,
+        0.800000011920929,
+        1.0
+      ],
+      "textColorFlg": false
+    }
+  },
+  "OperationConfig": {
+    "CONTROLLER": {
+      "CameraSensitivity": 0.05999999865889549
+    },
+    "KEY_BOARD_MOUSE": {
+      "CameraSensitivity": 1.7000000476837158
+    },
+    "debuggerSetting": {
+      "active": false,
+      "customParamActive": true,
+      "imageColor": [
+        0.7863483428955078,
+        0.8695652484893799,
+        0.10396973043680191,
+        1.0
+      ],
+      "textColorFlg": false
+    }
+  },
+  "Player": {
+    "debuggerSetting": {
+      "active": false,
+      "customParamActive": true,
+      "imageColor": [
+        0.864130437374115,
+        0.05165998637676239,
+        0.05165998637676239,
+        1.0
+      ],
+      "textColorFlg": false
+    },
+    "move": {
+      "default": {
+        "brake": 0.4000000059604645
+      },
+      "underGround": {
+        "accelSpeed": 0.05999999865889549,
+        "brake": 0.05000000074505806,
+        "maxSpeed": 1.2000000476837158
+      }
+    }
+  },
+  "SoundConfig": {
+    "debuggerSetting": {
+      "active": true,
+      "customParamActive": true,
+      "imageColor": [
+        0.800000011920929,
+        0.800000011920929,
+        0.800000011920929,
+        1.0
+      ],
+      "textColorFlg": false
+    },
+    "individualVolme": {
+      "bgm": {
+        "in_game_0": 0.4000000059604645,
+        "in_game_1": 0.4000000059604645,
+        "in_game_2": 0.4000000059604645,
+        "in_game_3": 0.4000000059604645,
+        "title": 0.4000000059604645
+      },
+      "jingle": {
+        "clear": 0.3199999928474426
+      },
+      "se": {
+        "boot": 1.0,
+        "cam_mode": 0.4000000059604645,
+        "cancel": 1.0,
+        "done": 1.0,
+        "enemy_damage": 1.0,
+        "enemy_dead": 1.0,
+        "enemy_find": 1.0,
+        "enemy_notice": 1.0,
+        "game_over": 1.0,
+        "gate": 1.0,
+        "grass": 1.0,
+        "ivy_zip_line_ride_off": 1.0,
+        "ivy_zip_line_ride_on": 1.0,
+        "lever_off": 1.0,
+        "lever_on": 1.0,
+        "move_scaffold_start": 0.6000000238418579,
+        "move_scaffold_stop": 1.0,
+        "player_damage": 0.6000000238418579,
+        "player_damage_hit": 1.0,
+        "select": 1.0,
+        "shutdown": 1.0,
+        "star_coin_get": 1.399999976158142,
+        "surface_jump": 0.5,
+        "unlock_check_point": 1.399999976158142
+      }
+    }
+  },
+  "StageManager": {
+    "debuggerSetting": {
+      "active": false,
+      "customParamActive": true,
+      "imageColor": [
+        0.3099597990512848,
+        0.864130437374115,
+        0.4123609662055969,
+        1.0
+      ],
+      "textColorFlg": false
+    },
+    "scaling": {
+      "skydome": 5000.0
+    }
+  },
+  "Vignette": {
+    "center": [
+      0.5,
+      0.5
+    ],
+    "color": [
+      0.1349206566810608,
+      0.1349206566810608,
+      0.1349206566810608,
+      0.9254902005195618
+    ],
+    "debuggerSetting": {
+      "active": false,
+      "customParamActive": true,
+      "imageColor": [
+        0.800000011920929,
+        0.800000011920929,
+        0.800000011920929,
+        1.0
+      ],
+      "textColorFlg": false
+    },
+    "intensity": 0.4000000059604645,
+    "smoothness": 0.4000000059604645
+  },
+  "WaterPaintBlend": {
+    "ConstData": {
+      "initScale": 6.0,
+      "posOffsetMax": 0.20000000298023224
+    },
+    "MaskInk": {
+      "updateSpan": 5
+    },
+    "debuggerSetting": {
+      "active": false,
+      "customParamActive": true,
+      "imageColor": [
+        0.800000011920929,
+        0.800000011920929,
+        0.800000011920929,
+        1.0
+      ],
+      "textColorFlg": false
+    }
+  }
+}
