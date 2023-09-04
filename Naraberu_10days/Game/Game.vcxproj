@@ -179,6 +179,7 @@ xcopy "$(SolutionDir)dxil.dll" $(TargetDir) /Y</Command>
     <ClCompile Include="..\..\src\engine\Render\ShadowMapDevice.cpp" />
     <ClCompile Include="BattleScene.cpp" />
     <ClCompile Include="BattleTurnMgr.cpp" />
+    <ClCompile Include="CutInMgr.cpp" />
     <ClCompile Include="Enemy.cpp" />
     <ClCompile Include="Player.cpp" />
     <ClCompile Include="src\main.cpp" />
@@ -275,6 +276,7 @@ xcopy "$(SolutionDir)dxil.dll" $(TargetDir) /Y</Command>
     <ClInclude Include="..\..\src\engine\resource.h" />
     <ClInclude Include="BattleScene.h" />
     <ClInclude Include="BattleTurnMgr.h" />
+    <ClInclude Include="CutInMgr.h" />
     <ClInclude Include="Enemy.h" />
     <ClInclude Include="EnemyActList.h" />
     <ClInclude Include="EnemysData.h" />

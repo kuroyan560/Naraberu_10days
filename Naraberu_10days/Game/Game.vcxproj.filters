@@ -71,6 +71,9 @@
     <Filter Include="src\user\BattleManager\Enemy">
       <UniqueIdentifier>{b1ce7603-4e1e-4bc8-9453-afe4e30fe526}</UniqueIdentifier>
     </Filter>
+    <Filter Include="src\user\BattleManager\CutIn">
+      <UniqueIdentifier>{9b21ca62-0aa5-4415-a6c1-c680cc6f9a1e}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="..\..\src\engine\KuroEngineDevice.cpp">
@@ -294,6 +297,9 @@
     </ClCompile>
     <ClCompile Include="Enemy.cpp">
       <Filter>src\user\BattleManager\Enemy</Filter>
+    </ClCompile>
+    <ClCompile Include="CutInMgr.cpp">
+      <Filter>src\user\BattleManager\CutIn</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
@@ -584,6 +590,9 @@
     </ClInclude>
     <ClInclude Include="EnemyActList.h">
       <Filter>src\user\BattleManager\Enemy</Filter>
+    </ClInclude>
+    <ClInclude Include="CutInMgr.h">
+      <Filter>src\user\BattleManager\CutIn</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>
