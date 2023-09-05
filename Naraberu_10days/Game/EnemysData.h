@@ -2,6 +2,7 @@
 #include <string>
 #include <vector>
 #include <utility>
+#include <map>
 
 #include "../../src/engine/DirectX12/D3D12App.h"
 #include "../../src/engine/ForUser/DrawFunc/2D/DrawFunc2D.h"
@@ -11,6 +12,13 @@ namespace EnemysData {
 
 	enum class AI_TYPE {
 		DEFAULT, CUSTOM
+	};
+
+	// “G‚ÌƒeƒNƒXƒ`ƒƒ
+	static std::map<std::string, std::string> EnemyTexturesDir{
+		{ "Debug_1", "resource/user/tex/battle_scene/enemy/inu_blue.png"},
+		{ "Debug_2", "resource/user/tex/battle_scene/enemy/lizard_red.png" },
+		{ "Debug_3", "resource/user/tex/battle_scene/enemy/zako_yellow.png" },
 	};
 
 	class EnemyData {
@@ -33,6 +41,8 @@ namespace EnemysData {
 		std::shared_ptr<KuroEngine::TextureBuffer> m_HpTex_yellow;
 		std::shared_ptr<KuroEngine::TextureBuffer> m_HpTex_red;
 
+		std::shared_ptr<KuroEngine::TextureBuffer> m_UnitTex;
+
 		EnemyData() : m_Name("UnNamed"), m_HP(1), m_MaxHP(1), m_AI_Type(AI_TYPE::DEFAULT) {}
 
 		template<class... A>
@@ -52,11 +62,13 @@ namespace EnemysData {
 			m_HpTex_green = D3D12App::Instance()->GenerateTextureBuffer(TexDir + "enemy_hp_gauge_green.png");
 			m_HpTex_yellow = D3D12App::Instance()->GenerateTextureBuffer(TexDir + "enemy_hp_gauge_yellow.png");
 			m_HpTex_red = D3D12App::Instance()->GenerateTextureBuffer(TexDir + "enemy_hp_gauge_red.png");
+
+			m_UnitTex = D3D12App::Instance()->GenerateTextureBuffer(EnemyTexturesDir[m_Name]);
 		}
 	};
 
 	// ‚±‚±‚É“G‚ð’Ç‰Á‚µ‚Ä‚¢‚­
 	static const EnemyData DebugEnemy_1 = EnemyData("Debug_1", 64, AI_TYPE::DEFAULT, "Attack_01", "Attack_02");
 	static const EnemyData DebugEnemy_2 = EnemyData("Debug_2", 128, AI_TYPE::DEFAULT, "Attack_02", "Heal_01", "Jamming_01");
-
+	static const EnemyData DebugEnemy_3 = EnemyData("Debug_3", 128, AI_TYPE::DEFAULT, "Attack_01", "Attack_01", "Attack_01");
 }
