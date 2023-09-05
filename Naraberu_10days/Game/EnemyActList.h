@@ -7,6 +7,9 @@
 #include "../../src/engine/Common/Singleton.h"
 
 #include "Debug_Attack_01.h"
+#include "Debug_Attack_02.h"
+#include "Debug_Heal_01.h"
+#include "Debug_Jamming_01.h"
 
 class UnitBase;
 
@@ -37,11 +40,16 @@ namespace EnemyActions {
 
 	enum class EnemyActionList {
 		DEBUG_ATTACK_01,
+		DEBUG_ATTACK_02,
+		DEBUG_HEAL_01,
+		DEBUG_JAMMING_01,
 		ACTION_MAX
 	};
 	static std::map<std::string, EnemyActionList> m_List_Pair = {
 		{"Attack_01", EnemyActionList::DEBUG_ATTACK_01 },
-		{"Attack_02", EnemyActionList::DEBUG_ATTACK_01 }
+		{"Attack_02", EnemyActionList::DEBUG_ATTACK_02 },
+		{"Heal_01", EnemyActionList::DEBUG_HEAL_01 },
+		{"Jamming_01", EnemyActionList::DEBUG_JAMMING_01 }
 	};
 
 	class EnemyActionMgr : public KuroEngine::DesignPattern::Singleton<EnemyActionMgr>
@@ -67,6 +75,9 @@ namespace EnemyActions {
 					m_List.emplace_back(nullptr);
 				}
 				m_List[size_t(DEBUG_ATTACK_01)] = std::make_shared<Debug_Attack_01>();
+				m_List[size_t(DEBUG_ATTACK_02)] = std::make_shared<Debug_Attack_02>();
+				m_List[size_t(DEBUG_HEAL_01)] = std::make_shared<Debug_Heal_01>();
+				m_List[size_t(DEBUG_JAMMING_01)] = std::make_shared<Debug_Jamming_01>();
 
 				m_NowAction = false;
 			}
@@ -77,6 +88,7 @@ namespace EnemyActions {
 		template<class... A>
 		void SetUnits(UnitBase* Initiator, A... Targets) {
 			m_Initiator = Initiator;
+			m_Targets.clear();
 			for (UnitBase* Target : std::initializer_list<UnitBase*>{ Targets... }) {
 				m_Targets.emplace_back(Target);
 			}

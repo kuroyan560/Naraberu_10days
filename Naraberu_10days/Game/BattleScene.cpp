@@ -5,6 +5,7 @@
 #include "../../src/engine/FrameWork/WinApp.h"
 #include "../../src/engine/FrameWork/UsersInput.h"
 
+#include "ExistUnits.h"
 
 void BattleScene::OnInitialize()
 {
@@ -25,8 +26,8 @@ void BattleScene::OnInitialize()
 	GetUnitPtr<Enemy>(En[En.size() - 1])->SetEnemyData(EnemysData::DebugEnemy_1);
 	En.emplace_back(std::make_shared<Enemy>());
 	GetUnitPtr<Enemy>(En[En.size() - 1])->SetEnemyData(EnemysData::DebugEnemy_2);
-
 	Mgr.OnInitialize(Pl, En);
+	ExistUnits::Instance()->Set(Pl.get(), En[0].get(), En[1].get());
 
 	stage.reset(new StageManager());
 	stage->Initialize();

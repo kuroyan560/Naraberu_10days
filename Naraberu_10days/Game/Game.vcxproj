@@ -296,6 +296,7 @@ xcopy "$(SolutionDir)dxil.dll" $(TargetDir) /Y</Command>
     <ClInclude Include="Enemy.h" />
     <ClInclude Include="EnemyActList.h" />
     <ClInclude Include="EnemysData.h" />
+    <ClInclude Include="ExistUnits.h" />
     <ClInclude Include="E_Ac_Base.h" />
     <ClInclude Include="Player.h" />
     <ClInclude Include="src\GameScene.h" />

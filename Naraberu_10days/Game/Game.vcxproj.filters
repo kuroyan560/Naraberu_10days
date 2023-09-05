@@ -79,8 +79,8 @@
     </Filter>
     <Filter Include="src\user\Stage">
       <UniqueIdentifier>{4b6c4ee8-e3cd-49a7-8db3-a4f7470ca1a1}</UniqueIdentifier>
-	</Filter>
-	<Filter Include="src\user\BattleManager\Enemy_Act">
+    </Filter>
+    <Filter Include="src\user\BattleManager\Enemy_Act">
       <UniqueIdentifier>{1d754e82-6bb1-44c0-aa7d-2d4a8e73c8c5}</UniqueIdentifier>
     </Filter>
     <Filter Include="src\user\BattleManager\Enemy_Act\Attack">
@@ -327,8 +327,8 @@
     </ClCompile>
     <ClCompile Include="StageManager.cpp">
       <Filter>src\user\Stage</Filter>
-	</ClCompile>
-	<ClCompile Include="E_Ac_Base.cpp">
+    </ClCompile>
+    <ClCompile Include="E_Ac_Base.cpp">
       <Filter>src\user\BattleManager\Enemy_Act</Filter>
     </ClCompile>
     <ClCompile Include="Debug_Attack_01.cpp">
@@ -647,8 +647,8 @@
     </ClInclude>
     <ClInclude Include="StageManager.h">
       <Filter>src\user\Stage</Filter>
-	</ClInclude>
-	<ClInclude Include="EnemyActList.h">
+    </ClInclude>
+    <ClInclude Include="EnemyActList.h">
       <Filter>src\user\BattleManager\Enemy_Act</Filter>
     </ClInclude>
     <ClInclude Include="E_Ac_Base.h">
@@ -665,6 +665,9 @@
     </ClInclude>
     <ClInclude Include="Debug_Jamming_01.h">
       <Filter>src\user\BattleManager\Enemy_Act\Jamming</Filter>
+    </ClInclude>
+    <ClInclude Include="ExistUnits.h">
+      <Filter>src\user\BattleManager</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>

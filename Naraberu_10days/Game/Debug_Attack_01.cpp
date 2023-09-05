@@ -13,11 +13,6 @@ void Debug_Attack_01::Param_Set(int Damage, int Duration)
 	m_Finish = Duration;
 }
 
-void Debug_Attack_01::Need_Object_Set(UnitBase* pUnit)
-{
-	// 自ユニットのポインタをセット
-	m_pUnit = pUnit;
-}
 
 void Debug_Attack_01::Action_Start()
 {
@@ -36,7 +31,15 @@ void Debug_Attack_01::Action_Update()
 	// タイマー加算
 	m_Timer++;
 
-
+	// 攻撃は一回のみ
+	if (m_Timer == 10) {
+		// 
+		if (m_Targets.size() < 1 || m_Targets[0] == nullptr) {
+			exit(1);
+		}
+		// 1番目のターゲットに攻撃する
+		m_Targets[0]->Damage(m_Damage);
+	}
 }
 
 void Debug_Attack_01::Action_Draw()

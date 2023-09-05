@@ -4,6 +4,8 @@ void UnitBase::StartTurn()
 {
 	// ターンスタート
 	m_isMyTurn = true;
+	// タイマーリセット
+	m_Frame_Timer = 0;
 }
 
 void UnitBase::EndTurn()

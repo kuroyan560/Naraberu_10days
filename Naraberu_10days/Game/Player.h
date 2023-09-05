@@ -10,8 +10,6 @@ class Player :
     public UnitBase
 {
 private:
-    int m_HP = 200;
-	int m_MaxHP = 200;
 
 	// ‰æ‘œ
 	std::shared_ptr<KuroEngine::TextureBuffer> m_HpFrameTex;

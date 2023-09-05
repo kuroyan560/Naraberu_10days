@@ -26,6 +26,9 @@ void Player::OnUpdate()
 	if (UsersInput::Instance()->KeyOnTrigger(DIK_SPACE)) {
 		EndTurn();
 	}
+
+	// タイマーの加算
+	TimerUpdate();
 }
 
 void Player::OnAlwaysUpdate()
@@ -46,8 +49,23 @@ void Player::OnDraw()
 	DrawFunc2D::DrawExtendGraph2D(Vec2(11.0f, 410.0f), Vec2(368.0f, 595.0f), m_HpFrameTex);
 	//DrawFunc2D::DrawExtendGraph2D(Vec2(22.0f, 427.0f), Vec2(357.0f, 580.0f), m_HpTex);
 
+	// HPゲージが削れる演出用
+	float HP_Gauge_Now_Value = float(m_HP);
+
+	// タイマーが1以上　かつ　最大値以下なら減少演出
+	if (m_HP_Break_Timer > 0 && m_HP_Break_Timer < m_HP_GAUGE_BREAK_TIME) {
+		m_HP_Break_Timer++;
+		HP_Gauge_Now_Value = float(m_HP) + float(m_Before_HP - m_HP) * (1.0f - (float(m_HP_Break_Timer) / float(m_HP_GAUGE_BREAK_TIME)));
+	}
+	// 減少演出終わり
+	if (m_HP_Break_Timer == m_HP_GAUGE_BREAK_TIME) {
+		m_HP_Break_Timer = 0;
+	}
+	//if(m_HP < m_Before_HP)
+	//m_HP_GAUGE_BREAK_TIME
+
 	// 現在のHP割合
-	float Now_HP_Rate = float(m_HP) / float(m_MaxHP);
+	float Now_HP_Rate = float(HP_Gauge_Now_Value) / float(m_MaxHP);
 	// HPゲージの長さ
 	float Gauge_Max_Width = 357.0f - 22.0f;
 	// 現在のHPゲージの長さ
