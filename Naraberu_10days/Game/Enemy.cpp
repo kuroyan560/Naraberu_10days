@@ -2,6 +2,7 @@
 #include "../../src/engine/FrameWork/UsersInput.h"
 #include "../../src/engine/ForUser/DrawFunc/2D/DrawFunc2D.h"
 #include "../../src/engine/ForUser/DrawFunc/2D/DrawFunc2D_Mask.h"
+#include "../../src/engine/ForUser/DrawFunc/2D/DrawFunc2D_Color.h"
 #include "../../src/engine/FrameWork/WinApp.h"
 
 #include "ExistUnits.h"
@@ -105,17 +106,93 @@ void Enemy::SetEnemyData(EnemysData::EnemyData Data)
 	}*/
 }
 
-void Enemy::Draw(int Index)
+void Enemy::Draw(int Index, int NowTurn_Index, int Index_Max, bool Dark, int FrameTime, bool FirstTurn)
 {
 	using namespace KuroEngine;
 
 	float IndexDiff = Index * 170.0f;
 
-	// ユニットの描画
-	DrawFunc2D::DrawExtendGraph2D(Vec2(977.0f, 115.0f + IndexDiff), Vec2(1222.0f, 215.0f + IndexDiff), m_Data.m_UnitTex);
+	// 敵の総数 (ユニット数はプレイヤー敵合算かつ 1 スタートなので -2 しておく)
+	int EnemyCount = Index_Max - 2;
 
-	DrawFunc2D::DrawExtendGraph2D(Vec2(970.0f, 108.0f + IndexDiff), Vec2(1229.0f, 222.0f + IndexDiff), m_Data.m_FrameTex);
-	DrawFunc2D::DrawExtendGraph2D(Vec2(1094.0f, 181.0f + IndexDiff), Vec2(1238.0f, 203.0f + IndexDiff), m_Data.m_HpFrameTex);
+	// ターン中に左に動かす
+	static const int POS_FINISH_FRAME_TIME = 10; // 動かすのにかかる時間
+	static const float MOVE_WIDTH_MAX = 20.0f; // 動かす最大値
+	float Move_Width = 0.0f; // 現在動かしている値
+	// 経過フレーム倍率計算
+	float Progress_Frame_Pos = float(FrameTime > POS_FINISH_FRAME_TIME ? POS_FINISH_FRAME_TIME : FrameTime) / float(POS_FINISH_FRAME_TIME);
+	// 自ターン中 (Index - 1で渡されてるので加算もしとく)
+	if (Index + 1 == NowTurn_Index) {
+		Move_Width = MOVE_WIDTH_MAX * Progress_Frame_Pos;
+	}
+	// 前が自分のターンだった時に右に移動させる (元の位置に戻す演出) Indexが0だと前ターンはプレイヤーなのでスキップ
+	if (NowTurn_Index != 0 && Index + 1 == NowTurn_Index - 1) {
+		Move_Width = MOVE_WIDTH_MAX - MOVE_WIDTH_MAX * Progress_Frame_Pos;
+	}
+	// 最後の敵ターンからプレイヤーターンに移行する時 判定の都合上最初のターンにも通ってしまう為最初のターンを除外する判定もしている
+	if (NowTurn_Index == 0 && Index == EnemyCount && FirstTurn != 0) {
+		Move_Width = MOVE_WIDTH_MAX - MOVE_WIDTH_MAX * Progress_Frame_Pos;
+	}
+
+	// 上塗り
+	int Mask_Black = 105; // 最終的なRGB倍率との差
+	Color Mask = Color(255 - Mask_Black, 255 - Mask_Black, 255 - Mask_Black, 255);
+	// 徐々に暗くする
+	static const int COL_FINISH_FRAME_TIME = 25; // 暗くするのにかかる時間
+	float Progress_Frame_Color = float(FrameTime > COL_FINISH_FRAME_TIME ? COL_FINISH_FRAME_TIME : FrameTime) / float(COL_FINISH_FRAME_TIME);
+	// 暗くする場合
+	if (Dark) {
+		int Col = int(255.0f - (float(Mask_Black) * float(Progress_Frame_Color)));
+		//Mask = Color(Col, Col, Col, 255);
+
+		// 敵ユニットの最初のターンの場合
+		if (NowTurn_Index == 1) {
+			if (Index != 0) {
+				int Col = int(255.0f - (float(Mask_Black) * float(Progress_Frame_Color)));
+				Mask = Color(Col, Col, Col, 255);
+			}
+		}
+
+		// 自ターン中 (Index - 1で渡されてるので加算もしとく) かつ 前ターンがプレイヤーなら明るいままなのでスキップ
+		if (Index + 1 == NowTurn_Index && NowTurn_Index != 0) {
+			int BlackCol = 255 - Mask_Black;
+			BlackCol = int(float(BlackCol) + float(Mask_Black) * float(Progress_Frame_Color));
+			Mask = Color(BlackCol, BlackCol, BlackCol, 255);
+		}
+		// 前が自分のターンだった時に右に移動させる (元の位置に戻す演出) NowTurn_Indexが0だと前ターンはプレイヤーなのでスキップ
+		if (NowTurn_Index != 0 && Index + 1 == NowTurn_Index - 1) {
+			Mask = Color(Col, Col, Col, 255);
+		}
+		// 最後の敵ターンからプレイヤーターンに移行する時 判定の都合上最初のターンにも通ってしまう為最初のターンを除外する判定もしている
+		if (NowTurn_Index == 0 && Index == EnemyCount && FirstTurn != 0) {
+			Mask = Color(Col, Col, Col, 255);
+		}
+	}
+	else {
+		Mask = Color(255, 255, 255, 255);
+		// プレイヤーターンの場合
+		if (NowTurn_Index == 0) {
+			if (Index == EnemyCount) {
+				Mask = Color(255, 255, 255, 255);
+			}
+			else {
+				int BlackCol = 255 - Mask_Black;
+				BlackCol = int(float(BlackCol) + float(Mask_Black) * float(Progress_Frame_Color));
+				Mask = Color(BlackCol, BlackCol, BlackCol, 255);
+			}
+		}
+	}
+
+	// ユニットの描画
+	DrawFunc2D_Color::DrawExtendGraph2D(Vec2(977.0f - Move_Width, 115.0f + IndexDiff), Vec2(1222.0f - Move_Width, 215.0f + IndexDiff), m_Data.m_UnitTex, Mask,
+		{ false,false }, { 0.0f,0.0f }, { 1.0f,1.0f }, KuroEngine::DrawFunc2D_Color::FILL_MDOE::MUL);
+	DrawFunc2D_Color::DrawExtendGraph2D(Vec2(970.0f - Move_Width, 108.0f + IndexDiff), Vec2(1229.0f - Move_Width, 222.0f + IndexDiff), m_Data.m_FrameTex, Mask,
+		{ false,false }, { 0.0f,0.0f }, { 1.0f,1.0f }, KuroEngine::DrawFunc2D_Color::FILL_MDOE::MUL);
+	DrawFunc2D_Color::DrawExtendGraph2D(Vec2(1094.0f - Move_Width, 181.0f + IndexDiff), Vec2(1238.0f - Move_Width, 203.0f + IndexDiff), m_Data.m_HpFrameTex, Mask,
+		{ false,false }, { 0.0f,0.0f }, { 1.0f,1.0f }, KuroEngine::DrawFunc2D_Color::FILL_MDOE::MUL);
+	//DrawFunc2D::DrawExtendGraph2D(Vec2(977.0f, 115.0f + IndexDiff), Vec2(1222.0f, 215.0f + IndexDiff), m_Data.m_UnitTex);
+	//DrawFunc2D::DrawExtendGraph2D(Vec2(970.0f, 108.0f + IndexDiff), Vec2(1229.0f, 222.0f + IndexDiff), m_Data.m_FrameTex);
+	//DrawFunc2D::DrawExtendGraph2D(Vec2(1094.0f, 181.0f + IndexDiff), Vec2(1238.0f, 203.0f + IndexDiff), m_Data.m_HpFrameTex);
 
 	// HPゲージが削れる演出用
 	float HP_Gauge_Now_Value = float(m_HP);
@@ -147,8 +224,8 @@ void Enemy::Draw(int Index)
 	}
 
 	DrawFunc2D_Mask::DrawExtendGraph2D(
-		Vec2(1100.0f, 187.0f + IndexDiff), Vec2(1232.0f, 197.0f + IndexDiff), HP_Gauge,
-		Vec2(1100.0f, 187.0f + IndexDiff), Vec2(1100.0f + Gauge_Width, 197.0f + IndexDiff));
+		Vec2(1100.0f - Move_Width, 187.0f + IndexDiff), Vec2(1232.0f - Move_Width, 197.0f + IndexDiff), HP_Gauge,
+		Vec2(1100.0f - Move_Width, 187.0f + IndexDiff), Vec2(1100.0f - Move_Width + Gauge_Width, 197.0f + IndexDiff));
 
 
 }

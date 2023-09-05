@@ -12,6 +12,8 @@
 class BattleTurnMgr
 {
 	std::vector<std::shared_ptr<UnitBase>> UnitList;
+	// 全体ターン数
+	int m_Whole_Turn_Count;
 	// 何番目のユニットのターンか
 	int TurnNum;
 	// ターンの経過フレーム
@@ -22,6 +24,7 @@ class BattleTurnMgr
 
 public:
 	BattleTurnMgr() {
+		m_Whole_Turn_Count = 0;
 		TurnNum = 0;
 		TurnFrameTime = 0;
 	}

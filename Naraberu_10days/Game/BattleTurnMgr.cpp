@@ -10,6 +10,7 @@ void BattleTurnMgr::OnInitialize(std::shared_ptr<UnitBase> Player, std::vector<s
 	for (auto& en : Enemys) {
 		UnitList.emplace_back(en);
 	}
+	m_Whole_Turn_Count = 0;
 	TurnNum = 0;
 	TurnFrameTime = 0;
 
@@ -29,8 +30,8 @@ void BattleTurnMgr::OnUpdate()
 		// ターン終了処理
 		UnitList[TurnNum]->End();
 
-		// ターン切り替え
-		TurnNum < UnitList.size() - 1 ? TurnNum++ : TurnNum = 0;
+		// ターン切り替え・全体ターン数加算
+		TurnNum < UnitList.size() - 1 ? TurnNum++ : TurnNum = 0, m_Whole_Turn_Count++;
 
 		// ターン開始処理
 		UnitList[TurnNum]->StartTurn();
@@ -60,7 +61,18 @@ void BattleTurnMgr::OnDraw()
 	for (int i = 1; i < UnitList.size(); i++) {
 		int EnemyIndex = i - 1;
 		std::shared_ptr<Enemy> En = GetUnitPtr<Enemy>(UnitList[i]);
-		En->Draw(EnemyIndex);
+
+		// プレイヤーターンなら暗くしない
+		if (TurnNum == 0) {
+			En->Draw(EnemyIndex, TurnNum, int(UnitList.size()), false, TurnFrameTime, m_Whole_Turn_Count);
+		}
+		// 敵ターンの時自分のターン意外なら暗くする
+		else if (i != TurnNum) {
+			En->Draw(EnemyIndex, TurnNum, int(UnitList.size()), true, TurnFrameTime, m_Whole_Turn_Count);
+		}
+		else {
+			En->Draw(EnemyIndex, TurnNum, int(UnitList.size()), false, TurnFrameTime, m_Whole_Turn_Count);
+		}
 	}
 
 	UnitList[TurnNum]->OnDraw();
