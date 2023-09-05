@@ -63,6 +63,8 @@ void BattleTurnMgr::OnDraw()
 		En->Draw(EnemyIndex);
 	}
 
+	UnitList[TurnNum]->OnDraw();
+
 	using namespace KuroEngine;
 	// カットイン中であれば
 	if (CutInMgr::Instance()->NowCutIn()) {

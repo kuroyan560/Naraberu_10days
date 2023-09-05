@@ -57,6 +57,6 @@ namespace EnemysData {
 
 	// ‚±‚±‚É“G‚ð’Ç‰Á‚µ‚Ä‚¢‚­
 	static const EnemyData DebugEnemy_1 = EnemyData("Debug_1", 64, AI_TYPE::DEFAULT, "Attack_01", "Attack_02");
-	static const EnemyData DebugEnemy_2 = EnemyData("Debug_2", 128, AI_TYPE::DEFAULT, "Attack02", "Heal_01", "Jamming_01");
+	static const EnemyData DebugEnemy_2 = EnemyData("Debug_2", 128, AI_TYPE::DEFAULT, "Attack_02", "Heal_01", "Jamming_01");
 
 }

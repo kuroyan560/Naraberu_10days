@@ -79,6 +79,18 @@
     </Filter>
     <Filter Include="src\user\Stage">
       <UniqueIdentifier>{4b6c4ee8-e3cd-49a7-8db3-a4f7470ca1a1}</UniqueIdentifier>
+	</Filter>
+	<Filter Include="src\user\BattleManager\Enemy_Act">
+      <UniqueIdentifier>{1d754e82-6bb1-44c0-aa7d-2d4a8e73c8c5}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="src\user\BattleManager\Enemy_Act\Attack">
+      <UniqueIdentifier>{f82e91dc-a0af-4dcc-bb7f-60e0a58ea832}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="src\user\BattleManager\Enemy_Act\Heal">
+      <UniqueIdentifier>{79d6f14b-d508-47dc-b8a1-641a536c98fd}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="src\user\BattleManager\Enemy_Act\Jamming">
+      <UniqueIdentifier>{392e3e87-3d73-4220-9d61-d170438cc852}</UniqueIdentifier>
     </Filter>
   </ItemGroup>
   <ItemGroup>
@@ -315,6 +327,24 @@
     </ClCompile>
     <ClCompile Include="StageManager.cpp">
       <Filter>src\user\Stage</Filter>
+	</ClCompile>
+	<ClCompile Include="E_Ac_Base.cpp">
+      <Filter>src\user\BattleManager\Enemy_Act</Filter>
+    </ClCompile>
+    <ClCompile Include="Debug_Attack_01.cpp">
+      <Filter>src\user\BattleManager\Enemy_Act\Attack</Filter>
+    </ClCompile>
+    <ClCompile Include="Debug_Attack_02.cpp">
+      <Filter>src\user\BattleManager\Enemy_Act\Attack</Filter>
+    </ClCompile>
+    <ClCompile Include="EnemyActList.cpp">
+      <Filter>src\user\BattleManager\Enemy_Act</Filter>
+    </ClCompile>
+    <ClCompile Include="Debug_Heal_01.cpp">
+      <Filter>src\user\BattleManager\Enemy_Act\Heal</Filter>
+    </ClCompile>
+    <ClCompile Include="Debug_Jamming_01.cpp">
+      <Filter>src\user\BattleManager\Enemy_Act\Jamming</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
@@ -603,9 +633,6 @@
     <ClInclude Include="EnemysData.h">
       <Filter>src\user\BattleManager\Enemy</Filter>
     </ClInclude>
-    <ClInclude Include="EnemyActList.h">
-      <Filter>src\user\BattleManager\Enemy</Filter>
-    </ClInclude>
     <ClInclude Include="CutInMgr.h">
       <Filter>src\user\BattleManager\CutIn</Filter>
     </ClInclude>
@@ -620,6 +647,24 @@
     </ClInclude>
     <ClInclude Include="StageManager.h">
       <Filter>src\user\Stage</Filter>
+	</ClInclude>
+	<ClInclude Include="EnemyActList.h">
+      <Filter>src\user\BattleManager\Enemy_Act</Filter>
+    </ClInclude>
+    <ClInclude Include="E_Ac_Base.h">
+      <Filter>src\user\BattleManager\Enemy_Act</Filter>
+    </ClInclude>
+    <ClInclude Include="Debug_Attack_01.h">
+      <Filter>src\user\BattleManager\Enemy_Act\Attack</Filter>
+    </ClInclude>
+    <ClInclude Include="Debug_Attack_02.h">
+      <Filter>src\user\BattleManager\Enemy_Act\Attack</Filter>
+    </ClInclude>
+    <ClInclude Include="Debug_Heal_01.h">
+      <Filter>src\user\BattleManager\Enemy_Act\Heal</Filter>
+    </ClInclude>
+    <ClInclude Include="Debug_Jamming_01.h">
+      <Filter>src\user\BattleManager\Enemy_Act\Jamming</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>
