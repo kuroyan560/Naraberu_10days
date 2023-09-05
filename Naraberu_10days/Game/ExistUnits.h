@@ -8,7 +8,7 @@ class ExistUnits : public KuroEngine::DesignPattern::Singleton<ExistUnits>
 {
 	friend class KuroEngine::DesignPattern::Singleton<ExistUnits>;
 public:
-	UnitBase* m_pPlayer;
+	UnitBase* m_pPlayer = nullptr;
 	std::vector<UnitBase*>m_Enemys;
 
 	void Set(UnitBase* Player, UnitBase* Enemy_01 = nullptr, UnitBase* Enemy_02 = nullptr, UnitBase* Enemy_03 = nullptr) {

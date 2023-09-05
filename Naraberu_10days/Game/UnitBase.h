@@ -4,14 +4,14 @@
 class UnitBase
 {
 protected:
-	// 
-	int m_HP = 200;
-	int m_MaxHP = 200;
+	// HP
+	int m_HP;
+	int m_MaxHP;
 
 	// HPゲージが削れる演出用タイマー
-	int m_HP_Break_Timer = 0;
+	int m_HP_Break_Timer;
 	// 被ダメor回復前のHP
-	int m_Before_HP = 200;
+	int m_Before_HP;
 	// HPゲージが削れてく時間
 	static const int m_HP_GAUGE_BREAK_TIME = 5;
 
@@ -23,8 +23,13 @@ protected:
 	int m_Frame_Timer;
 public:
 	UnitBase(){
+		m_HP = 200;
+		m_MaxHP = 200;
+		m_HP_Break_Timer = 0;
+		m_Before_HP = 200;
 		m_isMyTurn = false;
 		m_NextTurn = false;
+		m_Frame_Timer = 0;
 	};
 
 	virtual void OnInitialize() = 0;

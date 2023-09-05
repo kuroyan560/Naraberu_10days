@@ -12,14 +12,20 @@
 class BattleTurnMgr
 {
 	std::vector<std::shared_ptr<UnitBase>> UnitList;
+	// 何番目のユニットのターンか
 	int TurnNum;
-
+	// ターンの経過フレーム
 	int TurnFrameTime;
 
 	// 画像
 	std::shared_ptr<KuroEngine::TextureBuffer> m_CutInTex;
 
 public:
+	BattleTurnMgr() {
+		TurnNum = 0;
+		TurnFrameTime = 0;
+	}
+
 	void OnInitialize(std::shared_ptr<UnitBase> Player, std::vector<std::shared_ptr<UnitBase>> Enemys);
 
 	void OnUpdate();
