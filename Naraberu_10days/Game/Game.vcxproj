@@ -179,6 +179,8 @@ xcopy "$(SolutionDir)dxil.dll" $(TargetDir) /Y</Command>
     <ClCompile Include="..\..\src\engine\Render\ShadowMapDevice.cpp" />
     <ClCompile Include="BattleScene.cpp" />
     <ClCompile Include="BattleTurnMgr.cpp" />
+    <ClCompile Include="Block.cpp" />
+    <ClCompile Include="BlockManager.cpp" />
     <ClCompile Include="CutInMgr.cpp" />
     <ClCompile Include="Debug_Attack_01.cpp" />
     <ClCompile Include="Debug_Attack_02.cpp" />
@@ -190,6 +192,7 @@ xcopy "$(SolutionDir)dxil.dll" $(TargetDir) /Y</Command>
     <ClCompile Include="Player.cpp" />
     <ClCompile Include="src\main.cpp" />
     <ClCompile Include="src\GameScene.cpp" />
+    <ClCompile Include="StageManager.cpp" />
     <ClCompile Include="UnitBase.cpp" />
   </ItemGroup>
   <ItemGroup>
@@ -280,8 +283,11 @@ xcopy "$(SolutionDir)dxil.dll" $(TargetDir) /Y</Command>
     <ClInclude Include="..\..\src\engine\Render\RenderObject\SpriteMesh.h" />
     <ClInclude Include="..\..\src\engine\Render\ShadowMapDevice.h" />
     <ClInclude Include="..\..\src\engine\resource.h" />
+    <ClInclude Include="BaseInformation.h" />
     <ClInclude Include="BattleScene.h" />
     <ClInclude Include="BattleTurnMgr.h" />
+    <ClInclude Include="Block.h" />
+    <ClInclude Include="BlockManager.h" />
     <ClInclude Include="CutInMgr.h" />
     <ClInclude Include="Debug_Attack_01.h" />
     <ClInclude Include="Debug_Attack_02.h" />
@@ -293,6 +299,7 @@ xcopy "$(SolutionDir)dxil.dll" $(TargetDir) /Y</Command>
     <ClInclude Include="E_Ac_Base.h" />
     <ClInclude Include="Player.h" />
     <ClInclude Include="src\GameScene.h" />
+    <ClInclude Include="StageManager.h" />
     <ClInclude Include="UnitBase.h" />
   </ItemGroup>
   <ItemGroup>

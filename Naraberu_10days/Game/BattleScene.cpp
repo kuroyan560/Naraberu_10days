@@ -27,11 +27,54 @@ void BattleScene::OnInitialize()
 	GetUnitPtr<Enemy>(En[En.size() - 1])->SetEnemyData(EnemysData::DebugEnemy_2);
 
 	Mgr.OnInitialize(Pl, En);
+
+	stage.reset(new StageManager());
+	stage->Initialize();
+	block.reset(new BlockManager());
+	//中央指定
+	block->SetCenter(stage->GetCenter());
+	block->Initialize();
+
 }
 
 void BattleScene::OnUpdate()
 {
+	KuroEngine::UsersInput* input = KuroEngine::UsersInput::Instance();
+
+	//セット可能ならセットする
+	if (input->ControllerOnTrigger(0, KuroEngine::XBOX_BUTTON::B)) {
+		KuroEngine::Vec2<int> nowMapchip;
+		std::vector<KuroEngine::Vec2<int>> shape;
+		BlockColor color;
+
+		//ブロック情報取得
+		block->GetBlock(&nowMapchip, &shape, &attribute, &color);
+		//配置可能なら配置する
+		bool isSet = stage->JudgeSet(nowMapchip, shape, color);
+		//次の使用ブロックをセットする
+		block->ChangeBlock();
+	}
+
+	//線と塊の判定
+	if (input->ControllerOnTrigger(0, KuroEngine::XBOX_BUTTON::X)) {
+		//塊確認
+		//std::vector<int> massNum;
+		//std::vector<BlockColor> massColor;
+		stage->MassProcess(&massNum, &massColor);
+		//塊確認
+		//int lineNum = 0;
+		//std::vector<BlockColor> llineColor;
+		stage->LineProcess(&lineNum, &lineColor);
+	}
+
+	if (input->ControllerOnTrigger(0, KuroEngine::XBOX_BUTTON::A)) {
+		stage->Reset();
+	}
+
 	Mgr.OnUpdate();
+
+	stage->Update();
+	block->Update();
 }
 
 void BattleScene::OnDraw()
@@ -55,11 +98,47 @@ void BattleScene::OnDraw()
 	Pl->OnDraw();
 
 	Mgr.OnDraw();
+
+	stage->Draw();
+	block->Draw();
 }
 
 void BattleScene::OnImguiDebug()
 {
 	Mgr.OnImguiDebug();
+
+	KuroEngine::UsersInput* input = KuroEngine::UsersInput::Instance();
+	using namespace KuroEngine;
+
+	Vec2<float> mousePos = { 0.0f,0.0f };
+	mousePos = input->GetMousePos();
+
+	ImGui::Begin("mass & line");
+	ImGui::Text("mass");
+	int mass = 0;
+	for (int i = 0; i < massNum.size(); i++) {
+		ImGui::Text(" %d : num %d |color %d", mass, massNum[i], massColor[i]);
+		mass++;
+	}
+	ImGui::Text("line");
+	int line = 0;
+	for (int i = 0; i < lineColor.size(); i++) {
+		ImGui::Text(" %d : color %d", line, lineColor[i]);
+		line++;
+	}
+	ImGui::End();
+
+	ImGui::Begin("attribute");
+	if (attribute == BlockAttribute::attack1) {
+		ImGui::Text("attack1");
+	}else if (attribute == BlockAttribute::attack2) {
+		ImGui::Text("attack2");
+	}if (attribute == BlockAttribute::recovery) {
+		ImGui::Text("recovery");
+	}
+	ImGui::End();
+
+
 }
 
 void BattleScene::OnFinalize()

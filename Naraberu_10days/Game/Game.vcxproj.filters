@@ -74,7 +74,13 @@
     <Filter Include="src\user\BattleManager\CutIn">
       <UniqueIdentifier>{9b21ca62-0aa5-4415-a6c1-c680cc6f9a1e}</UniqueIdentifier>
     </Filter>
-    <Filter Include="src\user\BattleManager\Enemy_Act">
+    <Filter Include="src\user\Block">
+      <UniqueIdentifier>{972dbbbc-b097-47ac-8bb6-f439e9adb888}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="src\user\Stage">
+      <UniqueIdentifier>{4b6c4ee8-e3cd-49a7-8db3-a4f7470ca1a1}</UniqueIdentifier>
+	</Filter>
+	<Filter Include="src\user\BattleManager\Enemy_Act">
       <UniqueIdentifier>{1d754e82-6bb1-44c0-aa7d-2d4a8e73c8c5}</UniqueIdentifier>
     </Filter>
     <Filter Include="src\user\BattleManager\Enemy_Act\Attack">
@@ -313,7 +319,16 @@
     <ClCompile Include="CutInMgr.cpp">
       <Filter>src\user\BattleManager\CutIn</Filter>
     </ClCompile>
-    <ClCompile Include="E_Ac_Base.cpp">
+    <ClCompile Include="BlockManager.cpp">
+      <Filter>src\user\Block</Filter>
+    </ClCompile>
+    <ClCompile Include="Block.cpp">
+      <Filter>src\user\Block</Filter>
+    </ClCompile>
+    <ClCompile Include="StageManager.cpp">
+      <Filter>src\user\Stage</Filter>
+	</ClCompile>
+	<ClCompile Include="E_Ac_Base.cpp">
       <Filter>src\user\BattleManager\Enemy_Act</Filter>
     </ClCompile>
     <ClCompile Include="Debug_Attack_01.cpp">
@@ -621,7 +636,19 @@
     <ClInclude Include="CutInMgr.h">
       <Filter>src\user\BattleManager\CutIn</Filter>
     </ClInclude>
-    <ClInclude Include="EnemyActList.h">
+    <ClInclude Include="BaseInformation.h">
+      <Filter>src\user\Block</Filter>
+    </ClInclude>
+    <ClInclude Include="BlockManager.h">
+      <Filter>src\user\Block</Filter>
+    </ClInclude>
+    <ClInclude Include="Block.h">
+      <Filter>src\user\Block</Filter>
+    </ClInclude>
+    <ClInclude Include="StageManager.h">
+      <Filter>src\user\Stage</Filter>
+	</ClInclude>
+	<ClInclude Include="EnemyActList.h">
       <Filter>src\user\BattleManager\Enemy_Act</Filter>
     </ClInclude>
     <ClInclude Include="E_Ac_Base.h">
