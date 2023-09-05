@@ -65,10 +65,14 @@ void BattleScene::OnUpdate()
 		//塊確認
 		//std::vector<int> massNum;
 		//std::vector<BlockColor> massColor;
+		massColor.clear();
+		massNum.clear();
 		stage->MassProcess(&massNum, &massColor);
 		//塊確認
 		//int lineNum = 0;
 		//std::vector<BlockColor> llineColor;
+		lineColor.clear();
+
 		stage->LineProcess(&lineNum, &lineColor);
 	}
 
@@ -142,8 +146,6 @@ void BattleScene::OnImguiDebug()
 		ImGui::Text("recovery");
 	}
 	ImGui::End();
-
-
 }
 
 void BattleScene::OnFinalize()

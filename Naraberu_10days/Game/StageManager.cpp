@@ -15,16 +15,16 @@ void StageManager::Initialize()
 	//stagedata読み込み(範囲をmapchip形式で読み込んで使用する)
 	//いったんは手打ち
 	mapchip = {
-		{-1,-1,-1,-1,-1,-1,-1},
-		{-1,-1,-1,-1,-1,-1,-1},
-		{-1,-1,-1,-1,-1,-1,-1},
-		{-1,-1,-1,-1,-1,-1,-1},
-		{-1,-1,-1,-1,-1,-1,-1},
-		{-1,-1,-1,-1,-1,-1,-1},
-		{-1,-1,-1,-1,-1,-1,-1},
-		//{-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,},
-		//{-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,},
-		//{-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,},
+		{-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,},
+		{-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,},
+		{-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,},
+		{-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,},
+		{-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,},
+		{-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,},
+		{-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,},
+		{-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,},
+		{-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,},
+		{-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,},
 	};
 
 	massMapchip = mapchip;
@@ -105,7 +105,7 @@ bool StageManager::MassProcess(std::vector<int>* _massNum, std::vector<BlockColo
 	for (int y = 0; y < mapMax.y; y++) {
 		for (int x = 0; x < mapMax.x; x++) {
 			//確認済みなら次に行く
-			if (massMapchip[y][x] != 0) { continue; }
+			if (massMapchip[y][x] != 0 || mapchip[y][x] == -1) { continue; }
 			//塊確認
 			int massNum = 0;
 			MassBlock(&massNum, { x,y });
@@ -121,6 +121,7 @@ bool StageManager::MassProcess(std::vector<int>* _massNum, std::vector<BlockColo
 
 void StageManager::MassBlock(int* _massNum, const KuroEngine::Vec2<int> _massMap)
 {
+	
 	//削除個数カウント
 	*_massNum += 1;
 	//削除場所記録
@@ -196,7 +197,7 @@ int StageManager::LineBlock(const KuroEngine::Vec2<int> _lineMap, const bool _di
 	//下
 	if (!_direction) {
 		for (int i = 0; i < mapMax.y; i++) {
-			if (mapchip[_lineMap.y][_lineMap.x] != mapchip[i][_lineMap.x]) { return 0; }
+			if (mapchip[_lineMap.y][_lineMap.x] != mapchip[i][_lineMap.x] || mapchip[_lineMap.y][_lineMap.x] == -1) { return 0; }
 		}
 
 		for (int i = 0; i < mapMax.y; i++) {
@@ -206,7 +207,7 @@ int StageManager::LineBlock(const KuroEngine::Vec2<int> _lineMap, const bool _di
 	//右
 	else {
 		for (int i = 0; i < mapMax.x; i++) {
-			if (mapchip[_lineMap.y][_lineMap.x] != mapchip[_lineMap.y][i]) { return 0; }
+			if (mapchip[_lineMap.y][_lineMap.x] != mapchip[_lineMap.y][i] || mapchip[_lineMap.y][_lineMap.x] == -1) { return 0; }
 		}
 
 		for (int i = 0; i < mapMax.x; i++) {

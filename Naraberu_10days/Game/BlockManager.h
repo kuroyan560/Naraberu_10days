@@ -10,17 +10,11 @@ private:
 
 	enum class ObjectType {
 		use,//使用しているブロック
-		next,//next表示のブロック
-		next1,//1番目ブロック
-		next2,//2番目ブロック
-		next3,//3番目ブロック
+		choice1,//選択ブロック1
+		choice2,//選択ブロック2
+		nextChoice1,//次の選択ブロック1
+		nextChoice2,//次の選択ブロック2
 		size,
-	};
-
-	//使用できるブロックタイプ
-	struct CanUseBlockType {
-		int texNum;
-		std::vector<KuroEngine::Vec2<int>> shape;//形状
 	};
 
 	//実際に使っているブロックの情報
@@ -66,7 +60,7 @@ public:
 		BlockAttribute* _attribute, BlockColor* _color) {
 		*_attribute = block[int(ObjectType::use)].attribute;
 		*_color = block[int(ObjectType::use)].color;
-		*_shape = canUseBlockType[block[int(ObjectType::use)].blockNum].shape;
+		*_shape = shape[block[int(ObjectType::use)].blockNum];
 		*_nowMapchip = block[int(ObjectType::use)].block->GetMapChipNum();
 	}
 
@@ -81,8 +75,6 @@ private:
 
 	//中央
 	KuroEngine::Vec2<int> center;
-	//使えるブロックの種類
-	std::array<CanUseBlockType,4> canUseBlockType;
 	//使うブロック情報
 	std::array<UseBlockType, int(ObjectType::size)> block;
 };

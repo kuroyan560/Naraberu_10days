@@ -19,7 +19,7 @@ public:
 	/// </summary>
 	/// <param name="_texNum">画像番号</param>
 	/// <param name="_color">色</param>
-	void Draw(const std::vector<KuroEngine::Vec2<int>> _shape, const int _texNum, const BlockColor _color);
+	void Draw(const std::vector<KuroEngine::Vec2<int>> _shape, const BlockAttribute _attribute, const BlockColor _color);
 
 	/// <summary>
 	/// 座標有の描画
@@ -27,7 +27,7 @@ public:
 	/// <param name="_texNum">画像番号</param>
 	/// <param name="_color">色</param>
 	/// <param name="_pos">座標</param>
-	void Draw(const std::vector<KuroEngine::Vec2<int>> _shape, const int _texNum, const BlockColor _color, const KuroEngine::Vec2<float>& _pos);
+	void Draw(const std::vector<KuroEngine::Vec2<int>> _shape, const KuroEngine::Vec2<float> shape_dist, const BlockAttribute _attribute, const BlockColor _color, const KuroEngine::Vec2<float>& _pos);
 
 	/// <summary>
 	/// 初期化
@@ -46,10 +46,23 @@ public:
 	/// <param name="_shape">形状</param>
 	void ChangeBlock(const KuroEngine::Vec2<int> _mapchipNum, const std::vector<KuroEngine::Vec2<int>> _shape);
 
-	KuroEngine::Vec2<int> GetMapChipNum() { return pos; }
-
-
+	/// <summary>
+	/// 
+	/// </summary>
+	/// <param name="pos">座標</param>
+	/// <param name="_color">色</param>
 	void BlockOneDraw(const KuroEngine::Vec2<float> pos, const BlockColor _color);
+
+	/// <summary>
+	/// 
+	/// </summary>
+	/// <param name="_shape">形状</param>
+	/// <param name="pos">座標</param>
+	/// <param name="_color">色</param>
+	void BlockOneDraw(const KuroEngine::Vec2<int> _shape,
+		const KuroEngine::Vec2<float> pos, const BlockColor _color);
+
+	KuroEngine::Vec2<int> GetMapChipNum() { return pos; }
 
 private:
 

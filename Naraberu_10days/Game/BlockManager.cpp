@@ -2,29 +2,16 @@
 
 void BlockManager::Initialize()
 {
-	//形指定
-	//後ほど読み込みに切り替え
-	{
-		canUseBlockType[0].texNum = 0;
-		canUseBlockType[0].shape = { {0,0},{0,1},{0,-1},{1,0},{-1,0} };
-		canUseBlockType[1].texNum = 1;
-		canUseBlockType[1].shape = { {0,0},{0,-1},{0,-1},{0,-2} };
-		canUseBlockType[2].texNum = 2;
-		canUseBlockType[2].shape = { {0,0},{1,0},{1,1} };
-		canUseBlockType[3].texNum = 3;
-		canUseBlockType[3].shape = { {0,0},{-1,0},{0,1},{0,-1} };
-	}
-
 	block[int(ObjectType::use)].block.reset(new Block(true));
 	block[int(ObjectType::use)].attribute = BlockAttribute(rand() % int(BlockAttribute::size));
-	block[int(ObjectType::use)].blockNum = rand() % int(canUseBlockType.size());
+	block[int(ObjectType::use)].blockNum = rand() % shapeNum;
 	block[int(ObjectType::use)].color = BlockColor(rand() % int(BlockColor::size));
-	block[int(ObjectType::use)].block->ChangeBlock(center, canUseBlockType[block[int(ObjectType::use)].blockNum].shape);
+	block[int(ObjectType::use)].block->ChangeBlock(center, shape[block[int(ObjectType::use)].blockNum]);
 
 	for (int i = 1; i< int(ObjectType::size); i++) {
 		block[i].block.reset(new Block());
 		block[i].attribute = BlockAttribute(rand() % int(BlockAttribute::size));
-		block[i].blockNum = rand() % int(canUseBlockType.size());
+		block[i].blockNum = rand() % shapeNum;
 		block[i].color = BlockColor(rand() % int(BlockColor::size));
 	}
 }
@@ -41,20 +28,30 @@ void BlockManager::Update()
 
 void BlockManager::Draw()
 {
+	float y = 633.0f;
 	//移動処理を行っているブロック
-	block[int(ObjectType::use)].block->Draw(canUseBlockType[block[int(ObjectType::use)].blockNum].shape,
-		canUseBlockType[block[int(ObjectType::use)].blockNum].texNum, block[int(ObjectType::use)].color);
-	//next表示のブロック
-	block[int(ObjectType::next)].block->Draw(canUseBlockType[block[int(ObjectType::use)].blockNum].shape,
-		canUseBlockType[block[int(ObjectType::next)].blockNum].texNum,
-		block[int(ObjectType::next)].color, { 314.0f,628.0f });
-
-	KuroEngine::Vec2<float> pos = { 450.0f,655.0f };
-	for (int i = 2; i< int(ObjectType::size); i++) {
-		block[i].block->Draw(canUseBlockType[block[int(ObjectType::use)].blockNum].shape,
-			canUseBlockType[block[i].blockNum].texNum, block[i].color, pos);
-		pos.x += 100.0f;
-	}
+	block[int(ObjectType::use)].block->Draw(shape[block[int(ObjectType::use)].blockNum],
+		block[int(ObjectType::use)].attribute, block[int(ObjectType::use)].color);
+	//choice1表示のブロック
+	block[int(ObjectType::choice1)].block->Draw(shape[block[int(ObjectType::choice1)].blockNum],
+		shape_dist[block[int(ObjectType::choice1)].blockNum],
+		block[int(ObjectType::choice1)].attribute,
+		block[int(ObjectType::choice1)].color, { 815.0f,y });
+	//choice2表示のブロック
+	block[int(ObjectType::choice2)].block->Draw(shape[block[int(ObjectType::choice2)].blockNum],
+		shape_dist[block[int(ObjectType::choice2)].blockNum],
+		block[int(ObjectType::choice2)].attribute,
+		block[int(ObjectType::choice2)].color, { 710.0f,y });
+	//nextChoice1表示のブロック
+	block[int(ObjectType::nextChoice1)].block->Draw(shape[block[int(ObjectType::nextChoice1)].blockNum],
+		shape_dist[block[int(ObjectType::nextChoice1)].blockNum],
+		block[int(ObjectType::nextChoice1)].attribute,
+		block[int(ObjectType::nextChoice1)].color, { 555.0f,y });
+	//nextChoice2表示のブロック
+	block[int(ObjectType::nextChoice2)].block->Draw(shape[block[int(ObjectType::nextChoice2)].blockNum],
+		shape_dist[block[int(ObjectType::nextChoice2)].blockNum],
+		block[int(ObjectType::nextChoice2)].attribute,
+		block[int(ObjectType::nextChoice2)].color, { 445.0f,y });
 }
 
 void BlockManager::Reset()
@@ -63,16 +60,16 @@ void BlockManager::Reset()
 
 void BlockManager::ChangeBlock()
 {
-	SetOneChangeBlock(int(ObjectType::use), int(ObjectType::next));
-	SetOneChangeBlock(int(ObjectType::next), int(ObjectType::next1));
-	SetOneChangeBlock(int(ObjectType::next1), int(ObjectType::next2));
-	SetOneChangeBlock(int(ObjectType::next2), int(ObjectType::next3));
+	SetOneChangeBlock(int(ObjectType::use), int(ObjectType::choice1));
+	SetOneChangeBlock(int(ObjectType::choice1), int(ObjectType::choice2));
+	SetOneChangeBlock(int(ObjectType::choice2), int(ObjectType::nextChoice1));
+	SetOneChangeBlock(int(ObjectType::nextChoice1), int(ObjectType::nextChoice2));
 
-	block[int(ObjectType::next3)].attribute = BlockAttribute(rand() % int(BlockAttribute::size));
-	block[int(ObjectType::next3)].blockNum = rand() % int(canUseBlockType.size());
-	block[int(ObjectType::next3)].color = BlockColor(rand() % int(BlockColor::size));
+	block[int(ObjectType::nextChoice2)].attribute = BlockAttribute(rand() % int(BlockAttribute::size));
+	block[int(ObjectType::nextChoice2)].blockNum = rand() % shapeNum;
+	block[int(ObjectType::nextChoice2)].color = BlockColor(rand() % int(BlockColor::size));
 
-	block[int(ObjectType::use)].block->ChangeBlock(center, canUseBlockType[block[int(ObjectType::use)].blockNum].shape);
+	block[int(ObjectType::use)].block->ChangeBlock(center, shape[block[int(ObjectType::use)].blockNum]);
 }
 
 void BlockManager::SetOneChangeBlock(const int a1, const int a2)
