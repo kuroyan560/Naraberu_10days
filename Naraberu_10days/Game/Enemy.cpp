@@ -9,6 +9,10 @@ Enemy::Enemy()
 	// ターン関連変数の初期化
 	m_isMyTurn = false;
 	m_NextTurn = false;
+	m_Action_Num = 0;
+	m_Now_Action = false;
+	m_Already_Act = false;
+	m_Timer = 0;
 }
 
 void Enemy::OnInitialize()
@@ -18,8 +22,39 @@ void Enemy::OnInitialize()
 void Enemy::OnUpdate()
 {
 	using namespace KuroEngine;
-	if (UsersInput::Instance()->KeyOnTrigger(DIK_SPACE)) {
+	/*if (UsersInput::Instance()->KeyOnTrigger(DIK_SPACE)) {
 		EndTurn();
+	}*/
+
+	// 行動の決定
+	if (!m_Now_Action && !m_Already_Act) {
+		// とりあえず最初のアクションに決定しとく
+		m_Action_Num = 0;
+		// 必要な情報をセット(あとで分岐無しでいい設計にする)
+		//m_Actions[m_Action_Num]->Action_Start();
+		EnemyActions::EnemyActionMgr::Instance()->SetUnits(this);
+		EnemyActions::EnemyActionMgr::Instance()->StartAction(m_Data.ActionList[0]);
+
+		m_Now_Action = true;
+	}
+	// アクション中であれば
+	if (m_Now_Action) {
+		//m_Actions[m_Action_Num]->Action_Update();
+		EnemyActions::EnemyActionMgr::Instance()->Update();
+
+		// アクションが終わった
+		if (EnemyActions::EnemyActionMgr::Instance()->GetEnd()) {
+			m_Now_Action = false;
+			m_Already_Act = true;
+			m_Timer = 0;
+		}
+	}
+	if (m_Already_Act == true) {
+		m_Timer++;
+		if (m_Timer >= 100) {
+			EndTurn();
+			m_Already_Act = false;
+		}
 	}
 }
 
@@ -36,6 +71,11 @@ void Enemy::OnAlwaysUpdate()
 
 void Enemy::OnDraw()
 {
+	// アクション中であれば
+	if (m_Now_Action) {
+		//m_Actions[m_Action_Num]->Action_Draw();
+		EnemyActions::EnemyActionMgr::Instance()->Draw();
+	}
 }
 
 void Enemy::OnImguiDebug()
@@ -51,6 +91,10 @@ void Enemy::SetEnemyData(EnemysData::EnemyData Data)
 	// EnemyDataをコピーする
 	m_Data = Data;
 	m_Data.SetTexture();
+	// アクション名からアクションをセットする
+	/*for (auto& data : m_Data.ActionList) {
+		m_Actions.emplace_back(EnemyActions::SetActionOnName(data));
+	}*/
 }
 
 void Enemy::Draw(int Index)
