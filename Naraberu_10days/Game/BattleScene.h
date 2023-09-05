@@ -4,6 +4,8 @@
 #include "Player.h" 
 #include "Enemy.h"
 #include "BattleTurnMgr.h"
+#include "BlockManager.h"
+#include "StageManager.h"
 
 class BattleScene :
     public KuroEngine::BaseScene
@@ -17,6 +19,17 @@ class BattleScene :
 	// 背景
 	std::shared_ptr<KuroEngine::TextureBuffer> m_SukasiTex;
 	std::shared_ptr<KuroEngine::TextureBuffer> m_BackTex;
+	//ブロック
+	std::shared_ptr<BlockManager> block;
+	//ステージ
+	std::shared_ptr<StageManager> stage;
+
+	std::vector<int> massNum;
+	std::vector<BlockColor> massColor;
+	int lineNum = 0;
+	std::vector<BlockColor> lineColor;
+	BlockAttribute attribute;
+
 
 	void OnInitialize()override;
 	void OnUpdate()override;
@@ -25,5 +38,6 @@ class BattleScene :
 	void OnFinalize()override;
 public:
 	BattleScene();
+
 };
 
