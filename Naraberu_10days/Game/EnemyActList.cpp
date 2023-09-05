@@ -1,5 +1,6 @@
 #include "EnemyActList.h"
 #include "UnitBase.h"
+#include "ExistUnits.h"
 
 void EnemyActions::EnemyActionMgr::Initialize()
 {
@@ -37,7 +38,7 @@ void EnemyActions::EnemyActionMgr::StartAction(std::string Action_Name)
 	else if (m_Now_Action_Name == "Jamming_01") {
 
 		EnemyActions::GetPtr<Debug_Jamming_01>(m_List[size_t(m_List_Pair[m_Now_Action_Name])])->Param_Set(60, 200);
-		EnemyActions::GetPtr<Debug_Jamming_01>(m_List[size_t(m_List_Pair[m_Now_Action_Name])])->Need_Object_Set(m_Initiator, m_Targets[0]);
+		EnemyActions::GetPtr<Debug_Jamming_01>(m_List[size_t(m_List_Pair[m_Now_Action_Name])])->Need_Object_Set(m_Initiator, ExistUnits::Instance()->m_MapChipData);
 		EnemyActions::GetPtr<Debug_Jamming_01>(m_List[size_t(m_List_Pair[m_Now_Action_Name])])->Action_Start();
 	}
 }

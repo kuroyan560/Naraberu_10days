@@ -73,6 +73,7 @@ public:
 
 	static KuroEngine::Vec2<int> GetMapMax(){return mapMax;}
 
+	std::vector<std::vector<int>>* GetMapChipPtr() { return &mapchip; }
 
 private:
 

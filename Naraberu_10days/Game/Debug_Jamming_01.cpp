@@ -8,7 +8,6 @@
 
 void Debug_Jamming_01::Param_Set(int Damage, int Duration)
 {
-	m_Damage = Damage;
 	m_Timer = 0;
 	m_Finish = Duration;
 }
@@ -30,14 +29,9 @@ void Debug_Jamming_01::Action_Update()
 	// タイマー加算
 	m_Timer++;
 
-	// 攻撃は一回のみ
+	// 行動は一回のみ
 	if (m_Timer == 10) {
-		// 対象が見つからない
-		if (m_Targets.size() < 1 || m_Targets[0] == nullptr) {
-			exit(1);
-		}
-		// 1番目のターゲットに攻撃する
-		m_Targets[0]->Damage(m_Damage);
+
 	}
 }
 

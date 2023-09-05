@@ -38,6 +38,8 @@ void BattleScene::OnInitialize()
 	block->SetCenter(stage->GetCenter());
 	block->Initialize();
 
+
+	ExistUnits::Instance()->SetMapChipPtr(stage->GetMapChipPtr());
 }
 
 void BattleScene::OnUpdate()
