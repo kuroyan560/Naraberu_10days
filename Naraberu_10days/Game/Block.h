@@ -75,6 +75,8 @@ private:
 
 	//ブロック画像
 	std::array<std::shared_ptr<KuroEngine::TextureBuffer>, int(BlockColor::size)> blockTex;
+	//射線ブロック
+	std::array<std::shared_ptr<KuroEngine::TextureBuffer>, int(BlockColor::size) - 1> lineTex;
 	//アクション画像
 	std::array<std::shared_ptr<KuroEngine::TextureBuffer>, int(BlockAttribute::size)> actionTex;
 	//座標(mapchip)

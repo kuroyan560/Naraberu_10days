@@ -63,6 +63,7 @@ enum class BlockColor {
 	red,
 	blue,
 	yellow,
+	obstacle,
 	size,
 };
 

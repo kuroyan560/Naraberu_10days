@@ -44,7 +44,7 @@ private:
 
 public:
 	// アルティメットポイントを加算する
-	int AddUltPoint(int Amount) {
+	void AddUltPoint(int Amount) {
 		// 変化前の値を保存
 		m_BeforeUltimatePoint = m_UltimatePoint;
 		// アルティメットポイントを加算
