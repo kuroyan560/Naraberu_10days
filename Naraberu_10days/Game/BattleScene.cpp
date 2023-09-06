@@ -164,8 +164,8 @@ void BattleScene::PlayerTurn()
 		//ブロック情報取得
 		block->GetBlock(&nowMapchip, &shape, &attribute, &color);
 		//配置可能なら配置する
-		bool isSet = stage->JudgeSet(nowMapchip, shape, attribute, color);
+		if (!stage->JudgeSet(nowMapchip, shape, attribute, color)) { return; }
 		//次の使用ブロックをセットする
-		block->SetIsChoice();
+		block->ChangeBlock();
 	}
 }

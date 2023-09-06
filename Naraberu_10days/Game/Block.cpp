@@ -43,7 +43,7 @@ void Block::Draw(const std::vector<KuroEngine::Vec2<int>> _shape, const KuroEngi
 		BlockOneDraw(i, pos, _color);
 	}
 
-	//ActionDraw({ shapeMax.x * blockSize + difference.x, shapeMin.y * blockSize + difference.y }, _attribute);
+	ActionDraw({ shapeMax.x * blockSize + _pos.x, shapeMin.y * blockSize + _pos.y }, _attribute);
 }
 
 void Block::Reset()
@@ -52,7 +52,6 @@ void Block::Reset()
 
 void Block::Move()
 {
-	
 	KuroEngine::Vec2<int> max = StageManager::GetMapMax();
 	KuroEngine::UsersInput* input = KuroEngine::UsersInput::Instance();
 	if (input->ControllerOnTrigger(0, KuroEngine::XBOX_BUTTON::DPAD_LEFT)) {
@@ -73,8 +72,6 @@ void Block::Move()
 
 void Block::ChangeBlock(const KuroEngine::Vec2<int> _mapchipNum, const std::vector<KuroEngine::Vec2<int>> _shape)
 {
-	pos = _mapchipNum;
-
 	//ç≈è¨ç≈ëÂÇïœçX
 	shapeMax = { 0,0 };
 	shapeMin = { 0,0 };
@@ -90,6 +87,18 @@ void Block::ChangeBlock(const KuroEngine::Vec2<int> _mapchipNum, const std::vect
 		shapeMin.y = moveHit[1] * i.y + (1 - moveHit[1]) * shapeMin.y;
 		shapeMax.x = moveHit[2] * i.x + (1 - moveHit[2]) * shapeMax.x;
 		shapeMax.y = moveHit[3] * i.y + (1 - moveHit[3]) * shapeMax.y;
+	}
+
+	if (_mapchipNum.x != -1) {
+		pos = _mapchipNum;
+	} else {
+		KuroEngine::Vec2<int> max = StageManager::GetMapMax();
+
+		//ìÀÇ´èoÇƒÇ¢ÇΩèÍçáñﬂÇ∑
+		pos.x += int(pos.x + shapeMin.x < 0) * abs(pos.x + shapeMin.x);
+		pos.x += int(shapeMax.x + pos.x >= max.x) * (shapeMax.x + pos.x - max.x - 1);
+		pos.y += int(pos.y + shapeMin.y < 0) * abs(pos.y + shapeMin.y);
+		pos.y += int(shapeMax.y + pos.y >= max.y) * (shapeMax.y + pos.y - max.y - 1);
 	}
 }
 
@@ -108,8 +117,6 @@ void Block::BlockOneDraw(const KuroEngine::Vec2<float> pos, BlockColor _color)
 	} else if (_color == BlockColor::yellow) {
 		DrawFunc2D::DrawExtendGraph2D(pos, pos1, blockTex[int(BlockColor::yellow)]);
 	}
-
-
 }
 
 void Block::BlockOneDraw(const KuroEngine::Vec2<int> _shape, const KuroEngine::Vec2<float> pos, const BlockColor _color)
@@ -151,5 +158,4 @@ void Block::ActionDraw(const KuroEngine::Vec2<float> _pos, const BlockAttribute 
 		KuroEngine::DrawFunc2D::DrawExtendGraph2D({ actionPos.x - actionSize.x / 2.0f,actionPos.y - actionSize.y / 2.0f },
 			{ actionPos.x + actionSize.x / 2.0f,actionPos.y + actionSize.y / 2.0f }, actionTex[int(BlockAttribute::recovery)]);
 	}
-
 }
