@@ -7,6 +7,8 @@
 
 #include "ExistUnits.h"
 
+#include"src/OperationConfig.h"
+
 void BattleScene::OnInitialize()
 {
 	// ---- 背景
@@ -56,7 +58,7 @@ void BattleScene::OnUpdate()
 	}
 
 	//線と塊の判定
-	if (input->ControllerOnTrigger(0, KuroEngine::XBOX_BUTTON::X)) {
+	if (OperationConfig::Instance()->DebugKeyInputOnTrigger(DIK_X)) {
 		//塊確認
 		//std::vector<int> massNum;
 		//std::vector<BlockColor> massColor;
@@ -71,7 +73,7 @@ void BattleScene::OnUpdate()
 		stage->LineProcess(&lineNum, &lineColor);
 	}
 
-	if (input->ControllerOnTrigger(0, KuroEngine::XBOX_BUTTON::A)) {
+	if (OperationConfig::Instance()->DebugKeyInputOnTrigger(DIK_I)) {
 		stage->Reset();
 	}
 
@@ -156,7 +158,7 @@ void BattleScene::PlayerTurn()
 {
 	KuroEngine::UsersInput* input = KuroEngine::UsersInput::Instance();
 
-	if (input->ControllerOnTrigger(0, KuroEngine::XBOX_BUTTON::B)) {
+	if (OperationConfig::Instance()->GetOperationInput(OperationConfig::SET_PRISM, OperationConfig::ON_TRIGGER)) {
 		KuroEngine::Vec2<int> nowMapchip;
 		std::vector<KuroEngine::Vec2<int>> shape;
 		BlockColor color;
@@ -164,8 +166,8 @@ void BattleScene::PlayerTurn()
 		//ブロック情報取得
 		block->GetBlock(&nowMapchip, &shape, &attribute, &color);
 		//配置可能なら配置する
-		bool isSet = stage->JudgeSet(nowMapchip, shape, attribute, color);
+		if (!stage->JudgeSet(nowMapchip, shape, attribute, color)) { return; }
 		//次の使用ブロックをセットする
-		block->SetIsChoice();
+		block->ChangeBlock();
 	}
 }

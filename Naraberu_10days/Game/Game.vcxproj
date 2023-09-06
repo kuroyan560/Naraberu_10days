@@ -196,6 +196,7 @@ xcopy "$(SolutionDir)dxil.dll" $(TargetDir) /Y</Command>
     <ClCompile Include="Player_Heal_01.cpp" />
     <ClCompile Include="src\main.cpp" />
     <ClCompile Include="src\GameScene.cpp" />
+    <ClCompile Include="src\OperationConfig.cpp" />
     <ClCompile Include="StageManager.cpp" />
     <ClCompile Include="UnitBase.cpp" />
   </ItemGroup>
@@ -311,6 +312,7 @@ xcopy "$(SolutionDir)dxil.dll" $(TargetDir) /Y</Command>
     <ClInclude Include="P_Ac_Base.h" />
     <ClInclude Include="RefreshRate.h" />
     <ClInclude Include="src\GameScene.h" />
+    <ClInclude Include="src\OperationConfig.h" />
     <ClInclude Include="StageManager.h" />
     <ClInclude Include="UnitBase.h" />
   </ItemGroup>

@@ -9,6 +9,8 @@
 
 #include "RefreshRate.h"
 
+#include"src/OperationConfig.h"
+
 Enemy::Enemy()
 {
 	// ƒ^[ƒ“ŠÖ˜A•Ï”‚Ì‰Šú‰»
@@ -69,13 +71,13 @@ void Enemy::OnUpdate()
 void Enemy::OnAlwaysUpdate()
 {
 	using namespace KuroEngine;
-	if (UsersInput::Instance()->KeyInput(DIK_B)) {
+	if (OperationConfig::Instance()->DebugKeyInputOnTrigger(DIK_B)) {
 		m_HP > 0 ? m_HP-- : 0;
 	}
-	if (UsersInput::Instance()->KeyInput(DIK_N)) {
+	if (OperationConfig::Instance()->DebugKeyInputOnTrigger(DIK_N)) {
 		m_HP < m_MaxHP ? m_HP++ : 0;
 	}
-	if (UsersInput::Instance()->KeyOnTrigger(DIK_M)) {
+	if (OperationConfig::Instance()->DebugKeyInputOnTrigger(DIK_M)) {
 		Damage(m_HP / 2);
 	}
 }

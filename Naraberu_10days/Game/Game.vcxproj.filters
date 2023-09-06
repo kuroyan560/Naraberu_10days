@@ -370,6 +370,9 @@
     <ClCompile Include="Player_Attack_02.cpp">
       <Filter>src\user\BattleManager\Player_Act\Skills</Filter>
     </ClCompile>
+    <ClCompile Include="src\OperationConfig.cpp">
+      <Filter>src\user</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="..\..\src\engine\KuroEngineDevice.h">
@@ -713,6 +716,9 @@
     </ClInclude>
     <ClInclude Include="EnemyActionParametor.h">
       <Filter>src\user\BattleManager\Enemy_Act</Filter>
+    </ClInclude>
+    <ClInclude Include="src\OperationConfig.h">
+      <Filter>src\user</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>

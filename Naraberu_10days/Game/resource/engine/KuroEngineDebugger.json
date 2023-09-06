@@ -183,19 +183,13 @@
     }
   },
   "OperationConfig": {
-    "CONTROLLER": {
-      "CameraSensitivity": 0.05999999865889549
-    },
-    "KEY_BOARD_MOUSE": {
-      "CameraSensitivity": 1.7000000476837158
-    },
     "debuggerSetting": {
-      "active": false,
-      "customParamActive": true,
+      "active": true,
+      "customParamActive": false,
       "imageColor": [
-        0.7863483428955078,
-        0.8695652484893799,
-        0.10396973043680191,
+        0.800000011920929,
+        0.800000011920929,
+        0.800000011920929,
         1.0
       ],
       "textColorFlg": false
