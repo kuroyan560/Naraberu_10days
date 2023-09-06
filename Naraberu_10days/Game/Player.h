@@ -30,6 +30,35 @@ public:
 	void OnImguiDebug()override;
 	void OnFinalize()override;
 
+	// 全ステータスをセットする
+	void SetState(int HP, int MaxHP);
+
+	// アルティメット関連
+private:
+	// 現在のアルティメットポイントの値
+	int m_UltimatePoint;
+	// 変化前のアルティメットポイント
+	int m_BeforeUltimatePoint;
+	// アルティメットポイントの最大値
+	int Max_UltimatePoint;
+
+public:
+	// アルティメットポイントを加算する
+	int AddUltPoint(int Amount) {
+		// 変化前の値を保存
+		m_BeforeUltimatePoint = m_UltimatePoint;
+		// アルティメットポイントを加算
+		m_UltimatePoint += Amount;
+		m_UltimatePoint > Max_UltimatePoint ? m_UltimatePoint = Max_UltimatePoint : 0;
+	}
+	// 現在のアルティメットポイントの取得
+	int GetUltPoint() { return m_UltimatePoint; }
+	// 現在のアルティメットのチャージ率を取得
+	float GetUltRate() { return float(m_UltimatePoint) / float(Max_UltimatePoint); }
+	// アルティメットが溜まっているかどうか
+	bool IsReadyUltimate() { return m_UltimatePoint >= Max_UltimatePoint; }
+
+	// 描画位置関連
 private:
 	KuroEngine::Vec2<float> m_Left_Top;
 	KuroEngine::Vec2<float> m_Right_Bottom;

@@ -6,12 +6,6 @@
 #include "../../src/engine/FrameWork/WinApp.h"
 #include "../../src/engine/FrameWork/UsersInput.h"
 
-void Debug_Jamming_01::Param_Set(int Damage, int Duration)
-{
-	m_Timer = 0;
-	m_Finish = Duration;
-}
-
 void Debug_Jamming_01::Action_Start()
 {
 	// Šî’ê‰Šú‰»

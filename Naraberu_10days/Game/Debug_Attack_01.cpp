@@ -6,13 +6,6 @@
 #include "../../src/engine/FrameWork/WinApp.h"
 #include "../../src/engine/FrameWork/UsersInput.h"
 
-void Debug_Attack_01::Param_Set(int Damage, int Duration)
-{
-	m_Damage = Damage;
-	m_Timer = 0;
-	m_Finish = Duration;
-}
-
 
 void Debug_Attack_01::Action_Start()
 {
@@ -38,7 +31,10 @@ void Debug_Attack_01::Action_Update()
 			exit(1);
 		}
 		// 1”Ô–Ú‚Ìƒ^[ƒQƒbƒg‚ÉUŒ‚‚·‚é
-		m_Targets[0]->Damage(m_Damage);
+		// Šî‘bUŒ‚—Í
+		float Power = float(GetUnitPtr_nama<Enemy*>(m_Initiator)->GetEnemyData().m_ATK);
+		int Damage_Result = int(Power * m_Data.m_AttackRate);
+		m_Targets[0]->Damage(Damage_Result);
 	}
 }
 

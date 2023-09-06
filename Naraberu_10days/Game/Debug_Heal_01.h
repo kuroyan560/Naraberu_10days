@@ -1,14 +1,16 @@
 #pragma once
-#include "E_Ac_Base.h"
 #include <memory>
 #include <vector>
+
+#include "E_Ac_Base.h"
+#include "EnemyActionParametor.h"
 
 class UnitBase;
 
 class Debug_Heal_01 : public E_Ac_Base
 {
 private:
-	int m_Damage;
+	En_Ac_Param::EnemyActionData m_Data;
 
 	// --------
 	// Ž©•ª
@@ -17,10 +19,14 @@ private:
 
 public:
 	Debug_Heal_01() {
-		m_Damage = 0;
 		m_Initiator = nullptr;
-	};
-	void Param_Set(int Damage, int Duration);
+		using namespace En_Ac_Param;
+		m_Data = Action_Original_Datas[int(EnemyActionList::DEBUG_HEAL_01)];
+		m_Finish = m_Data.m_Duration;
+	}
+	void Ready() {
+		m_Timer = 0;
+	}
 	//void Need_Object_Set(UnitBase* pUnit);
 
 	template<class... A>

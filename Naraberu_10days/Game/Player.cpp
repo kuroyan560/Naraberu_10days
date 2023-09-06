@@ -7,6 +7,10 @@ Player::Player()
 	m_isMyTurn = false;
 	m_NextTurn = false;
 
+	m_UltimatePoint = 0;
+	m_BeforeUltimatePoint = 0;
+	Max_UltimatePoint = 0;
+
 	using namespace KuroEngine;
 	std::string TexDir = "resource/user/tex/battle_scene/";
 	m_HpFrameTex = D3D12App::Instance()->GenerateTextureBuffer(TexDir + "player_hp_frame.png");
@@ -102,4 +106,14 @@ void Player::OnImguiDebug()
 
 void Player::OnFinalize()
 {
+}
+
+void Player::SetState(int HP, int MaxHP)
+{
+	m_HP = HP;
+	m_Before_HP = 0;
+	m_MaxHP = MaxHP;
+	m_UltimatePoint = 0;
+	m_BeforeUltimatePoint = 0;
+	Max_UltimatePoint = 100;
 }
