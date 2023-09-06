@@ -1,6 +1,6 @@
 #pragma once
 #include <memory>
-
+#include "RefreshRate.h"
 class UnitBase
 {
 protected:
@@ -13,7 +13,7 @@ protected:
 	// 被ダメor回復前のHP
 	int m_Before_HP;
 	// HPゲージが削れてく時間
-	static const int m_HP_GAUGE_BREAK_TIME = 5;
+	int m_HP_GAUGE_BREAK_TIME;
 
 	// 現在自分のターンか
 	bool m_isMyTurn;
@@ -27,6 +27,7 @@ public:
 		m_MaxHP = 200;
 		m_HP_Break_Timer = 0;
 		m_Before_HP = 200;
+		m_HP_GAUGE_BREAK_TIME = int(50.0f * RefreshRate::RefreshRate_Mag);
 		m_isMyTurn = false;
 		m_NextTurn = false;
 		m_Frame_Timer = 0;
@@ -54,10 +55,21 @@ public:
 		// HPが削れていく演出用
 		m_Before_HP = m_HP;
 		m_HP_Break_Timer = 1;
-
+		// ダメージ
 		m_HP -= value;
 		if (m_HP < 0) {
 			m_HP = 0;
+		}
+	}
+
+	void Heal(int value) {
+		// HPが回復する演出用
+		m_Before_HP = m_HP;
+		m_HP_Break_Timer = 1;
+		// 回復
+		m_HP += value;
+		if (m_HP > m_MaxHP) {
+			m_HP = m_MaxHP;
 		}
 	}
 };

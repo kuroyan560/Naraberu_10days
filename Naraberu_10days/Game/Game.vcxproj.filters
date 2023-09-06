@@ -364,6 +364,12 @@
     <ClCompile Include="PlayerSkills.cpp">
       <Filter>src\user\BattleManager\Player_Act\Skills</Filter>
     </ClCompile>
+    <ClCompile Include="Player_Heal_01.cpp">
+      <Filter>src\user\BattleManager\Player_Act\Skills</Filter>
+    </ClCompile>
+    <ClCompile Include="Player_Attack_02.cpp">
+      <Filter>src\user\BattleManager\Player_Act\Skills</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="..\..\src\engine\KuroEngineDevice.h">
@@ -697,6 +703,12 @@
       <Filter>src\user\BattleManager\Player_Act\Skills</Filter>
     </ClInclude>
     <ClInclude Include="PlayerSkills.h">
+      <Filter>src\user\BattleManager\Player_Act\Skills</Filter>
+    </ClInclude>
+    <ClInclude Include="Player_Heal_01.h">
+      <Filter>src\user\BattleManager\Player_Act\Skills</Filter>
+    </ClInclude>
+    <ClInclude Include="Player_Attack_02.h">
       <Filter>src\user\BattleManager\Player_Act\Skills</Filter>
     </ClInclude>
   </ItemGroup>

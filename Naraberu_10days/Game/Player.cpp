@@ -88,6 +88,12 @@ void Player::OnDraw()
 	DrawFunc2D_Mask::DrawExtendGraph2D(
 		Vec2(22.0f, 427.0f), Vec2(357.0f, 580.0f), HP_Gauge,
 		Vec2(22.0f, 427.0f), Vec2(22.0f + Gauge_Width, 580.0f));
+
+
+	// •`‰æˆÊ’u‚Ì•Û‘¶
+	m_Left_Top = Vec2(32.0f, 60.0f);
+	m_Right_Bottom = Vec2(354.0f, 610.0f);
+	m_Center = m_Left_Top + ((m_Right_Bottom - m_Left_Top) / 2.0f);
 }
 
 void Player::OnImguiDebug()

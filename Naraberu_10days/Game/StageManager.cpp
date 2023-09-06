@@ -92,9 +92,19 @@ bool StageManager::JudgeSet(KuroEngine::Vec2<int> _nowMapchip, std::vector<KuroE
 		mapchip[_nowMapchip.y + i.y][_nowMapchip.x + i.x] = int(color);
 	}
 
-	// Ý’u‚µ‚½‚çUŒ‚(‰¼)
-	PlayerSkills::PlayerSkillMgr::Instance()->StartAction("Attack_01", ExistUnits::Instance()->m_pPlayer, ExistUnits::Instance()->m_Enemys[ExistUnits::Instance()->m_NowTarget]);
-
+	// Ý’u‚µ‚½‚çƒAƒNƒVƒ‡ƒ“
+	if (color == BlockColor::red) {
+		// ŽãUŒ‚
+		PlayerSkills::PlayerSkillMgr::Instance()->StartAction("Attack_01", ExistUnits::Instance()->m_pPlayer, ExistUnits::Instance()->m_Enemys[ExistUnits::Instance()->m_NowTarget]);
+	}
+	else if (color == BlockColor::blue) {
+		// ‹­UŒ‚
+		PlayerSkills::PlayerSkillMgr::Instance()->StartAction("Attack_02", ExistUnits::Instance()->m_pPlayer, ExistUnits::Instance()->m_Enemys[ExistUnits::Instance()->m_NowTarget]);
+	}
+	else if (color == BlockColor::yellow) {
+		// ‰ñ•œ
+		PlayerSkills::PlayerSkillMgr::Instance()->StartAction("Heal_01", ExistUnits::Instance()->m_pPlayer, ExistUnits::Instance()->m_Enemys[ExistUnits::Instance()->m_NowTarget]);
+	}
 	return true;
 }
 

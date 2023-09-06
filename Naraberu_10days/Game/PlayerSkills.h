@@ -8,6 +8,8 @@
 #include "../../src/engine/Common/Singleton.h"
 
 #include "Player_Attack_01.h"
+#include "Player_Attack_02.h"
+#include "Player_Heal_01.h"
 
 class UnitBase;
 
@@ -18,10 +20,14 @@ namespace PlayerSkills {
 
 	enum class PlayerSkillList {
 		PLAYER_ATTACK_01,
+		PLAYER_ATTACK_02,
+		PLAYER_HEAL_01,
 		ACTION_MAX
 	};
 	static std::map<std::string, PlayerSkillList> m_List_Pair = {
-		{"Attack_01", PlayerSkillList::PLAYER_ATTACK_01 }
+		{"Attack_01", PlayerSkillList::PLAYER_ATTACK_01 },
+		{"Attack_02", PlayerSkillList::PLAYER_ATTACK_02 },
+		{"Heal_01", PlayerSkillList::PLAYER_HEAL_01 }
 	};
 
 	class PlayerSkillMgr : public KuroEngine::DesignPattern::Singleton<PlayerSkillMgr>
@@ -59,6 +65,23 @@ namespace PlayerSkills {
 					m_Targets.emplace_back(Target);
 				}
 				GetPtr<Player_Attack_01>(m_List.front())->Need_Object_Set(Initiator, m_Targets[0]);
+			}
+			if (Action_Name == "Attack_02") {
+				m_List.emplace_front(std::make_shared<Player_Attack_02>());
+				GetPtr<Player_Attack_02>(m_List.front())->Param_Set(100, 3);
+				m_Initiator = Initiator;
+				std::vector<UnitBase*>m_Targets;
+				m_Targets.clear();
+				for (UnitBase* Target : std::initializer_list<UnitBase*>{ Targets... }) {
+					m_Targets.emplace_back(Target);
+				}
+				GetPtr<Player_Attack_02>(m_List.front())->Need_Object_Set(Initiator, m_Targets[0]);
+			}
+			if (Action_Name == "Heal_01") {
+				m_List.emplace_front(std::make_shared<Player_Heal_01>());
+				GetPtr<Player_Heal_01>(m_List.front())->Param_Set(20, 3);
+				m_Initiator = Initiator;
+				GetPtr<Player_Heal_01>(m_List.front())->Need_Object_Set(Initiator);
 			}
 		}
 

@@ -29,5 +29,14 @@ public:
 	void OnDraw()override;
 	void OnImguiDebug()override;
 	void OnFinalize()override;
+
+private:
+	KuroEngine::Vec2<float> m_Left_Top;
+	KuroEngine::Vec2<float> m_Right_Bottom;
+	KuroEngine::Vec2<float> m_Center;
+public:
+	KuroEngine::Vec2<float> Get_Left_Top() { return m_Left_Top; }
+	KuroEngine::Vec2<float> Get_Right_Bottom() { return m_Right_Bottom; }
+	KuroEngine::Vec2<float> Get_Center() { return m_Center; }
 };
 
