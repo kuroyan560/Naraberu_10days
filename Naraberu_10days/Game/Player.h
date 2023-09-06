@@ -17,6 +17,9 @@ private:
 	std::shared_ptr<KuroEngine::TextureBuffer> m_HpTex_yellow;
 	std::shared_ptr<KuroEngine::TextureBuffer> m_HpTex_red;
 
+	//ƒLƒƒƒ‰‰æ‘œ
+	std::shared_ptr<KuroEngine::TextureBuffer> m_CharacterTex;
+
 public:
 	Player();
 

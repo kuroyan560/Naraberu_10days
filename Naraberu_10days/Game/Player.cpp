@@ -14,6 +14,8 @@ Player::Player()
 	m_HpTex_green = D3D12App::Instance()->GenerateTextureBuffer(TexDir + "player_hp_gauge_green.png");
 	m_HpTex_yellow = D3D12App::Instance()->GenerateTextureBuffer(TexDir + "player_hp_gauge_yellow.png");
 	m_HpTex_red = D3D12App::Instance()->GenerateTextureBuffer(TexDir + "player_hp_gauge_red.png");
+
+	m_CharacterTex = D3D12App::Instance()->GenerateTextureBuffer(TexDir + "player/player_character_normal.png");
 }
 
 void Player::OnInitialize()
@@ -45,6 +47,10 @@ void Player::OnAlwaysUpdate()
 void Player::OnDraw()
 {
 	using namespace KuroEngine;
+
+	//キャラクターの描画
+	DrawFunc2D::DrawGraph(
+		Vec2(39.0f, 66.0f), m_CharacterTex);
 
 	DrawFunc2D::DrawExtendGraph2D(Vec2(11.0f, 410.0f), Vec2(368.0f, 595.0f), m_HpFrameTex);
 	//DrawFunc2D::DrawExtendGraph2D(Vec2(22.0f, 427.0f), Vec2(357.0f, 580.0f), m_HpTex);
