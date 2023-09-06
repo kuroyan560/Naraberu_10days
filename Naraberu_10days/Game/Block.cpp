@@ -4,6 +4,7 @@
 #include "FrameWork/UsersInput.h"
 #include "BaseInformation.h"
 #include "StageManager.h"
+#include"src/OperationConfig.h"
 
 Block::Block(bool _isMove)
 {
@@ -54,16 +55,16 @@ void Block::Move()
 {
 	KuroEngine::Vec2<int> max = StageManager::GetMapMax();
 	KuroEngine::UsersInput* input = KuroEngine::UsersInput::Instance();
-	if (input->ControllerOnTrigger(0, KuroEngine::XBOX_BUTTON::DPAD_LEFT)) {
+	if (OperationConfig::Instance()->GetMoveVec(OperationConfig::SELECT_VEC_LEFT)) {
 		if (pos.x <= -shapeMin.x) { return; }
 		pos.x -= 1;
-	} else if (input->ControllerOnTrigger(0, KuroEngine::XBOX_BUTTON::DPAD_RIGHT)) {
+	} else if (OperationConfig::Instance()->GetMoveVec(OperationConfig::SELECT_VEC_RIGHT)) {
 		if (pos.x >= max.x - 1 - shapeMax.x) { return; }
 		pos.x += 1;
-	} else if (input->ControllerOnTrigger(0, KuroEngine::XBOX_BUTTON::DPAD_UP)) {
+	} else if (OperationConfig::Instance()->GetMoveVec(OperationConfig::SELECT_VEC_UP)) {
 		if (pos.y <= -shapeMin.y) { return; }
 		pos.y -= 1;
-	} else if (input->ControllerOnTrigger(0, KuroEngine::XBOX_BUTTON::DPAD_DOWN)) {
+	} else if (OperationConfig::Instance()->GetMoveVec(OperationConfig::SELECT_VEC_DOWN)) {
 		if (pos.y >= max.y - 1 - shapeMax.y) { return; }
 		pos.y += 1;
 	}

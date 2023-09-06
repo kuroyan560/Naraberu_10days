@@ -1,5 +1,6 @@
 #include "Player.h"
 #include "../../src/engine/FrameWork/UsersInput.h"
+#include"src/OperationConfig.h"
 
 Player::Player()
 {
@@ -24,7 +25,7 @@ void Player::OnInitialize()
 void Player::OnUpdate()
 {
 	using namespace KuroEngine;
-	if (UsersInput::Instance()->KeyOnTrigger(DIK_SPACE)) {
+	if (OperationConfig::Instance()->GetOperationInput(OperationConfig::END_TURN,OperationConfig::ON_TRIGGER)) {
 		EndTurn();
 	}
 

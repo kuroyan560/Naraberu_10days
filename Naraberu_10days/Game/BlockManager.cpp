@@ -1,6 +1,7 @@
 #include "BlockManager.h"
 #include "FrameWork/UsersInput.h"
 #include "ForUser/DrawFunc/2D/DrawFunc2D.h"
+#include"src/OperationConfig.h"
 
 void BlockManager::Initialize()
 {
@@ -86,12 +87,12 @@ void BlockManager::ChoiceBlock()
 	KuroEngine::UsersInput* input = KuroEngine::UsersInput::Instance();
 
 	//選択移動
-	if (input->ControllerOnTrigger(0, KuroEngine::XBOX_BUTTON::RB)) {
+	if (OperationConfig::Instance()->GetOperationInput(OperationConfig::SELECT_RIGHT_PRISM, OperationConfig::ON_TRIGGER)) {
 		nowChoice = 0;
 		SetOneChangeBlock(int(ObjectType::use), int(ObjectType::choice1));
 		//使用ブロック変更処理
 		block[int(ObjectType::use)].block->ChangeBlock({ -1,-1 }, shape[block[int(ObjectType::use)].blockNum]);
-	} else if (input->ControllerOnTrigger(0, KuroEngine::XBOX_BUTTON::LB)) {
+	} else if (OperationConfig::Instance()->GetOperationInput(OperationConfig::SELECT_LEFT_PRISM, OperationConfig::ON_TRIGGER)) {
 		nowChoice = 1;
 		SetOneChangeBlock(int(ObjectType::use), int(ObjectType::choice2));
 		//使用ブロック変更処理

@@ -7,6 +7,8 @@
 
 #include "ExistUnits.h"
 
+#include"src/OperationConfig.h"
+
 void BattleScene::OnInitialize()
 {
 	// ---- ”wŒi
@@ -56,7 +58,7 @@ void BattleScene::OnUpdate()
 	}
 
 	//ü‚Æ‰ò‚Ì”»’è
-	if (input->ControllerOnTrigger(0, KuroEngine::XBOX_BUTTON::X)) {
+	if (OperationConfig::Instance()->DebugKeyInputOnTrigger(DIK_X)) {
 		//‰òŠm”F
 		//std::vector<int> massNum;
 		//std::vector<BlockColor> massColor;
@@ -71,7 +73,7 @@ void BattleScene::OnUpdate()
 		stage->LineProcess(&lineNum, &lineColor);
 	}
 
-	if (input->ControllerOnTrigger(0, KuroEngine::XBOX_BUTTON::A)) {
+	if (OperationConfig::Instance()->DebugKeyInputOnTrigger(DIK_I)) {
 		stage->Reset();
 	}
 
@@ -156,7 +158,7 @@ void BattleScene::PlayerTurn()
 {
 	KuroEngine::UsersInput* input = KuroEngine::UsersInput::Instance();
 
-	if (input->ControllerOnTrigger(0, KuroEngine::XBOX_BUTTON::B)) {
+	if (OperationConfig::Instance()->GetOperationInput(OperationConfig::SET_PRISM, OperationConfig::ON_TRIGGER)) {
 		KuroEngine::Vec2<int> nowMapchip;
 		std::vector<KuroEngine::Vec2<int>> shape;
 		BlockColor color;

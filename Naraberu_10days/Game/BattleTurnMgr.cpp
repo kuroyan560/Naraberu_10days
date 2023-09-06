@@ -8,6 +8,8 @@
 #include "PlayerSkills.h"
 #include "ExistUnits.h"
 
+#include"src/OperationConfig.h"
+
 void BattleTurnMgr::OnInitialize(std::shared_ptr<UnitBase> Player, std::vector<std::shared_ptr<UnitBase>> Enemys)
 {
 	UnitList.emplace_back(Player);
@@ -61,7 +63,7 @@ void BattleTurnMgr::OnUpdate()
 	}
 
 	ExistUnits::Instance()->m_NowTurn = TurnNum;
-	if (KuroEngine::UsersInput::Instance()->ControllerOnTrigger(0, KuroEngine::XBOX_STICK::R_UP)) {
+	if (OperationConfig::Instance()->GetTargetChangeVec(OperationConfig::SELECT_VEC_UP)) {
 		if (ExistUnits::Instance()->m_NowTarget > 0) {
 			ExistUnits::Instance()->m_NowTarget--;
 		}
@@ -69,7 +71,7 @@ void BattleTurnMgr::OnUpdate()
 
 		}
 	}
-	if (KuroEngine::UsersInput::Instance()->ControllerOnTrigger(0, KuroEngine::XBOX_STICK::R_DOWN)) {
+	if (OperationConfig::Instance()->GetTargetChangeVec(OperationConfig::SELECT_VEC_DOWN)) {
 		if (ExistUnits::Instance()->m_NowTarget < UnitList.size() - 2) {
 			ExistUnits::Instance()->m_NowTarget++;
 		}
