@@ -59,9 +59,17 @@ void BattleTurnMgr::OnUpdate()
 		UnitList[TurnNum]->OnUpdate();
 	}
 
-	if (KuroEngine::UsersInput::Instance()->KeyOnTrigger(DIK_T)) {
+	ExistUnits::Instance()->m_NowTurn = TurnNum;
+	ExistUnits::Instance()->m_NowTarget = 0;
+
+	/*if (KuroEngine::UsersInput::Instance()->KeyOnTrigger(DIK_T)) {
 		PlayerSkills::PlayerSkillMgr::Instance()->StartAction("Attack_01", ExistUnits::Instance()->m_pPlayer, ExistUnits::Instance()->m_Enemys[0]);
-	}
+	}*/
+
+	// ターゲット
+
+
+	// スキルの更新
 	PlayerSkills::PlayerSkillMgr::Instance()->Update();
 }
 
