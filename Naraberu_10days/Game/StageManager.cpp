@@ -94,15 +94,15 @@ bool StageManager::JudgeSet(KuroEngine::Vec2<int> _nowMapchip, std::vector<KuroE
 	}
 
 	// Ý’u‚µ‚½‚çƒAƒNƒVƒ‡ƒ“
-	if (color == BlockColor::red) {
+	if (_attribute == BlockAttribute::attack1) {
 		// ŽãUŒ‚
 		PlayerSkills::PlayerSkillMgr::Instance()->StartAction("Attack_01", ExistUnits::Instance()->m_pPlayer, ExistUnits::Instance()->m_Enemys[ExistUnits::Instance()->m_NowTarget]);
 	}
-	else if (color == BlockColor::blue) {
+	else if (_attribute == BlockAttribute::attack2) {
 		// ‹­UŒ‚
 		PlayerSkills::PlayerSkillMgr::Instance()->StartAction("Attack_02", ExistUnits::Instance()->m_pPlayer, ExistUnits::Instance()->m_Enemys[ExistUnits::Instance()->m_NowTarget]);
 	}
-	else if (color == BlockColor::yellow) {
+	else if (_attribute == BlockAttribute::recovery) {
 		// ‰ñ•œ
 		PlayerSkills::PlayerSkillMgr::Instance()->StartAction("Heal_01", ExistUnits::Instance()->m_pPlayer, ExistUnits::Instance()->m_Enemys[ExistUnits::Instance()->m_NowTarget]);
 	}
