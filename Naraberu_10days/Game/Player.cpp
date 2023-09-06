@@ -13,7 +13,7 @@ Player::Player()
 
 	m_UltimatePoint = 0;
 	m_BeforeUltimatePoint = 0;
-	Max_UltimatePoint = 0;
+	Max_UltimatePoint = 20;
 
 	using namespace KuroEngine;
 	std::string TexDir = "resource/user/tex/battle_scene/";
@@ -21,6 +21,7 @@ Player::Player()
 	m_HpTex_green = D3D12App::Instance()->GenerateTextureBuffer(TexDir + "player_hp_gauge_green.png");
 	m_HpTex_yellow = D3D12App::Instance()->GenerateTextureBuffer(TexDir + "player_hp_gauge_yellow.png");
 	m_HpTex_red = D3D12App::Instance()->GenerateTextureBuffer(TexDir + "player_hp_gauge_red.png");
+	m_Ult_Gauge = D3D12App::Instance()->GenerateTextureBuffer(TexDir + "ult_gauge.png");
 
 	m_CharacterTex = D3D12App::Instance()->GenerateTextureBuffer(TexDir + "player/player_character_normal.png");
 
@@ -62,6 +63,12 @@ void Player::OnAlwaysUpdate()
 	}
 	if (UsersInput::Instance()->KeyInput(DIK_N)) {
 		m_HP < m_MaxHP ? m_HP++ : 0;
+	}
+
+	// ウルト発動
+	if (UsersInput::Instance()->KeyOnTrigger(DIK_Z) && GetUltRate() == 1.0f) {
+		SubUltPoint(Max_UltimatePoint);
+		PlayerSkills::PlayerSkillMgr::Instance()->StartAction("Ultimate_01", ExistUnits::Instance()->m_pPlayer);
 	}
 }
 
@@ -112,6 +119,17 @@ void Player::OnDraw()
 		Vec2(22.0f, 427.0f), Vec2(22.0f + Gauge_Width, 580.0f));
 
 
+	// アルティメットゲージの描画
+	// 現在のゲージ割合
+	float Now_ULT_Rate = float(GetUltPoint()) / float(Max_UltimatePoint);
+	// ゲージの高さ
+	float Gauge_ULT_Max_Width = 129.0f - 14.0f;
+	// 現在のゲージの高さ
+	float Gauge_ULT_Width = Gauge_ULT_Max_Width * Now_ULT_Rate;
+	DrawFunc2D_Mask::DrawExtendGraph2D(
+		Vec2(248.0f, 14.0f), Vec2(363.0f, 129.0f), m_Ult_Gauge,
+		Vec2(248.0f, 129.0f - Gauge_ULT_Width), Vec2(363.0f, 129.0f));
+
 	// 描画位置の保存
 	m_Left_Top = Vec2(32.0f, 60.0f);
 	m_Right_Bottom = Vec2(354.0f, 610.0f);
@@ -132,7 +150,7 @@ void Player::TurnEnd_BeforeTurnChange()
 	// マップをリセット
 	ExistUnits::Instance()->m_StageManager->Reset();
 	// ボーナスアタック
-	PlayerSkills::PlayerSkillMgr::Instance()->StartAction("Attack_01", ExistUnits::Instance()->m_pPlayer, ExistUnits::Instance()->m_Enemys[0]);
+	PlayerSkills::PlayerSkillMgr::Instance()->StartAction("Bonus_01", ExistUnits::Instance()->m_pPlayer, ExistUnits::Instance()->m_Enemys[0]);
 }
 
 void Player::SetState(int HP, int MaxHP)

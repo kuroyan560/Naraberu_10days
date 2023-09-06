@@ -18,6 +18,7 @@ private:
 	std::shared_ptr<KuroEngine::TextureBuffer> m_HpTex_green;
 	std::shared_ptr<KuroEngine::TextureBuffer> m_HpTex_yellow;
 	std::shared_ptr<KuroEngine::TextureBuffer> m_HpTex_red;
+	std::shared_ptr<KuroEngine::TextureBuffer> m_Ult_Gauge;
 
 	//キャラ画像
 	std::shared_ptr<KuroEngine::TextureBuffer> m_CharacterTex;
@@ -58,6 +59,14 @@ public:
 		// アルティメットポイントを加算
 		m_UltimatePoint += Amount;
 		m_UltimatePoint > Max_UltimatePoint ? m_UltimatePoint = Max_UltimatePoint : 0;
+	}
+	// アルティメットポイントを減算する
+	void SubUltPoint(int Amount) {
+		// 変化前の値を保存
+		m_BeforeUltimatePoint = m_UltimatePoint;
+		// アルティメットポイントを加算
+		m_UltimatePoint -= Amount;
+		m_UltimatePoint < 0 ? m_UltimatePoint = 0 : 0;
 	}
 	// 現在のアルティメットポイントの取得
 	int GetUltPoint() { return m_UltimatePoint; }

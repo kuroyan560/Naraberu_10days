@@ -61,9 +61,11 @@ void Player_Bonus_Attack_01::Action_Draw()
 
 	using namespace KuroEngine;
 	// ‰¼‚Å” ‚ð•`‰æ
-	KuroEngine::Vec2 LT = GetUnitPtr_nama<Enemy*>(m_Targets[0])->Get_Left_Top();
-	KuroEngine::Vec2 RB = GetUnitPtr_nama<Enemy*>(m_Targets[0])->Get_Right_Bottom();
-	DrawFunc2D::DrawBox2D(LT, RB, Color(255, 0, 0, 255), true);
+	for (auto& tgt : m_Targets) {
+		KuroEngine::Vec2 LT = GetUnitPtr_nama<Enemy*>(tgt)->Get_Left_Top();
+		KuroEngine::Vec2 RB = GetUnitPtr_nama<Enemy*>(tgt)->Get_Right_Bottom();
+		DrawFunc2D::DrawBox2D(LT, RB, Color(255, 0, 0, 255), true);
+	}
 }
 
 void Player_Bonus_Attack_01::Action_End()

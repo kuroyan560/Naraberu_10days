@@ -98,18 +98,13 @@ namespace PlayerSkills {
 				for (UnitBase* Target : std::initializer_list<UnitBase*>{ Targets... }) {
 					m_Targets.emplace_back(Target);
 				}
-				GetPtr<Player_Bonus_Attack_01>(m_List.front())->Need_Object_Set(Initiator, m_Targets[0]);
+				GetPtr<Player_Bonus_Attack_01>(m_List.front())->Need_Object_Set(Initiator, ExistUnits::Instance()->m_Enemys);
 			}
 			if (Action_Name == "Ultimate_01") {
 				m_List.emplace_front(std::make_shared<Player_Ultimate_01>());
-				GetPtr<Player_Ultimate_01>(m_List.front())->Param_Set(3, 3);
+				GetPtr<Player_Ultimate_01>(m_List.front())->Param_Set(50, 3);
 				m_Initiator = Initiator;
-				std::vector<UnitBase*>m_Targets;
-				m_Targets.clear();
-				for (UnitBase* Target : std::initializer_list<UnitBase*>{ Targets... }) {
-					m_Targets.emplace_back(Target);
-				}
-				GetPtr<Player_Ultimate_01>(m_List.front())->Need_Object_Set(Initiator, m_Targets[0]);
+				GetPtr<Player_Ultimate_01>(m_List.front())->Need_Object_Set(Initiator, ExistUnits::Instance()->m_Enemys);
 			}
 		}
 
