@@ -60,7 +60,7 @@ private:
 	bool m_isAllInputActive = true;
 
 	//移動ベクトルの長押し入力フレーム
-	std::array<std::array<int, INPUT_DEVICE::NUM>, SELECT_VEC_NUM>m_moveInputFrame;
+	std::array<std::array<int, SELECT_VEC_NUM>, INPUT_DEVICE::NUM>m_moveInputFrame;
 
 	void OnImguiItems()override;
 
