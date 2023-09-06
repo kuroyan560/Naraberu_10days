@@ -46,6 +46,7 @@ void BattleScene::OnInitialize()
 
 
 	ExistUnits::Instance()->SetMapChipPtr(stage->GetMapChipPtr());
+	ExistUnits::Instance()->SetStageManagerPtr(stage.get());
 }
 
 void BattleScene::OnUpdate()

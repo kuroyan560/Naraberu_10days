@@ -3,6 +3,7 @@
 #include <vector>
 
 class UnitBase;
+class StageManager;
 
 class ExistUnits : public KuroEngine::DesignPattern::Singleton<ExistUnits>
 {
@@ -11,6 +12,7 @@ public:
 	UnitBase* m_pPlayer = nullptr;
 	std::vector<UnitBase*>m_Enemys;
 	std::vector<std::vector<int>>* m_MapChipData;
+	StageManager* m_StageManager = nullptr;
 
 	int m_NowTurn;
 	int m_NowTarget;
@@ -23,6 +25,10 @@ public:
 		m_Enemys.emplace_back(Enemy_01);
 		m_Enemys.emplace_back(Enemy_02);
 		m_Enemys.emplace_back(Enemy_03);
+	}
+
+	void SetStageManagerPtr(StageManager* ptr) {
+		m_StageManager = ptr;
 	}
 
 	void SetMapChipPtr(std::vector<std::vector<int>>* MapChipData) {

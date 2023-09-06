@@ -100,4 +100,3 @@ private:
 	std::array<std::shared_ptr<KuroEngine::TextureBuffer>, int(BlockColor::size)> blockTex;
 
 };
-

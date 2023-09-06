@@ -1,6 +1,9 @@
 #include "Player.h"
 #include "../../src/engine/FrameWork/UsersInput.h"
 #include"src/OperationConfig.h"
+#include "ExistUnits.h"
+#include "StageManager.h"
+#include "PlayerSkills.h"
 
 Player::Player()
 {
@@ -20,6 +23,9 @@ Player::Player()
 	m_HpTex_red = D3D12App::Instance()->GenerateTextureBuffer(TexDir + "player_hp_gauge_red.png");
 
 	m_CharacterTex = D3D12App::Instance()->GenerateTextureBuffer(TexDir + "player/player_character_normal.png");
+
+	TurnChangeTimer = 0;
+	TurnChangeTime_Fin = int(300.0f * RefreshRate::RefreshRate_Mag);
 }
 
 void Player::OnInitialize()
@@ -30,11 +36,22 @@ void Player::OnUpdate()
 {
 	using namespace KuroEngine;
 	if (OperationConfig::Instance()->GetOperationInput(OperationConfig::END_TURN,OperationConfig::ON_TRIGGER)) {
-		EndTurn();
+		TurnChangeTimer = 1;
+		//EndTurn();
 	}
 
 	// タイマーの加算
 	TimerUpdate();
+
+	if (TurnChangeTimer == 1) {
+		TurnEnd_BeforeTurnChange();
+	}
+	if (TurnChangeTimer > 0) {
+		TurnChangeTimer++;
+	}
+	if (TurnChangeTimer == TurnChangeTime_Fin) {
+		EndTurn();
+	}
 }
 
 void Player::OnAlwaysUpdate()
@@ -112,6 +129,10 @@ void Player::OnFinalize()
 void Player::TurnEnd_BeforeTurnChange()
 {
 	// ここにボーナスアタックとか書く
+	// マップをリセット
+	ExistUnits::Instance()->m_StageManager->Reset();
+	// ボーナスアタック
+	PlayerSkills::PlayerSkillMgr::Instance()->StartAction("Attack_01", ExistUnits::Instance()->m_pPlayer, ExistUnits::Instance()->m_Enemys[0]);
 }
 
 void Player::SetState(int HP, int MaxHP)
