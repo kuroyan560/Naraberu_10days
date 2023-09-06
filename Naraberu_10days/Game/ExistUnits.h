@@ -10,8 +10,10 @@ class ExistUnits : public KuroEngine::DesignPattern::Singleton<ExistUnits>
 public:
 	UnitBase* m_pPlayer = nullptr;
 	std::vector<UnitBase*>m_Enemys;
-
 	std::vector<std::vector<int>>* m_MapChipData;
+
+	int m_NowTurn;
+	int m_NowTarget;
 
 	void Set(UnitBase* Player, UnitBase* Enemy_01 = nullptr, UnitBase* Enemy_02 = nullptr, UnitBase* Enemy_03 = nullptr) {
 		m_pPlayer = Player;
