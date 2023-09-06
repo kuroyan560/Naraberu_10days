@@ -190,6 +190,8 @@ xcopy "$(SolutionDir)dxil.dll" $(TargetDir) /Y</Command>
     <ClCompile Include="EnemyActList.cpp" />
     <ClCompile Include="E_Ac_Base.cpp" />
     <ClCompile Include="Player.cpp" />
+    <ClCompile Include="PlayerSkills.cpp" />
+    <ClCompile Include="Player_Attack_01.cpp" />
     <ClCompile Include="src\main.cpp" />
     <ClCompile Include="src\GameScene.cpp" />
     <ClCompile Include="StageManager.cpp" />
@@ -299,6 +301,9 @@ xcopy "$(SolutionDir)dxil.dll" $(TargetDir) /Y</Command>
     <ClInclude Include="ExistUnits.h" />
     <ClInclude Include="E_Ac_Base.h" />
     <ClInclude Include="Player.h" />
+    <ClInclude Include="PlayerSkills.h" />
+    <ClInclude Include="Player_Attack_01.h" />
+    <ClInclude Include="P_Ac_Base.h" />
     <ClInclude Include="RefreshRate.h" />
     <ClInclude Include="src\GameScene.h" />
     <ClInclude Include="StageManager.h" />

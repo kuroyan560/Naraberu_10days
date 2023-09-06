@@ -70,6 +70,10 @@ public:
 /// <returns></returns>
 template <class T>
 static std::shared_ptr<T> GetUnitPtr(std::shared_ptr<UnitBase> Unit) { return std::dynamic_pointer_cast<T>(Unit); }
+
+template <class T>
+static T GetUnitPtr_nama(UnitBase* Unit) { return dynamic_cast<T>(Unit); }
+
 // Žg—p—á
 // Unit.emplace_back(new Enemy);
 // Enemy* EnemyPtr = GetUnitPtr<Enemy*>(Unit);

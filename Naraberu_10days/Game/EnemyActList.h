@@ -18,26 +18,6 @@ namespace EnemyActions {
 	template <class T>
 	static std::shared_ptr<T> GetPtr(std::shared_ptr<E_Ac_Base> ptr) { return std::dynamic_pointer_cast<T>(ptr); }
 
-	static std::shared_ptr<E_Ac_Base> SetActionOnName(std::string Action_Name) {
-		/*std::shared_ptr<E_Ac_Base> Data;
-		if (Action_Name == "Attack_01") {
-			std::shared_ptr<E_Ac_Base> Data = std::make_shared<Debug_Attack_01>();
-		}
-		else if (Action_Name == "Attack_02") {
-			std::shared_ptr<E_Ac_Base> Data = std::make_shared<Debug_Attack_01>();
-		}
-		else if (Action_Name == "Heal_01") {
-			std::shared_ptr<E_Ac_Base> Data = std::make_shared<Debug_Attack_01>();
-		}
-		else if (Action_Name == "Jamming_01") {
-			std::shared_ptr<E_Ac_Base> Data = std::make_shared<Debug_Attack_01>();
-		}
-		else {
-			std::shared_ptr<E_Ac_Base> Data = std::make_shared<Debug_Attack_01>();
-		}*/
-		return std::make_shared<Debug_Attack_01>();
-	}
-
 	enum class EnemyActionList {
 		DEBUG_ATTACK_01,
 		DEBUG_ATTACK_02,

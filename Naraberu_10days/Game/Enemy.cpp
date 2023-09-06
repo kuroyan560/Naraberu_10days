@@ -202,6 +202,11 @@ void Enemy::Draw(int Index, int NowTurn_Index, int Index_Max, bool Dark, int Fra
 	//DrawFunc2D::DrawExtendGraph2D(Vec2(970.0f, 108.0f + IndexDiff), Vec2(1229.0f, 222.0f + IndexDiff), m_Data.m_FrameTex);
 	//DrawFunc2D::DrawExtendGraph2D(Vec2(1094.0f, 181.0f + IndexDiff), Vec2(1238.0f, 203.0f + IndexDiff), m_Data.m_HpFrameTex);
 
+	// 描画位置の保存
+	m_Left_Top = Vec2(970.0f - Move_Width, 108.0f + IndexDiff);
+	m_Right_Bottom = Vec2(1229.0f - Move_Width, 222.0f + IndexDiff);
+	m_Center = m_Left_Top + ((m_Right_Bottom - m_Left_Top) / 2.0f);
+
 	// HPゲージが削れる演出用
 	float HP_Gauge_Now_Value = float(m_HP);
 
@@ -258,9 +263,10 @@ void Enemy::Draw_Boss(int Index, int NowTurn_Index, int Index_Max, bool Dark, in
 	DrawFunc2D_Color::DrawExtendGraph2D(Vec2(912.0f, 410.0f), Vec2(1269.0f, 595.0f), m_Data.m_HpFrameTex, Mask,
 		{ false,false }, { 0.0f,0.0f }, { 1.0f,1.0f }, KuroEngine::DrawFunc2D_Color::FILL_MDOE::MUL);
 
-	//DrawFunc2D::DrawExtendGraph2D(Vec2(977.0f, 115.0f + IndexDiff), Vec2(1222.0f, 215.0f + IndexDiff), m_Data.m_UnitTex);
-	//DrawFunc2D::DrawExtendGraph2D(Vec2(970.0f, 108.0f + IndexDiff), Vec2(1229.0f, 222.0f + IndexDiff), m_Data.m_FrameTex);
-	//DrawFunc2D::DrawExtendGraph2D(Vec2(1094.0f, 181.0f + IndexDiff), Vec2(1238.0f, 203.0f + IndexDiff), m_Data.m_HpFrameTex);
+	// 描画位置の保存
+	m_Left_Top = Vec2(926.0f, 60.0f);
+	m_Right_Bottom = Vec2(1247.0f, 610.0f);
+	m_Center = m_Left_Top + ((m_Right_Bottom - m_Left_Top) / 2.0f);
 
 	// HPゲージが削れる演出用
 	float HP_Gauge_Now_Value = float(m_HP);

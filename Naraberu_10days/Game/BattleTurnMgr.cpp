@@ -4,6 +4,10 @@
 #include "Player.h"
 #include "Enemy.h"
 
+#include "../../src/engine/FrameWork/UsersInput.h"
+#include "PlayerSkills.h"
+#include "ExistUnits.h"
+
 void BattleTurnMgr::OnInitialize(std::shared_ptr<UnitBase> Player, std::vector<std::shared_ptr<UnitBase>> Enemys)
 {
 	UnitList.emplace_back(Player);
@@ -54,6 +58,11 @@ void BattleTurnMgr::OnUpdate()
 		// ターン更新
 		UnitList[TurnNum]->OnUpdate();
 	}
+
+	if (KuroEngine::UsersInput::Instance()->KeyOnTrigger(DIK_T)) {
+		PlayerSkills::PlayerSkillMgr::Instance()->StartAction("Attack_01", ExistUnits::Instance()->m_pPlayer, ExistUnits::Instance()->m_Enemys[0]);
+	}
+	PlayerSkills::PlayerSkillMgr::Instance()->Update();
 }
 
 void BattleTurnMgr::OnDraw()
@@ -75,7 +84,11 @@ void BattleTurnMgr::OnDraw()
 		}
 	}
 
+	// 敵描画
 	UnitList[TurnNum]->OnDraw();
+
+	// プレイヤースキル描画
+	PlayerSkills::PlayerSkillMgr::Instance()->Draw();
 
 	using namespace KuroEngine;
 	// カットイン中であれば

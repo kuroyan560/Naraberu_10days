@@ -75,6 +75,9 @@ void StageManager::Reset()
 	};
 }
 
+#include "PlayerSkills.h"
+#include "ExistUnits.h"
+
 bool StageManager::JudgeSet(KuroEngine::Vec2<int> _nowMapchip, std::vector<KuroEngine::Vec2<int>> _shape, BlockColor color)
 {
 	for (auto& i : _shape) {
@@ -88,6 +91,9 @@ bool StageManager::JudgeSet(KuroEngine::Vec2<int> _nowMapchip, std::vector<KuroE
 	for (auto& i : _shape) {
 		mapchip[_nowMapchip.y + i.y][_nowMapchip.x + i.x] = int(color);
 	}
+
+	// Ý’u‚µ‚½‚çUŒ‚(‰¼)
+	PlayerSkills::PlayerSkillMgr::Instance()->StartAction("Attack_01", ExistUnits::Instance()->m_pPlayer, ExistUnits::Instance()->m_Enemys[0]);
 
 	return true;
 }

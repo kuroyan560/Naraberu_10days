@@ -80,6 +80,9 @@
     <Filter Include="src\user\Stage">
       <UniqueIdentifier>{4b6c4ee8-e3cd-49a7-8db3-a4f7470ca1a1}</UniqueIdentifier>
     </Filter>
+    <Filter Include="src\user\RefreshRate">
+      <UniqueIdentifier>{51245595-224c-43f4-9cf7-8753bdefc193}</UniqueIdentifier>
+    </Filter>
     <Filter Include="src\user\BattleManager\Enemy_Act">
       <UniqueIdentifier>{1d754e82-6bb1-44c0-aa7d-2d4a8e73c8c5}</UniqueIdentifier>
     </Filter>
@@ -92,8 +95,14 @@
     <Filter Include="src\user\BattleManager\Enemy_Act\Jamming">
       <UniqueIdentifier>{392e3e87-3d73-4220-9d61-d170438cc852}</UniqueIdentifier>
     </Filter>
-    <Filter Include="src\user\RefreshRate">
-      <UniqueIdentifier>{51245595-224c-43f4-9cf7-8753bdefc193}</UniqueIdentifier>
+    <Filter Include="src\user\BattleManager\Player">
+      <UniqueIdentifier>{612bb0d7-64e3-433e-8943-ea5173c68d75}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="src\user\BattleManager\Player_Act">
+      <UniqueIdentifier>{16355d24-8d79-4f49-a3a8-c37b82a357df}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="src\user\BattleManager\Player_Act\Skills">
+      <UniqueIdentifier>{e3855d8c-83b1-48c2-b4f1-c77d33662582}</UniqueIdentifier>
     </Filter>
   </ItemGroup>
   <ItemGroup>
@@ -310,9 +319,6 @@
     <ClCompile Include="UnitBase.cpp">
       <Filter>src\user\BattleManager</Filter>
     </ClCompile>
-    <ClCompile Include="Player.cpp">
-      <Filter>src\user\BattleManager</Filter>
-    </ClCompile>
     <ClCompile Include="BattleTurnMgr.cpp">
       <Filter>src\user\BattleManager</Filter>
     </ClCompile>
@@ -348,6 +354,15 @@
     </ClCompile>
     <ClCompile Include="Debug_Jamming_01.cpp">
       <Filter>src\user\BattleManager\Enemy_Act\Jamming</Filter>
+    </ClCompile>
+    <ClCompile Include="Player.cpp">
+      <Filter>src\user\BattleManager\Player</Filter>
+    </ClCompile>
+    <ClCompile Include="Player_Attack_01.cpp">
+      <Filter>src\user\BattleManager\Player_Act\Skills</Filter>
+    </ClCompile>
+    <ClCompile Include="PlayerSkills.cpp">
+      <Filter>src\user\BattleManager\Player_Act\Skills</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
@@ -624,9 +639,6 @@
     <ClInclude Include="UnitBase.h">
       <Filter>src\user\BattleManager</Filter>
     </ClInclude>
-    <ClInclude Include="Player.h">
-      <Filter>src\user\BattleManager</Filter>
-    </ClInclude>
     <ClInclude Include="BattleTurnMgr.h">
       <Filter>src\user\BattleManager</Filter>
     </ClInclude>
@@ -674,6 +686,18 @@
     </ClInclude>
     <ClInclude Include="RefreshRate.h">
       <Filter>src\user\RefreshRate</Filter>
+    </ClInclude>
+    <ClInclude Include="Player.h">
+      <Filter>src\user\BattleManager\Player</Filter>
+    </ClInclude>
+    <ClInclude Include="P_Ac_Base.h">
+      <Filter>src\user\BattleManager\Player_Act</Filter>
+    </ClInclude>
+    <ClInclude Include="Player_Attack_01.h">
+      <Filter>src\user\BattleManager\Player_Act\Skills</Filter>
+    </ClInclude>
+    <ClInclude Include="PlayerSkills.h">
+      <Filter>src\user\BattleManager\Player_Act\Skills</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>

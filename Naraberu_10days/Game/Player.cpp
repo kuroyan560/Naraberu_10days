@@ -1,7 +1,6 @@
 #include "Player.h"
 #include "../../src/engine/FrameWork/UsersInput.h"
 
-
 Player::Player()
 {
 	// ƒ^[ƒ“ŠÖ˜A•Ï”‚Ì‰Šú‰»
