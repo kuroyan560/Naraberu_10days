@@ -60,10 +60,12 @@ static const std::vector<KuroEngine::Vec2<float>> shape_dist = {
 
 //êF
 enum class BlockColor {
-	red,
+	red = 0,
 	blue,
 	yellow,
+	yuka,
 	obstacle,
+	eizoku_obstacle,
 	size,
 };
 

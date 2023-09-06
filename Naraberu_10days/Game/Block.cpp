@@ -13,7 +13,6 @@ Block::Block(bool _isMove)
 	blockTex[int(BlockColor::red)] = KuroEngine::D3D12App::Instance()->GenerateTextureBuffer(TexDir + "block_pink.png");
 	blockTex[int(BlockColor::blue)] = KuroEngine::D3D12App::Instance()->GenerateTextureBuffer(TexDir + "block_blue.png");
 	blockTex[int(BlockColor::yellow)] = KuroEngine::D3D12App::Instance()->GenerateTextureBuffer(TexDir + "block_yellow.png");
-	blockTex[int(BlockColor::obstacle)] = KuroEngine::D3D12App::Instance()->GenerateTextureBuffer(TexDir + "oja.png");
 
 	lineTex[int(BlockColor::red)] = KuroEngine::D3D12App::Instance()->GenerateTextureBuffer(TexDir + "blind_pink.png");
 	lineTex[int(BlockColor::blue)] = KuroEngine::D3D12App::Instance()->GenerateTextureBuffer(TexDir + "blind_blue.png");
@@ -145,8 +144,6 @@ void Block::BlockOneDraw(const KuroEngine::Vec2<int> _shape, const KuroEngine::V
 		DrawFunc2D::DrawExtendGraph2D(pos1, pos2, blockTex[int(BlockColor::blue)]);
 	} else if (_color == BlockColor::yellow) {
 		DrawFunc2D::DrawExtendGraph2D(pos1, pos2, blockTex[int(BlockColor::yellow)]);
-	} else if (_color == BlockColor::obstacle) {
-		DrawFunc2D::DrawExtendGraph2D(pos1, pos2, blockTex[int(BlockColor::obstacle)]);
 	}
 }
 

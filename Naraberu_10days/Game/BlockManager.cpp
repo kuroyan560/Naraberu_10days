@@ -13,7 +13,7 @@ void BlockManager::Initialize()
 		block[i].block.reset(new Block());
 		block[i].attribute = BlockAttribute(rand() % int(BlockAttribute::size));
 		block[i].blockNum = rand() % shapeNum;
-		block[i].color = BlockColor(rand() % (int(BlockColor::size) - 1));
+		block[i].color = BlockColor(rand() % (int(BlockColor::size) - 3));
 	}
 
 	//使用ブロックをセット
@@ -110,10 +110,10 @@ void BlockManager::ChangeBlock()
 
 	block[int(ObjectType::nextChoice1)].attribute = BlockAttribute(rand() % int(BlockAttribute::size));
 	block[int(ObjectType::nextChoice1)].blockNum = rand() % shapeNum;
-	block[int(ObjectType::nextChoice1)].color = BlockColor(rand() % (int(BlockColor::size) - 1));
+	block[int(ObjectType::nextChoice1)].color = BlockColor(rand() % (int(BlockColor::size) - 3));
 	block[int(ObjectType::nextChoice2)].attribute = BlockAttribute(rand() % int(BlockAttribute::size));
 	block[int(ObjectType::nextChoice2)].blockNum = rand() % shapeNum;
-	block[int(ObjectType::nextChoice2)].color = BlockColor(rand() % (int(BlockColor::size) - 1));
+	block[int(ObjectType::nextChoice2)].color = BlockColor(rand() % (int(BlockColor::size) - 3));
 
 	//使用ブロックをセット
 	SetOneChangeBlock(int(ObjectType::use), int(ObjectType::choice1));
