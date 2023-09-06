@@ -51,6 +51,7 @@ public:
 
 	bool IsNextTurn() { return m_NextTurn; }
 
+	// ダメージを受ける
 	void Damage(int value) {
 		// HPが削れていく演出用
 		m_Before_HP = m_HP;
@@ -62,6 +63,7 @@ public:
 		}
 	}
 
+	// 回復する
 	void Heal(int value) {
 		// HPが回復する演出用
 		m_Before_HP = m_HP;
@@ -72,6 +74,9 @@ public:
 			m_HP = m_MaxHP;
 		}
 	}
+
+	// 生きてればtrue
+	bool IsAlive() { return m_HP > 0; };
 };
 
 /// <summary>

@@ -195,6 +195,14 @@ void Enemy::Draw(int Index, int NowTurn_Index, int Index_Max, bool Dark, int Fra
 		}
 	}
 
+	// 死んでたら強制的に暗くする
+	// 死んでたら強制的にMove_Widthが動かないように
+	if (m_HP <= 0) {
+		Mask = Color(255 - Mask_Black, 255 - Mask_Black, 255 - Mask_Black, 255);
+		Move_Width = 0.0f;
+	}
+	
+
 	// ユニットの描画
 	DrawFunc2D_Color::DrawExtendGraph2D(Vec2(977.0f - Move_Width, 115.0f + IndexDiff), Vec2(1222.0f - Move_Width, 215.0f + IndexDiff), m_Data.m_UnitTex, Mask,
 		{ false,false }, { 0.0f,0.0f }, { 1.0f,1.0f }, KuroEngine::DrawFunc2D_Color::FILL_MDOE::MUL);
@@ -266,6 +274,12 @@ void Enemy::Draw_Boss(int Index, int NowTurn_Index, int Index_Max, bool Dark, in
 		{ false,false }, { 0.0f,0.0f }, { 1.0f,1.0f }, KuroEngine::DrawFunc2D_Color::FILL_MDOE::MUL);
 	DrawFunc2D_Color::DrawExtendGraph2D(Vec2(1094.0f - Move_Width, 181.0f + IndexDiff), Vec2(1238.0f - Move_Width, 203.0f + IndexDiff), m_Data.m_HpFrameTex, Mask,
 		{ false,false }, { 0.0f,0.0f }, { 1.0f,1.0f }, KuroEngine::DrawFunc2D_Color::FILL_MDOE::MUL);*/
+
+	int Mask_Black = 105; // 最終的なRGB倍率との差
+	// 死んでたら強制的に暗くする
+	if (m_HP <= 0) {
+		Mask = Color(255 - Mask_Black, 255 - Mask_Black, 255 - Mask_Black, 255);
+	}
 
 	Vec2 Window_Size = WinApp::Instance()->GetExpandWinSize();
 	//DrawFunc2D::DrawExtendGraph2D(Vec2(0.0f, 0.0f), Vec2(Window_Size.x, Window_Size.y), m_Data.m_FrameTex);

@@ -64,7 +64,7 @@ void StageManager::Reset()
 {
 	for (auto& y : mapchip) {
 		for (auto& x : y) {
-			if (x = int(BlockColor::eizoku_obstacle)) { continue; }
+			if (x == int(BlockColor::eizoku_obstacle)) { continue; }
 			x = int(BlockColor::yuka);
 		}
 	}
@@ -78,7 +78,7 @@ bool StageManager::JudgeSet(KuroEngine::Vec2<int> _nowMapchip, std::vector<KuroE
 {
 	for (auto& i : _shape) {
 		//ステージとの判定 ダメならfalse
-		if (mapchip[_nowMapchip.y + i.y][_nowMapchip.x + i.x] > int(BlockColor::yuka)) {
+		if (mapchip[_nowMapchip.y + i.y][_nowMapchip.x + i.x] != int(BlockColor::yuka)) {
 			return false;
 		}
 	}

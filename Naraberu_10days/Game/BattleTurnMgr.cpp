@@ -33,52 +33,35 @@ void BattleTurnMgr::OnUpdate()
 		Unit->OnAlwaysUpdate();
 	}
 
-	if (UnitList[TurnNum]->IsNextTurn()) {
-		// ターン終了処理
-		UnitList[TurnNum]->End();
+	// 敵の生存判定
+	bool EnemyAlive = false;
 
-		// ターン切り替え・全体ターン数加算
-		TurnNum < UnitList.size() - 1 ? TurnNum++ : TurnNum = 0, m_Whole_Turn_Count++;
-
-		// ターン開始処理
-		UnitList[TurnNum]->StartTurn();
-		NextTurnStart();
-
-		if (TurnNum == 0) {
-			CutInMgr::Instance()->StartCutIn(CutInType::PLAYER_TURN);
-		}
-		else if (TurnNum == 1) {
-			CutInMgr::Instance()->StartCutIn(CutInType::ENEMY_TURN);
+	// プレイヤーターン敵生存判定
+	// 生きてる敵が居るか確認
+	for (int i = 1; i < UnitList.size(); i++) {
+		if (UnitList[i]->IsAlive()) {
+			// 生きてる敵が居ればフラグを上げる
+			EnemyAlive = true;
 		}
 	}
-	// カットイン中であれば
-	if (CutInMgr::Instance()->NowCutIn()) {
-		CutInMgr::Instance()->OnUpdate();
-	}
-	if (!CutInMgr::Instance()->NowCutIn()) {
-		// FrameTime加算
-		TurnFrameTime++;
-		// ターン更新
-		UnitList[TurnNum]->OnUpdate();
+
+	// プレイヤーが死んでいる
+	if (!UnitList[TurnNum]->IsAlive()) {
+		// バトル終了処理(敗北)
+		int a = 0;
 	}
 
-	ExistUnits::Instance()->m_NowTurn = TurnNum;
-	if (OperationConfig::Instance()->GetTargetChangeVec(OperationConfig::SELECT_VEC_UP)) {
-		if (ExistUnits::Instance()->m_NowTarget > 0) {
-			ExistUnits::Instance()->m_NowTarget--;
-		}
-		else {
-
-		}
+	// 生きてる敵が居ない
+	if (!EnemyAlive) {
+		// バトル終了処理(勝利)
+		int a = 0;
 	}
-	if (OperationConfig::Instance()->GetTargetChangeVec(OperationConfig::SELECT_VEC_DOWN)) {
-		if (ExistUnits::Instance()->m_NowTarget < UnitList.size() - 2) {
-			ExistUnits::Instance()->m_NowTarget++;
-		}
-		else {
 
-		}
+	// 通常の更新処理
+	if (EnemyAlive && UnitList[TurnNum]->IsAlive()) {
+		Update_Battle();
 	}
+	
 
 	/*if (KuroEngine::UsersInput::Instance()->KeyOnTrigger(DIK_T)) {
 		PlayerSkills::PlayerSkillMgr::Instance()->StartAction("Attack_01", ExistUnits::Instance()->m_pPlayer, ExistUnits::Instance()->m_Enemys[0]);
@@ -145,4 +128,86 @@ void BattleTurnMgr::OnImguiDebug()
 void BattleTurnMgr::NextTurnStart()
 {
 	TurnFrameTime = 0;
+}
+
+void BattleTurnMgr::Update_Battle()
+{
+	if (UnitList[TurnNum]->IsNextTurn()) {
+		// ターン終了処理
+		UnitList[TurnNum]->End();
+
+		// ターン切り替え・全体ターン数加算
+		// 生きてるユニットまで飛ばす
+		while (1) {
+			TurnNum < UnitList.size() - 1 ? TurnNum++ : TurnNum = 0, m_Whole_Turn_Count++;
+			// 生きてるユニットのターン
+			if (UnitList[TurnNum]->IsAlive()) {
+				UnitList[TurnNum]->StartTurn();
+				NextTurnStart();
+				break;
+			}
+		}
+
+		if (TurnNum == 0) {
+			CutInMgr::Instance()->StartCutIn(CutInType::PLAYER_TURN);
+		}
+		else if (TurnNum == 1) {
+			CutInMgr::Instance()->StartCutIn(CutInType::ENEMY_TURN);
+		}
+	}
+	// カットイン中であれば
+	if (CutInMgr::Instance()->NowCutIn()) {
+		CutInMgr::Instance()->OnUpdate();
+	}
+	if (!CutInMgr::Instance()->NowCutIn()) {
+		// FrameTime加算
+		TurnFrameTime++;
+		// ターン更新
+		UnitList[TurnNum]->OnUpdate();
+	}
+
+	ExistUnits::Instance()->m_NowTurn = TurnNum;
+	// ロックオン
+	if (OperationConfig::Instance()->GetTargetChangeVec(OperationConfig::SELECT_VEC_UP)) {
+		// 生きているユニットまで
+		int iaaa = ExistUnits::Instance()->m_NowTarget;
+		bool ChangeTargetSuccess = false;
+		for (int i = ExistUnits::Instance()->m_NowTarget; i > 0; i--) {
+			if (UnitList[i]->IsAlive()) {
+				ExistUnits::Instance()->m_NowTarget = i - 1;
+				ChangeTargetSuccess = true;
+				break;
+			}
+		}
+		// ターゲットを変更できなかった
+		if (!ChangeTargetSuccess) {
+
+		}
+	}
+	if (OperationConfig::Instance()->GetTargetChangeVec(OperationConfig::SELECT_VEC_DOWN)) {
+		// 生きているユニットまで
+		int iaaa = ExistUnits::Instance()->m_NowTarget;
+		bool ChangeTargetSuccess = false;
+		for (int i = ExistUnits::Instance()->m_NowTarget + 1; i < UnitList.size() - 1; i++) {
+			if (UnitList[i + 1]->IsAlive()) {
+				ExistUnits::Instance()->m_NowTarget = i;
+				ChangeTargetSuccess = true;
+				break;
+			}
+		}
+		// ターゲットを変更できなかった
+		if (!ChangeTargetSuccess) {
+
+		}
+	}
+	// ターゲット中の敵が死んでいる場合
+	if (!UnitList[ExistUnits::Instance()->m_NowTarget + 1]->IsAlive()) {
+		// 一番上の生きている敵を狙う
+		for (int i = 1; i < UnitList.size(); i++) {
+			if (UnitList[i]->IsAlive()) {
+				ExistUnits::Instance()->m_NowTarget = i - 1;
+				break;
+			}
+		}
+	}
 }

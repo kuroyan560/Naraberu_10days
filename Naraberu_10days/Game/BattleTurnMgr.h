@@ -37,5 +37,7 @@ public:
 
 	void NextTurnStart();
 
+	// プレイヤーと敵が生きている場合の更新処理
+	void Update_Battle();
 };
 
