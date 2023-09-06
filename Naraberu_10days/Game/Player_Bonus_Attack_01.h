@@ -23,7 +23,6 @@ public:
 		m_Initiator = nullptr;
 	};
 	void Param_Set(int Damage, int Duration);
-	void Bonus_Count_Set(int BonusCount);
 
 	template<class... A>
 	void Need_Object_Set(UnitBase* Initiator, UnitBase* Target) {

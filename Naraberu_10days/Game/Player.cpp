@@ -109,6 +109,11 @@ void Player::OnFinalize()
 {
 }
 
+void Player::TurnEnd_BeforeTurnChange()
+{
+	// ここにボーナスアタックとか書く
+}
+
 void Player::SetState(int HP, int MaxHP)
 {
 	m_HP = HP;

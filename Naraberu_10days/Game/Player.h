@@ -6,6 +6,8 @@
 #include "../../src/engine/ForUser/DrawFunc/2D/DrawFunc2D_Mask.h"
 #include "../../src/engine/FrameWork/WinApp.h"
 
+#include "RefreshRate.h"
+
 class Player :
     public UnitBase
 {
@@ -20,6 +22,9 @@ private:
 	//キャラ画像
 	std::shared_ptr<KuroEngine::TextureBuffer> m_CharacterTex;
 
+	int TurnChangeTimer;
+	int TurnChangeTime_Fin;
+
 public:
 	Player();
 
@@ -29,6 +34,9 @@ public:
 	void OnDraw()override;
 	void OnImguiDebug()override;
 	void OnFinalize()override;
+
+	// プレイヤーターン終了前処理
+	void TurnEnd_BeforeTurnChange();
 
 	// 全ステータスをセットする
 	void SetState(int HP, int MaxHP);
