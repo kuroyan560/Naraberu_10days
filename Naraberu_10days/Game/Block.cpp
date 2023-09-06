@@ -13,6 +13,11 @@ Block::Block(bool _isMove)
 	blockTex[int(BlockColor::red)] = KuroEngine::D3D12App::Instance()->GenerateTextureBuffer(TexDir + "block_pink.png");
 	blockTex[int(BlockColor::blue)] = KuroEngine::D3D12App::Instance()->GenerateTextureBuffer(TexDir + "block_blue.png");
 	blockTex[int(BlockColor::yellow)] = KuroEngine::D3D12App::Instance()->GenerateTextureBuffer(TexDir + "block_yellow.png");
+	blockTex[int(BlockColor::obstacle)] = KuroEngine::D3D12App::Instance()->GenerateTextureBuffer(TexDir + "oja.png");
+
+	lineTex[int(BlockColor::red)] = KuroEngine::D3D12App::Instance()->GenerateTextureBuffer(TexDir + "blind_pink.png");
+	lineTex[int(BlockColor::blue)] = KuroEngine::D3D12App::Instance()->GenerateTextureBuffer(TexDir + "blind_blue.png");
+	lineTex[int(BlockColor::yellow)] = KuroEngine::D3D12App::Instance()->GenerateTextureBuffer(TexDir + "blind_yellow.png");
 
 	std::string acDir = "action_icon/";
 	actionTex[int(BlockAttribute::attack1)] = KuroEngine::D3D12App::Instance()->GenerateTextureBuffer(TexDir + acDir + "weak_attack_icon.png");
@@ -112,11 +117,11 @@ void Block::BlockOneDraw(const KuroEngine::Vec2<float> _pos, BlockColor _color)
 	pos1.y += blockSize;
 
 	if (_color == BlockColor::red) {
-		DrawFunc2D::DrawExtendGraph2D(_pos, pos1, blockTex[int(BlockColor::red)], 0.5f);
+		DrawFunc2D::DrawExtendGraph2D(_pos, pos1, lineTex[int(BlockColor::red)]);
 	} else if (_color == BlockColor::blue) {
-		DrawFunc2D::DrawExtendGraph2D(_pos, pos1, blockTex[int(BlockColor::blue)], 0.5f);
+		DrawFunc2D::DrawExtendGraph2D(_pos, pos1, lineTex[int(BlockColor::blue)]);
 	} else if (_color == BlockColor::yellow) {
-		DrawFunc2D::DrawExtendGraph2D(_pos, pos1, blockTex[int(BlockColor::yellow)], 0.5f);
+		DrawFunc2D::DrawExtendGraph2D(_pos, pos1, lineTex[int(BlockColor::yellow)]);
 	}
 
 }
@@ -140,8 +145,9 @@ void Block::BlockOneDraw(const KuroEngine::Vec2<int> _shape, const KuroEngine::V
 		DrawFunc2D::DrawExtendGraph2D(pos1, pos2, blockTex[int(BlockColor::blue)]);
 	} else if (_color == BlockColor::yellow) {
 		DrawFunc2D::DrawExtendGraph2D(pos1, pos2, blockTex[int(BlockColor::yellow)]);
+	} else if (_color == BlockColor::obstacle) {
+		DrawFunc2D::DrawExtendGraph2D(pos1, pos2, blockTex[int(BlockColor::obstacle)]);
 	}
-
 }
 
 void Block::ActionDraw(const KuroEngine::Vec2<float> _pos, const BlockAttribute _attribute)
