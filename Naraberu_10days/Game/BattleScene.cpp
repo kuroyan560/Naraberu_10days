@@ -58,22 +58,6 @@ void BattleScene::OnUpdate()
 		PlayerTurn();
 	}
 
-	//線と塊の判定
-	if (OperationConfig::Instance()->DebugKeyInputOnTrigger(DIK_X)) {
-		//塊確認
-		//std::vector<int> massNum;
-		//std::vector<BlockColor> massColor;
-		massColor.clear();
-		massNum.clear();
-		stage->MassProcess(&massNum, &massColor);
-		//塊確認
-		//int lineNum = 0;
-		//std::vector<BlockColor> llineColor;
-		lineColor.clear();
-
-		stage->LineProcess(&lineNum, &lineColor);
-	}
-
 	if (OperationConfig::Instance()->DebugKeyInputOnTrigger(DIK_I)) {
 		stage->Reset();
 	}
@@ -120,21 +104,6 @@ void BattleScene::OnImguiDebug()
 
 	Vec2<float> mousePos = { 0.0f,0.0f };
 	mousePos = input->GetMousePos();
-
-	ImGui::Begin("mass & line");
-	ImGui::Text("mass");
-	int mass = 0;
-	for (int i = 0; i < massNum.size(); i++) {
-		ImGui::Text(" %d : num %d |color %d", mass, massNum[i], massColor[i]);
-		mass++;
-	}
-	ImGui::Text("line");
-	int line = 0;
-	for (int i = 0; i < lineColor.size(); i++) {
-		ImGui::Text(" %d : color %d", line, lineColor[i]);
-		line++;
-	}
-	ImGui::End();
 
 	ImGui::Begin("attribute");
 	if (attribute == BlockAttribute::attack1) {

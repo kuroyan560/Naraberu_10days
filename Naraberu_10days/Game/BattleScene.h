@@ -24,10 +24,6 @@ class BattleScene :
 	//ステージ
 	std::shared_ptr<StageManager> stage;
 
-	std::vector<int> massNum;
-	std::vector<BlockColor> massColor;
-	int lineNum = 0;
-	std::vector<BlockColor> lineColor;
 	BlockAttribute attribute;
 
 
