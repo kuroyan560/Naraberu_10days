@@ -10,22 +10,17 @@ void StageManager::Initialize()
 	blockTex[int(BlockColor::red)] = KuroEngine::D3D12App::Instance()->GenerateTextureBuffer(TexDir + "block_pink.png");
 	blockTex[int(BlockColor::blue)] = KuroEngine::D3D12App::Instance()->GenerateTextureBuffer(TexDir + "block_blue.png");
 	blockTex[int(BlockColor::yellow)] = KuroEngine::D3D12App::Instance()->GenerateTextureBuffer(TexDir + "block_yellow.png");
+	blockTex[int(BlockColor::yuka)] = KuroEngine::D3D12App::Instance()->GenerateTextureBuffer(TexDir + "yuka.png");
+	blockTex[int(BlockColor::obstacle)] = KuroEngine::D3D12App::Instance()->GenerateTextureBuffer(TexDir + "oja.png");
+	blockTex[int(BlockColor::eizoku_obstacle)] = KuroEngine::D3D12App::Instance()->GenerateTextureBuffer(TexDir + "eizoku_oja.png");
 
 	//配置場所の範囲決定
-	//stagedata読み込み(範囲をmapchip形式で読み込んで使用する)
-	//いったんは手打ち
-	mapchip = {
-		{-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,},
-		{-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,},
-		{-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,},
-		{-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,},
-		{-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,},
-		{-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,},
-		{-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,},
-		{-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,},
-		{-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,},
-		{-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,},
-	};
+	mapchip.resize(10);
+	for (auto& i : mapchip) {
+		for (int range = 0; range < 10; range++) {
+			i.emplace_back(int(BlockColor::yuka));
+		}
+	}
 
 	massMapchip = mapchip;
 	lineMapchip = mapchip;
@@ -48,12 +43,18 @@ void StageManager::Draw()
 			pos1.y += blockSize;
 
 
-			if (mapchip[y][x] == 0) {
+			if (mapchip[y][x] == int(BlockColor::red)) {
 				KuroEngine::DrawFunc2D::DrawExtendGraph2D(pos, pos1, blockTex[int(BlockColor::red)]);
-			} else if (mapchip[y][x] == 1) {
+			} else if (mapchip[y][x] == int(BlockColor::blue)) {
 				KuroEngine::DrawFunc2D::DrawExtendGraph2D(pos, pos1, blockTex[int(BlockColor::blue)]);
-			} else if (mapchip[y][x] == 2) {
+			} else if (mapchip[y][x] == int(BlockColor::yellow)) {
 				KuroEngine::DrawFunc2D::DrawExtendGraph2D(pos, pos1, blockTex[int(BlockColor::yellow)]);
+			} else if (mapchip[y][x] == int(BlockColor::yuka)) {
+				KuroEngine::DrawFunc2D::DrawExtendGraph2D(pos, pos1, blockTex[int(BlockColor::yuka)]);
+			}else if (mapchip[y][x] == int(BlockColor::obstacle)) {
+				KuroEngine::DrawFunc2D::DrawExtendGraph2D(pos, pos1, blockTex[int(BlockColor::obstacle)]);
+			} else if (mapchip[y][x] == int(BlockColor::eizoku_obstacle)) {
+				KuroEngine::DrawFunc2D::DrawExtendGraph2D(pos, pos1, blockTex[int(BlockColor::eizoku_obstacle)]);
 			}
 		}
 	}
@@ -61,18 +62,12 @@ void StageManager::Draw()
 
 void StageManager::Reset()
 {
-	mapchip = {
-		{-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,},
-		{-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,},
-		{-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,},
-		{-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,},
-		{-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,},
-		{-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,},
-		{-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,},
-		{-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,},
-		{-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,},
-		{-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,},
-	};
+	for (auto& y : mapchip) {
+		for (auto& x : y) {
+			if (x = int(BlockColor::eizoku_obstacle)) { continue; }
+			x = int(BlockColor::yuka);
+		}
+	}
 }
 
 #include "PlayerSkills.h"
@@ -83,7 +78,7 @@ bool StageManager::JudgeSet(KuroEngine::Vec2<int> _nowMapchip, std::vector<KuroE
 {
 	for (auto& i : _shape) {
 		//ステージとの判定 ダメならfalse
-		if (mapchip[_nowMapchip.y + i.y][_nowMapchip.x + i.x] != -1) {
+		if (mapchip[_nowMapchip.y + i.y][_nowMapchip.x + i.x] > int(BlockColor::yuka)) {
 			return false;
 		}
 	}
@@ -125,7 +120,7 @@ void StageManager::MassProcess(std::vector<int>* _massNum, std::vector<BlockColo
 	for (int y = 0; y < mapMax.y; y++) {
 		for (int x = 0; x < mapMax.x; x++) {
 			//確認済みなら次に行く
-			if (massMapchip[y][x] != 0 || mapchip[y][x] == -1) { continue; }
+			if (massMapchip[y][x] != 0 || mapchip[y][x] >= int(BlockColor::yuka)) { continue; }
 			//塊確認
 			int massNum = 0;
 			MassBlock(&massNum, { x,y });
@@ -213,7 +208,7 @@ int StageManager::LineBlock(const KuroEngine::Vec2<int> _lineMap, const bool _di
 	//下
 	if (!_direction) {
 		for (int i = 0; i < mapMax.y; i++) {
-			if (mapchip[_lineMap.y][_lineMap.x] != mapchip[i][_lineMap.x] || mapchip[_lineMap.y][_lineMap.x] == -1) { return 0; }
+			if (mapchip[_lineMap.y][_lineMap.x] != mapchip[i][_lineMap.x] || mapchip[_lineMap.y][_lineMap.x] >= int(BlockColor::yuka)) { return 0; }
 		}
 
 		for (int i = 0; i < mapMax.y; i++) {
@@ -223,7 +218,7 @@ int StageManager::LineBlock(const KuroEngine::Vec2<int> _lineMap, const bool _di
 	//右
 	else {
 		for (int i = 0; i < mapMax.x; i++) {
-			if (mapchip[_lineMap.y][_lineMap.x] != mapchip[_lineMap.y][i] || mapchip[_lineMap.y][_lineMap.x] == -1) { return 0; }
+			if (mapchip[_lineMap.y][_lineMap.x] != mapchip[_lineMap.y][i] || mapchip[_lineMap.y][_lineMap.x] >= int(BlockColor::yuka)) { return 0; }
 		}
 
 		for (int i = 0; i < mapMax.x; i++) {
