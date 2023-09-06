@@ -73,6 +73,9 @@ void Enemy::OnAlwaysUpdate()
 	if (UsersInput::Instance()->KeyInput(DIK_N)) {
 		m_HP < m_MaxHP ? m_HP++ : 0;
 	}
+	if (UsersInput::Instance()->KeyOnTrigger(DIK_M)) {
+		Damage(m_HP / 2);
+	}
 }
 
 void Enemy::OnDraw()
@@ -108,6 +111,12 @@ void Enemy::SetEnemyData(EnemysData::EnemyData Data)
 
 void Enemy::Draw(int Index, int NowTurn_Index, int Index_Max, bool Dark, int FrameTime, bool FirstTurn)
 {
+
+	if (m_Data.m_Tag == EnemysData::ENEMY_TAG::BOSS) {
+		Draw_Boss(Index, NowTurn_Index, Index_Max, Dark, FrameTime, FirstTurn);
+		return;
+	}
+
 	using namespace KuroEngine;
 
 	float IndexDiff = Index * 170.0f;
@@ -143,7 +152,6 @@ void Enemy::Draw(int Index, int NowTurn_Index, int Index_Max, bool Dark, int Fra
 	// 暗くする場合
 	if (Dark) {
 		int Col = int(255.0f - (float(Mask_Black) * float(Progress_Frame_Color)));
-		//Mask = Color(Col, Col, Col, 255);
 
 		// 敵ユニットの最初のターンの場合
 		if (NowTurn_Index == 1) {
@@ -227,5 +235,64 @@ void Enemy::Draw(int Index, int NowTurn_Index, int Index_Max, bool Dark, int Fra
 		Vec2(1100.0f - Move_Width, 187.0f + IndexDiff), Vec2(1232.0f - Move_Width, 197.0f + IndexDiff), HP_Gauge,
 		Vec2(1100.0f - Move_Width, 187.0f + IndexDiff), Vec2(1100.0f - Move_Width + Gauge_Width, 197.0f + IndexDiff));
 
+
+}
+
+void Enemy::Draw_Boss(int Index, int NowTurn_Index, int Index_Max, bool Dark, int FrameTime, bool FirstTurn)
+{
+	using namespace KuroEngine;
+
+	Color Mask = Color(255, 255, 255, 255);
+	// ユニットの描画
+	/*DrawFunc2D_Color::DrawExtendGraph2D(Vec2(977.0f, 115.0f), Vec2(1222.0f, 215.0f), m_Data.m_UnitTex, Mask,
+		{ false,false }, { 0.0f,0.0f }, { 1.0f,1.0f }, KuroEngine::DrawFunc2D_Color::FILL_MDOE::MUL);
+	DrawFunc2D_Color::DrawExtendGraph2D(Vec2(970.0f - Move_Width, 108.0f + IndexDiff), Vec2(1229.0f - Move_Width, 222.0f + IndexDiff), m_Data.m_FrameTex, Mask,
+		{ false,false }, { 0.0f,0.0f }, { 1.0f,1.0f }, KuroEngine::DrawFunc2D_Color::FILL_MDOE::MUL);
+	DrawFunc2D_Color::DrawExtendGraph2D(Vec2(1094.0f - Move_Width, 181.0f + IndexDiff), Vec2(1238.0f - Move_Width, 203.0f + IndexDiff), m_Data.m_HpFrameTex, Mask,
+		{ false,false }, { 0.0f,0.0f }, { 1.0f,1.0f }, KuroEngine::DrawFunc2D_Color::FILL_MDOE::MUL);*/
+
+	Vec2 Window_Size = WinApp::Instance()->GetExpandWinSize();
+	//DrawFunc2D::DrawExtendGraph2D(Vec2(0.0f, 0.0f), Vec2(Window_Size.x, Window_Size.y), m_Data.m_FrameTex);
+	DrawFunc2D_Color::DrawExtendGraph2D(Vec2(0.0f, 0.0f), Vec2(Window_Size.x, Window_Size.y), m_Data.m_FrameTex, Mask,
+		{ false,false }, { 0.0f,0.0f }, { 1.0f,1.0f }, KuroEngine::DrawFunc2D_Color::FILL_MDOE::MUL);
+	DrawFunc2D_Color::DrawExtendGraph2D(Vec2(912.0f, 410.0f), Vec2(1269.0f, 595.0f), m_Data.m_HpFrameTex, Mask,
+		{ false,false }, { 0.0f,0.0f }, { 1.0f,1.0f }, KuroEngine::DrawFunc2D_Color::FILL_MDOE::MUL);
+
+	//DrawFunc2D::DrawExtendGraph2D(Vec2(977.0f, 115.0f + IndexDiff), Vec2(1222.0f, 215.0f + IndexDiff), m_Data.m_UnitTex);
+	//DrawFunc2D::DrawExtendGraph2D(Vec2(970.0f, 108.0f + IndexDiff), Vec2(1229.0f, 222.0f + IndexDiff), m_Data.m_FrameTex);
+	//DrawFunc2D::DrawExtendGraph2D(Vec2(1094.0f, 181.0f + IndexDiff), Vec2(1238.0f, 203.0f + IndexDiff), m_Data.m_HpFrameTex);
+
+	// HPゲージが削れる演出用
+	float HP_Gauge_Now_Value = float(m_HP);
+
+	// タイマーが1以上　かつ　最大値以下なら減少演出
+	if (m_HP_Break_Timer > 0 && m_HP_Break_Timer < m_HP_GAUGE_BREAK_TIME) {
+		m_HP_Break_Timer++;
+		HP_Gauge_Now_Value = float(m_HP) + float(m_Before_HP - m_HP) * (1.0f - (float(m_HP_Break_Timer) / float(m_HP_GAUGE_BREAK_TIME)));
+	}
+	// 減少演出終わり
+	if (m_HP_Break_Timer == m_HP_GAUGE_BREAK_TIME) {
+		m_HP_Break_Timer = 0;
+	}
+
+	// 現在のHP割合
+	float Now_HP_Rate = float(HP_Gauge_Now_Value) / float(m_MaxHP);
+	// HPゲージの長さ
+	float Gauge_Max_Width = 1258.0f - 923.0f;
+	// 現在のHPゲージの長さ
+	float Gauge_Width = Gauge_Max_Width * Now_HP_Rate;
+
+
+	std::shared_ptr<KuroEngine::TextureBuffer> HP_Gauge = m_Data.m_HpTex_green;
+	if (Now_HP_Rate <= 0.2f) {
+		HP_Gauge = m_Data.m_HpTex_red;
+	}
+	else if (Now_HP_Rate <= 0.5f) {
+		HP_Gauge = m_Data.m_HpTex_yellow;
+	}
+
+	DrawFunc2D_Mask::DrawExtendGraph2D(
+		Vec2(923.0f, 427.0f), Vec2(1258.0f, 580.0f), HP_Gauge,
+		Vec2(923.0f, 427.0f), Vec2(923.0f + Gauge_Width, 580.0f));
 
 }

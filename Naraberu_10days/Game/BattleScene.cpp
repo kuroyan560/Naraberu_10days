@@ -22,14 +22,18 @@ void BattleScene::OnInitialize()
 	Pl->StartTurn();
 
 
-	En.emplace_back(std::make_shared<Enemy>());
+	/*En.emplace_back(std::make_shared<Enemy>());
 	GetUnitPtr<Enemy>(En[En.size() - 1])->SetEnemyData(EnemysData::DebugEnemy_1);
 	En.emplace_back(std::make_shared<Enemy>());
 	GetUnitPtr<Enemy>(En[En.size() - 1])->SetEnemyData(EnemysData::DebugEnemy_2);
 	En.emplace_back(std::make_shared<Enemy>());
 	GetUnitPtr<Enemy>(En[En.size() - 1])->SetEnemyData(EnemysData::DebugEnemy_3);
 	Mgr.OnInitialize(Pl, En);
-	ExistUnits::Instance()->Set(Pl.get(), En[0].get(), En[1].get(), En[2].get());
+	ExistUnits::Instance()->Set(Pl.get(), En[0].get(), En[1].get(), En[2].get());*/
+	En.emplace_back(std::make_shared<Enemy>());
+	GetUnitPtr<Enemy>(En[En.size() - 1])->SetEnemyData(EnemysData::DebugEnemy_Boss_1);
+	Mgr.OnInitialize(Pl, En);
+	ExistUnits::Instance()->Set(Pl.get(), En[0].get());
 
 	stage.reset(new StageManager());
 	stage->Initialize();
