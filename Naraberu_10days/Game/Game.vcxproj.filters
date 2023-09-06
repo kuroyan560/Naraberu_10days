@@ -714,6 +714,9 @@
     <ClInclude Include="Player_Attack_02.h">
       <Filter>src\user\BattleManager\Player_Act\Skills</Filter>
     </ClInclude>
+    <ClInclude Include="EnemyActionParametor.h">
+      <Filter>src\user\BattleManager\Enemy_Act</Filter>
+    </ClInclude>
     <ClInclude Include="src\OperationConfig.h">
       <Filter>src\user</Filter>
     </ClInclude>

@@ -6,13 +6,6 @@
 #include "../../src/engine/FrameWork/WinApp.h"
 #include "../../src/engine/FrameWork/UsersInput.h"
 
-void Debug_Heal_01::Param_Set(int Damage, int Duration)
-{
-	m_Damage = Damage;
-	m_Timer = 0;
-	m_Finish = Duration;
-}
-
 void Debug_Heal_01::Action_Start()
 {
 	// Šî’ê‰Šú‰»
@@ -37,7 +30,7 @@ void Debug_Heal_01::Action_Update()
 			exit(1);
 		}
 		// 1”Ô–Ú‚Ìƒ^[ƒQƒbƒg‚ÉUŒ‚‚·‚é
-		m_Targets[0]->Damage(m_Damage);
+		m_Targets[0]->Damage(int(m_Data.m_HealRate));
 	}
 }
 

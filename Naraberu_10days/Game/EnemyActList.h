@@ -6,6 +6,8 @@
 
 #include "../../src/engine/Common/Singleton.h"
 
+#include "EnemyActionParametor.h"
+
 #include "Debug_Attack_01.h"
 #include "Debug_Attack_02.h"
 #include "Debug_Heal_01.h"
@@ -18,19 +20,7 @@ namespace EnemyActions {
 	template <class T>
 	static std::shared_ptr<T> GetPtr(std::shared_ptr<E_Ac_Base> ptr) { return std::dynamic_pointer_cast<T>(ptr); }
 
-	enum class EnemyActionList {
-		DEBUG_ATTACK_01,
-		DEBUG_ATTACK_02,
-		DEBUG_HEAL_01,
-		DEBUG_JAMMING_01,
-		ACTION_MAX
-	};
-	static std::map<std::string, EnemyActionList> m_List_Pair = {
-		{"Attack_01", EnemyActionList::DEBUG_ATTACK_01 },
-		{"Attack_02", EnemyActionList::DEBUG_ATTACK_02 },
-		{"Heal_01", EnemyActionList::DEBUG_HEAL_01 },
-		{"Jamming_01", EnemyActionList::DEBUG_JAMMING_01 }
-	};
+	using namespace En_Ac_Param;
 
 	class EnemyActionMgr : public KuroEngine::DesignPattern::Singleton<EnemyActionMgr>
 	{

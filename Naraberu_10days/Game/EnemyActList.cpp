@@ -21,25 +21,22 @@ void EnemyActions::EnemyActionMgr::StartAction(std::string Action_Name)
 	m_NowAction = true;
 
 	if (m_Now_Action_Name == "Attack_01") {
-		EnemyActions::GetPtr<Debug_Attack_01>(m_List[size_t(m_List_Pair[m_Now_Action_Name])])->Param_Set(15, int(float(200) * float(RefreshRate::RefreshRate_Mag)));
+		EnemyActions::GetPtr<Debug_Attack_01>(m_List[size_t(m_List_Pair[m_Now_Action_Name])])->Ready();
 		EnemyActions::GetPtr<Debug_Attack_01>(m_List[size_t(m_List_Pair[m_Now_Action_Name])])->Need_Object_Set(m_Initiator, m_Targets[0]);
 		EnemyActions::GetPtr<Debug_Attack_01>(m_List[size_t(m_List_Pair[m_Now_Action_Name])])->Action_Start();
 	}
 	else if (m_Now_Action_Name == "Attack_02") {
-
-		EnemyActions::GetPtr<Debug_Attack_02>(m_List[size_t(m_List_Pair[m_Now_Action_Name])])->Param_Set(30, int(float(200) * float(RefreshRate::RefreshRate_Mag)));
+		EnemyActions::GetPtr<Debug_Attack_02>(m_List[size_t(m_List_Pair[m_Now_Action_Name])])->Ready();
 		EnemyActions::GetPtr<Debug_Attack_02>(m_List[size_t(m_List_Pair[m_Now_Action_Name])])->Need_Object_Set(m_Initiator, m_Targets[0]);
 		EnemyActions::GetPtr<Debug_Attack_02>(m_List[size_t(m_List_Pair[m_Now_Action_Name])])->Action_Start();
 	}
 	else if (m_Now_Action_Name == "Heal_01") {
-
-		EnemyActions::GetPtr<Debug_Heal_01>(m_List[size_t(m_List_Pair[m_Now_Action_Name])])->Param_Set(45, int(float(200) * float(RefreshRate::RefreshRate_Mag)));
+		EnemyActions::GetPtr<Debug_Heal_01>(m_List[size_t(m_List_Pair[m_Now_Action_Name])])->Ready();
 		EnemyActions::GetPtr<Debug_Heal_01>(m_List[size_t(m_List_Pair[m_Now_Action_Name])])->Need_Object_Set(m_Initiator, m_Targets[0]);
 		EnemyActions::GetPtr<Debug_Heal_01>(m_List[size_t(m_List_Pair[m_Now_Action_Name])])->Action_Start();
 	}
 	else if (m_Now_Action_Name == "Jamming_01") {
-
-		EnemyActions::GetPtr<Debug_Jamming_01>(m_List[size_t(m_List_Pair[m_Now_Action_Name])])->Param_Set(60, int(float(200) * float(RefreshRate::RefreshRate_Mag)));
+		EnemyActions::GetPtr<Debug_Jamming_01>(m_List[size_t(m_List_Pair[m_Now_Action_Name])])->Ready();
 		EnemyActions::GetPtr<Debug_Jamming_01>(m_List[size_t(m_List_Pair[m_Now_Action_Name])])->Need_Object_Set(m_Initiator, ExistUnits::Instance()->m_MapChipData);
 		EnemyActions::GetPtr<Debug_Jamming_01>(m_List[size_t(m_List_Pair[m_Now_Action_Name])])->Action_Start();
 	}

@@ -33,6 +33,8 @@ namespace EnemysData {
 		int m_HP;
 		// 最大体力
 		int m_MaxHP;
+		// 攻撃力
+		int m_ATK;
 		// AIのタイプ
 		AI_TYPE m_AI_Type;
 		// 行動リスト
@@ -51,11 +53,11 @@ namespace EnemysData {
 
 		std::shared_ptr<KuroEngine::TextureBuffer> m_ReticleTex;
 
-		EnemyData() : m_Name("UnNamed"), m_HP(1), m_MaxHP(1), m_AI_Type(AI_TYPE::DEFAULT), m_Tag(ENEMY_TAG::DEFAULT) {}
+		EnemyData() : m_Name("UnNamed"), m_HP(1), m_MaxHP(1), m_ATK(1), m_AI_Type(AI_TYPE::DEFAULT), m_Tag(ENEMY_TAG::DEFAULT) {}
 
 		template<class... A>
-		EnemyData(std::string Name, ENEMY_TAG Tag, int HP, AI_TYPE AI_Type, A... ActPatterns) :
-			m_Name(Name), m_Tag(Tag), m_HP(HP), m_MaxHP(HP), m_AI_Type(AI_Type) {
+		EnemyData(std::string Name, ENEMY_TAG Tag, int HP, int ATK, AI_TYPE AI_Type, A... ActPatterns) :
+			m_Name(Name), m_Tag(Tag), m_HP(HP), m_MaxHP(HP), m_ATK(ATK), m_AI_Type(AI_Type) {
 
 			for (std::string ActionName : std::initializer_list<std::string>{ ActPatterns... }) {
 				ActionList.emplace_back(ActionName);
@@ -86,9 +88,9 @@ namespace EnemysData {
 	};
 
 	// ここに敵を追加していく
-	static const EnemyData DebugEnemy_1 = EnemyData("Debug_1", ENEMY_TAG::DEFAULT, 64, AI_TYPE::DEFAULT, "Attack_01", "Attack_02");
-	static const EnemyData DebugEnemy_2 = EnemyData("Debug_2", ENEMY_TAG::DEFAULT, 128, AI_TYPE::DEFAULT, "Attack_02", "Heal_01", "Jamming_01");
-	static const EnemyData DebugEnemy_3 = EnemyData("Debug_3", ENEMY_TAG::DEFAULT, 128, AI_TYPE::DEFAULT, "Attack_01", "Attack_01", "Attack_01");
+	static const EnemyData DebugEnemy_1 = EnemyData("Debug_1", ENEMY_TAG::DEFAULT, 64, 50, AI_TYPE::DEFAULT, "Attack_01", "Attack_02");
+	static const EnemyData DebugEnemy_2 = EnemyData("Debug_2", ENEMY_TAG::DEFAULT, 128, 50, AI_TYPE::DEFAULT, "Attack_02", "Heal_01", "Jamming_01");
+	static const EnemyData DebugEnemy_3 = EnemyData("Debug_3", ENEMY_TAG::DEFAULT, 128, 50, AI_TYPE::DEFAULT, "Attack_01", "Attack_01", "Attack_01");
 
-	static const EnemyData DebugEnemy_Boss_1 = EnemyData("Debug_1", ENEMY_TAG::BOSS, 1000, AI_TYPE::DEFAULT, "Attack_01", "Attack_01", "Attack_01");
+	static const EnemyData DebugEnemy_Boss_1 = EnemyData("Debug_1", ENEMY_TAG::BOSS, 1000, 100, AI_TYPE::DEFAULT, "Attack_01", "Attack_01", "Attack_01");
 }

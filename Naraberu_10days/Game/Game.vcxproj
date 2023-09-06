@@ -299,6 +299,7 @@ xcopy "$(SolutionDir)dxil.dll" $(TargetDir) /Y</Command>
     <ClInclude Include="Debug_Heal_01.h" />
     <ClInclude Include="Debug_Jamming_01.h" />
     <ClInclude Include="Enemy.h" />
+    <ClInclude Include="EnemyActionParametor.h" />
     <ClInclude Include="EnemyActList.h" />
     <ClInclude Include="EnemysData.h" />
     <ClInclude Include="ExistUnits.h" />
