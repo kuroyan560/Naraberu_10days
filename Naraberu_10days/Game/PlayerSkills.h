@@ -42,8 +42,6 @@ namespace PlayerSkills {
 
 		PlayerSkillMgr() {
 			{
-				using enum PlayerSkillList;
-
 				m_NowAction = false;
 			}
 		}

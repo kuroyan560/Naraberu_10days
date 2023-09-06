@@ -110,10 +110,11 @@ void BattleScene::OnDraw()
 	// プレイヤーはバトル中以外でも描画する為こっち
 	Pl->OnDraw();
 
-	Mgr.OnDraw();
-
 	stage->Draw();
 	block->Draw();
+
+	Mgr.OnDraw();
+
 }
 
 void BattleScene::OnImguiDebug()
