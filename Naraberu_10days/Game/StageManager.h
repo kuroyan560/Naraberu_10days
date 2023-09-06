@@ -69,6 +69,14 @@ public:
 	int LineBlock(const KuroEngine::Vec2<int> _lineMap, const bool _direction);
 
 	/// <summary>
+	/// お邪魔セット
+	/// </summary>
+	/// <param name="_mapchip">セットするマップチップ番号</param>
+	void SetObstacle(const KuroEngine::Vec2<int> _mapchip) {
+		mapchip[_mapchip.y][_mapchip.x] = 4;
+	}
+
+	/// <summary>
 	/// 中央出力
 	/// </summary>
 	/// <returns></returns>

@@ -183,7 +183,7 @@ bool StageManager::LineProcess(int* _lineNum, std::vector<BlockColor>* _color)
 	//削除管理用マップ初期化
 	for (int y = 0; y < mapMax.y; y++) {
 		for (int x = 0; x < mapMax.x; x++) {
-			massMapchip[y][x] = 0;
+			lineMapchip[y][x] = 0;
 		}
 	}
 
@@ -218,7 +218,7 @@ int StageManager::LineBlock(const KuroEngine::Vec2<int> _lineMap, const bool _di
 		}
 
 		for (int i = 0; i < mapMax.y; i++) {
-			massMapchip[i][_lineMap.x] = 1;
+			lineMapchip[i][_lineMap.x] = 1;
 		}
 	}
 	//右
@@ -228,7 +228,7 @@ int StageManager::LineBlock(const KuroEngine::Vec2<int> _lineMap, const bool _di
 		}
 
 		for (int i = 0; i < mapMax.x; i++) {
-			massMapchip[_lineMap.y][i] = 1;
+			lineMapchip[_lineMap.y][i] = 1;
 		}
 
 	}

@@ -103,21 +103,22 @@ void Block::ChangeBlock(const KuroEngine::Vec2<int> _mapchipNum, const std::vect
 	}
 }
 
-void Block::BlockOneDraw(const KuroEngine::Vec2<float> pos, BlockColor _color)
+void Block::BlockOneDraw(const KuroEngine::Vec2<float> _pos, BlockColor _color)
 {
 	using namespace KuroEngine;
 
-	Vec2<float> pos1 = pos;
+	Vec2<float> pos1 = _pos;
 	pos1.x += blockSize;
 	pos1.y += blockSize;
 
 	if (_color == BlockColor::red) {
-		DrawFunc2D::DrawExtendGraph2D(pos, pos1, blockTex[int(BlockColor::red)]);
+		DrawFunc2D::DrawExtendGraph2D(_pos, pos1, blockTex[int(BlockColor::red)], 0.5f);
 	} else if (_color == BlockColor::blue) {
-		DrawFunc2D::DrawExtendGraph2D(pos, pos1, blockTex[int(BlockColor::blue)]);
+		DrawFunc2D::DrawExtendGraph2D(_pos, pos1, blockTex[int(BlockColor::blue)], 0.5f);
 	} else if (_color == BlockColor::yellow) {
-		DrawFunc2D::DrawExtendGraph2D(pos, pos1, blockTex[int(BlockColor::yellow)]);
+		DrawFunc2D::DrawExtendGraph2D(_pos, pos1, blockTex[int(BlockColor::yellow)], 0.5f);
 	}
+
 }
 
 void Block::BlockOneDraw(const KuroEngine::Vec2<int> _shape, const KuroEngine::Vec2<float> pos, const BlockColor _color)
