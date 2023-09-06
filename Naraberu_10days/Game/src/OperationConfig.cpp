@@ -158,8 +158,7 @@ bool OperationConfig::GetTargetChangeVec(SELECT_VEC arg_vec)
 			key = UsersInput::Instance()->KeyOnTrigger(DIK_UP);
 			break;
 		case SELECT_VEC_DOWN:
-			con = UsersInput::Instance()->ControllerOnTrigger(0, XBOX_STICK::L_DOWN, STICK_DEAD_RANGE)
-				|| UsersInput::Instance()->ControllerOnTrigger(0, XBOX_BUTTON::DPAD_DOWN);
+			con = UsersInput::Instance()->ControllerOnTrigger(0, XBOX_STICK::R_DOWN, STICK_DEAD_RANGE);
 			key = UsersInput::Instance()->KeyOnTrigger(DIK_DOWN);
 			break;
 		default:
