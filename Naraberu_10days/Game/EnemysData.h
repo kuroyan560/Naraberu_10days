@@ -49,6 +49,8 @@ namespace EnemysData {
 
 		std::shared_ptr<KuroEngine::TextureBuffer> m_UnitTex;
 
+		std::shared_ptr<KuroEngine::TextureBuffer> m_ReticleTex;
+
 		EnemyData() : m_Name("UnNamed"), m_HP(1), m_MaxHP(1), m_AI_Type(AI_TYPE::DEFAULT), m_Tag(ENEMY_TAG::DEFAULT) {}
 
 		template<class... A>
@@ -78,6 +80,7 @@ namespace EnemysData {
 				m_HpTex_red = D3D12App::Instance()->GenerateTextureBuffer(TexDir + "boss_hp_gauge_red.png");
 			}
 
+			m_ReticleTex = D3D12App::Instance()->GenerateTextureBuffer(TexDir + "reticle.png");
 			m_UnitTex = D3D12App::Instance()->GenerateTextureBuffer(EnemyTexturesDir[m_Name]);
 		}
 	};

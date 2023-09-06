@@ -36,7 +36,7 @@ public:
 	EnemysData::EnemyData GetEnemyData() { return m_Data; }
 
 	// •`‰æ
-	void Draw(int Index, int NowTurn_Index, int Index_Max, bool Dark, int FrameTime, bool FirstTurn);
+	void Draw(int Index, int NowTurn_Index, int Index_Max, bool Dark, int FrameTime, bool FirstTurn, int NowTarget);
 
 	void Draw_Boss(int Index, int NowTurn_Index, int Index_Max, bool Dark, int FrameTime, bool FirstTurn);
 

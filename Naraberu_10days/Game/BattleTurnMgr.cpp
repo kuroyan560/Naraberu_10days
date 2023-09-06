@@ -17,6 +17,7 @@ void BattleTurnMgr::OnInitialize(std::shared_ptr<UnitBase> Player, std::vector<s
 	m_Whole_Turn_Count = 0;
 	TurnNum = 0;
 	TurnFrameTime = 0;
+	ExistUnits::Instance()->m_NowTarget = 0;
 
 	using namespace KuroEngine;
 	std::string TexDir = "resource/user/tex/battle_scene/";
@@ -60,7 +61,22 @@ void BattleTurnMgr::OnUpdate()
 	}
 
 	ExistUnits::Instance()->m_NowTurn = TurnNum;
-	ExistUnits::Instance()->m_NowTarget = 0;
+	if (KuroEngine::UsersInput::Instance()->ControllerOnTrigger(0, KuroEngine::XBOX_STICK::R_UP)) {
+		if (ExistUnits::Instance()->m_NowTarget > 0) {
+			ExistUnits::Instance()->m_NowTarget--;
+		}
+		else {
+
+		}
+	}
+	if (KuroEngine::UsersInput::Instance()->ControllerOnTrigger(0, KuroEngine::XBOX_STICK::R_DOWN)) {
+		if (ExistUnits::Instance()->m_NowTarget < UnitList.size() - 2) {
+			ExistUnits::Instance()->m_NowTarget++;
+		}
+		else {
+
+		}
+	}
 
 	/*if (KuroEngine::UsersInput::Instance()->KeyOnTrigger(DIK_T)) {
 		PlayerSkills::PlayerSkillMgr::Instance()->StartAction("Attack_01", ExistUnits::Instance()->m_pPlayer, ExistUnits::Instance()->m_Enemys[0]);
@@ -81,14 +97,14 @@ void BattleTurnMgr::OnDraw()
 
 		// プレイヤーターンなら暗くしない
 		if (TurnNum == 0) {
-			En->Draw(EnemyIndex, TurnNum, int(UnitList.size()), false, TurnFrameTime, m_Whole_Turn_Count);
+			En->Draw(EnemyIndex, TurnNum, int(UnitList.size()), false, TurnFrameTime, m_Whole_Turn_Count, ExistUnits::Instance()->m_NowTarget);
 		}
 		// 敵ターンの時自分のターン意外なら暗くする
 		else if (i != TurnNum) {
-			En->Draw(EnemyIndex, TurnNum, int(UnitList.size()), true, TurnFrameTime, m_Whole_Turn_Count);
+			En->Draw(EnemyIndex, TurnNum, int(UnitList.size()), true, TurnFrameTime, m_Whole_Turn_Count, ExistUnits::Instance()->m_NowTarget);
 		}
 		else {
-			En->Draw(EnemyIndex, TurnNum, int(UnitList.size()), false, TurnFrameTime, m_Whole_Turn_Count);
+			En->Draw(EnemyIndex, TurnNum, int(UnitList.size()), false, TurnFrameTime, m_Whole_Turn_Count, ExistUnits::Instance()->m_NowTarget);
 		}
 	}
 
