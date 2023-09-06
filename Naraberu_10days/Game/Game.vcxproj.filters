@@ -92,6 +92,9 @@
     <Filter Include="src\user\BattleManager\Enemy_Act\Jamming">
       <UniqueIdentifier>{392e3e87-3d73-4220-9d61-d170438cc852}</UniqueIdentifier>
     </Filter>
+    <Filter Include="src\user\RefreshRate">
+      <UniqueIdentifier>{51245595-224c-43f4-9cf7-8753bdefc193}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="..\..\src\engine\KuroEngineDevice.cpp">
@@ -668,6 +671,9 @@
     </ClInclude>
     <ClInclude Include="ExistUnits.h">
       <Filter>src\user\BattleManager</Filter>
+    </ClInclude>
+    <ClInclude Include="RefreshRate.h">
+      <Filter>src\user\RefreshRate</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>

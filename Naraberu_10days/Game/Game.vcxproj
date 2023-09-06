@@ -299,6 +299,7 @@ xcopy "$(SolutionDir)dxil.dll" $(TargetDir) /Y</Command>
     <ClInclude Include="ExistUnits.h" />
     <ClInclude Include="E_Ac_Base.h" />
     <ClInclude Include="Player.h" />
+    <ClInclude Include="RefreshRate.h" />
     <ClInclude Include="src\GameScene.h" />
     <ClInclude Include="StageManager.h" />
     <ClInclude Include="UnitBase.h" />

@@ -35,5 +35,7 @@ public:
 
 	// •`‰æ
 	void Draw(int Index, int NowTurn_Index, int Index_Max, bool Dark, int FrameTime, bool FirstTurn);
+
+	void Draw_Boss(int Index, int NowTurn_Index, int Index_Max, bool Dark, int FrameTime, bool FirstTurn);
 };
 
