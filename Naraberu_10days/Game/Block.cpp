@@ -60,7 +60,6 @@ void Block::Move()
 		pos.y += 1;
 	}
 	input = nullptr;
-
 }
 
 void Block::ChangeBlock(const KuroEngine::Vec2<int> _mapchipNum, const std::vector<KuroEngine::Vec2<int>> _shape)

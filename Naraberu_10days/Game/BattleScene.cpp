@@ -61,7 +61,7 @@ void BattleScene::OnUpdate()
 		//配置可能なら配置する
 		bool isSet = stage->JudgeSet(nowMapchip, shape, color);
 		//次の使用ブロックをセットする
-		block->ChangeBlock();
+		block->SetIsChoice();
 	}
 
 	//線と塊の判定

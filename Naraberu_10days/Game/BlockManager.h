@@ -39,6 +39,11 @@ public:
 	void Reset();
 
 	/// <summary>
+	/// ブロック選択
+	/// </summary>
+	void ChoiceBlock();
+
+	/// <summary>
 	/// ブロックの変更
 	/// </summary>
 	/// <returns></returns>
@@ -71,11 +76,23 @@ public:
 	/// <param name="a2">ブロック２</param>
 	void SetOneChangeBlock(const int a1, const int a2);
 
+	void SetIsEnemyAttack(bool _isEnemyAttack = true) { isEnemyAttack = _isEnemyAttack; }
+	void SetIsChoice(bool _isChoice = true) { isChoice = _isChoice; }
+
 private:
 
+	//矢印画像
+	std::shared_ptr<KuroEngine::TextureBuffer> arrowTex;
 	//中央
 	KuroEngine::Vec2<int> center;
 	//使うブロック情報
 	std::array<UseBlockType, int(ObjectType::size)> block;
+	//敵行動中か
+	bool isEnemyAttack;
+	//選択を行う
+	bool isChoice;
+	bool isOldChoice;
+	//選択中のブロック
+	int nowChoice;
 };
 
