@@ -10,6 +10,8 @@
 #include "Player_Attack_01.h"
 #include "Player_Attack_02.h"
 #include "Player_Heal_01.h"
+#include "Player_Bonus_Attack_01.h"
+#include "Player_Ultimate_01.h"
 
 class UnitBase;
 
@@ -22,12 +24,16 @@ namespace PlayerSkills {
 		PLAYER_ATTACK_01,
 		PLAYER_ATTACK_02,
 		PLAYER_HEAL_01,
+		PLAYER_BONUS_01,
+		PLAYER_ULTIMATE_01,
 		ACTION_MAX
 	};
 	static std::map<std::string, PlayerSkillList> m_List_Pair = {
 		{"Attack_01", PlayerSkillList::PLAYER_ATTACK_01 },
 		{"Attack_02", PlayerSkillList::PLAYER_ATTACK_02 },
-		{"Heal_01", PlayerSkillList::PLAYER_HEAL_01 }
+		{"Heal_01", PlayerSkillList::PLAYER_HEAL_01 },
+		{"Bonus_01", PlayerSkillList::PLAYER_BONUS_01 },
+		{"Ultimate_01", PlayerSkillList::PLAYER_ULTIMATE_01 }
 	};
 
 	class PlayerSkillMgr : public KuroEngine::DesignPattern::Singleton<PlayerSkillMgr>
@@ -57,7 +63,7 @@ namespace PlayerSkills {
 		{
 			if (Action_Name == "Attack_01") {
 				m_List.emplace_front(std::make_shared<Player_Attack_01>());
-				GetPtr<Player_Attack_01>(m_List.front())->Param_Set(50, 3);
+				GetPtr<Player_Attack_01>(m_List.front())->Param_Set(1, 3);
 				m_Initiator = Initiator;
 				std::vector<UnitBase*>m_Targets;
 				m_Targets.clear();
@@ -68,7 +74,7 @@ namespace PlayerSkills {
 			}
 			if (Action_Name == "Attack_02") {
 				m_List.emplace_front(std::make_shared<Player_Attack_02>());
-				GetPtr<Player_Attack_02>(m_List.front())->Param_Set(100, 3);
+				GetPtr<Player_Attack_02>(m_List.front())->Param_Set(3, 3);
 				m_Initiator = Initiator;
 				std::vector<UnitBase*>m_Targets;
 				m_Targets.clear();
@@ -82,6 +88,28 @@ namespace PlayerSkills {
 				GetPtr<Player_Heal_01>(m_List.front())->Param_Set(20, 3);
 				m_Initiator = Initiator;
 				GetPtr<Player_Heal_01>(m_List.front())->Need_Object_Set(Initiator);
+			}
+			if (Action_Name == "Bonus_01") {
+				m_List.emplace_front(std::make_shared<Player_Bonus_Attack_01>());
+				GetPtr<Player_Bonus_Attack_01>(m_List.front())->Param_Set(3, 3);
+				m_Initiator = Initiator;
+				std::vector<UnitBase*>m_Targets;
+				m_Targets.clear();
+				for (UnitBase* Target : std::initializer_list<UnitBase*>{ Targets... }) {
+					m_Targets.emplace_back(Target);
+				}
+				GetPtr<Player_Bonus_Attack_01>(m_List.front())->Need_Object_Set(Initiator, m_Targets[0]);
+			}
+			if (Action_Name == "Ultimate_01") {
+				m_List.emplace_front(std::make_shared<Player_Ultimate_01>());
+				GetPtr<Player_Ultimate_01>(m_List.front())->Param_Set(3, 3);
+				m_Initiator = Initiator;
+				std::vector<UnitBase*>m_Targets;
+				m_Targets.clear();
+				for (UnitBase* Target : std::initializer_list<UnitBase*>{ Targets... }) {
+					m_Targets.emplace_back(Target);
+				}
+				GetPtr<Player_Ultimate_01>(m_List.front())->Need_Object_Set(Initiator, m_Targets[0]);
 			}
 		}
 

@@ -15,6 +15,8 @@ public:
 	int m_NowTurn;
 	int m_NowTarget;
 
+	int m_NowBonusCount = 0;
+
 	void Set(UnitBase* Player, UnitBase* Enemy_01 = nullptr, UnitBase* Enemy_02 = nullptr, UnitBase* Enemy_03 = nullptr) {
 		m_pPlayer = Player;
 		m_Enemys.clear();

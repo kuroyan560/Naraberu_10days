@@ -193,7 +193,9 @@ xcopy "$(SolutionDir)dxil.dll" $(TargetDir) /Y</Command>
     <ClCompile Include="PlayerSkills.cpp" />
     <ClCompile Include="Player_Attack_01.cpp" />
     <ClCompile Include="Player_Attack_02.cpp" />
+    <ClCompile Include="Player_Bonus_Attack_01.cpp" />
     <ClCompile Include="Player_Heal_01.cpp" />
+    <ClCompile Include="Player_Ultimate_01.cpp" />
     <ClCompile Include="src\main.cpp" />
     <ClCompile Include="src\GameScene.cpp" />
     <ClCompile Include="src\OperationConfig.cpp" />
@@ -308,7 +310,9 @@ xcopy "$(SolutionDir)dxil.dll" $(TargetDir) /Y</Command>
     <ClInclude Include="PlayerSkills.h" />
     <ClInclude Include="Player_Attack_01.h" />
     <ClInclude Include="Player_Attack_02.h" />
+    <ClInclude Include="Player_Bonus_Attack_01.h" />
     <ClInclude Include="Player_Heal_01.h" />
+    <ClInclude Include="Player_Ultimate_01.h" />
     <ClInclude Include="P_Ac_Base.h" />
     <ClInclude Include="RefreshRate.h" />
     <ClInclude Include="src\GameScene.h" />

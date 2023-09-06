@@ -40,6 +40,9 @@ void Player_Attack_02::Action_Update()
 		}
 		// 1番目のターゲットに攻撃する
 		m_Targets[0]->Damage(m_Damage);
+
+		// アルティメットポイントを加算
+		GetUnitPtr_nama<Player*>(m_Initiator)->AddUltPoint(3);
 	}
 }
 

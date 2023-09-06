@@ -1,4 +1,4 @@
-#include "Player_Attack_01.h"
+#include "Player_Bonus_Attack_01.h"
 #include "Player.h"
 #include "Enemy.h"
 
@@ -7,21 +7,26 @@
 #include "../../src/engine/FrameWork/WinApp.h"
 #include "../../src/engine/FrameWork/UsersInput.h"
 
-void Player_Attack_01::Param_Set(int Damage, int Duration)
+void Player_Bonus_Attack_01::Param_Set(int Damage, int Duration)
 {
 	m_Damage = Damage;
 	m_Timer = 0;
 	m_Finish = Duration;
 }
 
+void Player_Bonus_Attack_01::Bonus_Count_Set(int BonusCount)
+{
+	m_BonusCount = BonusCount;
+}
 
-void Player_Attack_01::Action_Start()
+
+void Player_Bonus_Attack_01::Action_Start()
 {
 	// 基底初期化
 	P_Ac_Base::Action_Start();
 }
 
-void Player_Attack_01::Action_Update()
+void Player_Bonus_Attack_01::Action_Update()
 {
 	// 終了処理
 	if (GetEndTimer()) {
@@ -38,15 +43,17 @@ void Player_Attack_01::Action_Update()
 		if (m_Targets.size() < 1 || m_Targets[0] == nullptr) {
 			exit(1);
 		}
-		// 1番目のターゲットに攻撃する
-		m_Targets[0]->Damage(m_Damage);
+		// 全てのターゲットに攻撃する
+		for (auto& tgt : m_Targets) {
+			tgt->Damage(m_BonusCount);
+		}
 
 		// アルティメットポイントを加算
-		GetUnitPtr_nama<Player*>(m_Initiator)->AddUltPoint(1);
+		GetUnitPtr_nama<Player*>(m_Initiator)->AddUltPoint(m_BonusCount);
 	}
 }
 
-void Player_Attack_01::Action_Draw()
+void Player_Bonus_Attack_01::Action_Draw()
 {
 	// 終了済みの場合は描画しない
 	if (GetEnd()) {
@@ -60,7 +67,7 @@ void Player_Attack_01::Action_Draw()
 	DrawFunc2D::DrawBox2D(LT, RB, Color(255, 0, 0, 255), true);
 }
 
-void Player_Attack_01::Action_End()
+void Player_Bonus_Attack_01::Action_End()
 {
 	// 終了フラグを上げる
 	End();
