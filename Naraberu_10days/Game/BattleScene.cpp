@@ -51,17 +51,8 @@ void BattleScene::OnUpdate()
 	KuroEngine::UsersInput* input = KuroEngine::UsersInput::Instance();
 
 	//セット可能ならセットする
-	if (input->ControllerOnTrigger(0, KuroEngine::XBOX_BUTTON::B)) {
-		KuroEngine::Vec2<int> nowMapchip;
-		std::vector<KuroEngine::Vec2<int>> shape;
-		BlockColor color;
-
-		//ブロック情報取得
-		block->GetBlock(&nowMapchip, &shape, &attribute, &color);
-		//配置可能なら配置する
-		bool isSet = stage->JudgeSet(nowMapchip, shape, color);
-		//次の使用ブロックをセットする
-		block->SetIsChoice();
+	if (ExistUnits::Instance()->m_NowTurn == 0) {
+		PlayerTurn();
 	}
 
 	//線と塊の判定
@@ -159,4 +150,22 @@ void BattleScene::OnFinalize()
 
 BattleScene::BattleScene()
 {
+}
+
+void BattleScene::PlayerTurn()
+{
+	KuroEngine::UsersInput* input = KuroEngine::UsersInput::Instance();
+
+	if (input->ControllerOnTrigger(0, KuroEngine::XBOX_BUTTON::B)) {
+		KuroEngine::Vec2<int> nowMapchip;
+		std::vector<KuroEngine::Vec2<int>> shape;
+		BlockColor color;
+
+		//ブロック情報取得
+		block->GetBlock(&nowMapchip, &shape, &attribute, &color);
+		//配置可能なら配置する
+		bool isSet = stage->JudgeSet(nowMapchip, shape, color);
+		//次の使用ブロックをセットする
+		block->SetIsChoice();
+	}
 }

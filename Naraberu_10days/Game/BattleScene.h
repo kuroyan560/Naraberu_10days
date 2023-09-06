@@ -31,6 +31,8 @@ class BattleScene :
 	BlockAttribute attribute;
 
 
+	void PlayerTurn();
+
 	void OnInitialize()override;
 	void OnUpdate()override;
 	void OnDraw()override;

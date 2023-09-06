@@ -36,7 +36,7 @@ int WINAPI WinMain(HINSTANCE, HINSTANCE, LPSTR, int)
 	engineOption.m_iconPath = L"resource/user/tex/icon.ico";
 	engineOption.m_backBuffClearColor = KuroEngine::Color(50, 49, 59, 255);
 	engineOption.m_useHDR = false;
-	engineOption.m_frameRate = 60;
+	engineOption.m_frameRate = 120;
 
 	//================================
 

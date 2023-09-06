@@ -62,12 +62,21 @@ public:
 	void BlockOneDraw(const KuroEngine::Vec2<int> _shape,
 		const KuroEngine::Vec2<float> pos, const BlockColor _color);
 
+	/// <summary>
+	/// action描画
+	/// </summary>
+	/// <param name="_pos">座標</param>
+	/// <param name="_attribute">アクション</param>
+	void ActionDraw(const KuroEngine::Vec2<float> _pos,const BlockAttribute _attribute);
+
 	KuroEngine::Vec2<int> GetMapChipNum() { return pos; }
 
 private:
 
 	//ブロック画像
 	std::array<std::shared_ptr<KuroEngine::TextureBuffer>, int(BlockColor::size)> blockTex;
+	//アクション画像
+	std::array<std::shared_ptr<KuroEngine::TextureBuffer>, int(BlockAttribute::size)> actionTex;
 	//座標(mapchip)
 	KuroEngine::Vec2<int> pos;
 	//移動可能か

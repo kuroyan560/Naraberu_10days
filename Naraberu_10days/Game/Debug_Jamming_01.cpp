@@ -44,7 +44,7 @@ void Debug_Jamming_01::Action_Draw()
 
 	using namespace KuroEngine;
 	// ‰¼‚Å” ‚ð•`‰æ
-	DrawFunc2D::DrawBox2D(Vec2(0.0f, 0.0f), Vec2(100.0f, 100.0f), Color(0, 255, 255, 255), true);
+	//DrawFunc2D::DrawBox2D(Vec2(0.0f, 0.0f), Vec2(100.0f, 100.0f), Color(0, 255, 255, 255), true);
 }
 
 void Debug_Jamming_01::Action_End()

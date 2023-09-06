@@ -13,6 +13,11 @@ Block::Block(bool _isMove)
 	blockTex[int(BlockColor::blue)] = KuroEngine::D3D12App::Instance()->GenerateTextureBuffer(TexDir + "block_blue.png");
 	blockTex[int(BlockColor::yellow)] = KuroEngine::D3D12App::Instance()->GenerateTextureBuffer(TexDir + "block_yellow.png");
 
+	std::string acDir = "action_icon/";
+	actionTex[int(BlockAttribute::attack1)] = KuroEngine::D3D12App::Instance()->GenerateTextureBuffer(TexDir + acDir + "weak_attack_icon.png");
+	actionTex[int(BlockAttribute::attack2)] = KuroEngine::D3D12App::Instance()->GenerateTextureBuffer(TexDir + acDir + "strong_attack_icon.png");
+	actionTex[int(BlockAttribute::recovery)] = KuroEngine::D3D12App::Instance()->GenerateTextureBuffer(TexDir + acDir + "heal_icon.png");
+
 	isMove = _isMove;
 }
 
@@ -26,6 +31,8 @@ void Block::Draw(const std::vector<KuroEngine::Vec2<int>> _shape, BlockAttribute
 		KuroEngine::Vec2<float> inpos = { (pos.x + i.x) * blockSize + difference.x , (pos.y + i.y) * blockSize + difference.y };
 		BlockOneDraw(inpos, _color);
 	}
+
+	ActionDraw({ (pos.x + shapeMax.x) * blockSize + difference.x, (pos.y + shapeMin.y) * blockSize + difference.y }, _attribute);
 }
 
 void Block::Draw(const std::vector<KuroEngine::Vec2<int>> _shape, const KuroEngine::Vec2<float> shape_dist,
@@ -35,6 +42,8 @@ void Block::Draw(const std::vector<KuroEngine::Vec2<int>> _shape, const KuroEngi
 	for (auto& i : _shape) {
 		BlockOneDraw(i, pos, _color);
 	}
+
+	//ActionDraw({ shapeMax.x * blockSize + difference.x, shapeMin.y * blockSize + difference.y }, _attribute);
 }
 
 void Block::Reset()
@@ -65,6 +74,8 @@ void Block::Move()
 void Block::ChangeBlock(const KuroEngine::Vec2<int> _mapchipNum, const std::vector<KuroEngine::Vec2<int>> _shape)
 {
 	pos = _mapchipNum;
+
+	//ç≈è¨ç≈ëÂÇïœçX
 	shapeMax = { 0,0 };
 	shapeMin = { 0,0 };
 	for (auto& i : _shape) {
@@ -97,6 +108,8 @@ void Block::BlockOneDraw(const KuroEngine::Vec2<float> pos, BlockColor _color)
 	} else if (_color == BlockColor::yellow) {
 		DrawFunc2D::DrawExtendGraph2D(pos, pos1, blockTex[int(BlockColor::yellow)]);
 	}
+
+
 }
 
 void Block::BlockOneDraw(const KuroEngine::Vec2<int> _shape, const KuroEngine::Vec2<float> pos, const BlockColor _color)
@@ -118,6 +131,25 @@ void Block::BlockOneDraw(const KuroEngine::Vec2<int> _shape, const KuroEngine::V
 		DrawFunc2D::DrawExtendGraph2D(pos1, pos2, blockTex[int(BlockColor::blue)]);
 	} else if (_color == BlockColor::yellow) {
 		DrawFunc2D::DrawExtendGraph2D(pos1, pos2, blockTex[int(BlockColor::yellow)]);
+	}
+
+}
+
+void Block::ActionDraw(const KuroEngine::Vec2<float> _pos, const BlockAttribute _attribute)
+{
+	const KuroEngine::Vec2<float> actionPos = { _pos.x + 50.0f,_pos.y - 10.0f };
+	if (_attribute == BlockAttribute::attack1) {
+		const KuroEngine::Vec2<float> actionSize = { 32.0f/2.0f,95.0f / 2.0f };
+		KuroEngine::DrawFunc2D::DrawExtendGraph2D({ actionPos.x - actionSize.x / 2.0f,actionPos.y - actionSize.y / 2.0f },
+			{ actionPos.x + actionSize.x / 2.0f,actionPos.y + actionSize.y / 2.0f }, actionTex[int(BlockAttribute::attack1)]);
+	}else if (_attribute == BlockAttribute::attack2) {
+		const KuroEngine::Vec2<float> actionSize = { 58.0f / 2.0f,84.0f / 2.0f };
+		KuroEngine::DrawFunc2D::DrawExtendGraph2D({ actionPos.x - actionSize.x / 2.0f,actionPos.y - actionSize.y / 2.0f },
+			{ actionPos.x + actionSize.x / 2.0f,actionPos.y + actionSize.y / 2.0f }, actionTex[int(BlockAttribute::attack2)]);
+	} else if (_attribute == BlockAttribute::recovery) {
+		const KuroEngine::Vec2<float> actionSize = { 68.0f / 2.0f,65.0f / 2.0f };
+		KuroEngine::DrawFunc2D::DrawExtendGraph2D({ actionPos.x - actionSize.x / 2.0f,actionPos.y - actionSize.y / 2.0f },
+			{ actionPos.x + actionSize.x / 2.0f,actionPos.y + actionSize.y / 2.0f }, actionTex[int(BlockAttribute::recovery)]);
 	}
 
 }
