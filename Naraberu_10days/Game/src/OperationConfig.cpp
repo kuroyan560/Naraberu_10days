@@ -23,7 +23,7 @@ OperationConfig::OperationConfig()
 		DIK_SPACE,	//決定
 		DIK_ESCAPE,	//キャンセル
 		DIK_SPACE,	//プリズムをパネルに設置
-		DIK_LEFT,	//左のプリズムを選択
+		DIK_L,	//左のプリズムを選択
 		DIK_RIGHT,	//右のプリズムを選択
 		DIK_RETURN,	//ターンを終える
 	};
@@ -103,7 +103,7 @@ bool OperationConfig::KeyInput(INPUT_PATTERN arg_pattern, int arg_keyCode)
 	return false;
 }
 
-bool OperationConfig::GetSelectVec(SELECT_VEC arg_vec)
+bool OperationConfig::GetSelectVec(SELECT_VEC arg_vec, INPUT_DEVICE* arg_device)
 {
 	static const float STICK_DEAD_RANGE = 0.15f;
 	bool con = false;
@@ -135,10 +135,86 @@ bool OperationConfig::GetSelectVec(SELECT_VEC arg_vec)
 			break;
 	}
 
-	if (con)RegisterLatestDevice(INPUT_DEVICE::CONTROLLER);
-	else if(key)RegisterLatestDevice(INPUT_DEVICE::KEY_BOARD_MOUSE);
+	if (con)
+	{
+		RegisterLatestDevice(INPUT_DEVICE::CONTROLLER);
+		if (arg_device)*arg_device = INPUT_DEVICE::CONTROLLER;
+	}
+	else if (key)
+	{
+		RegisterLatestDevice(INPUT_DEVICE::KEY_BOARD_MOUSE);
+		if (arg_device)*arg_device = INPUT_DEVICE::KEY_BOARD_MOUSE;
+	}
 
 	return con || key;
+}
+
+bool OperationConfig::GetMoveVec(SELECT_VEC arg_vec)
+{
+	//トリガー入力
+	INPUT_DEVICE device;
+	bool trigger = GetSelectVec(arg_vec, &device);
+	if (trigger)
+	{
+		//長押しフレームのリセット
+		m_moveInputFrame[device][arg_vec] = 0;
+		return true;
+	}
+
+	//長押しで入力判定にするフレーム
+	static const int INPUT_FRAME_MAX = 8;
+
+	bool con = false;
+	bool key = false;
+
+	//長押し入力
+	switch (arg_vec)
+	{
+		case SELECT_VEC_UP:
+			con = UsersInput::Instance()->ControllerInput(0, XBOX_STICK::L_UP)
+				|| UsersInput::Instance()->ControllerInput(0, XBOX_BUTTON::DPAD_UP);
+			key = UsersInput::Instance()->KeyInput(DIK_W);
+			break;
+		case SELECT_VEC_DOWN:
+			con = UsersInput::Instance()->ControllerInput(0, XBOX_STICK::L_DOWN)
+				|| UsersInput::Instance()->ControllerInput(0, XBOX_BUTTON::DPAD_DOWN);
+			key = UsersInput::Instance()->KeyInput(DIK_S);
+			break;
+		case SELECT_VEC_LEFT:
+			con = UsersInput::Instance()->ControllerInput(0, XBOX_STICK::L_LEFT)
+				|| UsersInput::Instance()->ControllerInput(0, XBOX_BUTTON::DPAD_LEFT);
+			key = UsersInput::Instance()->KeyInput(DIK_A);
+			break;
+		case SELECT_VEC_RIGHT:
+			con = UsersInput::Instance()->ControllerInput(0, XBOX_STICK::L_RIGHT)
+				|| UsersInput::Instance()->ControllerInput(0, XBOX_BUTTON::DPAD_RIGHT);
+			key = UsersInput::Instance()->KeyInput(DIK_D);
+			break;
+		default:
+			break;
+	}
+
+	if (con)
+	{
+		RegisterLatestDevice(INPUT_DEVICE::CONTROLLER);
+		device = INPUT_DEVICE::CONTROLLER;
+	}
+	else if (key)
+	{
+		RegisterLatestDevice(INPUT_DEVICE::KEY_BOARD_MOUSE);
+		device = INPUT_DEVICE::KEY_BOARD_MOUSE;
+	}
+	else return false;
+
+	//長押し入力フレーム更新
+	if (INPUT_FRAME_MAX <= ++m_moveInputFrame[device][arg_vec])
+	{
+		//長押し入力フレームリセット
+		m_moveInputFrame[device][arg_vec] = 0;
+		return true;
+	}
+
+	return false;
 }
 
 bool OperationConfig::GetTargetChangeVec(SELECT_VEC arg_vec)

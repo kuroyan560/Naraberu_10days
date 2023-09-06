@@ -28,7 +28,8 @@ public:
 		SELECT_VEC_UP,
 		SELECT_VEC_DOWN,
 		SELECT_VEC_LEFT,
-		SELECT_VEC_RIGHT
+		SELECT_VEC_RIGHT,
+		SELECT_VEC_NUM
 	};
 
 private:
@@ -58,6 +59,9 @@ private:
 	//全ての入力を受けて受けているか
 	bool m_isAllInputActive = true;
 
+	//移動ベクトルの長押し入力フレーム
+	std::array<std::array<int, INPUT_DEVICE::NUM>, SELECT_VEC_NUM>m_moveInputFrame;
+
 	void OnImguiItems()override;
 
 	//最後に使った入力デバイスを記録
@@ -76,12 +80,9 @@ public:
 	void SetAllInputActive(bool arg_active) { m_isAllInputActive = arg_active; }
 
 	//選択方向入力
-	bool GetSelectVec(SELECT_VEC arg_vec);
+	bool GetSelectVec(SELECT_VEC arg_vec, INPUT_DEVICE* arg_device = nullptr);
 	//移動方向入力
-	bool GetMoveVec(SELECT_VEC arg_vec)
-	{
-		return GetSelectVec(arg_vec);
-	}
+	bool GetMoveVec(SELECT_VEC arg_vec);
 
 	//ターゲット変更
 	bool GetTargetChangeVec(SELECT_VEC arg_vec);
