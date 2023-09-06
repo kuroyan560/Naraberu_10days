@@ -7,6 +7,8 @@
 
 #include "ExistUnits.h"
 
+#include "RefreshRate.h"
+
 Enemy::Enemy()
 {
 	// ターン関連変数の初期化
@@ -125,7 +127,7 @@ void Enemy::Draw(int Index, int NowTurn_Index, int Index_Max, bool Dark, int Fra
 	int EnemyCount = Index_Max - 2;
 
 	// ターン中に左に動かす
-	static const int POS_FINISH_FRAME_TIME = 10; // 動かすのにかかる時間
+	static const int POS_FINISH_FRAME_TIME = int(10.0f * float(RefreshRate::RefreshRate_Mag)); // 動かすのにかかる時間
 	static const float MOVE_WIDTH_MAX = 20.0f; // 動かす最大値
 	float Move_Width = 0.0f; // 現在動かしている値
 	// 経過フレーム倍率計算
@@ -147,7 +149,7 @@ void Enemy::Draw(int Index, int NowTurn_Index, int Index_Max, bool Dark, int Fra
 	int Mask_Black = 105; // 最終的なRGB倍率との差
 	Color Mask = Color(255 - Mask_Black, 255 - Mask_Black, 255 - Mask_Black, 255);
 	// 徐々に暗くする
-	static const int COL_FINISH_FRAME_TIME = 25; // 暗くするのにかかる時間
+	static const int COL_FINISH_FRAME_TIME = int(25.0f * float(RefreshRate::RefreshRate_Mag)); // 暗くするのにかかる時間
 	float Progress_Frame_Color = float(FrameTime > COL_FINISH_FRAME_TIME ? COL_FINISH_FRAME_TIME : FrameTime) / float(COL_FINISH_FRAME_TIME);
 	// 暗くする場合
 	if (Dark) {

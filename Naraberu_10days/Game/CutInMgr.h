@@ -8,6 +8,8 @@
 
 #include "../../src/engine/Common/Singleton.h"
 
+#include "RefreshRate.h"
+
 enum class CutInType {
 	PLAYER_TURN,
 	ENEMY_TURN,
@@ -46,7 +48,7 @@ class CutInMgr : public KuroEngine::DesignPattern::Singleton<CutInMgr>
 		template<class... A>
 		CutInData(CutInType Type, int CutInEndTime, A... TexPathes) {
 			m_Type = Type;
-			m_CutInEndTime = CutInEndTime;
+			m_CutInEndTime = int(float(CutInEndTime) * float(RefreshRate::RefreshRate_Mag));
 			for (std::string TexPath : std::initializer_list<std::string>{ TexPathes... }) {
 				m_Tex.emplace_back(KuroEngine::D3D12App::Instance()->GenerateTextureBuffer(TexPath));
 			}

@@ -1,5 +1,5 @@
 #pragma once
 
-namespace RR {
-	//static const int RefreshRate
+namespace RefreshRate {
+	static const float RefreshRate_Mag = 0.5f;
 }
