@@ -162,7 +162,7 @@ bool OperationConfig::GetMoveVec(SELECT_VEC arg_vec)
 	}
 
 	//’·‰Ÿ‚µ‚Å“ü—Í”»’è‚É‚·‚éƒtƒŒ[ƒ€
-	static const int INPUT_FRAME_MAX = 8;
+	static const int INPUT_FRAME_MAX = 10;
 
 	bool con = false;
 	bool key = false;
