@@ -45,7 +45,7 @@ public:
 	/// </summary>
 	/// <param name="_massNum">塊の数</param>
 	/// <param name="_color">塊の色</param>
-	bool MassProcess(std::vector<int>* _massNum, std::vector<BlockColor>* _color);
+	void MassProcess(std::vector<int>* _massNum, std::vector<BlockColor>* _color);
 
 	/// <summary>
 	/// 塊判定処理
@@ -59,7 +59,7 @@ public:
 	/// </summary>
 	/// <param name="lineNum">線の数</param>
 	/// <param name="_color">線の色</param>
-	bool LineProcess(int* _lineNum, std::vector<BlockColor>* _color);
+	void LineProcess(int* _lineNum, std::vector<BlockColor>* _color);
 
 	/// <summary>
 	/// 塊判定処理
@@ -67,6 +67,11 @@ public:
 	/// <param name="_lineMap">現在のmapchip番号</param>
 	/// <param name="_direction">ラインの向き false->+y/true->+x</param>
 	int LineBlock(const KuroEngine::Vec2<int> _lineMap, const bool _direction);
+
+	/// <summary>
+	/// ボーナスの算出
+	/// </summary>
+	void BonusCount();
 
 	/// <summary>
 	/// お邪魔セット

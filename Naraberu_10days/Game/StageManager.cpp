@@ -93,6 +93,9 @@ bool StageManager::JudgeSet(KuroEngine::Vec2<int> _nowMapchip, std::vector<KuroE
 		mapchip[_nowMapchip.y + i.y][_nowMapchip.x + i.x] = int(color);
 	}
 
+	//ボーナス計算
+	BonusCount();
+
 	// 設置したらアクション
 	if (_attribute == BlockAttribute::attack1) {
 		// 弱攻撃
@@ -109,7 +112,7 @@ bool StageManager::JudgeSet(KuroEngine::Vec2<int> _nowMapchip, std::vector<KuroE
 	return true;
 }
 
-bool StageManager::MassProcess(std::vector<int>* _massNum, std::vector<BlockColor>* _color)
+void StageManager::MassProcess(std::vector<int>* _massNum, std::vector<BlockColor>* _color)
 {
 	//削除管理用マップ初期化
 	for (int y = 0; y < mapMax.y; y++) {
@@ -132,8 +135,6 @@ bool StageManager::MassProcess(std::vector<int>* _massNum, std::vector<BlockColo
 			_color->emplace_back(BlockColor(mapchip[y][x]));
 		}
 	}
-
-	return true;
 }
 
 void StageManager::MassBlock(int* _massNum, const KuroEngine::Vec2<int> _massMap)
@@ -176,7 +177,7 @@ void StageManager::MassBlock(int* _massNum, const KuroEngine::Vec2<int> _massMap
 	return;
 }
 
-bool StageManager::LineProcess(int* _lineNum, std::vector<BlockColor>* _color)
+void StageManager::LineProcess(int* _lineNum, std::vector<BlockColor>* _color)
 {
 	int lineNum = 0;
 
@@ -205,8 +206,6 @@ bool StageManager::LineProcess(int* _lineNum, std::vector<BlockColor>* _color)
 
 	//記録
 	*_lineNum = lineNum;
-
-	return true;
 }
 
 int StageManager::LineBlock(const KuroEngine::Vec2<int> _lineMap, const bool _direction)
@@ -234,4 +233,17 @@ int StageManager::LineBlock(const KuroEngine::Vec2<int> _lineMap, const bool _di
 	}
 
 	return 1;
+}
+
+void StageManager::BonusCount()
+{
+	std::vector<int> _massNum;
+	std::vector<BlockColor> _Mcolor;
+	MassProcess(&_massNum, &_Mcolor);
+
+	int _lineNum;
+	std::vector<BlockColor> _Lcolor;
+	LineProcess(&_lineNum, &_Lcolor);
+
+	ExistUnits::Instance()->m_NowBonusCount = int(_massNum.size()) + _lineNum;
 }
