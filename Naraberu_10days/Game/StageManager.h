@@ -30,12 +30,15 @@ public:
 	void Reset();
 
 	/// <summary>
-	/// セット処理
+/// セット処理
 	/// </summary>
 	/// <param name="_nowMapchip">セットするオブジェクトのmapchip</param>
 	/// <param name="_shape">セットするオブジェクトの形状</param>
+	/// <param name="_attribute">アクション</param>
 	/// <param name="_color">色</param>
-	bool JudgeSet(KuroEngine::Vec2<int> _nowMapchip, std::vector<KuroEngine::Vec2<int>> _shape, BlockColor _color);
+	/// <returns></returns>
+	bool JudgeSet(KuroEngine::Vec2<int> _nowMapchip, std::vector<KuroEngine::Vec2<int>> _shape,
+		const BlockAttribute _attribute, BlockColor _color);
 
 	/// <summary>
 	/// 塊判定

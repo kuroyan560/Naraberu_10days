@@ -78,7 +78,8 @@ void StageManager::Reset()
 #include "PlayerSkills.h"
 #include "ExistUnits.h"
 
-bool StageManager::JudgeSet(KuroEngine::Vec2<int> _nowMapchip, std::vector<KuroEngine::Vec2<int>> _shape, BlockColor color)
+bool StageManager::JudgeSet(KuroEngine::Vec2<int> _nowMapchip, std::vector<KuroEngine::Vec2<int>> _shape,
+	const BlockAttribute _attribute, BlockColor color)
 {
 	for (auto& i : _shape) {
 		//ステージとの判定 ダメならfalse
