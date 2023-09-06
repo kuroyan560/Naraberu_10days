@@ -37,7 +37,7 @@ private:
 	OperationConfig();
 	
 	//デバッグのキー入力を受け付けるか
-	bool m_isDebug = false;
+	bool m_isDebug = true;
 
 	enum INPUT_DEVICE { KEY_BOARD_MOUSE, CONTROLLER, NUM }m_nowInputDevice = INPUT_DEVICE::KEY_BOARD_MOUSE;
 	const std::array<std::string, INPUT_DEVICE::NUM>m_inputDeviceNames =
@@ -95,4 +95,5 @@ public:
 
 	//デバッグ用のキー入力
 	bool DebugKeyInputOnTrigger(int arg_keyCode);
+	bool DebugKeyInput(int arg_keyCode);
 };

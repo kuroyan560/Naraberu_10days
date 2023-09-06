@@ -4,6 +4,7 @@
 #include "ExistUnits.h"
 #include "StageManager.h"
 #include "PlayerSkills.h"
+#include"src/OperationConfig.h"
 
 Player::Player()
 {
@@ -58,10 +59,10 @@ void Player::OnUpdate()
 void Player::OnAlwaysUpdate()
 {
 	using namespace KuroEngine;
-	if (UsersInput::Instance()->KeyInput(DIK_B)) {
+	if (OperationConfig::Instance()->DebugKeyInput(DIK_B)) {
 		m_HP > 0 ? m_HP-- : 0;
 	}
-	if (UsersInput::Instance()->KeyInput(DIK_N)) {
+	if (OperationConfig::Instance()->DebugKeyInput(DIK_N)) {
 		m_HP < m_MaxHP ? m_HP++ : 0;
 	}
 

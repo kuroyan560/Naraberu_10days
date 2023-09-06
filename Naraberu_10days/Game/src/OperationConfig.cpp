@@ -277,3 +277,9 @@ bool OperationConfig::DebugKeyInputOnTrigger(int arg_keyCode)
 	if (!m_isDebug)return false;
 	return UsersInput::Instance()->KeyOnTrigger(arg_keyCode);
 }
+
+bool OperationConfig::DebugKeyInput(int arg_keyCode)
+{
+	if (!m_isDebug)return false;
+	return UsersInput::Instance()->KeyInput(arg_keyCode);
+}
