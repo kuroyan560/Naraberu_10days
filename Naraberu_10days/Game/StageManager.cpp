@@ -78,7 +78,8 @@ void StageManager::Reset()
 #include "PlayerSkills.h"
 #include "ExistUnits.h"
 
-bool StageManager::JudgeSet(KuroEngine::Vec2<int> _nowMapchip, std::vector<KuroEngine::Vec2<int>> _shape, BlockColor color)
+bool StageManager::JudgeSet(KuroEngine::Vec2<int> _nowMapchip, std::vector<KuroEngine::Vec2<int>> _shape,
+	const BlockAttribute _attribute, BlockColor color)
 {
 	for (auto& i : _shape) {
 		//ステージとの判定 ダメならfalse
@@ -93,15 +94,15 @@ bool StageManager::JudgeSet(KuroEngine::Vec2<int> _nowMapchip, std::vector<KuroE
 	}
 
 	// 設置したらアクション
-	if (color == BlockColor::red) {
+	if (_attribute == BlockAttribute::attack1) {
 		// 弱攻撃
 		PlayerSkills::PlayerSkillMgr::Instance()->StartAction("Attack_01", ExistUnits::Instance()->m_pPlayer, ExistUnits::Instance()->m_Enemys[ExistUnits::Instance()->m_NowTarget]);
 	}
-	else if (color == BlockColor::blue) {
+	else if (_attribute == BlockAttribute::attack2) {
 		// 強攻撃
 		PlayerSkills::PlayerSkillMgr::Instance()->StartAction("Attack_02", ExistUnits::Instance()->m_pPlayer, ExistUnits::Instance()->m_Enemys[ExistUnits::Instance()->m_NowTarget]);
 	}
-	else if (color == BlockColor::yellow) {
+	else if (_attribute == BlockAttribute::recovery) {
 		// 回復
 		PlayerSkills::PlayerSkillMgr::Instance()->StartAction("Heal_01", ExistUnits::Instance()->m_pPlayer, ExistUnits::Instance()->m_Enemys[ExistUnits::Instance()->m_NowTarget]);
 	}
