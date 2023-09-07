@@ -1,6 +1,7 @@
 #pragma once
 #include "Common/Singleton.h"
 #include <vector>
+#include <string>
 
 class UnitBase;
 class PanelManager;
@@ -16,8 +17,10 @@ public:
 
 	int m_NowTurn;
 	int m_NowTarget;
-
 	int m_NowBonusCount = 0;
+
+	// ロードするステージ名(現在のステージ名)
+	std::string m_StageName = "Stage1";
 
 	void Set(UnitBase* Player, UnitBase* Enemy_01 = nullptr, UnitBase* Enemy_02 = nullptr, UnitBase* Enemy_03 = nullptr) {
 		m_pPlayer = Player;

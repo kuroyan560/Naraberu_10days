@@ -64,7 +64,14 @@ namespace Stages {
 			m_Data.back().AddWave(DebugEnemy_3, DebugEnemy_3, DebugEnemy_3);
 			m_Data.back().AddWave(DebugEnemy_Boss_1);
 			m_Data.emplace_back(StageData("Stage2"));
-			m_Data.back().AddWave(DebugEnemy_2, DebugEnemy_2, DebugEnemy_2);
+			m_Data.back().AddWave(DebugEnemy_1, DebugEnemy_2, DebugEnemy_3);
+			m_Data.back().AddWave(DebugEnemy_2, DebugEnemy_1, DebugEnemy_2);
+			m_Data.back().AddWave(DebugEnemy_2, DebugEnemy_3, DebugEnemy_3);
+			m_Data.back().AddWave(DebugEnemy_Boss_1);
+			m_Data.emplace_back(StageData("Stage3"));
+			m_Data.back().AddWave(DebugEnemy_Boss_1);
+			m_Data.back().AddWave(DebugEnemy_Boss_1);
+			m_Data.back().AddWave(DebugEnemy_Boss_1);
 		}
 	};
 }

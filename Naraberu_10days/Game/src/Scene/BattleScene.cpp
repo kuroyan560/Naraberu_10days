@@ -36,7 +36,7 @@ void BattleScene::OnInitialize()
 	ExistUnits::Instance()->Set(Pl.get(), En[0].get(), En[1].get(), En[2].get());*/
 
 	// ステージをセット
-	SetStage("Stage1");
+	SetStage(ExistUnits::Instance()->m_StageName);
 	// 最初のウェーブ
 	m_NowWave = 1;
 	// ウェーブの敵を取得
