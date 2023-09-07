@@ -23,8 +23,12 @@ public:
 		m_pPlayer = Player;
 		m_Enemys.clear();
 		m_Enemys.emplace_back(Enemy_01);
-		m_Enemys.emplace_back(Enemy_02);
-		m_Enemys.emplace_back(Enemy_03);
+		if (Enemy_02 != nullptr) {
+			m_Enemys.emplace_back(Enemy_02);
+		}
+		if (Enemy_03 != nullptr) {
+			m_Enemys.emplace_back(Enemy_03);
+		}
 	}
 
 	void SetStageManagerPtr(PanelManager* ptr) {
@@ -33,5 +37,9 @@ public:
 
 	void SetMapChipPtr(std::vector<std::vector<int>>* MapChipData) {
 		m_MapChipData = MapChipData;
+	}
+
+	void AllClear() {
+		m_Enemys.clear();
 	}
 };

@@ -20,6 +20,7 @@ void BattleTurnMgr::OnInitialize(std::shared_ptr<UnitBase> Player, std::vector<s
 	m_Whole_Turn_Count = 0;
 	TurnNum = 0;
 	TurnFrameTime = 0;
+	NextGameTimer = 0;
 	ExistUnits::Instance()->m_NowTarget = 0;
 
 	using namespace KuroEngine;
@@ -37,6 +38,7 @@ void BattleTurnMgr::SetUnits(std::shared_ptr<UnitBase> Player, std::vector<std::
 	m_Whole_Turn_Count = 0;
 	TurnNum = 0;
 	TurnFrameTime = 0;
+	NextGameTimer = 0;
 	ExistUnits::Instance()->m_NowTarget = 0;
 }
 
@@ -68,6 +70,7 @@ void BattleTurnMgr::OnUpdate()
 	// ¶‚«‚Ä‚é“G‚ª‹‚È‚¢
 	if (!EnemyAlive) {
 		// ƒoƒgƒ‹I—¹ˆ—(Ÿ—˜)
+		Update_NextWave();
 		int a = 0;
 	}
 
@@ -142,6 +145,14 @@ void BattleTurnMgr::OnImguiDebug()
 void BattleTurnMgr::NextTurnStart()
 {
 	TurnFrameTime = 0;
+}
+
+void BattleTurnMgr::Update_NextWave()
+{
+	NextGameTimer++;
+	if (NextGameTimer >= NextGameTimeFinish) {
+
+	}
 }
 
 void BattleTurnMgr::Update_Battle()

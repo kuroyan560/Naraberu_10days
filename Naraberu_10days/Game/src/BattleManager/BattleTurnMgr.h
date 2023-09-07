@@ -39,6 +39,7 @@ public:
 	}
 
 	void OnInitialize(std::shared_ptr<UnitBase> Player, std::vector<std::shared_ptr<UnitBase>> Enemys);
+	// ウェーブに開始時にユニットをセット
 	void SetUnits(std::shared_ptr<UnitBase> Player, std::vector<std::shared_ptr<UnitBase>> Enemys);
 
 	void OnUpdate();
@@ -47,7 +48,12 @@ public:
 
 	void NextTurnStart();
 
+	// 次のバトルに行く場合の更新処理
+	void Update_NextWave();
 	// プレイヤーと敵が生きている場合の更新処理
 	void Update_Battle();
+
+	// 次のウェーブに移動するか
+	bool ChangeNextWave() { return NextGameTimer >= NextGameTimeFinish; }
 };
 

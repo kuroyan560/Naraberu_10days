@@ -26,14 +26,29 @@ void BattleScene::OnInitialize()
 	Pl->OnInitialize();
 	Pl->StartTurn();
 
-	En.emplace_back(std::make_shared<Enemy>());
+	/*En.emplace_back(std::make_shared<Enemy>());
 	GetUnitPtr<Enemy>(En[En.size() - 1])->SetEnemyData(EnemysData::DebugEnemy_1);
 	En.emplace_back(std::make_shared<Enemy>());
 	GetUnitPtr<Enemy>(En[En.size() - 1])->SetEnemyData(EnemysData::DebugEnemy_2);
 	En.emplace_back(std::make_shared<Enemy>());
 	GetUnitPtr<Enemy>(En[En.size() - 1])->SetEnemyData(EnemysData::DebugEnemy_3);
 	Mgr.OnInitialize(Pl, En);
+	ExistUnits::Instance()->Set(Pl.get(), En[0].get(), En[1].get(), En[2].get());*/
+
+	// ステージをセット
+	SetStage("Stage1");
+	// 最初のウェーブ
+	m_NowWave = 1;
+	// ウェーブの敵を取得
+	std::vector<EnemysData::EnemyData> EnemyData = m_NowStage.GetWaveEnemyIndex(m_NowWave);
+	for (auto& data : EnemyData) {
+		En.emplace_back(std::make_shared<Enemy>());
+		GetUnitPtr<Enemy>(En.back())->SetEnemyData(data);
+	}
+	// データをセット
+	Mgr.OnInitialize(Pl, En);
 	ExistUnits::Instance()->Set(Pl.get(), En[0].get(), En[1].get(), En[2].get());
+
 	/*En.emplace_back(std::make_shared<Enemy>());
 	GetUnitPtr<Enemy>(En[En.size() - 1])->SetEnemyData(EnemysData::DebugEnemy_Boss_1);
 	Mgr.OnInitialize(Pl, En);
@@ -54,6 +69,11 @@ void BattleScene::OnInitialize()
 void BattleScene::OnUpdate()
 {
 	KuroEngine::UsersInput* input = KuroEngine::UsersInput::Instance();
+
+	// ウェーブ終了・次ウェーブスタート
+	if (Mgr.ChangeNextWave()) {
+		NextWave();
+	}
 
 	//セット可能ならセットする
 	if (ExistUnits::Instance()->m_NowTurn == 0) {
@@ -127,6 +147,38 @@ void BattleScene::OnImguiDebug()
 void BattleScene::OnFinalize()
 {
 	En.clear();
+	PlayerSkills::PlayerSkillMgr::Instance()->AllClear();
+	EnemyActions::EnemyActionMgr::Instance()->AllClear();
+}
+
+void BattleScene::SetStage(std::string StageName)
+{
+	m_NowStage = Stages::StageList::Instance()->GetStage(StageName);
+}
+
+void BattleScene::NextWave()
+{
+	// 次ウェーブに変更
+	m_NowWave++;
+	// 次ウェーブの敵を取得
+	En.clear();
+	std::vector<EnemysData::EnemyData> EnemyData = m_NowStage.GetWaveEnemyIndex(m_NowWave);
+	for (auto& data : EnemyData) {
+		En.emplace_back(std::make_shared<Enemy>());
+		GetUnitPtr<Enemy>(En.back())->SetEnemyData(data);
+	}
+	Mgr.SetUnits(Pl, En);
+	if (En.size() == 1) {
+		ExistUnits::Instance()->Set(Pl.get(), En[0].get());
+	}
+	if (En.size() == 2) {
+		ExistUnits::Instance()->Set(Pl.get(), En[0].get(), En[1].get());
+	}
+	if (En.size() == 3) {
+		ExistUnits::Instance()->Set(Pl.get(), En[0].get(), En[1].get(), En[2].get());
+	}
+
+	// 攻撃等をクリア
 	PlayerSkills::PlayerSkillMgr::Instance()->AllClear();
 	EnemyActions::EnemyActionMgr::Instance()->AllClear();
 }

@@ -744,6 +744,9 @@
     <ClInclude Include="src\Stage\StageList.h">
       <Filter>src\user\Stage</Filter>
     </ClInclude>
+    <ClInclude Include="src\Scene\TitleScene.h">
+      <Filter>src\user\Scene</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <Image Include="resource\user\tex\icon.ico">

@@ -24,6 +24,9 @@ void PlayerSkills::PlayerSkillMgr::Update()
 void PlayerSkills::PlayerSkillMgr::Draw()
 {
     // ”­“®’†‚ÌƒXƒLƒ‹‘S‚Ä‚ð•`‰æ
+    if (m_List.empty()) {
+        return;
+    }
     for (auto& Skill : m_List) {
         Skill->Action_Draw();
     }

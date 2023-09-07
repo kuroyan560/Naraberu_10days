@@ -6,6 +6,7 @@
 #include "../BattleManager/BattleTurnMgr.h"
 #include "../Block/BlockManager.h"
 #include "../Panel/PanelManager.h"
+#include "../Stage/StageList.h"
 
 class BattleScene :
     public KuroEngine::BaseScene
@@ -34,6 +35,15 @@ class BattleScene :
 	void OnDraw()override;
 	void OnImguiDebug()override;
 	void OnFinalize()override;
+
+	// 現在のステージ
+	Stages::StageData m_NowStage;
+	// 現在のウェーブ
+	int m_NowWave;
+	// ステージをセット
+	void SetStage(std::string StageName);
+	// 次のウェーブスタート
+	void NextWave();
 public:
 	BattleScene();
 

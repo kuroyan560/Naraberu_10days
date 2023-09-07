@@ -53,7 +53,7 @@ namespace EnemysData {
 
 		std::shared_ptr<KuroEngine::TextureBuffer> m_ReticleTex;
 
-		EnemyData() : m_Name("UnNamed"), m_HP(1), m_MaxHP(1), m_ATK(1), m_AI_Type(AI_TYPE::DEFAULT), m_Tag(ENEMY_TAG::DEFAULT) {}
+		EnemyData() : m_Name("NONE"), m_HP(1), m_MaxHP(1), m_ATK(1), m_AI_Type(AI_TYPE::DEFAULT), m_Tag(ENEMY_TAG::DEFAULT) {}
 
 		template<class... A>
 		EnemyData(std::string Name, ENEMY_TAG Tag, int HP, int ATK, AI_TYPE AI_Type, A... ActPatterns) :
