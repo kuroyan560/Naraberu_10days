@@ -121,5 +121,9 @@ namespace PlayerSkills {
 		void Draw();
 
 		bool GetEnd();
+
+		void AllClear() {
+			m_List.clear();
+		}
 	};
 }

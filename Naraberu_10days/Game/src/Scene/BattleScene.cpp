@@ -9,6 +9,9 @@
 
 #include "../OperationConfig.h"
 
+#include "../BattleManager/Player_Act/Skills/PlayerSkills.h"
+#include "../BattleManager/Enemy_Act/EnemyActList.h"
+
 void BattleScene::OnInitialize()
 {
 	// ---- ”wŒi
@@ -124,6 +127,8 @@ void BattleScene::OnImguiDebug()
 void BattleScene::OnFinalize()
 {
 	En.clear();
+	PlayerSkills::PlayerSkillMgr::Instance()->AllClear();
+	EnemyActions::EnemyActionMgr::Instance()->AllClear();
 }
 
 BattleScene::BattleScene()

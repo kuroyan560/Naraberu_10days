@@ -741,6 +741,9 @@
     <ClInclude Include="src\RefreshRate.h">
       <Filter>src\user</Filter>
     </ClInclude>
+    <ClInclude Include="src\Stage\StageList.h">
+      <Filter>src\user\Stage</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <Image Include="resource\user\tex\icon.ico">
