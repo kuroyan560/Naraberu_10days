@@ -37,7 +37,7 @@ void BattleScene::OnInitialize()
 	Mgr.OnInitialize(Pl, En);
 	ExistUnits::Instance()->Set(Pl.get(), En[0].get());*/
 
-	stage.reset(new StageManager());
+	stage.reset(new PanelManager());
 	stage->Initialize();
 	block.reset(new BlockManager());
 	//’†‰›Žw’è

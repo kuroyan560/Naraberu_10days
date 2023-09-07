@@ -1,9 +1,9 @@
-#include "StageManager.h"
+#include "PanelManager.h"
 #include "ForUser/DrawFunc/2D/DrawFunc2D.h"
 
-KuroEngine::Vec2<int> StageManager::mapMax;
+KuroEngine::Vec2<int> PanelManager::mapMax;
 
-void StageManager::Initialize()
+void PanelManager::Initialize()
 {
 	//画像読み込み
 	std::string TexDir = "resource/user/tex/block/";
@@ -28,11 +28,11 @@ void StageManager::Initialize()
 	mapMax = { int(mapchip.size()), int(mapchip[0].size()) };
 }
 
-void StageManager::Update()
+void PanelManager::Update()
 {
 }
 
-void StageManager::Draw()
+void PanelManager::Draw()
 {
 	for (int y = 0; y < mapMax.y; y++) {
 		for (int x = 0; x < mapMax.x; x++) {
@@ -60,7 +60,7 @@ void StageManager::Draw()
 	}
 }
 
-void StageManager::Reset()
+void PanelManager::Reset()
 {
 	for (auto& y : mapchip) {
 		for (auto& x : y) {
@@ -73,7 +73,7 @@ void StageManager::Reset()
 #include "PlayerSkills.h"
 #include "ExistUnits.h"
 
-bool StageManager::JudgeSet(KuroEngine::Vec2<int> _nowMapchip, std::vector<KuroEngine::Vec2<int>> _shape,
+bool PanelManager::JudgeSet(KuroEngine::Vec2<int> _nowMapchip, std::vector<KuroEngine::Vec2<int>> _shape,
 	const BlockAttribute _attribute, BlockColor color)
 {
 	for (auto& i : _shape) {
@@ -109,7 +109,7 @@ bool StageManager::JudgeSet(KuroEngine::Vec2<int> _nowMapchip, std::vector<KuroE
 	return true;
 }
 
-void StageManager::MassProcess(std::vector<int>* _massNum, std::vector<BlockColor>* _color)
+void PanelManager::MassProcess(std::vector<int>* _massNum, std::vector<BlockColor>* _color)
 {
 	//削除管理用マップ初期化
 	for (int y = 0; y < mapMax.y; y++) {
@@ -134,7 +134,7 @@ void StageManager::MassProcess(std::vector<int>* _massNum, std::vector<BlockColo
 	}
 }
 
-void StageManager::MassBlock(int* _massNum, const KuroEngine::Vec2<int> _massMap)
+void PanelManager::MassBlock(int* _massNum, const KuroEngine::Vec2<int> _massMap)
 {
 	
 	//削除個数カウント
@@ -174,7 +174,7 @@ void StageManager::MassBlock(int* _massNum, const KuroEngine::Vec2<int> _massMap
 	return;
 }
 
-void StageManager::LineProcess(int* _lineNum, std::vector<BlockColor>* _color)
+void PanelManager::LineProcess(int* _lineNum, std::vector<BlockColor>* _color)
 {
 	int lineNum = 0;
 
@@ -205,7 +205,7 @@ void StageManager::LineProcess(int* _lineNum, std::vector<BlockColor>* _color)
 	*_lineNum = lineNum;
 }
 
-bool StageManager::LineBlock(const KuroEngine::Vec2<int> _lineMap, const bool _direction)
+bool PanelManager::LineBlock(const KuroEngine::Vec2<int> _lineMap, const bool _direction)
 {
 	//下
 	if (!_direction) {
@@ -232,7 +232,7 @@ bool StageManager::LineBlock(const KuroEngine::Vec2<int> _lineMap, const bool _d
 	return true;
 }
 
-void StageManager::BonusCount()
+void PanelManager::BonusCount()
 {
 	std::vector<int> _massNum;
 	std::vector<BlockColor> _Mcolor;

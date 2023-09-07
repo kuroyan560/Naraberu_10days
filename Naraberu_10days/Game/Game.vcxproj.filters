@@ -334,7 +334,7 @@
     <ClCompile Include="Block.cpp">
       <Filter>src\user\Block</Filter>
     </ClCompile>
-    <ClCompile Include="StageManager.cpp">
+    <ClCompile Include="PanelManager.cpp">
       <Filter>src\user\Stage</Filter>
     </ClCompile>
     <ClCompile Include="E_Ac_Base.cpp">
@@ -675,7 +675,7 @@
     <ClInclude Include="Block.h">
       <Filter>src\user\Block</Filter>
     </ClInclude>
-    <ClInclude Include="StageManager.h">
+    <ClInclude Include="PanelManager.h">
       <Filter>src\user\Stage</Filter>
     </ClInclude>
     <ClInclude Include="EnemyActList.h">

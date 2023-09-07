@@ -199,7 +199,7 @@ xcopy "$(SolutionDir)dxil.dll" $(TargetDir) /Y</Command>
     <ClCompile Include="src\main.cpp" />
     <ClCompile Include="src\GameScene.cpp" />
     <ClCompile Include="src\OperationConfig.cpp" />
-    <ClCompile Include="StageManager.cpp" />
+    <ClCompile Include="PanelManager.cpp" />
     <ClCompile Include="UnitBase.cpp" />
   </ItemGroup>
   <ItemGroup>
@@ -317,7 +317,7 @@ xcopy "$(SolutionDir)dxil.dll" $(TargetDir) /Y</Command>
     <ClInclude Include="RefreshRate.h" />
     <ClInclude Include="src\GameScene.h" />
     <ClInclude Include="src\OperationConfig.h" />
-    <ClInclude Include="StageManager.h" />
+    <ClInclude Include="PanelManager.h" />
     <ClInclude Include="UnitBase.h" />
   </ItemGroup>
   <ItemGroup>

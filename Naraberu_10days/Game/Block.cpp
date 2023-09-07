@@ -3,7 +3,7 @@
 #include "ForUser/DrawFunc/2D/DrawFunc2D.h"
 #include "FrameWork/UsersInput.h"
 #include "BaseInformation.h"
-#include "StageManager.h"
+#include "PanelManager.h"
 #include"src/OperationConfig.h"
 
 Block::Block(bool _isMove)
@@ -57,7 +57,7 @@ void Block::Reset()
 
 void Block::Move()
 {
-	KuroEngine::Vec2<int> max = StageManager::GetMapMax();
+	KuroEngine::Vec2<int> max = PanelManager::GetMapMax();
 	KuroEngine::UsersInput* input = KuroEngine::UsersInput::Instance();
 	if (OperationConfig::Instance()->GetMoveVec(OperationConfig::SELECT_VEC_LEFT)) {
 		if (pos.x <= -shapeMin.x) { return; }
@@ -97,7 +97,7 @@ void Block::ChangeBlock(const KuroEngine::Vec2<int> _mapchipNum, const std::vect
 	if (_mapchipNum.x != -1) {
 		pos = _mapchipNum;
 	} else {
-		KuroEngine::Vec2<int> max = StageManager::GetMapMax();
+		KuroEngine::Vec2<int> max = PanelManager::GetMapMax();
 
 		//ìÀÇ´èoÇƒÇ¢ÇΩèÍçáñﬂÇ∑
 		pos.x += int(pos.x + shapeMin.x < 0) * abs(pos.x + shapeMin.x);

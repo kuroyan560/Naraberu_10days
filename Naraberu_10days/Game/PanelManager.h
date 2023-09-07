@@ -2,12 +2,12 @@
 #include "BaseInformation.h"
 #include "KuroEngineDevice.h"
 
-class StageManager
+class PanelManager
 {
 public:
 
-	StageManager(){};
-	~StageManager(){};
+	PanelManager(){};
+	~PanelManager(){};
 
 	/// <summary>
 	/// ‰Šú‰»

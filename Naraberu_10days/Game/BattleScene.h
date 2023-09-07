@@ -5,7 +5,7 @@
 #include "Enemy.h"
 #include "BattleTurnMgr.h"
 #include "BlockManager.h"
-#include "StageManager.h"
+#include "PanelManager.h"
 
 class BattleScene :
     public KuroEngine::BaseScene
@@ -22,7 +22,7 @@ class BattleScene :
 	//ブロック
 	std::shared_ptr<BlockManager> block;
 	//ステージ
-	std::shared_ptr<StageManager> stage;
+	std::shared_ptr<PanelManager> stage;
 
 	BlockAttribute attribute;
 

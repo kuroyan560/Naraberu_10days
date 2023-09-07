@@ -2,7 +2,7 @@
 #include "../../src/engine/FrameWork/UsersInput.h"
 #include"src/OperationConfig.h"
 #include "ExistUnits.h"
-#include "StageManager.h"
+#include "PanelManager.h"
 #include "PlayerSkills.h"
 #include"src/OperationConfig.h"
 
