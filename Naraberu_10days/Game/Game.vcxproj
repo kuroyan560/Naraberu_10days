@@ -321,6 +321,7 @@ xcopy "$(SolutionDir)dxil.dll" $(TargetDir) /Y</Command>
     <ClInclude Include="src\RefreshRate.h" />
     <ClInclude Include="src\Scene\BattleScene.h" />
     <ClInclude Include="src\Scene\GameScene.h" />
+    <ClInclude Include="src\Scene\TitleScene.h" />
     <ClInclude Include="src\Stage\StageList.h" />
   </ItemGroup>
   <ItemGroup>
