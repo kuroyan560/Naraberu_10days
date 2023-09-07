@@ -20,6 +20,10 @@ class BattleScene :
 	// 背景
 	std::shared_ptr<KuroEngine::TextureBuffer> m_SukasiTex;
 	std::shared_ptr<KuroEngine::TextureBuffer> m_BackTex;
+	std::shared_ptr<KuroEngine::TextureBuffer> m_StageTex;
+	std::shared_ptr<KuroEngine::TextureBuffer> m_BattleTex;
+	std::array<std::shared_ptr<KuroEngine::TextureBuffer>,12> m_NumberTex;
+	std::array<std::shared_ptr<KuroEngine::TextureBuffer>, 12> m_NumberTex_Battle;
 	//ブロック
 	std::shared_ptr<BlockManager> block;
 	//ステージ

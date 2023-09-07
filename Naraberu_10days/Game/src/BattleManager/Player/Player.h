@@ -1,4 +1,5 @@
 #pragma once
+#include <array>
 #include "../UnitBase.h"
 
 #include "DirectX12/D3D12App.h"
@@ -19,6 +20,7 @@ private:
 	std::shared_ptr<KuroEngine::TextureBuffer> m_HpTex_yellow;
 	std::shared_ptr<KuroEngine::TextureBuffer> m_HpTex_red;
 	std::shared_ptr<KuroEngine::TextureBuffer> m_Ult_Gauge;
+	std::array<std::shared_ptr<KuroEngine::TextureBuffer>, 12> m_NumberTex;
 
 	//ƒLƒƒƒ‰‰æ‘œ
 	std::shared_ptr<KuroEngine::TextureBuffer> m_CharacterTex;

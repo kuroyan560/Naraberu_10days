@@ -23,10 +23,10 @@ protected:
 	int m_Frame_Timer;
 public:
 	UnitBase(){
-		m_HP = 200;
-		m_MaxHP = 200;
+		m_HP = 100;
+		m_MaxHP = 100;
 		m_HP_Break_Timer = 0;
-		m_Before_HP = 200;
+		m_Before_HP = 100;
 		m_HP_GAUGE_BREAK_TIME = int(50.0f * RefreshRate::RefreshRate_Mag);
 		m_isMyTurn = false;
 		m_NextTurn = false;

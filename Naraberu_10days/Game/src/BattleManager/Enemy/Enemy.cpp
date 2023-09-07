@@ -204,11 +204,11 @@ void Enemy::Draw(int Index, int NowTurn_Index, int Index_Max, bool Dark, int Fra
 	
 
 	// ユニットの描画
-	DrawFunc2D_Color::DrawExtendGraph2D(Vec2(977.0f - Move_Width, 115.0f + IndexDiff), Vec2(1222.0f - Move_Width, 215.0f + IndexDiff), m_Data.m_UnitTex, Mask,
+	DrawFunc2D_Color::DrawExtendGraph2D(Vec2(1009.0f - Move_Width, 115.0f + IndexDiff), Vec2(1254.0f - Move_Width, 215.0f + IndexDiff), m_Data.m_UnitTex, Mask,
 		{ false,false }, { 0.0f,0.0f }, { 1.0f,1.0f }, KuroEngine::DrawFunc2D_Color::FILL_MDOE::MUL);
-	DrawFunc2D_Color::DrawExtendGraph2D(Vec2(970.0f - Move_Width, 108.0f + IndexDiff), Vec2(1229.0f - Move_Width, 222.0f + IndexDiff), m_Data.m_FrameTex, Mask,
+	DrawFunc2D_Color::DrawExtendGraph2D(Vec2(1002.0f - Move_Width, 108.0f + IndexDiff), Vec2(1261.0f - Move_Width, 222.0f + IndexDiff), m_Data.m_FrameTex, Mask,
 		{ false,false }, { 0.0f,0.0f }, { 1.0f,1.0f }, KuroEngine::DrawFunc2D_Color::FILL_MDOE::MUL);
-	DrawFunc2D_Color::DrawExtendGraph2D(Vec2(1094.0f - Move_Width, 181.0f + IndexDiff), Vec2(1238.0f - Move_Width, 203.0f + IndexDiff), m_Data.m_HpFrameTex, Mask,
+	DrawFunc2D_Color::DrawExtendGraph2D(Vec2(1126.0f - Move_Width, 181.0f + IndexDiff), Vec2(1270.0f - Move_Width, 203.0f + IndexDiff), m_Data.m_HpFrameTex, Mask,
 		{ false,false }, { 0.0f,0.0f }, { 1.0f,1.0f }, KuroEngine::DrawFunc2D_Color::FILL_MDOE::MUL);
 
 	//DrawFunc2D::DrawExtendGraph2D(Vec2(977.0f, 115.0f + IndexDiff), Vec2(1222.0f, 215.0f + IndexDiff), m_Data.m_UnitTex);
@@ -216,8 +216,8 @@ void Enemy::Draw(int Index, int NowTurn_Index, int Index_Max, bool Dark, int Fra
 	//DrawFunc2D::DrawExtendGraph2D(Vec2(1094.0f, 181.0f + IndexDiff), Vec2(1238.0f, 203.0f + IndexDiff), m_Data.m_HpFrameTex);
 
 	// 描画位置の保存
-	m_Left_Top = Vec2(970.0f - Move_Width, 108.0f + IndexDiff);
-	m_Right_Bottom = Vec2(1229.0f - Move_Width, 222.0f + IndexDiff);
+	m_Left_Top = Vec2(1002.0f - Move_Width, 108.0f + IndexDiff);
+	m_Right_Bottom = Vec2(1261.0f - Move_Width, 222.0f + IndexDiff);
 	m_Center = m_Left_Top + ((m_Right_Bottom - m_Left_Top) / 2.0f);
 
 	// レティクルの描画
@@ -256,8 +256,8 @@ void Enemy::Draw(int Index, int NowTurn_Index, int Index_Max, bool Dark, int Fra
 	}
 
 	DrawFunc2D_Mask::DrawExtendGraph2D(
-		Vec2(1100.0f - Move_Width, 187.0f + IndexDiff), Vec2(1232.0f - Move_Width, 197.0f + IndexDiff), HP_Gauge,
-		Vec2(1100.0f - Move_Width, 187.0f + IndexDiff), Vec2(1100.0f - Move_Width + Gauge_Width, 197.0f + IndexDiff));
+		Vec2(1132.0f - Move_Width, 187.0f + IndexDiff), Vec2(1264.0f - Move_Width, 197.0f + IndexDiff), HP_Gauge,
+		Vec2(1132.0f - Move_Width, 187.0f + IndexDiff), Vec2(1132.0f - Move_Width + Gauge_Width, 197.0f + IndexDiff));
 
 
 }

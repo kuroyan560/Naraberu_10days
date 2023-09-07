@@ -25,6 +25,7 @@ Player::Player()
 	m_Ult_Gauge = D3D12App::Instance()->GenerateTextureBuffer(TexDir + "ult_gauge.png");
 
 	m_CharacterTex = D3D12App::Instance()->GenerateTextureBuffer(TexDir + "player/player_character_normal.png");
+	D3D12App::Instance()->GenerateTextureBuffer(&m_NumberTex.front(), TexDir + "player_hp_number.png", 11, Vec2(11, 1));
 
 	TurnChangeTimer = 0;
 	TurnChangeTime_Fin = int(300.0f * RefreshRate::RefreshRate_Mag);
@@ -120,6 +121,30 @@ void Player::OnDraw()
 		Vec2(22.0f, 427.0f), Vec2(357.0f, 580.0f), HP_Gauge,
 		Vec2(22.0f, 427.0f), Vec2(22.0f + Gauge_Width, 580.0f));
 
+	if (UsersInput::Instance()->KeyOnTrigger(DIK_X)) {
+		m_HP--;
+	}
+
+	// HP‚Ì”’l•`‰æ
+	DrawFunc2D::DrawNumber2D(KuroEngine::GetSpecifiedDigitNum(m_MaxHP, 0, false), Vec2(333.0f + 5.0f, 489.0f - 2.0f), &m_NumberTex.front());
+	if (m_MaxHP > 9) {// 2Œ…–Ú‚Ì•`‰æ
+		DrawFunc2D::DrawNumber2D(KuroEngine::GetSpecifiedDigitNum(m_MaxHP, 1, false), Vec2(303.0f + 5.0f, 478.0f - 2.0f), &m_NumberTex.front());
+	}
+
+	DrawFunc2D::DrawGraph(Vec2(252.0f - 7.0f, 461.0f - 2.0f), m_NumberTex[10]);
+
+	if (m_MaxHP > 99) {// 3Œ…–Ú‚Ì•`‰æ
+		DrawFunc2D::DrawNumber2D(KuroEngine::GetSpecifiedDigitNum(m_MaxHP, 2, false), Vec2(270.0f + 5.0f, 468.0f - 2.0f), &m_NumberTex.front());
+	}
+	
+	// 1Œ…–Ú‚Ì•`‰æ
+	DrawFunc2D::DrawNumber2D(KuroEngine::GetSpecifiedDigitNum(m_HP, 0, false), Vec2(222.0f - 5.0f, 447.0f - 2.0f), &m_NumberTex.front());
+	if (m_HP > 9) {// 2Œ…–Ú‚Ì•`‰æ
+		DrawFunc2D::DrawNumber2D(KuroEngine::GetSpecifiedDigitNum(m_HP, 1, false), Vec2(192.0f - 5.0f, 436.0f - 2.0f), &m_NumberTex.front());
+	}
+	if (m_HP > 99) {// 3Œ…–Ú‚Ì•`‰æ
+		DrawFunc2D::DrawNumber2D(KuroEngine::GetSpecifiedDigitNum(m_HP, 2, false), Vec2(162.0f - 5.0f, 426.0f - 2.0f), &m_NumberTex.front());
+	}
 
 	// ƒAƒ‹ƒeƒBƒƒbƒgƒQ[ƒW‚Ì•`‰æ
 	// Œ»İ‚ÌƒQ[ƒWŠ„‡
