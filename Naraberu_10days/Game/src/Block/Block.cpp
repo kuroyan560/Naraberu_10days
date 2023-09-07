@@ -53,6 +53,7 @@ void Block::Draw(const std::vector<KuroEngine::Vec2<int>> _shape, const KuroEngi
 
 void Block::Reset()
 {
+	
 }
 
 void Block::Move()
