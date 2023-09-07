@@ -84,8 +84,10 @@ bool StageManager::JudgeSet(KuroEngine::Vec2<int> _nowMapchip, std::vector<KuroE
 	}
 
 	//はめられるので色変え
+	int Count = 0;
 	for (auto& i : _shape) {
 		mapchip[_nowMapchip.y + i.y][_nowMapchip.x + i.x] = int(color);
+		Count++;
 	}
 
 	//ボーナス計算
@@ -94,15 +96,15 @@ bool StageManager::JudgeSet(KuroEngine::Vec2<int> _nowMapchip, std::vector<KuroE
 	// 設置したらアクション
 	if (_attribute == BlockAttribute::attack1) {
 		// 弱攻撃
-		PlayerSkills::PlayerSkillMgr::Instance()->StartAction("Attack_01", ExistUnits::Instance()->m_pPlayer, ExistUnits::Instance()->m_Enemys[ExistUnits::Instance()->m_NowTarget]);
+		PlayerSkills::PlayerSkillMgr::Instance()->StartAction("Attack_01", Count, ExistUnits::Instance()->m_pPlayer, ExistUnits::Instance()->m_Enemys[ExistUnits::Instance()->m_NowTarget]);
 	}
 	else if (_attribute == BlockAttribute::attack2) {
 		// 強攻撃
-		PlayerSkills::PlayerSkillMgr::Instance()->StartAction("Attack_02", ExistUnits::Instance()->m_pPlayer, ExistUnits::Instance()->m_Enemys[ExistUnits::Instance()->m_NowTarget]);
+		PlayerSkills::PlayerSkillMgr::Instance()->StartAction("Attack_02", Count, ExistUnits::Instance()->m_pPlayer, ExistUnits::Instance()->m_Enemys[ExistUnits::Instance()->m_NowTarget]);
 	}
 	else if (_attribute == BlockAttribute::recovery) {
 		// 回復
-		PlayerSkills::PlayerSkillMgr::Instance()->StartAction("Heal_01", ExistUnits::Instance()->m_pPlayer, ExistUnits::Instance()->m_Enemys[ExistUnits::Instance()->m_NowTarget]);
+		PlayerSkills::PlayerSkillMgr::Instance()->StartAction("Heal_01", Count, ExistUnits::Instance()->m_pPlayer, ExistUnits::Instance()->m_Enemys[ExistUnits::Instance()->m_NowTarget]);
 	}
 	return true;
 }

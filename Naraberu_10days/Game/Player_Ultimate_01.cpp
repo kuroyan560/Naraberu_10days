@@ -44,7 +44,7 @@ void Player_Ultimate_01::Action_Update()
 		}
 
 		// アルティメットポイントを加算
-		GetUnitPtr_nama<Player*>(m_Initiator)->AddUltPoint(1);
+		//GetUnitPtr_nama<Player*>(m_Initiator)->AddUltPoint(1);
 	}
 }
 

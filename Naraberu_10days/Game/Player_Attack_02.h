@@ -24,11 +24,11 @@ public:
 	void Param_Set(int Damage, int Duration);
 
 	template<class... A>
-	void Need_Object_Set(UnitBase* Initiator, UnitBase* Target) {
+	void Need_Object_Set(UnitBase* Initiator, std::vector<UnitBase*> Target) {
 		m_Initiator = Initiator;
 
 		m_Targets.clear();
-		m_Targets.emplace_back(Target);
+		m_Targets = Target;
 	}
 
 public:

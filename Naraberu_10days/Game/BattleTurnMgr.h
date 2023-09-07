@@ -8,6 +8,7 @@
 #include "../../src/engine/ForUser/DrawFunc/2D/DrawFunc2D_Mask.h"
 
 #include "CutInMgr.h"
+#include "RefreshRate.h"
 
 class BattleTurnMgr
 {
@@ -18,6 +19,12 @@ class BattleTurnMgr
 	int TurnNum;
 	// ターンの経過フレーム
 	int TurnFrameTime;
+	// 次のバトルに移動する場合のタイマー
+	int NextGameTimer;
+	// 次のバトルに移動する場合のタイマーの終了値
+	int NextGameTimeFinish;
+	// 上のタイマーのデフォルト値
+	const int NextGameTimeFinish_Default = 300;
 
 	// 画像
 	std::shared_ptr<KuroEngine::TextureBuffer> m_CutInTex;
@@ -27,6 +34,8 @@ public:
 		m_Whole_Turn_Count = 0;
 		TurnNum = 0;
 		TurnFrameTime = 0;
+		NextGameTimer = 0;
+		NextGameTimeFinish = int(float(NextGameTimeFinish_Default) * RefreshRate::RefreshRate_Mag);
 	}
 
 	void OnInitialize(std::shared_ptr<UnitBase> Player, std::vector<std::shared_ptr<UnitBase>> Enemys);

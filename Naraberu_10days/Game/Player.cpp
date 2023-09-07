@@ -54,6 +54,12 @@ void Player::OnUpdate()
 	if (TurnChangeTimer == TurnChangeTime_Fin) {
 		EndTurn();
 	}
+
+	// ウルト発動
+	if (UsersInput::Instance()->KeyOnTrigger(DIK_Z) && GetUltRate() == 1.0f) {
+		SubUltPoint(Max_UltimatePoint);
+		PlayerSkills::PlayerSkillMgr::Instance()->StartAction("Ultimate_01", 0, ExistUnits::Instance()->m_pPlayer);
+	}
 }
 
 void Player::OnAlwaysUpdate()
@@ -66,11 +72,6 @@ void Player::OnAlwaysUpdate()
 		m_HP < m_MaxHP ? m_HP++ : 0;
 	}
 
-	// ウルト発動
-	if (UsersInput::Instance()->KeyOnTrigger(DIK_Z) && GetUltRate() == 1.0f) {
-		SubUltPoint(Max_UltimatePoint);
-		PlayerSkills::PlayerSkillMgr::Instance()->StartAction("Ultimate_01", ExistUnits::Instance()->m_pPlayer);
-	}
 }
 
 void Player::OnDraw()
@@ -151,7 +152,7 @@ void Player::TurnEnd_BeforeTurnChange()
 	// マップをリセット
 	ExistUnits::Instance()->m_StageManager->Reset();
 	// ボーナスアタック
-	PlayerSkills::PlayerSkillMgr::Instance()->StartAction("Bonus_01", ExistUnits::Instance()->m_pPlayer, ExistUnits::Instance()->m_Enemys[0]);
+	PlayerSkills::PlayerSkillMgr::Instance()->StartAction("Bonus_01", 0, ExistUnits::Instance()->m_pPlayer, ExistUnits::Instance()->m_Enemys[0]);
 }
 
 void Player::SetState(int HP, int MaxHP)

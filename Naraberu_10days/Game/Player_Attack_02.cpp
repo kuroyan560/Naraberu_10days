@@ -39,7 +39,11 @@ void Player_Attack_02::Action_Update()
 			exit(1);
 		}
 		// 1番目のターゲットに攻撃する
-		m_Targets[0]->Damage(m_Damage);
+		//m_Targets[0]->Damage(m_Damage);
+		// 全てのターゲットに攻撃する
+		for (auto& tgt : m_Targets) {
+			tgt->Damage(m_Damage);
+		}
 
 		// アルティメットポイントを加算
 		GetUnitPtr_nama<Player*>(m_Initiator)->AddUltPoint(3);
@@ -55,9 +59,11 @@ void Player_Attack_02::Action_Draw()
 
 	using namespace KuroEngine;
 	// 仮で箱を描画
-	KuroEngine::Vec2 LT = GetUnitPtr_nama<Enemy*>(m_Targets[0])->Get_Left_Top();
-	KuroEngine::Vec2 RB = GetUnitPtr_nama<Enemy*>(m_Targets[0])->Get_Right_Bottom();
-	DrawFunc2D::DrawBox2D(LT, RB, Color(255, 0, 0, 255), true);
+	for (auto& tgt : m_Targets) {
+		KuroEngine::Vec2 LT = GetUnitPtr_nama<Enemy*>(tgt)->Get_Left_Top();
+		KuroEngine::Vec2 RB = GetUnitPtr_nama<Enemy*>(tgt)->Get_Right_Bottom();
+		DrawFunc2D::DrawBox2D(LT, RB, Color(255, 0, 0, 255), true);
+	}
 }
 
 void Player_Attack_02::Action_End()

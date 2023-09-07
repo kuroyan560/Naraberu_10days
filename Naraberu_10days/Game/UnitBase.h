@@ -75,6 +75,18 @@ public:
 		}
 	}
 
+	// ‰ñ•œ‚·‚é(Š„‡)
+	void Heal_Par(int value) {
+		// HP‚ª‰ñ•œ‚·‚é‰‰o—p
+		m_Before_HP = m_HP;
+		m_HP_Break_Timer = 1;
+		// ‰ñ•œ
+		m_HP += int(float(m_MaxHP) * float(value) / 100.0f);
+		if (m_HP > m_MaxHP) {
+			m_HP = m_MaxHP;
+		}
+	}
+
 	// ¶‚«‚Ä‚ê‚Îtrue
 	bool IsAlive() { return m_HP > 0; };
 };

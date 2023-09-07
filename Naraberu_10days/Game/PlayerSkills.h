@@ -59,11 +59,11 @@ namespace PlayerSkills {
 		}
 
 		template<class... A>
-		void StartAction(std::string Action_Name, UnitBase* Initiator, A... Targets)
+		void StartAction(std::string Action_Name, int Block_Count, UnitBase* Initiator, A... Targets)
 		{
 			if (Action_Name == "Attack_01") {
 				m_List.emplace_front(std::make_shared<Player_Attack_01>());
-				GetPtr<Player_Attack_01>(m_List.front())->Param_Set(1, 3);
+				GetPtr<Player_Attack_01>(m_List.front())->Param_Set(Block_Count, 3);
 				m_Initiator = Initiator;
 				std::vector<UnitBase*>m_Targets;
 				m_Targets.clear();
@@ -74,18 +74,18 @@ namespace PlayerSkills {
 			}
 			if (Action_Name == "Attack_02") {
 				m_List.emplace_front(std::make_shared<Player_Attack_02>());
-				GetPtr<Player_Attack_02>(m_List.front())->Param_Set(3, 3);
+				GetPtr<Player_Attack_02>(m_List.front())->Param_Set(Block_Count, 3);
 				m_Initiator = Initiator;
 				std::vector<UnitBase*>m_Targets;
 				m_Targets.clear();
 				for (UnitBase* Target : std::initializer_list<UnitBase*>{ Targets... }) {
 					m_Targets.emplace_back(Target);
 				}
-				GetPtr<Player_Attack_02>(m_List.front())->Need_Object_Set(Initiator, m_Targets[0]);
+				GetPtr<Player_Attack_02>(m_List.front())->Need_Object_Set(Initiator, ExistUnits::Instance()->m_Enemys);
 			}
 			if (Action_Name == "Heal_01") {
 				m_List.emplace_front(std::make_shared<Player_Heal_01>());
-				GetPtr<Player_Heal_01>(m_List.front())->Param_Set(20, 3);
+				GetPtr<Player_Heal_01>(m_List.front())->Param_Set(Block_Count, 3);
 				m_Initiator = Initiator;
 				GetPtr<Player_Heal_01>(m_List.front())->Need_Object_Set(Initiator);
 			}

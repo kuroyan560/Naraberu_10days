@@ -39,3 +39,51 @@ public:
 
 };
 
+static DirectX::XMFLOAT3 hsv2rgb(DirectX::XMFLOAT3 hsv)
+{
+	DirectX::XMFLOAT3  rgb = XMFLOAT3();
+	int     Hi;
+	float   f;
+	float   p;
+	float   q;
+	float   t;
+
+	Hi = int(fmod(floor(hsv.x / 60.0f), 6.0f));
+	f = hsv.x / 60.0f - Hi;
+	p = hsv.z * (1.0f - hsv.y);
+	q = hsv.z * (1.0f - f * hsv.y);
+	t = hsv.z * (1.0f - (1.0f - f) * hsv.y);
+
+	if (Hi == 0) {
+		rgb.x = hsv.z;
+		rgb.y = t;
+		rgb.z = p;
+	}
+	if (Hi == 1) {
+		rgb.x = q;
+		rgb.y = hsv.z;
+		rgb.z = p;
+	}
+	if (Hi == 2) {
+		rgb.x = p;
+		rgb.y = hsv.z;
+		rgb.z = t;
+	}
+	if (Hi == 3) {
+		rgb.x = p;
+		rgb.y = q;
+		rgb.z = hsv.z;
+	}
+	if (Hi == 4) {
+		rgb.x = t;
+		rgb.y = p;
+		rgb.z = hsv.z;
+	}
+	if (Hi == 5) {
+		rgb.x = hsv.z;
+		rgb.y = p;
+		rgb.z = q;
+	}
+
+	return rgb;
+}
