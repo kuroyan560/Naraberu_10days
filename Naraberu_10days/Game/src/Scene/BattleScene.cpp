@@ -137,9 +137,9 @@ void BattleScene::OnDraw()
 	}
 
 	// ウェーブ数描画
-	DrawFunc2D::DrawNumber2D(1, Vec2(1201.0f, 13.0f), &m_NumberTex_Battle.front());
+	DrawFunc2D::DrawNumber2D(m_NowWave, Vec2(1201.0f, 13.0f), &m_NumberTex_Battle.front());
 	DrawFunc2D::DrawGraph(Vec2(1221.0f, 13.0f), m_NumberTex_Battle[10]);
-	DrawFunc2D::DrawNumber2D(3, Vec2(1246.0f, 13.0f), &m_NumberTex_Battle.front());
+	DrawFunc2D::DrawNumber2D(m_NowStage.m_Stage_Wave_Count, Vec2(1246.0f, 13.0f), &m_NumberTex_Battle.front());
 
 	// プレイヤーはバトル中以外でも描画する為こっち
 	Pl->OnDraw();
