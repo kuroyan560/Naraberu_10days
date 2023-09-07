@@ -201,6 +201,7 @@ xcopy "$(SolutionDir)dxil.dll" $(TargetDir) /Y</Command>
     <ClCompile Include="src\Panel\PanelManager.cpp" />
     <ClCompile Include="src\Scene\BattleScene.cpp" />
     <ClCompile Include="src\Scene\GameScene.cpp" />
+    <ClCompile Include="src\Scene\TitleScene.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="..\..\lib\dxcompiler\inc\d3d12shader.h" />
@@ -319,6 +320,7 @@ xcopy "$(SolutionDir)dxil.dll" $(TargetDir) /Y</Command>
     <ClInclude Include="src\RefreshRate.h" />
     <ClInclude Include="src\Scene\BattleScene.h" />
     <ClInclude Include="src\Scene\GameScene.h" />
+    <ClInclude Include="src\Scene\TitleScene.h" />
   </ItemGroup>
   <ItemGroup>
     <ResourceCompile Include="Game.rc" />

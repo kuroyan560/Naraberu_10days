@@ -12,6 +12,7 @@
 
 void BattleTurnMgr::OnInitialize(std::shared_ptr<UnitBase> Player, std::vector<std::shared_ptr<UnitBase>> Enemys)
 {
+	UnitList.clear();
 	UnitList.emplace_back(Player);
 	for (auto& en : Enemys) {
 		UnitList.emplace_back(en);
