@@ -26,6 +26,19 @@ void BattleTurnMgr::OnInitialize(std::shared_ptr<UnitBase> Player, std::vector<s
 	m_CutInTex = D3D12App::Instance()->GenerateTextureBuffer(TexDir + "player_turn.png");
 }
 
+void BattleTurnMgr::SetUnits(std::shared_ptr<UnitBase> Player, std::vector<std::shared_ptr<UnitBase>> Enemys)
+{
+	UnitList.clear();
+	UnitList.emplace_back(Player);
+	for (auto& en : Enemys) {
+		UnitList.emplace_back(en);
+	}
+	m_Whole_Turn_Count = 0;
+	TurnNum = 0;
+	TurnFrameTime = 0;
+	ExistUnits::Instance()->m_NowTarget = 0;
+}
+
 void BattleTurnMgr::OnUpdate()
 {
 	// íXVˆ—

@@ -104,6 +104,9 @@
     <Filter Include="src\user\Scene">
       <UniqueIdentifier>{34a65443-b5c4-43aa-98ff-6a43958e39fc}</UniqueIdentifier>
     </Filter>
+    <Filter Include="src\user\Stage">
+      <UniqueIdentifier>{4c64b86b-a20c-452c-a5ef-bd30ec6003da}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="..\..\src\engine\KuroEngineDevice.cpp">
@@ -378,6 +381,9 @@
     </ClCompile>
     <ClCompile Include="src\Scene\BattleScene.cpp">
       <Filter>src\user\Scene</Filter>
+    </ClCompile>
+    <ClCompile Include="src\Stage\StageList.cpp">
+      <Filter>src\user\Stage</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
@@ -731,6 +737,9 @@
     </ClInclude>
     <ClInclude Include="src\RefreshRate.h">
       <Filter>src\user</Filter>
+    </ClInclude>
+    <ClInclude Include="src\Stage\StageList.h">
+      <Filter>src\user\Stage</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>

@@ -39,6 +39,7 @@ public:
 	}
 
 	void OnInitialize(std::shared_ptr<UnitBase> Player, std::vector<std::shared_ptr<UnitBase>> Enemys);
+	void SetUnits(std::shared_ptr<UnitBase> Player, std::vector<std::shared_ptr<UnitBase>> Enemys);
 
 	void OnUpdate();
 	void OnDraw();
