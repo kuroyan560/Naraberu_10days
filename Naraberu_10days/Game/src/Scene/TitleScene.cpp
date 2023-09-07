@@ -9,14 +9,13 @@ void TitleScene::OnInitialize()
 
 	// ”wŒi
 	backTex = D3D12App::Instance()->GenerateTextureBuffer(TexDir + "select_scene_sukasi.png");
-
 	//ƒ^ƒCƒgƒ‹
-	titleTex = D3D12App::Instance()->GenerateTextureBuffer(TexDir + "select_scene_sukasi.png");
+	titleTex = D3D12App::Instance()->GenerateTextureBuffer(TexDir + "title.png");
 	//‘I‘ðŽˆ
 	stageTex = D3D12App::Instance()->GenerateTextureBuffer(TexDir + "stage.png");
 	//”Žš
-	KuroEngine::D3D12App::Instance()->GenerateTextureBuffer(numTex.data(), TexDir + "pass_number.png", 3, { 3, 1 });
-
+	KuroEngine::D3D12App::Instance()->GenerateTextureBuffer(numTex.data(),
+		TexDir + "select_stage_number.png", int(numTex.size()), { int(numTex.size()), 1 });
 }
 
 void TitleScene::OnUpdate()

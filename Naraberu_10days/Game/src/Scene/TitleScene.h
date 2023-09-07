@@ -10,10 +10,12 @@ class TitleScene : public KuroEngine::BaseScene
 	//‘I‘ğˆ
 	std::shared_ptr<KuroEngine::TextureBuffer> stageTex;
 	//”š
-	std::array<std::shared_ptr<KuroEngine::TextureBuffer>,10> numTex;
+	std::array<std::shared_ptr<KuroEngine::TextureBuffer>,11> numTex;
 
 	//‘I‘ğˆ”Ô†
 	int stageNum;
+
+	//
 
 
 	void OnInitialize()override;
