@@ -36,6 +36,11 @@ class BattleScene :
 	void OnImguiDebug()override;
 	void OnFinalize()override;
 
+	// プリズムを設置出来ないようにするタイマー
+	int m_Impossible_Put_Block_Timer;
+	// プリズムを設置出来ないようにする時間
+	int m_Impossible_Put_Block_Effect_Time;
+
 	// 現在のステージ
 	Stages::StageData m_NowStage;
 	// 現在のウェーブ
@@ -44,6 +49,10 @@ class BattleScene :
 	void SetStage(std::string StageName);
 	// 次のウェーブスタート
 	void NextWave();
+	// 全ウェーブ終了したか
+	bool m_Stage_End;
+	// ステージ終了演出用
+	// あとで
 public:
 	BattleScene();
 

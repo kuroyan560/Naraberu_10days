@@ -736,7 +736,8 @@ std::shared_ptr<KuroEngine::TextureBuffer> KuroEngine::D3D12App::GenerateTexture
 	if (!ExistFile(LoadImgFilePath))
 	{
 		AppearMessageBox("D3D12App::GenerateTextureBuffer() 失敗", "\"" + LoadImgFilePath + "\" というテクスチャファイルが無いよ");
-		exit(1);
+		
+		;
 	}
 
 	//既にあるか確認

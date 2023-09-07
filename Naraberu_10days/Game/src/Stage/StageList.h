@@ -29,6 +29,8 @@ namespace Stages {
 				Wave_Enemys.emplace_back(Enemy_3);
 			}
 			m_Stage_Enemy_Data.emplace_back(Wave_Enemys);
+
+			m_Stage_Wave_Count++;
 		}
 		// Index 番目のウェーブの敵を取得
 		std::vector<EnemysData::EnemyData> GetWaveEnemyIndex(int Index) {

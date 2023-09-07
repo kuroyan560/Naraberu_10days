@@ -19,8 +19,9 @@ void BattleScene::OnInitialize()
 	std::string TexDir = "resource/user/tex/battle_scene/";
 	m_SukasiTex = D3D12App::Instance()->GenerateTextureBuffer(TexDir + "Sukasi.png");
 	m_BackTex = D3D12App::Instance()->GenerateTextureBuffer(TexDir + "battle_scene_frame.png");
-
-
+	m_Stage_End = false;
+	m_Impossible_Put_Block_Timer = 0;
+	m_Impossible_Put_Block_Effect_Time = int(200.0f * RefreshRate::RefreshRate_Mag);
 
 	Pl = std::make_shared<Player>();
 	Pl->OnInitialize();
@@ -75,8 +76,13 @@ void BattleScene::OnUpdate()
 		NextWave();
 	}
 
+	// ステージ終了
+	if (m_Stage_End) {
+		//KuroEngine::AppearMessageBox("ステージ終了", "ステージ終了");
+	}
+
 	//セット可能ならセットする
-	if (ExistUnits::Instance()->m_NowTurn == 0) {
+	if (ExistUnits::Instance()->m_NowTurn == 0 && m_Impossible_Put_Block_Timer == 0 && Mgr.AliveEnemys()) {
 		PlayerTurn();
 	}
 
@@ -85,8 +91,12 @@ void BattleScene::OnUpdate()
 		stage->Reset();
 	}
 
-	Mgr.OnUpdate();
+	// 設置不可時間の更新
+	if (m_Impossible_Put_Block_Timer > 0) {
+		m_Impossible_Put_Block_Timer--;
+	}
 
+	Mgr.OnUpdate();
 	stage->Update();
 	block->Update();
 
@@ -146,6 +156,7 @@ void BattleScene::OnImguiDebug()
 
 void BattleScene::OnFinalize()
 {
+	//m_Stage_End = false;
 	En.clear();
 	PlayerSkills::PlayerSkillMgr::Instance()->AllClear();
 	EnemyActions::EnemyActionMgr::Instance()->AllClear();
@@ -160,6 +171,17 @@ void BattleScene::NextWave()
 {
 	// 次ウェーブに変更
 	m_NowWave++;
+	m_Impossible_Put_Block_Timer = m_Impossible_Put_Block_Effect_Time;
+
+	// 現在が最後のウェーブだった場合
+	if (m_NowWave > m_NowStage.m_Stage_Wave_Count) {
+		m_Stage_End = true;
+		// 攻撃等をクリア
+		PlayerSkills::PlayerSkillMgr::Instance()->AllClear();
+		EnemyActions::EnemyActionMgr::Instance()->AllClear();
+		return;
+	}
+
 	// 次ウェーブの敵を取得
 	En.clear();
 	std::vector<EnemysData::EnemyData> EnemyData = m_NowStage.GetWaveEnemyIndex(m_NowWave);
