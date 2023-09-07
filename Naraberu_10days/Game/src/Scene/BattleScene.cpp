@@ -23,7 +23,6 @@ void BattleScene::OnInitialize()
 	Pl->OnInitialize();
 	Pl->StartTurn();
 
-
 	En.emplace_back(std::make_shared<Enemy>());
 	GetUnitPtr<Enemy>(En[En.size() - 1])->SetEnemyData(EnemysData::DebugEnemy_1);
 	En.emplace_back(std::make_shared<Enemy>());
@@ -67,6 +66,11 @@ void BattleScene::OnUpdate()
 
 	stage->Update();
 	block->Update();
+
+	//ゲームオーバーもしくはクリアをしたらシーンを切り替えられるようにする
+	if (OperationConfig::Instance()->DebugKeyInputOnTrigger(DIK_RETURN)) {
+		KuroEngine::KuroEngineDevice::Instance()->ChangeScene("title");
+	}
 }
 
 void BattleScene::OnDraw()
@@ -119,6 +123,7 @@ void BattleScene::OnImguiDebug()
 
 void BattleScene::OnFinalize()
 {
+	En.clear();
 }
 
 BattleScene::BattleScene()

@@ -19,6 +19,9 @@ public:
 		SELECT_LEFT_PRISM,	//左のプリズムを選択
 		SELECT_RIGHT_PRISM,	//右のプリズムを選択
 		END_TURN,	//ターンを終える
+		EXECUTE_ULT,	//ULT発動
+		PASS_PAIR_PRISM,	//プリズムをパス
+		MENU_IN_GAME,	//メニュー
 		OPERATION_TYPE_NUM
 	};
 

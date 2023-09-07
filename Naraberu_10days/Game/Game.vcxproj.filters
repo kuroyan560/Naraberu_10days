@@ -385,6 +385,9 @@
     <ClCompile Include="src\Stage\StageList.cpp">
       <Filter>src\user\Stage</Filter>
     </ClCompile>
+    <ClCompile Include="src\Scene\TitleScene.cpp">
+      <Filter>src\user\Scene</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="..\..\src\engine\KuroEngineDevice.h">
@@ -737,9 +740,6 @@
     </ClInclude>
     <ClInclude Include="src\RefreshRate.h">
       <Filter>src\user</Filter>
-    </ClInclude>
-    <ClInclude Include="src\Stage\StageList.h">
-      <Filter>src\user\Stage</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>

@@ -150,17 +150,6 @@ void Block::BlockOneDraw(const KuroEngine::Vec2<int> _shape, const KuroEngine::V
 void Block::ActionDraw(const KuroEngine::Vec2<float> _pos, const BlockAttribute _attribute)
 {
 	const KuroEngine::Vec2<float> actionPos = { _pos.x + 50.0f,_pos.y - 10.0f };
-	if (_attribute == BlockAttribute::attack1) {
-		const KuroEngine::Vec2<float> actionSize = { 32.0f/2.0f,95.0f / 2.0f };
-		KuroEngine::DrawFunc2D::DrawExtendGraph2D({ actionPos.x - actionSize.x / 2.0f,actionPos.y - actionSize.y / 2.0f },
-			{ actionPos.x + actionSize.x / 2.0f,actionPos.y + actionSize.y / 2.0f }, actionTex[int(BlockAttribute::attack1)]);
-	}else if (_attribute == BlockAttribute::attack2) {
-		const KuroEngine::Vec2<float> actionSize = { 58.0f / 2.0f,84.0f / 2.0f };
-		KuroEngine::DrawFunc2D::DrawExtendGraph2D({ actionPos.x - actionSize.x / 2.0f,actionPos.y - actionSize.y / 2.0f },
-			{ actionPos.x + actionSize.x / 2.0f,actionPos.y + actionSize.y / 2.0f }, actionTex[int(BlockAttribute::attack2)]);
-	} else if (_attribute == BlockAttribute::recovery) {
-		const KuroEngine::Vec2<float> actionSize = { 68.0f / 2.0f,65.0f / 2.0f };
-		KuroEngine::DrawFunc2D::DrawExtendGraph2D({ actionPos.x - actionSize.x / 2.0f,actionPos.y - actionSize.y / 2.0f },
-			{ actionPos.x + actionSize.x / 2.0f,actionPos.y + actionSize.y / 2.0f }, actionTex[int(BlockAttribute::recovery)]);
-	}
+
+	KuroEngine::DrawFunc2D::DrawRotaGraph2D(actionPos, { 0.5f,0.5f }, 0.0f, actionTex[int(_attribute)]);
 }
