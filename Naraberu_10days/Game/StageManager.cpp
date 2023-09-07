@@ -187,7 +187,7 @@ void StageManager::LineProcess(int* _lineNum, std::vector<BlockColor>* _color)
 	for (int y = 0; y < mapMax.y; y++) {
 		for (int x = 0; x < mapMax.x; x++) {
 			if (y == 0) {
-				if (LineBlock({ x,y }, false) != 1) { continue; }
+				if (!LineBlock({ x,y }, false)) { continue; }
 				_color->emplace_back(BlockColor(mapchip[y][x]));
 				lineNum++;
 
@@ -203,12 +203,12 @@ void StageManager::LineProcess(int* _lineNum, std::vector<BlockColor>* _color)
 	*_lineNum = lineNum;
 }
 
-int StageManager::LineBlock(const KuroEngine::Vec2<int> _lineMap, const bool _direction)
+bool StageManager::LineBlock(const KuroEngine::Vec2<int> _lineMap, const bool _direction)
 {
 	//‰º
 	if (!_direction) {
 		for (int i = 0; i < mapMax.y; i++) {
-			if (mapchip[_lineMap.y][_lineMap.x] != mapchip[i][_lineMap.x] || mapchip[_lineMap.y][_lineMap.x] >= int(BlockColor::yuka)) { return 0; }
+			if (mapchip[i][_lineMap.x] >= int(BlockColor::yuka)) { return false; }
 		}
 
 		for (int i = 0; i < mapMax.y; i++) {
@@ -218,7 +218,7 @@ int StageManager::LineBlock(const KuroEngine::Vec2<int> _lineMap, const bool _di
 	//‰E
 	else {
 		for (int i = 0; i < mapMax.x; i++) {
-			if (mapchip[_lineMap.y][_lineMap.x] != mapchip[_lineMap.y][i] || mapchip[_lineMap.y][_lineMap.x] >= int(BlockColor::yuka)) { return 0; }
+			if (mapchip[_lineMap.y][i] >= int(BlockColor::yuka)) { return false; }
 		}
 
 		for (int i = 0; i < mapMax.x; i++) {
@@ -227,7 +227,7 @@ int StageManager::LineBlock(const KuroEngine::Vec2<int> _lineMap, const bool _di
 
 	}
 
-	return 1;
+	return true;
 }
 
 void StageManager::BonusCount()

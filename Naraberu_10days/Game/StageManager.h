@@ -66,7 +66,7 @@ public:
 	/// </summary>
 	/// <param name="_lineMap">現在のmapchip番号</param>
 	/// <param name="_direction">ラインの向き false->+y/true->+x</param>
-	int LineBlock(const KuroEngine::Vec2<int> _lineMap, const bool _direction);
+	bool LineBlock(const KuroEngine::Vec2<int> _lineMap, const bool _direction);
 
 	/// <summary>
 	/// ボーナスの算出
