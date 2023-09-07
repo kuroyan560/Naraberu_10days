@@ -22,7 +22,7 @@ void BattleScene::OnInitialize()
 	m_StageTex = D3D12App::Instance()->GenerateTextureBuffer(TexDir + "/info/stage.png");
 	m_BattleTex = D3D12App::Instance()->GenerateTextureBuffer(TexDir + "/info/battle.png");
 	D3D12App::Instance()->GenerateTextureBuffer(&m_NumberTex.front(), TexDir + "/info/stage_number.png", 12, Vec2(12, 1));
-	D3D12App::Instance()->GenerateTextureBuffer(&m_NumberTex_Battle.front(), TexDir + "/info/battle_number.png", 12, Vec2(12, 1));
+	D3D12App::Instance()->GenerateTextureBuffer(&m_NumberTex_Battle.front(), TexDir + "/info/battle_number.png", 11, Vec2(11, 1));
 	m_Stage_End = false;
 	m_Impossible_Put_Block_Timer = 0;
 	m_Impossible_Put_Block_Effect_Time = int(50.0f * RefreshRate::RefreshRate_Mag);
@@ -138,7 +138,7 @@ void BattleScene::OnDraw()
 
 	// ウェーブ数描画
 	DrawFunc2D::DrawNumber2D(1, Vec2(1201.0f, 13.0f), &m_NumberTex_Battle.front());
-	DrawFunc2D::DrawGraph(Vec2(1221.0f, 13.0f), m_NumberTex_Battle[11]);
+	DrawFunc2D::DrawGraph(Vec2(1221.0f, 13.0f), m_NumberTex_Battle[10]);
 	DrawFunc2D::DrawNumber2D(3, Vec2(1246.0f, 13.0f), &m_NumberTex_Battle.front());
 
 	// プレイヤーはバトル中以外でも描画する為こっち
