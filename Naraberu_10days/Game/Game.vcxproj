@@ -203,6 +203,7 @@ xcopy "$(SolutionDir)dxil.dll" $(TargetDir) /Y</Command>
     <ClCompile Include="src\Scene\GameScene.cpp" />
     <ClCompile Include="src\Stage\StageList.cpp" />
     <ClCompile Include="src\Scene\TitleScene.cpp" />
+    <ClCompile Include="src\TitleUi.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="..\..\lib\dxcompiler\inc\d3d12shader.h" />
@@ -323,6 +324,7 @@ xcopy "$(SolutionDir)dxil.dll" $(TargetDir) /Y</Command>
     <ClInclude Include="src\Scene\GameScene.h" />
     <ClInclude Include="src\Scene\TitleScene.h" />
     <ClInclude Include="src\Stage\StageList.h" />
+    <ClInclude Include="src\TitleUi.h" />
   </ItemGroup>
   <ItemGroup>
     <ResourceCompile Include="Game.rc" />
