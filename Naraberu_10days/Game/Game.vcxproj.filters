@@ -77,9 +77,6 @@
     <Filter Include="src\user\Block">
       <UniqueIdentifier>{972dbbbc-b097-47ac-8bb6-f439e9adb888}</UniqueIdentifier>
     </Filter>
-    <Filter Include="src\user\RefreshRate">
-      <UniqueIdentifier>{51245595-224c-43f4-9cf7-8753bdefc193}</UniqueIdentifier>
-    </Filter>
     <Filter Include="src\user\BattleManager\Enemy_Act">
       <UniqueIdentifier>{1d754e82-6bb1-44c0-aa7d-2d4a8e73c8c5}</UniqueIdentifier>
     </Filter>
@@ -103,6 +100,9 @@
     </Filter>
     <Filter Include="src\user\Panel">
       <UniqueIdentifier>{4b6c4ee8-e3cd-49a7-8db3-a4f7470ca1a1}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="src\user\Scene">
+      <UniqueIdentifier>{34a65443-b5c4-43aa-98ff-6a43958e39fc}</UniqueIdentifier>
     </Filter>
   </ItemGroup>
   <ItemGroup>
@@ -295,9 +295,6 @@
     <ClCompile Include="..\..\src\engine\KuroEngine.cpp">
       <Filter>src\engine</Filter>
     </ClCompile>
-    <ClCompile Include="src\GameScene.cpp">
-      <Filter>src\user</Filter>
-    </ClCompile>
     <ClCompile Include="..\..\src\engine\ForUser\JsonData.cpp">
       <Filter>src\engine\ForUser</Filter>
     </ClCompile>
@@ -313,71 +310,74 @@
     <ClCompile Include="src\main.cpp">
       <Filter>src\user</Filter>
     </ClCompile>
-    <ClCompile Include="BattleScene.cpp">
-      <Filter>src\user</Filter>
-    </ClCompile>
-    <ClCompile Include="UnitBase.cpp">
-      <Filter>src\user\BattleManager</Filter>
-    </ClCompile>
-    <ClCompile Include="BattleTurnMgr.cpp">
-      <Filter>src\user\BattleManager</Filter>
-    </ClCompile>
-    <ClCompile Include="Enemy.cpp">
-      <Filter>src\user\BattleManager\Enemy</Filter>
-    </ClCompile>
-    <ClCompile Include="CutInMgr.cpp">
-      <Filter>src\user\BattleManager\CutIn</Filter>
-    </ClCompile>
-    <ClCompile Include="BlockManager.cpp">
-      <Filter>src\user\Block</Filter>
-    </ClCompile>
-    <ClCompile Include="Block.cpp">
-      <Filter>src\user\Block</Filter>
-    </ClCompile>
-    <ClCompile Include="PanelManager.cpp">
-      <Filter>src\user\Panel</Filter>
-    </ClCompile>
-    <ClCompile Include="E_Ac_Base.cpp">
-      <Filter>src\user\BattleManager\Enemy_Act</Filter>
-    </ClCompile>
-    <ClCompile Include="Debug_Attack_01.cpp">
-      <Filter>src\user\BattleManager\Enemy_Act\Attack</Filter>
-    </ClCompile>
-    <ClCompile Include="Debug_Attack_02.cpp">
-      <Filter>src\user\BattleManager\Enemy_Act\Attack</Filter>
-    </ClCompile>
-    <ClCompile Include="EnemyActList.cpp">
-      <Filter>src\user\BattleManager\Enemy_Act</Filter>
-    </ClCompile>
-    <ClCompile Include="Debug_Heal_01.cpp">
-      <Filter>src\user\BattleManager\Enemy_Act\Heal</Filter>
-    </ClCompile>
-    <ClCompile Include="Debug_Jamming_01.cpp">
-      <Filter>src\user\BattleManager\Enemy_Act\Jamming</Filter>
-    </ClCompile>
-    <ClCompile Include="Player.cpp">
-      <Filter>src\user\BattleManager\Player</Filter>
-    </ClCompile>
-    <ClCompile Include="Player_Attack_01.cpp">
-      <Filter>src\user\BattleManager\Player_Act\Skills</Filter>
-    </ClCompile>
-    <ClCompile Include="PlayerSkills.cpp">
-      <Filter>src\user\BattleManager\Player_Act\Skills</Filter>
-    </ClCompile>
-    <ClCompile Include="Player_Heal_01.cpp">
-      <Filter>src\user\BattleManager\Player_Act\Skills</Filter>
-    </ClCompile>
-    <ClCompile Include="Player_Attack_02.cpp">
-      <Filter>src\user\BattleManager\Player_Act\Skills</Filter>
-    </ClCompile>
     <ClCompile Include="src\OperationConfig.cpp">
       <Filter>src\user</Filter>
     </ClCompile>
-    <ClCompile Include="Player_Ultimate_01.cpp">
+    <ClCompile Include="src\BattleManager\Player_Act\Skills\Player_Attack_01.cpp">
       <Filter>src\user\BattleManager\Player_Act\Skills</Filter>
     </ClCompile>
-    <ClCompile Include="Player_Bonus_Attack_01.cpp">
+    <ClCompile Include="src\BattleManager\Player_Act\Skills\Player_Attack_02.cpp">
       <Filter>src\user\BattleManager\Player_Act\Skills</Filter>
+    </ClCompile>
+    <ClCompile Include="src\BattleManager\Player_Act\Skills\Player_Bonus_Attack_01.cpp">
+      <Filter>src\user\BattleManager\Player_Act\Skills</Filter>
+    </ClCompile>
+    <ClCompile Include="src\BattleManager\Player_Act\Skills\Player_Heal_01.cpp">
+      <Filter>src\user\BattleManager\Player_Act\Skills</Filter>
+    </ClCompile>
+    <ClCompile Include="src\BattleManager\Player_Act\Skills\Player_Ultimate_01.cpp">
+      <Filter>src\user\BattleManager\Player_Act\Skills</Filter>
+    </ClCompile>
+    <ClCompile Include="src\BattleManager\Player_Act\Skills\PlayerSkills.cpp">
+      <Filter>src\user\BattleManager\Player_Act\Skills</Filter>
+    </ClCompile>
+    <ClCompile Include="src\BattleManager\BattleTurnMgr.cpp">
+      <Filter>src\user\BattleManager</Filter>
+    </ClCompile>
+    <ClCompile Include="src\BattleManager\UnitBase.cpp">
+      <Filter>src\user\BattleManager</Filter>
+    </ClCompile>
+    <ClCompile Include="src\BattleManager\Player\Player.cpp">
+      <Filter>src\user\BattleManager\Player</Filter>
+    </ClCompile>
+    <ClCompile Include="src\BattleManager\Enemy_Act\E_Ac_Base.cpp">
+      <Filter>src\user\BattleManager\Enemy_Act</Filter>
+    </ClCompile>
+    <ClCompile Include="src\BattleManager\Enemy_Act\EnemyActList.cpp">
+      <Filter>src\user\BattleManager\Enemy_Act</Filter>
+    </ClCompile>
+    <ClCompile Include="src\BattleManager\Enemy_Act\Attack\Debug_Attack_01.cpp">
+      <Filter>src\user\BattleManager\Enemy_Act\Attack</Filter>
+    </ClCompile>
+    <ClCompile Include="src\BattleManager\Enemy_Act\Attack\Debug_Attack_02.cpp">
+      <Filter>src\user\BattleManager\Enemy_Act\Attack</Filter>
+    </ClCompile>
+    <ClCompile Include="src\BattleManager\Enemy_Act\Heal\Debug_Heal_01.cpp">
+      <Filter>src\user\BattleManager\Enemy_Act\Heal</Filter>
+    </ClCompile>
+    <ClCompile Include="src\BattleManager\Enemy_Act\Jamming\Debug_Jamming_01.cpp">
+      <Filter>src\user\BattleManager\Enemy_Act\Jamming</Filter>
+    </ClCompile>
+    <ClCompile Include="src\BattleManager\Enemy\Enemy.cpp">
+      <Filter>src\user\BattleManager\Enemy</Filter>
+    </ClCompile>
+    <ClCompile Include="src\BattleManager\CutIn\CutInMgr.cpp">
+      <Filter>src\user\BattleManager\CutIn</Filter>
+    </ClCompile>
+    <ClCompile Include="src\Block\Block.cpp">
+      <Filter>src\user\Block</Filter>
+    </ClCompile>
+    <ClCompile Include="src\Block\BlockManager.cpp">
+      <Filter>src\user\Block</Filter>
+    </ClCompile>
+    <ClCompile Include="src\Panel\PanelManager.cpp">
+      <Filter>src\user\Panel</Filter>
+    </ClCompile>
+    <ClCompile Include="src\Scene\GameScene.cpp">
+      <Filter>src\user\Scene</Filter>
+    </ClCompile>
+    <ClCompile Include="src\Scene\BattleScene.cpp">
+      <Filter>src\user\Scene</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
@@ -630,9 +630,6 @@
     <ClInclude Include="..\..\src\engine\KuroEngine.h">
       <Filter>src\engine</Filter>
     </ClInclude>
-    <ClInclude Include="src\GameScene.h">
-      <Filter>src\user</Filter>
-    </ClInclude>
     <ClInclude Include="..\..\src\engine\ForUser\JsonData.h">
       <Filter>src\engine\ForUser</Filter>
     </ClInclude>
@@ -648,89 +645,92 @@
     <ClInclude Include="..\..\src\engine\resource.h">
       <Filter>リソースファイル</Filter>
     </ClInclude>
-    <ClInclude Include="BattleScene.h">
-      <Filter>src\user</Filter>
-    </ClInclude>
-    <ClInclude Include="UnitBase.h">
-      <Filter>src\user\BattleManager</Filter>
-    </ClInclude>
-    <ClInclude Include="BattleTurnMgr.h">
-      <Filter>src\user\BattleManager</Filter>
-    </ClInclude>
-    <ClInclude Include="Enemy.h">
-      <Filter>src\user\BattleManager\Enemy</Filter>
-    </ClInclude>
-    <ClInclude Include="EnemysData.h">
-      <Filter>src\user\BattleManager\Enemy</Filter>
-    </ClInclude>
-    <ClInclude Include="CutInMgr.h">
-      <Filter>src\user\BattleManager\CutIn</Filter>
-    </ClInclude>
-    <ClInclude Include="BaseInformation.h">
-      <Filter>src\user\Block</Filter>
-    </ClInclude>
-    <ClInclude Include="BlockManager.h">
-      <Filter>src\user\Block</Filter>
-    </ClInclude>
-    <ClInclude Include="Block.h">
-      <Filter>src\user\Block</Filter>
-    </ClInclude>
-    <ClInclude Include="PanelManager.h">
-      <Filter>src\user\Panel</Filter>
-    </ClInclude>
-    <ClInclude Include="EnemyActList.h">
-      <Filter>src\user\BattleManager\Enemy_Act</Filter>
-    </ClInclude>
-    <ClInclude Include="E_Ac_Base.h">
-      <Filter>src\user\BattleManager\Enemy_Act</Filter>
-    </ClInclude>
-    <ClInclude Include="Debug_Attack_01.h">
-      <Filter>src\user\BattleManager\Enemy_Act\Attack</Filter>
-    </ClInclude>
-    <ClInclude Include="Debug_Attack_02.h">
-      <Filter>src\user\BattleManager\Enemy_Act\Attack</Filter>
-    </ClInclude>
-    <ClInclude Include="Debug_Heal_01.h">
-      <Filter>src\user\BattleManager\Enemy_Act\Heal</Filter>
-    </ClInclude>
-    <ClInclude Include="Debug_Jamming_01.h">
-      <Filter>src\user\BattleManager\Enemy_Act\Jamming</Filter>
-    </ClInclude>
-    <ClInclude Include="ExistUnits.h">
-      <Filter>src\user\BattleManager</Filter>
-    </ClInclude>
-    <ClInclude Include="RefreshRate.h">
-      <Filter>src\user\RefreshRate</Filter>
-    </ClInclude>
-    <ClInclude Include="Player.h">
-      <Filter>src\user\BattleManager\Player</Filter>
-    </ClInclude>
-    <ClInclude Include="P_Ac_Base.h">
-      <Filter>src\user\BattleManager\Player_Act</Filter>
-    </ClInclude>
-    <ClInclude Include="Player_Attack_01.h">
-      <Filter>src\user\BattleManager\Player_Act\Skills</Filter>
-    </ClInclude>
-    <ClInclude Include="PlayerSkills.h">
-      <Filter>src\user\BattleManager\Player_Act\Skills</Filter>
-    </ClInclude>
-    <ClInclude Include="Player_Heal_01.h">
-      <Filter>src\user\BattleManager\Player_Act\Skills</Filter>
-    </ClInclude>
-    <ClInclude Include="Player_Attack_02.h">
-      <Filter>src\user\BattleManager\Player_Act\Skills</Filter>
-    </ClInclude>
-    <ClInclude Include="EnemyActionParametor.h">
-      <Filter>src\user\BattleManager\Enemy_Act</Filter>
-    </ClInclude>
     <ClInclude Include="src\OperationConfig.h">
       <Filter>src\user</Filter>
     </ClInclude>
-    <ClInclude Include="Player_Ultimate_01.h">
+    <ClInclude Include="src\BattleManager\Player_Act\Skills\Player_Attack_01.h">
       <Filter>src\user\BattleManager\Player_Act\Skills</Filter>
     </ClInclude>
-    <ClInclude Include="Player_Bonus_Attack_01.h">
+    <ClInclude Include="src\BattleManager\Player_Act\Skills\Player_Attack_02.h">
       <Filter>src\user\BattleManager\Player_Act\Skills</Filter>
+    </ClInclude>
+    <ClInclude Include="src\BattleManager\Player_Act\Skills\Player_Bonus_Attack_01.h">
+      <Filter>src\user\BattleManager\Player_Act\Skills</Filter>
+    </ClInclude>
+    <ClInclude Include="src\BattleManager\Player_Act\Skills\Player_Heal_01.h">
+      <Filter>src\user\BattleManager\Player_Act\Skills</Filter>
+    </ClInclude>
+    <ClInclude Include="src\BattleManager\Player_Act\Skills\Player_Ultimate_01.h">
+      <Filter>src\user\BattleManager\Player_Act\Skills</Filter>
+    </ClInclude>
+    <ClInclude Include="src\BattleManager\Player_Act\Skills\PlayerSkills.h">
+      <Filter>src\user\BattleManager\Player_Act\Skills</Filter>
+    </ClInclude>
+    <ClInclude Include="src\BattleManager\Player_Act\P_Ac_Base.h">
+      <Filter>src\user\BattleManager\Player_Act</Filter>
+    </ClInclude>
+    <ClInclude Include="src\BattleManager\BattleTurnMgr.h">
+      <Filter>src\user\BattleManager</Filter>
+    </ClInclude>
+    <ClInclude Include="src\BattleManager\ExistUnits.h">
+      <Filter>src\user\BattleManager</Filter>
+    </ClInclude>
+    <ClInclude Include="src\BattleManager\UnitBase.h">
+      <Filter>src\user\BattleManager</Filter>
+    </ClInclude>
+    <ClInclude Include="src\BattleManager\Player\Player.h">
+      <Filter>src\user\BattleManager\Player</Filter>
+    </ClInclude>
+    <ClInclude Include="src\BattleManager\Enemy_Act\E_Ac_Base.h">
+      <Filter>src\user\BattleManager\Enemy_Act</Filter>
+    </ClInclude>
+    <ClInclude Include="src\BattleManager\Enemy_Act\EnemyActionParametor.h">
+      <Filter>src\user\BattleManager\Enemy_Act</Filter>
+    </ClInclude>
+    <ClInclude Include="src\BattleManager\Enemy_Act\EnemyActList.h">
+      <Filter>src\user\BattleManager\Enemy_Act</Filter>
+    </ClInclude>
+    <ClInclude Include="src\BattleManager\Enemy_Act\Attack\Debug_Attack_01.h">
+      <Filter>src\user\BattleManager\Enemy_Act\Attack</Filter>
+    </ClInclude>
+    <ClInclude Include="src\BattleManager\Enemy_Act\Attack\Debug_Attack_02.h">
+      <Filter>src\user\BattleManager\Enemy_Act\Attack</Filter>
+    </ClInclude>
+    <ClInclude Include="src\BattleManager\Enemy_Act\Heal\Debug_Heal_01.h">
+      <Filter>src\user\BattleManager\Enemy_Act\Heal</Filter>
+    </ClInclude>
+    <ClInclude Include="src\BattleManager\Enemy_Act\Jamming\Debug_Jamming_01.h">
+      <Filter>src\user\BattleManager\Enemy_Act\Jamming</Filter>
+    </ClInclude>
+    <ClInclude Include="src\BattleManager\Enemy\Enemy.h">
+      <Filter>src\user\BattleManager\Enemy</Filter>
+    </ClInclude>
+    <ClInclude Include="src\BattleManager\Enemy\EnemysData.h">
+      <Filter>src\user\BattleManager\Enemy</Filter>
+    </ClInclude>
+    <ClInclude Include="src\BattleManager\CutIn\CutInMgr.h">
+      <Filter>src\user\BattleManager\CutIn</Filter>
+    </ClInclude>
+    <ClInclude Include="src\Block\Block.h">
+      <Filter>src\user\Block</Filter>
+    </ClInclude>
+    <ClInclude Include="src\Block\BlockManager.h">
+      <Filter>src\user\Block</Filter>
+    </ClInclude>
+    <ClInclude Include="src\Block\BaseInformation.h">
+      <Filter>src\user\Block</Filter>
+    </ClInclude>
+    <ClInclude Include="src\Panel\PanelManager.h">
+      <Filter>src\user\Panel</Filter>
+    </ClInclude>
+    <ClInclude Include="src\Scene\BattleScene.h">
+      <Filter>src\user\Scene</Filter>
+    </ClInclude>
+    <ClInclude Include="src\Scene\GameScene.h">
+      <Filter>src\user\Scene</Filter>
+    </ClInclude>
+    <ClInclude Include="src\RefreshRate.h">
+      <Filter>src\user</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>

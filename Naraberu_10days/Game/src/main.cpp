@@ -16,8 +16,8 @@
 
 #include"ForUser/Debugger.h"
 
-#include"GameScene.h"
-#include "../BattleScene.h"
+#include "../src/Scene/GameScene.h"
+#include "../src/Scene/BattleScene.h"
 
 #ifdef _DEBUG
 int main()
