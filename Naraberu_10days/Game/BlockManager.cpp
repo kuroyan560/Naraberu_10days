@@ -29,6 +29,11 @@ void BlockManager::Initialize()
 void BlockManager::Update()
 {
 	if (!isEnemyAttack) {
+		//パス
+		if (OperationConfig::Instance()->DebugKeyInputOnTrigger(DIK_P)) {
+			ChangeBlock();
+		}
+
 		//ブロック配置後に次ブロックの移動を行う
 		block[int(ObjectType::use)].block->Move();
 		//選択ブロック変更

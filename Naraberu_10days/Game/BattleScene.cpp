@@ -58,6 +58,7 @@ void BattleScene::OnUpdate()
 		PlayerTurn();
 	}
 
+	//ƒŠƒZƒbƒg
 	if (OperationConfig::Instance()->DebugKeyInputOnTrigger(DIK_I)) {
 		stage->Reset();
 	}

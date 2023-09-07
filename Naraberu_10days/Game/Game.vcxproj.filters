@@ -77,9 +77,6 @@
     <Filter Include="src\user\Block">
       <UniqueIdentifier>{972dbbbc-b097-47ac-8bb6-f439e9adb888}</UniqueIdentifier>
     </Filter>
-    <Filter Include="src\user\Stage">
-      <UniqueIdentifier>{4b6c4ee8-e3cd-49a7-8db3-a4f7470ca1a1}</UniqueIdentifier>
-    </Filter>
     <Filter Include="src\user\RefreshRate">
       <UniqueIdentifier>{51245595-224c-43f4-9cf7-8753bdefc193}</UniqueIdentifier>
     </Filter>
@@ -103,6 +100,9 @@
     </Filter>
     <Filter Include="src\user\BattleManager\Player_Act\Skills">
       <UniqueIdentifier>{e3855d8c-83b1-48c2-b4f1-c77d33662582}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="src\user\Panel">
+      <UniqueIdentifier>{4b6c4ee8-e3cd-49a7-8db3-a4f7470ca1a1}</UniqueIdentifier>
     </Filter>
   </ItemGroup>
   <ItemGroup>
@@ -335,7 +335,7 @@
       <Filter>src\user\Block</Filter>
     </ClCompile>
     <ClCompile Include="PanelManager.cpp">
-      <Filter>src\user\Stage</Filter>
+      <Filter>src\user\Panel</Filter>
     </ClCompile>
     <ClCompile Include="E_Ac_Base.cpp">
       <Filter>src\user\BattleManager\Enemy_Act</Filter>
@@ -676,7 +676,7 @@
       <Filter>src\user\Block</Filter>
     </ClInclude>
     <ClInclude Include="PanelManager.h">
-      <Filter>src\user\Stage</Filter>
+      <Filter>src\user\Panel</Filter>
     </ClInclude>
     <ClInclude Include="EnemyActList.h">
       <Filter>src\user\BattleManager\Enemy_Act</Filter>
