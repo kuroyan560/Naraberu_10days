@@ -8,6 +8,9 @@ void BlockManager::Initialize()
 	//画像
 	std::string TexDir = "resource/user/tex/battle_scene/";
 	arrowTex = KuroEngine::D3D12App::Instance()->GenerateTextureBuffer(TexDir + "arrow.png");
+	passTex[0] = KuroEngine::D3D12App::Instance()->GenerateTextureBuffer(TexDir + "pass.png");
+	passTex[1] = KuroEngine::D3D12App::Instance()->GenerateTextureBuffer(TexDir + "pass_slash.png");
+	KuroEngine::D3D12App::Instance()->GenerateTextureBuffer(numTex.data(), TexDir + "pass_number.png", 3, { 3, 1 });
 
 	for (int i = 1; i< int(ObjectType::size); i++) {
 		block[i].block.reset(new Block());
@@ -24,14 +27,17 @@ void BlockManager::Initialize()
 
 	nowChoice = 0;
 	isEnemyAttack=false;
+
+	passNum = passMaxNum;
 }
 
 void BlockManager::Update()
 {
 	if (!isEnemyAttack) {
 		//パス
-		if (OperationConfig::Instance()->DebugKeyInputOnTrigger(DIK_P)) {
+		if (passNum > 0 && OperationConfig::Instance()->DebugKeyInputOnTrigger(DIK_P)) {
 			ChangeBlock();
+			passNum--;
 		}
 
 		//ブロック配置後に次ブロックの移動を行う
@@ -81,6 +87,27 @@ void BlockManager::Draw()
 		KuroEngine::Vec2<float> arrowPos = { 475.0f,610.0f };
 		KuroEngine::DrawFunc2D::DrawExtendGraph2D({ arrowPos.x - arrowSize.x ,arrowPos.y - arrowSize.y }, arrowPos, arrowTex);
 	}
+
+	//パスの大本の座標
+	const KuroEngine::Vec2<float> passFoundationPos={ 230.0f,655.0f };
+
+	//パス画像
+	const KuroEngine::Vec2<float> passSize = { 107.0f,27.0f };
+	KuroEngine::DrawFunc2D::DrawExtendGraph2D({ passFoundationPos.x - passSize.x ,passFoundationPos.y - passSize.y }, passFoundationPos, passTex[0]);
+	const KuroEngine::Vec2<float> passSlashSize = { 18.0f,27.0f };
+	const KuroEngine::Vec2<float> passSlashPos = { 72.0f,0.0f };
+	KuroEngine::DrawFunc2D::DrawExtendGraph2D(
+	{ passFoundationPos.x - passSlashSize.x + passSlashPos.x ,passFoundationPos.y - passSlashSize.y + passSlashPos.y },
+	{ passFoundationPos.x + passSlashPos.x ,passFoundationPos.y + passSlashPos.y }, passTex[1]);
+
+	//パス数字画像
+	//最大
+	KuroEngine::Vec2<float> passMaxNumPos = { 80.0f,-27.0f };
+	KuroEngine::DrawFunc2D::DrawNumber2D(passMaxNum, { passFoundationPos.x + passMaxNumPos.x ,passFoundationPos.y + passMaxNumPos.y }, numTex.data(), {1,1});
+	//現在の数
+	KuroEngine::Vec2<float> passNumPos = { 20.0f,-27.0f };
+	KuroEngine::DrawFunc2D::DrawNumber2D(passNum, { passFoundationPos.x + passNumPos.x ,passFoundationPos.y + passNumPos.y }, numTex.data(), { 1,1 });
+
 }
 
 void BlockManager::Reset()

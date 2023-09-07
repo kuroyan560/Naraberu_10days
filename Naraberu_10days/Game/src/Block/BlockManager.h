@@ -82,6 +82,10 @@ private:
 
 	//矢印画像
 	std::shared_ptr<KuroEngine::TextureBuffer> arrowTex;
+	//パス画像
+	std::array<std::shared_ptr<KuroEngine::TextureBuffer>, 2> passTex;
+	//数字
+	std::array<std::shared_ptr<KuroEngine::TextureBuffer>,3> numTex;
 	//中央
 	KuroEngine::Vec2<int> center;
 	//使うブロック情報
@@ -90,5 +94,9 @@ private:
 	bool isEnemyAttack;
 	//選択中のブロック
 	int nowChoice;
+	//パス回数
+	const int passMaxNum=2;
+	//パス残り回数
+	int passNum;
 };
 
