@@ -24,21 +24,14 @@ void BattleScene::OnInitialize()
 	D3D12App::Instance()->GenerateTextureBuffer(&m_NumberTex.front(), TexDir + "/info/stage_number.png", 12, Vec2(12, 1));
 	D3D12App::Instance()->GenerateTextureBuffer(&m_NumberTex_Battle.front(), TexDir + "/info/battle_number.png", 11, Vec2(11, 1));
 	m_Stage_End = false;
-	m_Impossible_Put_Block_Timer = 0;
 	m_Impossible_Put_Block_Effect_Time = int(50.0f * RefreshRate::RefreshRate_Mag);
+	m_Impossible_Put_Block_Timer = m_Impossible_Put_Block_Effect_Time;
+	m_End_Timer = 0;
+	m_End_Timer_Finish = int(500.0f * RefreshRate::RefreshRate_Mag);
 
 	Pl = std::make_shared<Player>();
 	Pl->OnInitialize();
 	Pl->StartTurn();
-
-	/*En.emplace_back(std::make_shared<Enemy>());
-	GetUnitPtr<Enemy>(En[En.size() - 1])->SetEnemyData(EnemysData::DebugEnemy_1);
-	En.emplace_back(std::make_shared<Enemy>());
-	GetUnitPtr<Enemy>(En[En.size() - 1])->SetEnemyData(EnemysData::DebugEnemy_2);
-	En.emplace_back(std::make_shared<Enemy>());
-	GetUnitPtr<Enemy>(En[En.size() - 1])->SetEnemyData(EnemysData::DebugEnemy_3);
-	Mgr.OnInitialize(Pl, En);
-	ExistUnits::Instance()->Set(Pl.get(), En[0].get(), En[1].get(), En[2].get());*/
 
 	// ステージをセット
 	SetStage(ExistUnits::Instance()->m_StageName);
@@ -53,11 +46,6 @@ void BattleScene::OnInitialize()
 	// データをセット
 	Mgr.OnInitialize(Pl, En);
 	ExistUnits::Instance()->Set(Pl.get(), En[0].get(), En[1].get(), En[2].get());
-
-	/*En.emplace_back(std::make_shared<Enemy>());
-	GetUnitPtr<Enemy>(En[En.size() - 1])->SetEnemyData(EnemysData::DebugEnemy_Boss_1);
-	Mgr.OnInitialize(Pl, En);
-	ExistUnits::Instance()->Set(Pl.get(), En[0].get());*/
 
 	stage.reset(new PanelManager());
 	stage->Initialize();
@@ -80,9 +68,20 @@ void BattleScene::OnUpdate()
 		NextWave();
 	}
 
-	// ステージ終了
-	if (m_Stage_End) {
+	// ステージ終了(敗北)
+	if (Mgr.GetDefeat()) {
+		m_End_Timer++;
+		if (m_End_Timer == m_End_Timer_Finish) {
+			KuroEngine::KuroEngineDevice::Instance()->ChangeScene("title");
+		}
+	}
+	// ステージ終了(敵全滅)
+	else if (m_Stage_End) {
 		//KuroEngine::AppearMessageBox("ステージ終了", "ステージ終了");
+		m_End_Timer++;
+		if (m_End_Timer == m_End_Timer_Finish) {
+			KuroEngine::KuroEngineDevice::Instance()->ChangeScene("title");
+		}
 	}
 
 	//セット可能ならセットする
@@ -105,9 +104,9 @@ void BattleScene::OnUpdate()
 	block->Update();
 
 	//ゲームオーバーもしくはクリアをしたらシーンを切り替えられるようにする
-	if (OperationConfig::Instance()->DebugKeyInputOnTrigger(DIK_RETURN)) {
+	/*if (OperationConfig::Instance()->DebugKeyInputOnTrigger(DIK_RETURN)) {
 		KuroEngine::KuroEngineDevice::Instance()->ChangeScene("title");
-	}
+	}*/
 }
 
 void BattleScene::OnDraw()
@@ -134,6 +133,16 @@ void BattleScene::OnDraw()
 		DrawFunc2D::DrawNumber2D(1, Vec2(986.0f, 19.0f), &m_NumberTex.front());
 		DrawFunc2D::DrawGraph(Vec2(1003.0f, 19.0f), m_NumberTex[10]);
 		DrawFunc2D::DrawNumber2D(1, Vec2(1022.0f, 19.0f), &m_NumberTex.front());
+	}
+	else if (ExistUnits::Instance()->m_StageName == "Stage1") {
+		DrawFunc2D::DrawNumber2D(1, Vec2(986.0f, 19.0f), &m_NumberTex.front());
+		DrawFunc2D::DrawGraph(Vec2(1003.0f, 19.0f), m_NumberTex[10]);
+		DrawFunc2D::DrawNumber2D(2, Vec2(1022.0f, 19.0f), &m_NumberTex.front());
+	}
+	else if (ExistUnits::Instance()->m_StageName == "Stage1") {
+		DrawFunc2D::DrawNumber2D(1, Vec2(986.0f, 19.0f), &m_NumberTex.front());
+		DrawFunc2D::DrawGraph(Vec2(1003.0f, 19.0f), m_NumberTex[10]);
+		DrawFunc2D::DrawNumber2D(3, Vec2(1022.0f, 19.0f), &m_NumberTex.front());
 	}
 
 	// ウェーブ数描画

@@ -56,7 +56,8 @@ class BattleScene :
 	// 全ウェーブ終了したか
 	bool m_Stage_End;
 	// ステージ終了演出用
-	// あとで
+	int m_End_Timer;
+	int m_End_Timer_Finish;
 public:
 	BattleScene();
 

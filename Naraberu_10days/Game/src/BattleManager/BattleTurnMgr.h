@@ -29,6 +29,9 @@ class BattleTurnMgr
 	// ‰æ‘œ
 	std::shared_ptr<KuroEngine::TextureBuffer> m_CutInTex;
 
+	// ”s–kƒtƒ‰ƒO
+	bool m_IsDefeat;
+
 public:
 	BattleTurnMgr() {
 		m_Whole_Turn_Count = 0;
@@ -36,6 +39,7 @@ public:
 		TurnFrameTime = 0;
 		NextGameTimer = 0;
 		NextGameTimeFinish = int(float(NextGameTimeFinish_Default) * RefreshRate::RefreshRate_Mag);
+		m_IsDefeat = false;
 	}
 
 	void OnInitialize(std::shared_ptr<UnitBase> Player, std::vector<std::shared_ptr<UnitBase>> Enemys);
@@ -58,5 +62,8 @@ public:
 
 	// ¶‚«‚Ä‚¢‚é“G‚ª‹‚é‚©
 	bool AliveEnemys();
+
+	// ƒvƒŒƒCƒ„[‚ª€‚ñ‚Å‚¨‚èA”s–k‚ªŠm’è‚µ‚Ä‚¢‚é‚©
+	bool GetDefeat() { return m_IsDefeat; }
 };
 

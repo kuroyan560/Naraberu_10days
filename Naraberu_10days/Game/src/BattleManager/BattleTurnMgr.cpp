@@ -22,6 +22,7 @@ void BattleTurnMgr::OnInitialize(std::shared_ptr<UnitBase> Player, std::vector<s
 	TurnFrameTime = 0;
 	NextGameTimer = 0;
 	ExistUnits::Instance()->m_NowTarget = 0;
+	m_IsDefeat = false;
 
 	using namespace KuroEngine;
 	std::string TexDir = "resource/user/tex/battle_scene/";
@@ -40,6 +41,7 @@ void BattleTurnMgr::SetUnits(std::shared_ptr<UnitBase> Player, std::vector<std::
 	TurnFrameTime = 0;
 	NextGameTimer = 0;
 	ExistUnits::Instance()->m_NowTarget = 0;
+	m_IsDefeat = false;
 }
 
 void BattleTurnMgr::OnUpdate()
@@ -62,20 +64,20 @@ void BattleTurnMgr::OnUpdate()
 	}
 
 	// プレイヤーが死んでいる
-	if (!UnitList[TurnNum]->IsAlive()) {
+	if (!UnitList[0]->IsAlive()) {
 		// バトル終了処理(敗北)
 		int a = 0;
+		m_IsDefeat = true;
 	}
 
 	// 生きてる敵が居ない
 	if (!EnemyAlive) {
 		// バトル終了処理(勝利)
 		Update_NextWave();
-		int a = 0;
 	}
 
 	// 通常の更新処理
-	if (EnemyAlive && UnitList[TurnNum]->IsAlive()) {
+	if (EnemyAlive && UnitList[TurnNum]->IsAlive() && UnitList[0]->IsAlive()) {
 		Update_Battle();
 	}
 	

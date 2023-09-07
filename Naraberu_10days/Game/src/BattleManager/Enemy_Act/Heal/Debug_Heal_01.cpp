@@ -29,8 +29,9 @@ void Debug_Heal_01::Action_Update()
 		if (m_Targets.size() < 1 || m_Targets[0] == nullptr) {
 			exit(1);
 		}
-		// 1”Ô–Ú‚Ìƒ^[ƒQƒbƒg‚ÉUŒ‚‚·‚é
-		m_Targets[0]->Damage(int(m_Data.m_HealRate));
+		// Ž©•ª‚ð‰ñ•œ‚·‚é
+		m_Initiator->Heal_Par(int(m_Data.m_HealRate));
+		//m_Targets[0]->Damage(int(m_Data.m_HealRate));
 	}
 }
 

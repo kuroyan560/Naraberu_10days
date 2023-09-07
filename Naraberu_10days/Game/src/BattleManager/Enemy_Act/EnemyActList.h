@@ -70,7 +70,7 @@ namespace EnemyActions {
 		bool GetEnd();
 
 		void AllClear() {
-			m_List.clear();
+			//m_List.clear();
 		}
 	};
 
