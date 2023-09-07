@@ -236,3 +236,14 @@ void BattleTurnMgr::Update_Battle()
 		}
 	}
 }
+
+bool BattleTurnMgr::AliveEnemys()
+{
+	for (int i = 1; i < UnitList.size(); i++) {
+		if (UnitList[i]->IsAlive()) {
+			// ¶‚«‚Ä‚é“G‚ª‹‚ê‚Îƒtƒ‰ƒO‚ğã‚°‚é
+			return true;
+		}
+	}
+	return false;
+}

@@ -22,6 +22,10 @@ public:
 	// ロードするステージ名(現在のステージ名)
 	std::string m_StageName = "Stage1";
 
+	ExistUnits() {
+		m_StageName = "Stage1";
+	}
+
 	void Set(UnitBase* Player, UnitBase* Enemy_01 = nullptr, UnitBase* Enemy_02 = nullptr, UnitBase* Enemy_03 = nullptr) {
 		m_pPlayer = Player;
 		m_Enemys.clear();

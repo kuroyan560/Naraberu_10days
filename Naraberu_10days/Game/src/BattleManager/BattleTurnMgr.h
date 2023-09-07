@@ -55,5 +55,8 @@ public:
 
 	// 次のウェーブに移動するか
 	bool ChangeNextWave() { return NextGameTimer >= NextGameTimeFinish; }
+
+	// 生きている敵が居るか
+	bool AliveEnemys();
 };
 
