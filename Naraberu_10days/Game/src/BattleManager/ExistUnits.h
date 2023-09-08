@@ -6,6 +6,9 @@
 class UnitBase;
 class PanelManager;
 
+// ロードするステージ名(現在のステージ名)
+static std::string m_StageName = "Stage1";
+
 class ExistUnits : public KuroEngine::DesignPattern::Singleton<ExistUnits>
 {
 	friend class KuroEngine::DesignPattern::Singleton<ExistUnits>;
@@ -22,11 +25,8 @@ public:
 	// 
 	bool m_ChangeStageSelect = false;
 
-	// ロードするステージ名(現在のステージ名)
-	std::string m_StageName = "Stage1";
 
 	ExistUnits() {
-		m_StageName = "Stage1";
 	}
 
 	void Set(UnitBase* Player, UnitBase* Enemy_01 = nullptr, UnitBase* Enemy_02 = nullptr, UnitBase* Enemy_03 = nullptr) {

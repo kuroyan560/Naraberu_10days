@@ -29,7 +29,7 @@ Player::Player()
 	D3D12App::Instance()->GenerateTextureBuffer(&m_NumberTex.front(), TexDir + "player_hp_number.png", 11, Vec2(11, 1));
 
 	TurnChangeTimer = 0;
-	TurnChangeTime_Fin = int(300.0f * RefreshRate::RefreshRate_Mag);
+	TurnChangeTime_Fin = int(150.0f * RefreshRate::RefreshRate_Mag);
 }
 
 void Player::OnInitialize()

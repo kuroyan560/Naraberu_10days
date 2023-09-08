@@ -34,7 +34,7 @@ void BattleScene::OnInitialize()
 	Pl->StartTurn();
 
 	// ステージをセット
-	SetStage(ExistUnits::Instance()->m_StageName);
+	SetStage(m_StageName);
 	// 最初のウェーブ
 	m_NowWave = 1;
 	// ウェーブの敵を取得
@@ -147,17 +147,17 @@ void BattleScene::OnDraw()
 	DrawFunc2D::DrawGraph(Vec2(1064.0f, 13.0f), m_BattleTex);
 
 	// ステージ名描画
-	if (ExistUnits::Instance()->m_StageName == "Stage1") {
+	if (m_StageName == "Stage1") {
 		DrawFunc2D::DrawNumber2D(1, Vec2(986.0f, 19.0f), &m_NumberTex.front());
 		DrawFunc2D::DrawGraph(Vec2(1003.0f, 19.0f), m_NumberTex[10]);
 		DrawFunc2D::DrawNumber2D(1, Vec2(1022.0f, 19.0f), &m_NumberTex.front());
 	}
-	else if (ExistUnits::Instance()->m_StageName == "Stage1") {
+	else if (m_StageName == "Stage1") {
 		DrawFunc2D::DrawNumber2D(1, Vec2(986.0f, 19.0f), &m_NumberTex.front());
 		DrawFunc2D::DrawGraph(Vec2(1003.0f, 19.0f), m_NumberTex[10]);
 		DrawFunc2D::DrawNumber2D(2, Vec2(1022.0f, 19.0f), &m_NumberTex.front());
 	}
-	else if (ExistUnits::Instance()->m_StageName == "Stage1") {
+	else if (m_StageName == "Stage1") {
 		DrawFunc2D::DrawNumber2D(1, Vec2(986.0f, 19.0f), &m_NumberTex.front());
 		DrawFunc2D::DrawGraph(Vec2(1003.0f, 19.0f), m_NumberTex[10]);
 		DrawFunc2D::DrawNumber2D(3, Vec2(1022.0f, 19.0f), &m_NumberTex.front());
