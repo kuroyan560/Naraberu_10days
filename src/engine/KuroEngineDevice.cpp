@@ -142,32 +142,28 @@ void KuroEngine::KuroEngineDevice::Update()
 	//音声関連アプリ更新
 	m_audioApp->Update();
 
-	//次のシーンがセットされている
-	if (!m_nextScene.empty())
+	//シーン切り替えフラグ
+	bool sceneChangeFlg = false;
+
+	if (m_nowSceneTransition != nullptr) //シーン遷移中
 	{
-		//シーン切り替えフラグ
-		bool sceneChangeFlg = true;
+		//シーン遷移クラスの更新関数は、シーン切り替えのタイミングで true を還す
+		sceneChangeFlg = m_nowSceneTransition->Update();
 
-		if (m_nowSceneTransition != nullptr) //シーン遷移中
+		//シーン遷移終了
+		if (m_nowSceneTransition->Finish())
 		{
-			//シーン遷移クラスの更新関数は、シーン切り替えのタイミングで true を還す
-			sceneChangeFlg = m_nowSceneTransition->Update();
-
-			//シーン遷移終了
-			if (m_nowSceneTransition->Finish())
-			{
-				m_nextScene.clear();
-				m_nowSceneTransition = nullptr;
-			}
+			m_nowSceneTransition = nullptr;
 		}
+	}
 
-		//シーン切り替え
-		if (sceneChangeFlg)
-		{
-			m_scenes[m_nowScene]->Finalize();	//切り替え前のシーン終了処理
-			m_nowScene = m_nextScene;		//シーン切り替え
-			m_scenes[m_nowScene]->Initialize();	//切り替え後のシーン初期化処理
-		}
+	//シーン切り替え
+	if (sceneChangeFlg)
+	{
+		m_scenes[m_nowScene]->Finalize();	//切り替え前のシーン終了処理
+		m_nowScene = m_nextScene;		//シーン切り替え
+		m_scenes[m_nowScene]->Initialize();	//切り替え後のシーン初期化処理
+		m_nextScene.clear();
 	}
 
 	//入力更新

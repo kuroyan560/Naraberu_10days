@@ -113,6 +113,7 @@ namespace KuroEngine
 		std::string m_nowScene;	//現在のシーンキー
 		std::string m_nextScene = "";	//次のシーンキー
 		SceneTransition* m_nowSceneTransition;	//現在セットされているシーン遷移
+		SceneTransition m_defaultSceneTransition;	//現在セットされているシーン遷移
 
 		//終了フラグ
 		bool m_end = false;
@@ -150,7 +151,9 @@ namespace KuroEngine
 			}
 			m_nextScene = SceneKey;
 			m_nowSceneTransition = SceneTransition;
-			if (m_nowSceneTransition != nullptr)	m_nowSceneTransition->Start();
+			if (m_nowSceneTransition == nullptr)m_nowSceneTransition = &m_defaultSceneTransition;
+
+			m_nowSceneTransition->Start();
 		}
 
 		//グラフィックスマネージャゲッタ
