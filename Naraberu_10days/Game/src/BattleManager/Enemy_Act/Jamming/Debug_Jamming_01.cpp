@@ -6,6 +6,9 @@
 #include "FrameWork/WinApp.h"
 #include "FrameWork/UsersInput.h"
 
+#include "../../ExistUnits.h"
+#include "../../../Panel/PanelManager.h"
+
 void Debug_Jamming_01::Action_Start()
 {
 	// Šî’ê‰Šú‰»
@@ -37,6 +40,16 @@ void Debug_Jamming_01::Action_Draw()
 	}
 
 	using namespace KuroEngine;
+
+	// ‚¨×–‚ƒvƒŠƒYƒ€‚ğİ’u
+	// UŒ‚‚Íˆê‰ñ‚Ì‚İ
+	if (m_Timer == 10) {
+		for (int i = 0; i < 3; i++) {
+			Vec2<int> SetPos = Vec2<int>(KuroEngine::GetRand(0, 10), KuroEngine::GetRand(0, 10));
+			ExistUnits::Instance()->m_StageManager->SetObstacle(SetPos);
+		}
+	}
+
 	// ‰¼‚Å” ‚ğ•`‰æ
 	//DrawFunc2D::DrawBox2D(Vec2(0.0f, 0.0f), Vec2(100.0f, 100.0f), Color(0, 255, 255, 255), true);
 }

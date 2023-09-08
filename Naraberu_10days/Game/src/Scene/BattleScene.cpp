@@ -152,12 +152,12 @@ void BattleScene::OnDraw()
 		DrawFunc2D::DrawGraph(Vec2(1003.0f, 19.0f), m_NumberTex[10]);
 		DrawFunc2D::DrawNumber2D(1, Vec2(1022.0f, 19.0f), &m_NumberTex.front());
 	}
-	else if (m_StageName == "Stage1") {
+	else if (m_StageName == "Stage2") {
 		DrawFunc2D::DrawNumber2D(1, Vec2(986.0f, 19.0f), &m_NumberTex.front());
 		DrawFunc2D::DrawGraph(Vec2(1003.0f, 19.0f), m_NumberTex[10]);
 		DrawFunc2D::DrawNumber2D(2, Vec2(1022.0f, 19.0f), &m_NumberTex.front());
 	}
-	else if (m_StageName == "Stage1") {
+	else if (m_StageName == "Stage3") {
 		DrawFunc2D::DrawNumber2D(1, Vec2(986.0f, 19.0f), &m_NumberTex.front());
 		DrawFunc2D::DrawGraph(Vec2(1003.0f, 19.0f), m_NumberTex[10]);
 		DrawFunc2D::DrawNumber2D(3, Vec2(1022.0f, 19.0f), &m_NumberTex.front());
@@ -226,6 +226,9 @@ void BattleScene::NextWave()
 		EnemyActions::EnemyActionMgr::Instance()->AllClear();
 		return;
 	}
+
+	// パネルを掃除
+	ExistUnits::Instance()->m_StageManager->Reset();
 
 	// 次ウェーブの敵を取得
 	En.clear();
