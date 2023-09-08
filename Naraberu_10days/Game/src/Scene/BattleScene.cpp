@@ -34,13 +34,15 @@ void BattleScene::OnInitialize()
 	D3D12App::Instance()->GenerateTextureBuffer(&m_ClearNumberTex.front(), TexDir + "/clear/clear_number.png", 10, Vec2(10, 1));
 
 	// ゲームオーバー
+	m_GameOverSelectIndex = 0;
+	m_Already_Selected = false;
 	m_GameoverTex = D3D12App::Instance()->GenerateTextureBuffer(TexDir + "/gameover/game_over.png");
 	m_RetryTex = D3D12App::Instance()->GenerateTextureBuffer(TexDir + "/gameover/retry.png");
 	m_StageSelectTex = D3D12App::Instance()->GenerateTextureBuffer(TexDir + "/gameover/stage_select.png");
 	m_SelectTex = D3D12App::Instance()->GenerateTextureBuffer(TexDir + "/gameover/select.png");
-	m_Done_KeyTex_Clear = D3D12App::Instance()->GenerateTextureBuffer(TexDir + "/gameover/done_key.png");
-	m_Done_ControllerTex_Clear = D3D12App::Instance()->GenerateTextureBuffer(TexDir + "/gameover/done_controller.png");
-	m_DoneTex_Clear = D3D12App::Instance()->GenerateTextureBuffer(TexDir + "/gameover/done.png");
+	m_Done_KeyTex_GameOver = D3D12App::Instance()->GenerateTextureBuffer(TexDir + "/gameover/done_key.png");
+	m_Done_ControllerTex_GameOver = D3D12App::Instance()->GenerateTextureBuffer(TexDir + "/gameover/done_controller.png");
+	m_DoneTex_GameOver = D3D12App::Instance()->GenerateTextureBuffer(TexDir + "/gameover/done.png");
 
 	m_Stage_End = false;
 	m_Impossible_Put_Block_Effect_Time = int(50.0f * RefreshRate::RefreshRate_Mag);
@@ -97,17 +99,37 @@ void BattleScene::OnUpdate()
 
 	// ステージ終了(敗北)
 	if (Mgr.GetDefeat()) {
-		m_End_Timer++;
-
-		if (OperationConfig::Instance()->DebugKeyInputOnTrigger(DIK_O)) {
-			if (m_End_Timer >= m_End_Timer_Finish) {
-				ExistUnits::Instance()->m_ChangeStageSelect = true;
-				KuroEngine::KuroEngineDevice::Instance()->ChangeScene("title");
-			}
+		if (m_End_Timer < m_End_Timer_Finish) {
+			m_End_Timer++;
 		}
-		else if (OperationConfig::Instance()->DebugKeyInputOnTrigger(DIK_P)) {
-			if (m_End_Timer >= m_End_Timer_Finish) {
-				KuroEngine::KuroEngineDevice::Instance()->ChangeScene("Battle");
+
+		// 選択肢
+		if (!m_Already_Selected) {
+			if (OperationConfig::Instance()->GetSelectVec(OperationConfig::SELECT_VEC::SELECT_VEC_UP) || 
+				OperationConfig::Instance()->GetTargetChangeVec(OperationConfig::SELECT_VEC_UP)) {
+				if (m_GameOverSelectIndex > 0) {
+					m_GameOverSelectIndex--;
+				}
+			}
+			if (OperationConfig::Instance()->GetSelectVec(OperationConfig::SELECT_VEC::SELECT_VEC_DOWN) || 
+				OperationConfig::Instance()->GetTargetChangeVec(OperationConfig::SELECT_VEC_DOWN)) {
+				if (m_GameOverSelectIndex < 1) {
+					m_GameOverSelectIndex++;
+				}
+			}
+			// 決定
+			if (OperationConfig::Instance()->GetOperationInput(OperationConfig::OPERATION_TYPE::DONE, OperationConfig::INPUT_PATTERN::ON_TRIGGER)
+				&& m_End_Timer > 1) {
+				m_Already_Selected = true;
+				// タイトルへ
+				if (m_GameOverSelectIndex == 1) {
+					ExistUnits::Instance()->m_ChangeStageSelect = true;
+					KuroEngine::KuroEngineDevice::Instance()->ChangeScene("title");
+				}
+				// リトライ
+				else if (m_GameOverSelectIndex == 0) {
+					KuroEngine::KuroEngineDevice::Instance()->ChangeScene("Battle");
+				}
 			}
 		}
 	}
@@ -143,7 +165,9 @@ void BattleScene::OnUpdate()
 
 	Mgr.OnUpdate();
 	stage->Update();
-	block->Update();
+	//if (!Mgr.GetDefeat() && !m_Stage_End) {
+		block->Update();
+	//}
 
 	//ゲームオーバーもしくはクリアをしたらシーンを切り替えられるようにする
 	/*if (OperationConfig::Instance()->DebugKeyInputOnTrigger(DIK_RETURN)) {
@@ -200,6 +224,15 @@ void BattleScene::OnDraw()
 
 	Mgr.OnDraw();
 
+
+	// ステージ終了(敗北)
+	if (Mgr.GetDefeat()) {
+		GameOverDraw();
+	}
+	// ステージ終了(敵全滅)
+	else if (m_Stage_End) {
+		GameClearDraw();
+	}
 }
 
 void BattleScene::OnImguiDebug()
@@ -275,6 +308,46 @@ void BattleScene::NextWave()
 	// 攻撃等をクリア
 	PlayerSkills::PlayerSkillMgr::Instance()->AllClear();
 	EnemyActions::EnemyActionMgr::Instance()->AllClear();
+}
+
+void BattleScene::GameClearDraw()
+{
+	using namespace KuroEngine;
+	DrawFunc2D::DrawGraph(Vec2(503.0f, 175.0f), m_ClearTex);
+	DrawFunc2D::DrawGraph(Vec2(484.0f, 257.0f), m_MaxComboTex);
+	DrawFunc2D::DrawNumber2D(103, Vec2(697.0f, 257.0f), &m_ClearNumberTex.front());
+	DrawFunc2D::DrawGraph(Vec2(493.0f, 308.0f), m_TotalTurnTex);
+	DrawFunc2D::DrawNumber2D(297, Vec2(697.0f, 308.0f), &m_ClearNumberTex.front());
+	if (OperationConfig::Instance()->GetLatestDevice() == OperationConfig::Instance()->KEY_BOARD_MOUSE) {
+		DrawFunc2D::DrawGraph(Vec2(613.0f, 365.0f), m_Done_KeyTex_Clear);
+	}
+	else {
+		DrawFunc2D::DrawGraph(Vec2(611.0f, 365.0f), m_Done_ControllerTex_Clear);
+	}
+	DrawFunc2D::DrawGraph(Vec2(613.0f, 423.0f), m_DoneTex_Clear);
+}
+
+void BattleScene::GameOverDraw()
+{
+	using namespace KuroEngine;
+	DrawFunc2D::DrawGraph(Vec2(524.0f, 175.0f), m_GameoverTex);
+	DrawFunc2D::DrawGraph(Vec2(594.0f, 254.0f), m_RetryTex);
+	DrawFunc2D::DrawGraph(Vec2(541.0f, 309.0f), m_StageSelectTex);
+
+	if (m_GameOverSelectIndex == 0) {
+		DrawFunc2D::DrawGraph(Vec2(565.0f, 254.0f), m_SelectTex);
+	}
+	else {
+		DrawFunc2D::DrawGraph(Vec2(512.0f, 309.0f), m_SelectTex);
+	}
+
+	if (OperationConfig::Instance()->GetLatestDevice() == OperationConfig::Instance()->KEY_BOARD_MOUSE) {
+		DrawFunc2D::DrawExtendGraph2D(Vec2(772.0f, 350.0f), Vec2(813.0f, 395.0f), m_Done_KeyTex_GameOver);
+	}
+	else {
+		DrawFunc2D::DrawGraph(Vec2(770.0f, 350.0f), m_Done_ControllerTex_GameOver);
+	}
+	DrawFunc2D::DrawGraph(Vec2(764.0f, 399.0f), m_DoneTex_GameOver);
 }
 
 BattleScene::BattleScene()

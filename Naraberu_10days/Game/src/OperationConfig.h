@@ -42,7 +42,9 @@ private:
 	//デバッグのキー入力を受け付けるか
 	bool m_isDebug = true;
 
+public:
 	enum INPUT_DEVICE { KEY_BOARD_MOUSE, CONTROLLER, NUM }m_nowInputDevice = INPUT_DEVICE::KEY_BOARD_MOUSE;
+private:
 	const std::array<std::string, INPUT_DEVICE::NUM>m_inputDeviceNames =
 	{
 		"KEY_BOARD_MOUSE","CONTROLLER"

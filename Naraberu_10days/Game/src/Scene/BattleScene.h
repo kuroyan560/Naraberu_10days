@@ -41,6 +41,9 @@ class BattleScene :
 	std::array<std::shared_ptr<KuroEngine::TextureBuffer>, 10> m_ClearNumberTex;
 
 	// ゲームオーバー
+	// 0 : リトライ 1 : ステージセレクト
+	int m_GameOverSelectIndex;
+	bool m_Already_Selected;
 	std::shared_ptr<KuroEngine::TextureBuffer> m_GameoverTex;
 	std::shared_ptr<KuroEngine::TextureBuffer> m_RetryTex;
 	std::shared_ptr<KuroEngine::TextureBuffer> m_StageSelectTex;
@@ -79,7 +82,9 @@ class BattleScene :
 	int m_End_Timer_Finish;
 
 	// ゲームクリア描画
-
+	void GameClearDraw();
+	// ゲームオーバー画面
+	void GameOverDraw();
 
 public:
 	BattleScene();
