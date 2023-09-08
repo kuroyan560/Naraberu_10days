@@ -392,10 +392,10 @@
       <Filter>src\user\Scene</Filter>
     </ClCompile>
     <ClCompile Include="src\TitleUi.cpp">
-      <Filter>src</Filter>
+      <Filter>src\user</Filter>
     </ClCompile>
     <ClCompile Include="src\BattleManager\Reticle\Reticle.cpp">
-      <Filter>src</Filter>
+      <Filter>src\user\BattleManager\Reticle</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
@@ -756,9 +756,11 @@
     <ClInclude Include="src\Scene\TitleScene.h">
       <Filter>src\user\Scene</Filter>
     </ClInclude>
-    <ClInclude Include="src\TitleUi.h" />
     <ClInclude Include="src\BattleManager\Reticle\Reticle.h">
       <Filter>src\user\BattleManager\Reticle</Filter>
+    </ClInclude>
+    <ClInclude Include="src\TitleUi.h">
+      <Filter>src\user</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>
