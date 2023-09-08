@@ -30,6 +30,12 @@ Player::Player()
 
 	TurnChangeTimer = 0;
 	TurnChangeTime_Fin = int(150.0f * RefreshRate::RefreshRate_Mag);
+
+	//ウルト演出系
+	const KuroEngine::Vec2<float> size = { 57.5f ,57.5f };
+	for (int i = 0; i < 4; i++) {
+		ultSize[i] = { size.x / float(i), size.y / float(i) };
+	}
 }
 
 void Player::OnInitialize()
@@ -167,6 +173,15 @@ void Player::OnDraw()
 		Vec2(248.0f, 14.0f), Vec2(363.0f, 129.0f), m_Ult_Gauge,
 		Vec2(248.0f, 129.0f - Gauge_ULT_Width), Vec2(363.0f, 129.0f));
 
+	if (GetUltRate() == 1.0f) {
+		UltMaxEffect();
+		const KuroEngine::Vec2<float> ultPos = { 305.5f,71.5f };
+		for (auto& i : ultSize) {
+			DrawFunc2D::DrawExtendGraph2D({ ultPos.x - i.x,ultPos.y - i.y },
+				{ ultPos.x + i.x,ultPos.y + i.y }, m_Ult_Gauge, 0.1f, AlphaBlendMode::AlphaBlendMode_Add);
+		}
+	}
+
 	// 描画位置の保存
 	m_Left_Top = Vec2(32.0f, 60.0f);
 	m_Right_Bottom = Vec2(354.0f, 610.0f);
@@ -198,4 +213,18 @@ void Player::SetState(int HP, int MaxHP)
 	m_BeforeUltimatePoint = 0;
 	Max_UltimatePoint = 100;
 	m_IsEndTurnFunc = false;
+}
+
+void Player::UltMaxEffect()
+{
+	//基礎サイズ
+	const KuroEngine::Vec2<float> size = { 57.5f ,57.5f };
+
+	for (auto& i : ultSize) {
+		i.x += 0.2f;
+		i.y += 0.2f;
+		if (i.x > 70.0f) {
+			i = size;
+		}
+	}
 }
