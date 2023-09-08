@@ -48,5 +48,5 @@ public:
 	void Update();
 	void Draw();
 
-	void Add(int arg_damage);
+	void Add(int arg_damage, bool arg_drawHistory);
 };

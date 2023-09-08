@@ -90,7 +90,7 @@ void EnemyDamageUI::Draw()
 	}
 }
 
-void EnemyDamageUI::Add(int arg_damage)
+void EnemyDamageUI::Add(int arg_damage, bool arg_drawHistory)
 {
 	//êUìÆÉpÉâÉÅÅ[É^
 	const float SHAKE_TIME = 15.0f;
@@ -120,9 +120,12 @@ void EnemyDamageUI::Add(int arg_damage)
 	m_impactShake.Shake(SHAKE_TIME, SHAKE_SPAN, SHAKE_POWER_MIN, SHAKE_POWER_MAX);
 	m_nowPos = m_appearPos;
 
-	m_history.push_front(arg_damage);
-	if (QUEUE_MAX < static_cast<int>(m_history.size()))
+	if (arg_drawHistory)
 	{
-		m_history.pop_back();
+		m_history.push_front(arg_damage);
+		if (QUEUE_MAX < static_cast<int>(m_history.size()))
+		{
+			m_history.pop_back();
+		}
 	}
 }
