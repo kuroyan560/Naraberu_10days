@@ -149,6 +149,13 @@ namespace KuroEngine
 				assert(0);
 				return;
 			}
+
+			//ƒV[ƒ“‘JˆÚ’†
+			if (m_nowSceneTransition != nullptr)
+			{
+				return;
+			}
+
 			m_nextScene = SceneKey;
 			m_nowSceneTransition = SceneTransition;
 			if (m_nowSceneTransition == nullptr)m_nowSceneTransition = &m_defaultSceneTransition;
