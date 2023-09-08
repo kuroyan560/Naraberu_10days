@@ -97,15 +97,15 @@ void Block::ChangeBlock(const KuroEngine::Vec2<int> _mapchipNum, const std::vect
 
 	if (_mapchipNum.x != -1) {
 		pos = _mapchipNum;
-	} else {
-		KuroEngine::Vec2<int> max = PanelManager::GetMapMax();
-
-		//“Ë‚«o‚Ä‚¢‚½ê‡–ß‚·
-		pos.x += int(pos.x + shapeMin.x < 0) * abs(pos.x + shapeMin.x);
-		pos.x += int(shapeMax.x + pos.x >= max.x) * (shapeMax.x + pos.x - max.x - 1);
-		pos.y += int(pos.y + shapeMin.y < 0) * abs(pos.y + shapeMin.y);
-		pos.y += int(shapeMax.y + pos.y >= max.y) * (shapeMax.y + pos.y - max.y - 1);
 	}
+
+	KuroEngine::Vec2<int> max = PanelManager::GetMapMax();
+
+	//“Ë‚«o‚Ä‚¢‚½ê‡–ß‚·
+	pos.x += int(pos.x + shapeMin.x < 0) * abs(pos.x + shapeMin.x);
+	pos.x -= int(shapeMax.x + pos.x >= max.x) * (shapeMax.x + pos.x - max.x + 1);
+	pos.y += int(pos.y + shapeMin.y < 0) * abs(pos.y + shapeMin.y);
+	pos.y -= int(shapeMax.y + pos.y >= max.y) * (shapeMax.y + pos.y - max.y + 1);
 }
 
 void Block::BlockOneDraw(const KuroEngine::Vec2<float> _pos, BlockColor _color)
