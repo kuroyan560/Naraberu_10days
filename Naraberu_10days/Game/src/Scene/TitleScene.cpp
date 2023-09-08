@@ -92,7 +92,7 @@ void TitleScene::StageSelect()
 {
 	//battle‚Ö
 	if (OperationConfig::Instance()->GetOperationInput(OperationConfig::OPERATION_TYPE::DONE, OperationConfig::INPUT_PATTERN::ON_TRIGGER)) {
-		//ExistUnits::Instance()->m_StageName = "Stage" + std::to_string(stageNum);
+		ExistUnits::Instance()->m_StageName = "Stage" + std::to_string(title->GetStageNum());
 		KuroEngine::KuroEngineDevice::Instance()->ChangeScene("Battle");
 	}
 

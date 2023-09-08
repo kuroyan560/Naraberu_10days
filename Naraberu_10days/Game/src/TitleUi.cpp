@@ -97,7 +97,7 @@ void TitleUi::Draw()
 			{ stageTexInfo[i].pos.x + stage_moji_dist.x * stageTexInfo[i].scale + stage_moji_size.x * stageTexInfo[i].
 			scale,stageTexInfo[i].pos.y + stage_moji_dist.y * stageTexInfo[i].scale + stage_moji_size.y * stageTexInfo[i].scale }, stageTex);
 		//êîéö
-		KuroEngine::DrawFunc2D::DrawNumber2D(i, { stageTexInfo[i].pos.x + number_dist.x * stageTexInfo[i].scale,stageTexInfo[i].pos.y + number_dist.y * stageTexInfo[i].scale }, numTex.data());
+		KuroEngine::DrawFunc2D::DrawNumber2D(i + 1, { stageTexInfo[i].pos.x + number_dist.x * stageTexInfo[i].scale,stageTexInfo[i].pos.y + number_dist.y * stageTexInfo[i].scale }, numTex.data());
 	}
 }
 
