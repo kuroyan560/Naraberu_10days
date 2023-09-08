@@ -241,11 +241,12 @@ void Enemy::Draw(int Index, int NowTurn_Index, int Index_Max, bool Dark, int Fra
 
 	// 現在のHP割合
 	float Now_HP_Rate = float(HP_Gauge_Now_Value) / float(m_MaxHP);
+	float Now_HP_Rate2 = float(m_HP) / float(m_MaxHP);
 	// HPゲージの長さ
 	float Gauge_Max_Width = 1247.0f - 1115.0f;
 	// 現在のHPゲージの長さ
 	float Gauge_Width = Gauge_Max_Width * Now_HP_Rate;
-
+	float Gauge_Width2 = Gauge_Max_Width * Now_HP_Rate2;
 
 	std::shared_ptr<KuroEngine::TextureBuffer> HP_Gauge = m_Data.m_HpTex_green;
 	if (Now_HP_Rate <= 0.2f) {
@@ -256,8 +257,12 @@ void Enemy::Draw(int Index, int NowTurn_Index, int Index_Max, bool Dark, int Fra
 	}
 
 	DrawFunc2D_Mask::DrawExtendGraph2D(
-		Vec2(1132.0f - Move_Width, 187.0f + IndexDiff), Vec2(1264.0f - Move_Width, 197.0f + IndexDiff), HP_Gauge,
+		Vec2(1132.0f - Move_Width, 187.0f + IndexDiff), Vec2(1264.0f - Move_Width, 197.0f + IndexDiff), m_Data.m_HpTex_break,
 		Vec2(1132.0f - Move_Width, 187.0f + IndexDiff), Vec2(1132.0f - Move_Width + Gauge_Width, 197.0f + IndexDiff));
+
+	DrawFunc2D_Mask::DrawExtendGraph2D(
+		Vec2(1132.0f - Move_Width, 187.0f + IndexDiff), Vec2(1264.0f - Move_Width, 197.0f + IndexDiff), HP_Gauge,
+		Vec2(1132.0f - Move_Width, 187.0f + IndexDiff), Vec2(1132.0f - Move_Width + Gauge_Width2, 197.0f + IndexDiff));
 
 
 }
@@ -308,11 +313,12 @@ void Enemy::Draw_Boss(int Index, int NowTurn_Index, int Index_Max, bool Dark, in
 
 	// 現在のHP割合
 	float Now_HP_Rate = float(HP_Gauge_Now_Value) / float(m_MaxHP);
+	float Now_HP_Rate2 = float(m_HP) / float(m_MaxHP);
 	// HPゲージの長さ
 	float Gauge_Max_Width = 1258.0f - 923.0f;
 	// 現在のHPゲージの長さ
 	float Gauge_Width = Gauge_Max_Width * Now_HP_Rate;
-
+	float Gauge_Width2 = Gauge_Max_Width * Now_HP_Rate2;
 
 	std::shared_ptr<KuroEngine::TextureBuffer> HP_Gauge = m_Data.m_HpTex_green;
 	if (Now_HP_Rate <= 0.2f) {
@@ -323,7 +329,11 @@ void Enemy::Draw_Boss(int Index, int NowTurn_Index, int Index_Max, bool Dark, in
 	}
 
 	DrawFunc2D_Mask::DrawExtendGraph2D(
-		Vec2(923.0f, 427.0f), Vec2(1258.0f, 580.0f), HP_Gauge,
+		Vec2(923.0f, 427.0f), Vec2(1258.0f, 580.0f), m_Data.m_HpTex_break,
 		Vec2(923.0f, 427.0f), Vec2(923.0f + Gauge_Width, 580.0f));
+
+	DrawFunc2D_Mask::DrawExtendGraph2D(
+		Vec2(923.0f, 427.0f), Vec2(1258.0f, 580.0f), HP_Gauge,
+		Vec2(923.0f, 427.0f), Vec2(923.0f + Gauge_Width2, 580.0f));
 
 }

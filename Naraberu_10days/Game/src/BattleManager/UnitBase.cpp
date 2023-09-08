@@ -6,6 +6,8 @@ void UnitBase::StartTurn()
 	m_isMyTurn = true;
 	// タイマーリセット
 	m_Frame_Timer = 0;
+	// 
+	m_IsEndTurnFunc = false;
 }
 
 void UnitBase::EndTurn()

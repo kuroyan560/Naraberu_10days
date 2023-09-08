@@ -103,7 +103,7 @@ void BattleScene::OnUpdate()
 	}
 
 	//セット可能ならセットする
-	if (ExistUnits::Instance()->m_NowTurn == 0 && m_Impossible_Put_Block_Timer == 0 && Mgr.AliveEnemys()) {
+	if (ExistUnits::Instance()->m_NowTurn == 0 && m_Impossible_Put_Block_Timer == 0 && Mgr.AliveEnemys() && !ExistUnits::Instance()->m_pPlayer->m_IsEndTurnFunc) {
 		PlayerTurn();
 	}
 

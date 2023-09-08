@@ -48,7 +48,7 @@ namespace EnemysData {
 		std::shared_ptr<KuroEngine::TextureBuffer> m_HpTex_green;
 		std::shared_ptr<KuroEngine::TextureBuffer> m_HpTex_yellow;
 		std::shared_ptr<KuroEngine::TextureBuffer> m_HpTex_red;
-
+		std::shared_ptr<KuroEngine::TextureBuffer> m_HpTex_break;
 		std::shared_ptr<KuroEngine::TextureBuffer> m_UnitTex;
 
 		std::shared_ptr<KuroEngine::TextureBuffer> m_ReticleTex;
@@ -73,6 +73,7 @@ namespace EnemysData {
 				m_HpTex_green = D3D12App::Instance()->GenerateTextureBuffer(TexDir + "enemy_hp_gauge_green.png");
 				m_HpTex_yellow = D3D12App::Instance()->GenerateTextureBuffer(TexDir + "enemy_hp_gauge_yellow.png");
 				m_HpTex_red = D3D12App::Instance()->GenerateTextureBuffer(TexDir + "enemy_hp_gauge_red.png");
+				m_HpTex_break = D3D12App::Instance()->GenerateTextureBuffer(TexDir + "enemy_hp_gauge_break.png");
 			}
 			if (m_Tag == ENEMY_TAG::BOSS) {
 				m_FrameTex = D3D12App::Instance()->GenerateTextureBuffer(TexDir + "boss_frame.png");
@@ -80,6 +81,7 @@ namespace EnemysData {
 				m_HpTex_green = D3D12App::Instance()->GenerateTextureBuffer(TexDir + "boss_hp_gauge_green.png");
 				m_HpTex_yellow = D3D12App::Instance()->GenerateTextureBuffer(TexDir + "boss_hp_gauge_yellow.png");
 				m_HpTex_red = D3D12App::Instance()->GenerateTextureBuffer(TexDir + "boss_hp_gauge_red.png");
+				m_HpTex_break = D3D12App::Instance()->GenerateTextureBuffer(TexDir + "boss_hp_gauge_break.png");
 			}
 
 			m_ReticleTex = D3D12App::Instance()->GenerateTextureBuffer(TexDir + "reticle.png");

@@ -22,6 +22,7 @@ Player::Player()
 	m_HpTex_green = D3D12App::Instance()->GenerateTextureBuffer(TexDir + "player_hp_gauge_green.png");
 	m_HpTex_yellow = D3D12App::Instance()->GenerateTextureBuffer(TexDir + "player_hp_gauge_yellow.png");
 	m_HpTex_red = D3D12App::Instance()->GenerateTextureBuffer(TexDir + "player_hp_gauge_red.png");
+	m_HpTex_break = D3D12App::Instance()->GenerateTextureBuffer(TexDir + "player_hp_gauge_break.png");
 	m_Ult_Gauge = D3D12App::Instance()->GenerateTextureBuffer(TexDir + "ult_gauge.png");
 
 	m_CharacterTex = D3D12App::Instance()->GenerateTextureBuffer(TexDir + "player/player_character_normal.png");
@@ -90,9 +91,11 @@ void Player::OnDraw()
 	float HP_Gauge_Now_Value = float(m_HP);
 
 	// タイマーが1以上　かつ　最大値以下なら減少演出
+	float Shake = 0.0f;
 	if (m_HP_Break_Timer > 0 && m_HP_Break_Timer < m_HP_GAUGE_BREAK_TIME) {
 		m_HP_Break_Timer++;
 		HP_Gauge_Now_Value = float(m_HP) + float(m_Before_HP - m_HP) * (1.0f - (float(m_HP_Break_Timer) / float(m_HP_GAUGE_BREAK_TIME)));
+		Shake = float(m_HP_Break_Timer % 5);
 	}
 	// 減少演出終わり
 	if (m_HP_Break_Timer == m_HP_GAUGE_BREAK_TIME) {
@@ -103,11 +106,13 @@ void Player::OnDraw()
 
 	// 現在のHP割合
 	float Now_HP_Rate = float(HP_Gauge_Now_Value) / float(m_MaxHP);
+	// 現在のHP割合2
+	float Now_HP_Rate2 = float(m_HP) / float(m_MaxHP);
 	// HPゲージの長さ
 	float Gauge_Max_Width = 357.0f - 22.0f;
 	// 現在のHPゲージの長さ
 	float Gauge_Width = Gauge_Max_Width * Now_HP_Rate;
-
+	float Gauge_Width2 = Gauge_Max_Width * Now_HP_Rate2;
 
 	std::shared_ptr<KuroEngine::TextureBuffer> HP_Gauge = m_HpTex_green;
 	if (Now_HP_Rate <= 0.2f) {
@@ -117,11 +122,13 @@ void Player::OnDraw()
 		HP_Gauge = m_HpTex_yellow;
 	}
 
-
+	DrawFunc2D_Mask::DrawExtendGraph2D(
+		Vec2(22.0f, 427.0f), Vec2(357.0f, 580.0f), m_HpTex_break,
+		Vec2(22.0f, 427.0f), Vec2(22.0f + Gauge_Width, 580.0f));
 
 	DrawFunc2D_Mask::DrawExtendGraph2D(
 		Vec2(22.0f, 427.0f), Vec2(357.0f, 580.0f), HP_Gauge,
-		Vec2(22.0f, 427.0f), Vec2(22.0f + Gauge_Width, 580.0f));
+		Vec2(22.0f, 427.0f), Vec2(22.0f + Gauge_Width2, 580.0f));
 
 	if (UsersInput::Instance()->KeyOnTrigger(DIK_X)) {
 		m_HP--;
@@ -141,12 +148,12 @@ void Player::OnDraw()
 	
 
 	// 1桁目の描画
-	DrawFunc2D::DrawNumber2D(KuroEngine::GetSpecifiedDigitNum(int(HP_Gauge_Now_Value), 0, false), Vec2(222.0f - 5.0f, 447.0f - 2.0f), &m_NumberTex.front());
+	DrawFunc2D::DrawNumber2D(KuroEngine::GetSpecifiedDigitNum(int(HP_Gauge_Now_Value), 0, false), Vec2(222.0f - 5.0f, 447.0f - 2.0f - Shake), &m_NumberTex.front());
 	if (int(HP_Gauge_Now_Value) > 9) {// 2桁目の描画
-		DrawFunc2D::DrawNumber2D(KuroEngine::GetSpecifiedDigitNum(int(HP_Gauge_Now_Value), 1, false), Vec2(192.0f - 5.0f, 436.0f - 2.0f), &m_NumberTex.front());
+		DrawFunc2D::DrawNumber2D(KuroEngine::GetSpecifiedDigitNum(int(HP_Gauge_Now_Value), 1, false), Vec2(192.0f - 5.0f, 436.0f - 2.0f - Shake), &m_NumberTex.front());
 	}
 	if (int(HP_Gauge_Now_Value) > 99) {// 3桁目の描画
-		DrawFunc2D::DrawNumber2D(KuroEngine::GetSpecifiedDigitNum(int(HP_Gauge_Now_Value), 2, false), Vec2(162.0f - 5.0f, 426.0f - 2.0f), &m_NumberTex.front());
+		DrawFunc2D::DrawNumber2D(KuroEngine::GetSpecifiedDigitNum(int(HP_Gauge_Now_Value), 2, false), Vec2(162.0f - 5.0f, 426.0f - 2.0f - Shake), &m_NumberTex.front());
 	}
 
 	// アルティメットゲージの描画
@@ -176,6 +183,7 @@ void Player::OnFinalize()
 
 void Player::TurnEnd_BeforeTurnChange()
 {
+	m_IsEndTurnFunc = true;
 	// ここにボーナスアタックとか書く
 	// マップをリセット
 	ExistUnits::Instance()->m_StageManager->Reset();
@@ -189,4 +197,5 @@ void Player::SetState(int HP, int MaxHP)
 	m_UltimatePoint = 0;
 	m_BeforeUltimatePoint = 0;
 	Max_UltimatePoint = 100;
+	m_IsEndTurnFunc = false;
 }

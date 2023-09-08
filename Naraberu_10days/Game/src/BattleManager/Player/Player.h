@@ -19,6 +19,7 @@ private:
 	std::shared_ptr<KuroEngine::TextureBuffer> m_HpTex_green;
 	std::shared_ptr<KuroEngine::TextureBuffer> m_HpTex_yellow;
 	std::shared_ptr<KuroEngine::TextureBuffer> m_HpTex_red;
+	std::shared_ptr<KuroEngine::TextureBuffer> m_HpTex_break;
 	std::shared_ptr<KuroEngine::TextureBuffer> m_Ult_Gauge;
 	std::array<std::shared_ptr<KuroEngine::TextureBuffer>, 12> m_NumberTex;
 

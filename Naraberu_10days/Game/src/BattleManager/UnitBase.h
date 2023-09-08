@@ -21,6 +21,7 @@ protected:
 	bool m_NextTurn;
 	// 自ターンの経過フレームタイマー
 	int m_Frame_Timer;
+
 public:
 	UnitBase(){
 		m_HP = 100;
@@ -30,6 +31,7 @@ public:
 		m_HP_GAUGE_BREAK_TIME = int(50.0f * RefreshRate::RefreshRate_Mag);
 		m_isMyTurn = false;
 		m_NextTurn = false;
+		m_IsEndTurnFunc = false;
 		m_Frame_Timer = 0;
 	};
 
@@ -48,6 +50,8 @@ public:
 	}
 
 	void End();
+	// ターン終了済みか
+	bool m_IsEndTurnFunc;
 
 	bool IsNextTurn() { return m_NextTurn; }
 
