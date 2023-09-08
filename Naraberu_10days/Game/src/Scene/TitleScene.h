@@ -13,6 +13,18 @@ class TitleScene : public KuroEngine::BaseScene
 	//ステージ番号
 	int stageNum;
 
+	//タイトルシーン用
+	enum class Select {
+		title,
+		stageSelect,
+		size,
+	};
+
+	// 選択肢
+	Select selectNum;
+	// 選択を行っている
+	bool onSelect;
+
 	/// <summary>
 	/// タイトル
 	/// </summary>

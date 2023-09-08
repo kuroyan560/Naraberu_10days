@@ -45,7 +45,15 @@ void BattleScene::OnInitialize()
 	}
 	// データをセット
 	Mgr.OnInitialize(Pl, En);
-	ExistUnits::Instance()->Set(Pl.get(), En[0].get(), En[1].get(), En[2].get());
+	if (En.size() == 1) {
+		ExistUnits::Instance()->Set(Pl.get(), En[0].get());
+	}
+	if (En.size() == 2) {
+		ExistUnits::Instance()->Set(Pl.get(), En[0].get(), En[1].get());
+	}
+	if (En.size() == 3) {
+		ExistUnits::Instance()->Set(Pl.get(), En[0].get(), En[1].get(), En[2].get());
+	}
 
 	stage.reset(new PanelManager());
 	stage->Initialize();
@@ -71,8 +79,17 @@ void BattleScene::OnUpdate()
 	// ステージ終了(敗北)
 	if (Mgr.GetDefeat()) {
 		m_End_Timer++;
-		if (m_End_Timer == m_End_Timer_Finish) {
-			KuroEngine::KuroEngineDevice::Instance()->ChangeScene("title");
+
+		if (OperationConfig::Instance()->DebugKeyInputOnTrigger(DIK_O)) {
+			if (m_End_Timer >= m_End_Timer_Finish) {
+				ExistUnits::Instance()->m_ChangeStageSelect = true;
+				KuroEngine::KuroEngineDevice::Instance()->ChangeScene("title");
+			}
+		}
+		else if (OperationConfig::Instance()->DebugKeyInputOnTrigger(DIK_P)) {
+			if (m_End_Timer >= m_End_Timer_Finish) {
+				KuroEngine::KuroEngineDevice::Instance()->ChangeScene("Battle");
+			}
 		}
 	}
 	// ステージ終了(敵全滅)
@@ -80,6 +97,7 @@ void BattleScene::OnUpdate()
 		//KuroEngine::AppearMessageBox("ステージ終了", "ステージ終了");
 		m_End_Timer++;
 		if (m_End_Timer == m_End_Timer_Finish) {
+			ExistUnits::Instance()->m_ChangeStageSelect = true;
 			KuroEngine::KuroEngineDevice::Instance()->ChangeScene("title");
 		}
 	}

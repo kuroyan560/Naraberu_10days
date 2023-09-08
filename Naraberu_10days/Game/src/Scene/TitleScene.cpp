@@ -12,15 +12,22 @@ void TitleScene::OnInitialize()
 	std::string TexDir = "resource/user/tex/select_scene/";
 	stageSelectBarTex = KuroEngine::D3D12App::Instance()->GenerateTextureBuffer(TexDir + "stage_name_plate.png");
 
-	ExistUnits::Instance()->selectNum = ExistUnits::Select::title;
+	selectNum = Select::title;
 	stageNum = 0;
-	ExistUnits::Instance()->onSelect = false;
+	onSelect = false;
+
+	if (ExistUnits::Instance()->m_ChangeStageSelect == true) {
+		selectNum = Select::stageSelect;
+		onSelect = true;
+		title->SetIsStageSelectInMove();
+		ExistUnits::Instance()->m_ChangeStageSelect = false;
+	}
 }
 
 void TitleScene::OnUpdate()
 {
 	//タイトルかステージセレクトかの判定
-	if (ExistUnits::Instance()->selectNum == ExistUnits::Select::stageSelect && ExistUnits::Instance()->onSelect) {
+	if (selectNum == Select::stageSelect && onSelect) {
 		StageSelect();
 	} else {
 		Title();
@@ -41,10 +48,10 @@ void TitleScene::OnDraw()
 
 	//debug用
 	//後で画像差し替え
-	if (!ExistUnits::Instance()->onSelect) {
-		if (ExistUnits::Instance()->selectNum == ExistUnits::Select::title) {
+	if (!onSelect) {
+		if (selectNum == Select::title) {
 			KuroEngine::DrawFunc2D::DrawExtendGraph2D({ 100,100 }, { 500,500 }, stageSelectBarTex);
-		} else if (ExistUnits::Instance()->selectNum == ExistUnits::Select::stageSelect) {
+		} else if (selectNum == Select::stageSelect) {
 			KuroEngine::DrawFunc2D::DrawExtendGraph2D({ 200,200 }, { 500,500 }, stageSelectBarTex);
 		}
 	}
@@ -68,22 +75,22 @@ void TitleScene::Title()
 {
 	//移動
 	if (OperationConfig::Instance()->GetSelectVec(OperationConfig::SELECT_VEC::SELECT_VEC_DOWN)) {
-		ExistUnits::Instance()->selectNum = ExistUnits::Select(int(ExistUnits::Instance()->selectNum) + 1);
-		if (ExistUnits::Instance()->selectNum >= ExistUnits::Select::size) {
-			ExistUnits::Instance()->selectNum = ExistUnits::Select(int(ExistUnits::Select::size) - 1);
+		selectNum = Select(int(selectNum) + 1);
+		if (selectNum >= Select::size) {
+			selectNum = Select(int(Select::size) - 1);
 		}
 	}
 	if (OperationConfig::Instance()->GetSelectVec(OperationConfig::SELECT_VEC::SELECT_VEC_UP)) {
-		ExistUnits::Instance()->selectNum = ExistUnits::Select(int(ExistUnits::Instance()->selectNum) - 1);
-		if (ExistUnits::Instance()->selectNum < ExistUnits::Select::title) {
-			ExistUnits::Instance()->selectNum = ExistUnits::Select::title;
+		selectNum = Select(int(selectNum) - 1);
+		if (selectNum < Select::title) {
+			selectNum = Select::title;
 		}
 	}
 
 	//ステージセレクトへ
 	if (OperationConfig::Instance()->GetOperationInput(OperationConfig::OPERATION_TYPE::DONE,
-		OperationConfig::INPUT_PATTERN::ON_TRIGGER) && ExistUnits::Instance()->selectNum == ExistUnits::Select::stageSelect) {
-		ExistUnits::Instance()->onSelect = true;
+		OperationConfig::INPUT_PATTERN::ON_TRIGGER) && selectNum == Select::stageSelect) {
+		onSelect = true;
 		title->SetIsStageSelectInMove();
 	}
 }
@@ -98,7 +105,7 @@ void TitleScene::StageSelect()
 
 	//タイトルへ
 	if (OperationConfig::Instance()->GetOperationInput(OperationConfig::OPERATION_TYPE::CANCEL, OperationConfig::INPUT_PATTERN::ON_TRIGGER)) {
-		ExistUnits::Instance()->onSelect = false;
+		onSelect = false;
 		title->SetIsStageSelectOutMove();
 	}
 

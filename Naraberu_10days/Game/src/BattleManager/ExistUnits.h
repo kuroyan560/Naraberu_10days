@@ -19,17 +19,8 @@ public:
 	int m_NowTarget;
 	int m_NowBonusCount = 0;
 
-	//タイトルシーン用
-	enum class Select {
-		title,
-		stageSelect,
-		size,
-	};
-
-	//選択肢
-	Select selectNum;
-	//選択を行っている
-	bool onSelect;
+	// 
+	bool m_ChangeStageSelect = false;
 
 	// ロードするステージ名(現在のステージ名)
 	std::string m_StageName = "Stage1";
