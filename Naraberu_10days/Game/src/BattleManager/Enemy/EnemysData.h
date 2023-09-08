@@ -51,6 +51,10 @@ namespace EnemysData {
 		std::shared_ptr<KuroEngine::TextureBuffer> m_HpTex_break;
 		std::shared_ptr<KuroEngine::TextureBuffer> m_UnitTex;
 
+		std::shared_ptr<KuroEngine::TextureBuffer> m_IndexTex_1;
+		std::shared_ptr<KuroEngine::TextureBuffer> m_IndexTex_2;
+		std::shared_ptr<KuroEngine::TextureBuffer> m_IndexTex_3;
+
 		std::shared_ptr<KuroEngine::TextureBuffer> m_ReticleTex;
 
 		EnemyData() : m_Name("NONE"), m_HP(1), m_MaxHP(1), m_ATK(1), m_AI_Type(AI_TYPE::DEFAULT), m_Tag(ENEMY_TAG::DEFAULT) {}
@@ -86,6 +90,9 @@ namespace EnemysData {
 
 			m_ReticleTex = D3D12App::Instance()->GenerateTextureBuffer(TexDir + "reticle.png");
 			m_UnitTex = D3D12App::Instance()->GenerateTextureBuffer(EnemyTexturesDir[m_Name]);
+			m_IndexTex_1 = D3D12App::Instance()->GenerateTextureBuffer(TexDir + "enemy_number_1.png");
+			m_IndexTex_2 = D3D12App::Instance()->GenerateTextureBuffer(TexDir + "enemy_number_2.png");
+			m_IndexTex_3 = D3D12App::Instance()->GenerateTextureBuffer(TexDir + "enemy_number_3.png");
 		}
 	};
 
