@@ -1,6 +1,9 @@
 #include "PanelManager.h"
 #include "ForUser/DrawFunc/2D/DrawFunc2D.h"
 
+#include "../BattleManager/Player_Act/Skills/PlayerSkills.h"
+#include "../BattleManager/ExistUnits.h"
+
 KuroEngine::Vec2<int> PanelManager::mapMax;
 
 void PanelManager::Initialize()
