@@ -45,6 +45,9 @@ public:
 	// 全ステータスをセットする
 	void SetState(int HP, int MaxHP);
 
+	// ウルトが溜まった時の演出
+	void UltMaxEffect();
+
 	// アルティメット関連
 private:
 	// 現在のアルティメットポイントの値
@@ -83,6 +86,10 @@ private:
 	KuroEngine::Vec2<float> m_Left_Top;
 	KuroEngine::Vec2<float> m_Right_Bottom;
 	KuroEngine::Vec2<float> m_Center;
+
+	std::array<KuroEngine::Vec2<float>,4> ultSize;
+
+
 public:
 	KuroEngine::Vec2<float> Get_Left_Top() { return m_Left_Top; }
 	KuroEngine::Vec2<float> Get_Right_Bottom() { return m_Right_Bottom; }
