@@ -34,8 +34,8 @@ OperationConfig::OperationConfig()
 	//操作ボタン割り当て
 	m_operationButton =
 	{
-		A,	//決定
-		B,	//キャンセル
+		B,	//決定
+		A,	//キャンセル
 		B,	//プリズムをパネルに設置
 		LB,	//左のプリズムを選択
 		RB,	//右のプリズムを選択
