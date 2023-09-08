@@ -6,6 +6,17 @@ class PanelManager
 {
 public:
 
+	struct BonusData {
+		std::vector<KuroEngine::Vec2<int>> pos;
+		bool mass;
+	};
+
+	enum class Bonas {
+		non,
+		count,
+		add,
+	};
+
 	PanelManager(){};
 	~PanelManager(){};
 
@@ -43,35 +54,38 @@ public:
 	/// <summary>
 	/// 塊判定
 	/// </summary>
-	/// <param name="_massNum">塊の数</param>
-	/// <param name="_color">塊の色</param>
-	void MassProcess(std::vector<int>* _massNum, std::vector<BlockColor>* _color);
+	void MassProcess();
 
 	/// <summary>
 	/// 塊判定処理
 	/// </summary>
+	/// <param name="_number">塊番号</param>
 	/// <param name="_massNum">消去数</param>
 	/// <param name="_massMap">現在のmapchip番号</param>
-	void MassBlock(int* _massNum, const KuroEngine::Vec2<int> _massMap);
+	void MassBlock(const int _number, int* _massNum, const KuroEngine::Vec2<int> _massMap);
 
 	/// <summary>
 	/// 塊判定
 	/// </summary>
-	/// <param name="lineNum">線の数</param>
-	/// <param name="_color">線の色</param>
-	void LineProcess(int* _lineNum, std::vector<BlockColor>* _color);
+	void LineProcess();
 
 	/// <summary>
 	/// 塊判定処理
 	/// </summary>
+	/// <param name="_number">塊番号</param>
 	/// <param name="_lineMap">現在のmapchip番号</param>
 	/// <param name="_direction">ラインの向き false->+y/true->+x</param>
-	bool LineBlock(const KuroEngine::Vec2<int> _lineMap, const bool _direction);
+	bool LineBlock(int _number, const KuroEngine::Vec2<int> _lineMap, const bool _direction);
 
 	/// <summary>
 	/// ボーナスの算出
 	/// </summary>
 	void BonusCount();
+
+	/// <summary>
+	/// ボーナス演出
+	/// </summary>
+	void BonusDirection();
 
 	/// <summary>
 	/// お邪魔セット
@@ -91,6 +105,8 @@ public:
 
 	std::vector<std::vector<int>>* GetMapChipPtr() { return &mapchip; }
 
+	void SetBouns() { isBonusDirection = Bonas::count; }
+
 private:
 
 	//ステージの最大値
@@ -99,9 +115,20 @@ private:
 	std::vector<std::vector<int>> mapchip;
 	//塊用mapchip変数
 	std::vector<std::vector<int>> massMapchip;
-	//ライン用mapchip変数
-	std::vector<std::vector<int>> lineMapchip;
+	//塊用mapchip変数
+	std::vector<BonusData> bonusData;
 	//ブロック画像
 	std::array<std::shared_ptr<KuroEngine::TextureBuffer>, int(BlockColor::size)> blockTex;
-
+	//ボーナスフラグ
+	Bonas isBonusDirection;
+	//ボーナス処理タイマー
+	float bonusTimer;
+	//現在のボーナス処理を行っている番号
+	int nowBonusNum;
+	//ボーナス変更角度
+	float bonusAngle;
+	//ボーナス変更大きさ
+	float bonusEaseScale;
+	//ボーナス変更アルファ
+	float bonusAlpha;
 };

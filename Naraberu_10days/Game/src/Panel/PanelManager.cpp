@@ -3,6 +3,7 @@
 
 #include "../BattleManager/Player_Act/Skills/PlayerSkills.h"
 #include "../BattleManager/ExistUnits.h"
+#include "../RefreshRate.h"
 
 KuroEngine::Vec2<int> PanelManager::mapMax;
 
@@ -26,17 +27,28 @@ void PanelManager::Initialize()
 	}
 
 	massMapchip = mapchip;
-	lineMapchip = mapchip;
+	for (auto& y : massMapchip) {
+		for (auto& x : y) {
+			x = 0;
+		}
+	}
 
 	mapMax = { int(mapchip.size()), int(mapchip[0].size()) };
 }
 
 void PanelManager::Update()
 {
+	if (isBonusDirection == Bonas::count) {
+		BonusCount();
+	}
+	else if (isBonusDirection == Bonas::add) {
+		BonusDirection();
+	}
 }
 
 void PanelManager::Draw()
 {
+	//パネル
 	for (int y = 0; y < mapMax.y; y++) {
 		for (int x = 0; x < mapMax.x; x++) {
 			KuroEngine::Vec2<float> pos = { x * blockSize + difference.x ,y * blockSize + difference.y };
@@ -59,6 +71,34 @@ void PanelManager::Draw()
 			} else if (mapchip[y][x] == int(BlockColor::eizoku_obstacle)) {
 				KuroEngine::DrawFunc2D::DrawExtendGraph2D(pos, pos1, blockTex[int(BlockColor::eizoku_obstacle)]);
 			}
+		}
+	}
+
+	//ボーナスパネル
+	if (isBonusDirection != Bonas::add) {return;}
+
+	for (int i = 0; i<int(bonusData.size()); i++) {
+		if (i != nowBonusNum) { continue; }
+
+		float dist = bonusEaseScale - blockSize;
+		dist = dist / 2.0f;
+
+		for (auto& itr : bonusData[i].pos) {
+			//KuroEngine::Vec2<float> pos1 = { itr.x * blockSize + difference.x,itr.y * blockSize + difference.y };
+			//KuroEngine::Vec2<float> pos2 = pos1;
+			//pos1.x -= blockSize + dist;
+			//pos1.y -= blockSize + dist;
+			//pos2.x += blockSize + dist;
+			//pos2.y += blockSize + dist;
+
+			KuroEngine::Vec2<float> pos = { itr.x * blockSize + difference.x ,itr.y * blockSize + difference.y };
+
+			KuroEngine::Vec2<float> pos1 = pos;
+			pos1.x += blockSize;
+			pos1.y += blockSize;
+
+			KuroEngine::DrawFunc2D::DrawExtendGraph2D(pos, pos1,
+			blockTex[int(BlockColor::eizoku_obstacle)], bonusAlpha);
 		}
 	}
 }
@@ -96,9 +136,6 @@ bool PanelManager::JudgeSet(KuroEngine::Vec2<int> _nowMapchip, std::vector<KuroE
 		Count++;
 	}
 
-	//ボーナス計算
-	BonusCount();
-
 	// 設置したらアクション
 	if (_attribute == BlockAttribute::attack1) {
 		// 弱攻撃
@@ -115,7 +152,7 @@ bool PanelManager::JudgeSet(KuroEngine::Vec2<int> _nowMapchip, std::vector<KuroE
 	return true;
 }
 
-void PanelManager::MassProcess(std::vector<int>* _massNum, std::vector<BlockColor>* _color)
+void PanelManager::MassProcess()
 {
 	//削除管理用マップ初期化
 	for (int y = 0; y < mapMax.y; y++) {
@@ -125,93 +162,92 @@ void PanelManager::MassProcess(std::vector<int>* _massNum, std::vector<BlockColo
 	}
 
 	//塊箇所確認
+	int count = 0;
 	for (int y = 0; y < mapMax.y; y++) {
 		for (int x = 0; x < mapMax.x; x++) {
 			//確認済みなら次に行く
 			if (massMapchip[y][x] != 0 || mapchip[y][x] >= int(BlockColor::yuka)) { continue; }
 			//塊確認
 			int massNum = 0;
-			MassBlock(&massNum, { x,y });
+			bonusData.emplace_back();
+			MassBlock(count, &massNum, { x,y });
 			//塊個数5個から保存
-			if (massNum < 5) { continue; }
-			_massNum->emplace_back(massNum);
-			_color->emplace_back(BlockColor(mapchip[y][x]));
+			if (massNum < 5) {
+				const int size = int(bonusData.size()) - 1;
+				bonusData.resize(size);
+				continue;
+			}
+			bonusData[count].mass = true;
+			count++;
 		}
 	}
 }
 
-void PanelManager::MassBlock(int* _massNum, const KuroEngine::Vec2<int> _massMap)
+void PanelManager::MassBlock(const int _number, int* _massNum, const KuroEngine::Vec2<int> _massMap)
 {
-	
 	//削除個数カウント
 	*_massNum += 1;
-	//削除場所記録
 	massMapchip[_massMap.y][_massMap.x] = 1;
 
 	//下
-	if (_massMap.y + 1 < mapMax.y) {
-		if (mapchip[_massMap.y][_massMap.x] == mapchip[_massMap.y + 1][_massMap.x] &&
-			massMapchip[_massMap.y + 1][_massMap.x] != 1) {
-			MassBlock(_massNum, { _massMap.x,_massMap.y + 1 });
-		}
+	if (_massMap.y + 1 < mapMax.y && mapchip[_massMap.y][_massMap.x] == mapchip[_massMap.y + 1][_massMap.x] &&
+		massMapchip[_massMap.y + 1][_massMap.x] != 1) {
+		MassBlock(_number, _massNum, { _massMap.x,_massMap.y + 1 });
 	}
 	//上
-	if (_massMap.y - 1 >= 0) {
-		if (mapchip[_massMap.y][_massMap.x] == mapchip[_massMap.y - 1][_massMap.x] &&
-			massMapchip[_massMap.y - 1][_massMap.x] != 1) {
-			MassBlock(_massNum, { _massMap.x,_massMap.y - 1 });
-		}
+	if (_massMap.y - 1 >= 0 && mapchip[_massMap.y][_massMap.x] == mapchip[_massMap.y - 1][_massMap.x] &&
+		massMapchip[_massMap.y - 1][_massMap.x] != 1) {
+		MassBlock(_number, _massNum, { _massMap.x,_massMap.y - 1 });
 	}
 	//右
-	if (_massMap.x + 1 < mapMax.x) {
-		if (mapchip[_massMap.y][_massMap.x] == mapchip[_massMap.y][_massMap.x + 1] &&
-			massMapchip[_massMap.y][_massMap.x + 1] != 1) {
-			MassBlock(_massNum, { _massMap.x + 1,_massMap.y });
-		}
+	if (_massMap.x + 1 < mapMax.x && mapchip[_massMap.y][_massMap.x] == mapchip[_massMap.y][_massMap.x + 1] &&
+		massMapchip[_massMap.y][_massMap.x + 1] != 1) {
+		MassBlock(_number, _massNum, { _massMap.x + 1,_massMap.y });
 	}
 	//左
-	if (_massMap.x - 1 >= 0) {
-		if (mapchip[_massMap.y][_massMap.x] == mapchip[_massMap.y][_massMap.x - 1] &&
-			massMapchip[_massMap.y][_massMap.x - 1] != 1) {
-			MassBlock(_massNum, { _massMap.x - 1,_massMap.y });
-		}
+	if (_massMap.x - 1 >= 0 && mapchip[_massMap.y][_massMap.x] == mapchip[_massMap.y][_massMap.x - 1] &&
+		massMapchip[_massMap.y][_massMap.x - 1] != 1) {
+		MassBlock(_number, _massNum, { _massMap.x - 1,_massMap.y });
+	}
+
+	//削除場所記録
+	if (*_massNum >= 5) {
+		KuroEngine::Vec2<int> data = { _massMap.x,_massMap.y };
+		bonusData[_number].pos.emplace_back(data);
 	}
 
 	return;
 }
 
-void PanelManager::LineProcess(int* _lineNum, std::vector<BlockColor>* _color)
+void PanelManager::LineProcess()
 {
-	int lineNum = 0;
-
-	//削除管理用マップ初期化
-	for (int y = 0; y < mapMax.y; y++) {
-		for (int x = 0; x < mapMax.x; x++) {
-			lineMapchip[y][x] = 0;
-		}
-	}
-
 	//塊箇所確認
 	for (int y = 0; y < mapMax.y; y++) {
 		for (int x = 0; x < mapMax.x; x++) {
 			if (y == 0) {
-				if (!LineBlock({ x,y }, false)) { continue; }
-				_color->emplace_back(BlockColor(mapchip[y][x]));
-				lineNum++;
+				bonusData.emplace_back();
+				int size = int(bonusData.size());
+				if (!LineBlock(size, { x,y }, false)) {
+					bonusData.resize(size - 1);
+					continue;
+				}
+				bonusData[size].mass = false;
 
 			} else if (x == 0) {
-				if (LineBlock({ x,y }, true) != 1) { continue; }
-				_color->emplace_back(BlockColor(mapchip[y][x]));
-				lineNum++;
+				bonusData.emplace_back();
+				int size = int(bonusData.size());
+				if (!LineBlock(size,{ x,y }, true)) {
+					bonusData.resize(size - 1);
+					continue;
+				}
+
+				bonusData[size].mass = false;
 			}
 		}
 	}
-
-	//記録
-	*_lineNum = lineNum;
 }
 
-bool PanelManager::LineBlock(const KuroEngine::Vec2<int> _lineMap, const bool _direction)
+bool PanelManager::LineBlock(int _number, const KuroEngine::Vec2<int> _lineMap, const bool _direction)
 {
 	//下
 	if (!_direction) {
@@ -219,8 +255,11 @@ bool PanelManager::LineBlock(const KuroEngine::Vec2<int> _lineMap, const bool _d
 			if (mapchip[i][_lineMap.x] >= int(BlockColor::yuka)) { return false; }
 		}
 
+		bonusData.emplace_back();
+
 		for (int i = 0; i < mapMax.y; i++) {
-			lineMapchip[i][_lineMap.x] = 1;
+			KuroEngine::Vec2<int> data = { _lineMap.x, i };
+			bonusData[_number].pos.emplace_back(data);
 		}
 	}
 	//右
@@ -229,8 +268,11 @@ bool PanelManager::LineBlock(const KuroEngine::Vec2<int> _lineMap, const bool _d
 			if (mapchip[_lineMap.y][i] >= int(BlockColor::yuka)) { return false; }
 		}
 
-		for (int i = 0; i < mapMax.x; i++) {
-			lineMapchip[_lineMap.y][i] = 1;
+		bonusData.emplace_back();
+
+		for (int i = 0; i < mapMax.y; i++) {
+			KuroEngine::Vec2<int> data = { i, _lineMap.y };
+			bonusData[_number].pos.emplace_back(data);
 		}
 
 	}
@@ -240,13 +282,35 @@ bool PanelManager::LineBlock(const KuroEngine::Vec2<int> _lineMap, const bool _d
 
 void PanelManager::BonusCount()
 {
-	std::vector<int> _massNum;
-	std::vector<BlockColor> _Mcolor;
-	MassProcess(&_massNum, &_Mcolor);
+	bonusData.clear();
 
-	int _lineNum;
-	std::vector<BlockColor> _Lcolor;
-	LineProcess(&_lineNum, &_Lcolor);
+	//塊判定
+	MassProcess();
+	//ライン判定
+	LineProcess();
 
-	ExistUnits::Instance()->m_NowBonusCount = int(_massNum.size()) + _lineNum;
+	ExistUnits::Instance()->m_NowBonusCount = int(bonusData.size());
+
+	nowBonusNum = 0;
+	bonusTimer = 0;
+	isBonusDirection=Bonas::add;
+}
+
+void PanelManager::BonusDirection()
+{
+	float maxTimer = 20.0f * RefreshRate::RefreshRate_Mag;
+
+	bonusEaseScale = KuroEngine::Math::Ease(KuroEngine::EASE_CHANGE_TYPE::In, KuroEngine::EASING_TYPE::Back,
+		bonusTimer, maxTimer, blockSize, 60.0f);
+	bonusAngle = KuroEngine::Math::Ease(KuroEngine::EASE_CHANGE_TYPE::In, KuroEngine::EASING_TYPE::Back,
+		bonusTimer, maxTimer, 0, 90.0f);
+	bonusAlpha = KuroEngine::Math::Ease(KuroEngine::EASE_CHANGE_TYPE::In, KuroEngine::EASING_TYPE::Back,
+		bonusTimer, maxTimer, 1.0, 0.0f);
+
+	//時間になったら次に行く
+	bonusTimer++;
+	if (bonusTimer > maxTimer) {
+		nowBonusNum++;
+		bonusTimer = 0;
+	}
 }
