@@ -401,7 +401,7 @@
       <Filter>src\user\BattleManager\Reticle</Filter>
     </ClCompile>
     <ClCompile Include="src\Fade\Fade.cpp">
-      <Filter>src</Filter>
+      <Filter>src\user\Fade</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
