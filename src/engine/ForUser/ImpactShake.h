@@ -20,11 +20,8 @@ namespace KuroEngine
 		//振動オフセット
 		Vec3<float>m_offset;
 
-		//オフセットに乗算
-		Vec3<float>m_mul = { 1.0f,1.0f,1.0f };
-
 	public:
-		ImpactShake(Vec3<float>arg_mul) :m_mul(arg_mul) {}
+		ImpactShake() {}
 		void Init()
 		{
 			m_offset = { 0,0,0 };
@@ -34,7 +31,7 @@ namespace KuroEngine
 		void Update(float arg_timeScale);
 
 		//オフセットゲッタ
-		const Vec3<float>& GetOffset()const { return m_offset; }
+		const Vec3<float>GetOffset(Vec3<float>arg_mul = { 1.0f,1.0f,1.0f })const { return m_offset * arg_mul; }
 
 		//振動
 		void Shake(float arg_time, float arg_span, float arg_powerMin, float arg_powerMax);
