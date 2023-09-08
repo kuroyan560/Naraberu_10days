@@ -493,7 +493,7 @@ void KuroEngine::DrawFunc2D::DrawRadialWipeGraph2D(
 }
 
 void KuroEngine::DrawFunc2D::DrawNumber2D(const int& arg_num, const Vec2<float>& arg_pos, const std::shared_ptr<TextureBuffer>* arg_numTexArray, const Vec2<float>& arg_expRate,
-	const float& arg_letterSpace, const HORIZONTAL_ALIGN& arg_horizontalAlign, const VERTICAL_ALIGN& arg_verticalAlign, const int arg_fillZeroDigit)
+	const float& arg_letterSpace, const HORIZONTAL_ALIGN& arg_horizontalAlign, const VERTICAL_ALIGN& arg_verticalAlign, const int arg_fillZeroDigit, const int arg_leftAdditionalIdx,const int arg_rightAdditionalIdx)
 {
 	const auto graphSize = arg_numTexArray[0]->GetGraphSize().Float() * arg_expRate;
 	const auto letterSpace = graphSize.x + arg_letterSpace;
@@ -508,15 +508,19 @@ void KuroEngine::DrawFunc2D::DrawNumber2D(const int& arg_num, const Vec2<float>&
 		}
 	}
 
+	int digitNum = static_cast<int>(numStr.size());
+	if (arg_leftAdditionalIdx != -1)digitNum++;
+	if (arg_rightAdditionalIdx != -1)digitNum++;
+
 	float startX = arg_pos.x;	//ç∂ëµÇ¶
 	if (arg_horizontalAlign == HORIZONTAL_ALIGN::CENTER)	//íÜëµÇ¶
 	{
-		startX -= numStr.size() / 2.0f * graphSize.x;
+		startX -= digitNum / 2.0f * graphSize.x;
 		startX -= floor(numStr.size() / 2.0f) * (arg_letterSpace / 2.0f);
 	}
 	else if (arg_horizontalAlign == HORIZONTAL_ALIGN::RIGHT)	//âEëµÇ¶
 	{
-		startX += numStr.size() * letterSpace;
+		startX -= (digitNum * graphSize.x + digitNum - 1 * letterSpace);
 	}
 
 	float y = arg_pos.y;	//è„ëµÇ¶
@@ -529,10 +533,25 @@ void KuroEngine::DrawFunc2D::DrawNumber2D(const int& arg_num, const Vec2<float>&
 		y -= graphSize.y;
 	}
 
+	float x = startX;
+
+	if (arg_leftAdditionalIdx != -1)
+	{
+		Vec2<float>pos = { x,y };
+		DrawExtendGraph2D(pos, pos + graphSize, arg_numTexArray[arg_leftAdditionalIdx]);
+		x += letterSpace;
+	}
+
 	for (int numIdx = 0; numIdx < numStr.size(); ++numIdx)
 	{
-		float x = startX + numIdx * letterSpace;
 		Vec2<float>pos = { x,y };
 		DrawExtendGraph2D(pos, pos + graphSize, arg_numTexArray[numStr[numIdx] - '0']);
+		x += letterSpace;
+	}
+
+	if (arg_rightAdditionalIdx != -1)
+	{
+		Vec2<float>pos = { x,y };
+		DrawExtendGraph2D(pos, pos + graphSize, arg_numTexArray[arg_rightAdditionalIdx]);
 	}
 }
