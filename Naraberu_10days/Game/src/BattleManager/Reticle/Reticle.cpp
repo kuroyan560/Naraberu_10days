@@ -11,6 +11,7 @@ Reticle::Reticle()
 	m_BigReticleTex = D3D12App::Instance()->GenerateTextureBuffer(TexDir + "reticle_big.png");
 	D3D12App::Instance()->GenerateTextureBuffer(&m_ReticleTex.front(), TexDir + "reticle.png", 4, Vec2(4, 1));
 	MaskColor = Color(1.0f, 1.0f, 1.0f, 1.0f);
+	Reticle::Instance()->m_CanMove = true;
 }
 
 void Reticle::SetBattleTurnManager(BattleTurnMgr* ptr)
@@ -23,56 +24,58 @@ void Reticle::Update()
 	// タイマー加算
 	m_Reticle_Timer += 1.0f / RefreshRate::RefreshRate_Mag;
 
-	// ロックオン
-	if (OperationConfig::Instance()->GetTargetChangeVec(OperationConfig::SELECT_VEC_UP)) {
-		// 生きているユニットまで
-		int iaaa = ExistUnits::Instance()->m_NowTarget;
-		bool ChangeTargetSuccess = false;
-		for (int i = ExistUnits::Instance()->m_NowTarget; i > 0; i--) {
-			if (m_pBTM->UnitList[i]->IsAlive()) {
-				ExistUnits::Instance()->m_NowTarget = i - 1;
-				ChangeTargetSuccess = true;
-				m_Reticle_Timer = 0.0f;
-				m_Aura.emplace_back(Reticle_Aura());
-				m_Aura.back().SetPoint(m_pBTM->UnitList[i].get(), false);
-				//m_Aura.emplace_back(Reticle_Aura());
-				//m_Aura.back().SetPoint(m_pBTM->UnitList[i].get(), true);
-				break;
+	if (Reticle::Instance()->m_CanMove) {
+		// ロックオン
+		if (OperationConfig::Instance()->GetTargetChangeVec(OperationConfig::SELECT_VEC_UP)) {
+			// 生きているユニットまで
+			int iaaa = ExistUnits::Instance()->m_NowTarget;
+			bool ChangeTargetSuccess = false;
+			for (int i = ExistUnits::Instance()->m_NowTarget; i > 0; i--) {
+				if (m_pBTM->UnitList[i]->IsAlive()) {
+					ExistUnits::Instance()->m_NowTarget = i - 1;
+					ChangeTargetSuccess = true;
+					m_Reticle_Timer = 0.0f;
+					m_Aura.emplace_back(Reticle_Aura());
+					m_Aura.back().SetPoint(m_pBTM->UnitList[i].get(), false);
+					//m_Aura.emplace_back(Reticle_Aura());
+					//m_Aura.back().SetPoint(m_pBTM->UnitList[i].get(), true);
+					break;
+				}
+			}
+			// ターゲットを変更できなかった
+			if (!ChangeTargetSuccess) {
+
 			}
 		}
-		// ターゲットを変更できなかった
-		if (!ChangeTargetSuccess) {
+		if (OperationConfig::Instance()->GetTargetChangeVec(OperationConfig::SELECT_VEC_DOWN)) {
+			// 生きているユニットまで
+			int iaaa = ExistUnits::Instance()->m_NowTarget;
+			bool ChangeTargetSuccess = false;
+			for (int i = ExistUnits::Instance()->m_NowTarget + 1; i < m_pBTM->UnitList.size() - 1; i++) {
+				if (m_pBTM->UnitList[i + 1]->IsAlive()) {
+					ExistUnits::Instance()->m_NowTarget = i;
+					ChangeTargetSuccess = true;
+					m_Reticle_Timer = 0.0f;
+					m_Aura.emplace_back(Reticle_Aura());
+					m_Aura.back().SetPoint(m_pBTM->UnitList[i].get(), false);
+					//m_Aura.emplace_back(Reticle_Aura());
+					//m_Aura.back().SetPoint(m_pBTM->UnitList[i].get(), true);
+					break;
+				}
+			}
+			// ターゲットを変更できなかった
+			if (!ChangeTargetSuccess) {
 
-		}
-	}
-	if (OperationConfig::Instance()->GetTargetChangeVec(OperationConfig::SELECT_VEC_DOWN)) {
-		// 生きているユニットまで
-		int iaaa = ExistUnits::Instance()->m_NowTarget;
-		bool ChangeTargetSuccess = false;
-		for (int i = ExistUnits::Instance()->m_NowTarget + 1; i < m_pBTM->UnitList.size() - 1; i++) {
-			if (m_pBTM->UnitList[i + 1]->IsAlive()) {
-				ExistUnits::Instance()->m_NowTarget = i;
-				ChangeTargetSuccess = true;
-				m_Reticle_Timer = 0.0f;
-				m_Aura.emplace_back(Reticle_Aura());
-				m_Aura.back().SetPoint(m_pBTM->UnitList[i].get(), false);
-				//m_Aura.emplace_back(Reticle_Aura());
-				//m_Aura.back().SetPoint(m_pBTM->UnitList[i].get(), true);
-				break;
 			}
 		}
-		// ターゲットを変更できなかった
-		if (!ChangeTargetSuccess) {
-
-		}
-	}
-	// ターゲット中の敵が死んでいる場合
-	if (!m_pBTM->UnitList[ExistUnits::Instance()->m_NowTarget + 1]->IsAlive()) {
-		// 一番上の生きている敵を狙う
-		for (int i = 1; i < m_pBTM->UnitList.size(); i++) {
-			if (m_pBTM->UnitList[i]->IsAlive()) {
-				ExistUnits::Instance()->m_NowTarget = i - 1;
-				break;
+		// ターゲット中の敵が死んでいる場合
+		if (!m_pBTM->UnitList[ExistUnits::Instance()->m_NowTarget + 1]->IsAlive()) {
+			// 一番上の生きている敵を狙う
+			for (int i = 1; i < m_pBTM->UnitList.size(); i++) {
+				if (m_pBTM->UnitList[i]->IsAlive()) {
+					ExistUnits::Instance()->m_NowTarget = i - 1;
+					break;
+				}
 			}
 		}
 	}

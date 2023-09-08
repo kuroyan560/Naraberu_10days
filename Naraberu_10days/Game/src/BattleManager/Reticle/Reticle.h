@@ -94,6 +94,9 @@ private:
 	}
 
 public:
+	// ‘€ì‰Â”\‚©‚Ç‚¤‚©
+	bool m_CanMove;
+
 	Reticle();
 
 	void SetBattleTurnManager(BattleTurnMgr* ptr);

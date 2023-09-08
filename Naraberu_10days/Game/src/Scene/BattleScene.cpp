@@ -6,7 +6,7 @@
 #include "../../src/engine/FrameWork/UsersInput.h"
 
 #include "../BattleManager/ExistUnits.h"
-
+#include "../BattleManager/Reticle/Reticle.h"
 #include "../OperationConfig.h"
 
 #include "../BattleManager/Player_Act/Skills/PlayerSkills.h"
@@ -53,6 +53,9 @@ void BattleScene::OnInitialize()
 	Pl = std::make_shared<Player>();
 	Pl->OnInitialize();
 	Pl->StartTurn();
+
+	// レティクルが動くように
+	Reticle::Instance()->m_CanMove = true;
 
 	// ステージをセット
 	SetStage(m_StageName);
@@ -102,6 +105,8 @@ void BattleScene::OnUpdate()
 		if (m_End_Timer < m_End_Timer_Finish) {
 			m_End_Timer++;
 		}
+		// レティクルを動かないように
+		Reticle::Instance()->m_CanMove = false;
 
 		// 選択肢
 		if (!m_Already_Selected) {
