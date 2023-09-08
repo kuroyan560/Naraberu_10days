@@ -115,6 +115,9 @@
     </Filter>
     <Filter Include="src\user\UI">
       <UniqueIdentifier>{f533c5ae-587c-4f77-8181-32cf25c7f2f5}</UniqueIdentifier>
+	</Filter>
+	<Filter Include="src\user\Titel">
+      <UniqueIdentifier>{3f96066e-f730-4cf2-86ef-53f692988448}</UniqueIdentifier>
     </Filter>
   </ItemGroup>
   <ItemGroup>
@@ -408,6 +411,9 @@
     </ClCompile>
     <ClCompile Include="src\UI\EnemyDamageUI.cpp">
       <Filter>src\user\UI</Filter>
+	</ClCompile>
+	<ClCompile Include="src\Titel\TitelVtuber.cpp">
+      <Filter>src\user\Titel</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
@@ -779,6 +785,9 @@
     </ClInclude>
     <ClInclude Include="src\UI\EnemyDamageUI.h">
       <Filter>src\user\UI</Filter>
+	</ClInclude>
+	<ClInclude Include="src\Titel\TitelVtuber.h">
+      <Filter>src\user\Titel</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>
