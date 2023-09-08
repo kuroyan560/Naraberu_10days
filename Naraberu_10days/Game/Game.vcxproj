@@ -205,6 +205,7 @@ xcopy "$(SolutionDir)dxil.dll" $(TargetDir) /Y</Command>
     <ClCompile Include="src\Scene\GameScene.cpp" />
     <ClCompile Include="src\Stage\StageList.cpp" />
     <ClCompile Include="src\Scene\TitleScene.cpp" />
+    <ClCompile Include="src\Titel\TitelVtuber.cpp" />
     <ClCompile Include="src\TitleUi.cpp" />
   </ItemGroup>
   <ItemGroup>
@@ -328,6 +329,7 @@ xcopy "$(SolutionDir)dxil.dll" $(TargetDir) /Y</Command>
     <ClInclude Include="src\Scene\GameScene.h" />
     <ClInclude Include="src\Scene\TitleScene.h" />
     <ClInclude Include="src\Stage\StageList.h" />
+    <ClInclude Include="src\Titel\TitelVtuber.h" />
     <ClInclude Include="src\TitleUi.h" />
   </ItemGroup>
   <ItemGroup>
