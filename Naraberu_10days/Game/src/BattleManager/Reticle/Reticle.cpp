@@ -15,7 +15,7 @@ Reticle::Reticle()
 
 void Reticle::SetBattleTurnManager(BattleTurnMgr* ptr)
 {
-	//m_pBTM = ptr;
+	m_pBTM = ptr;
 }
 
 void Reticle::Update()
@@ -149,8 +149,8 @@ bool Reticle::IsAliveUnderUnit()
 
 void Reticle::Reticle_Aura::SetPoint(UnitBase* ptr, bool Reverse)
 {
-	UnitPtr = ptr;
-	m_Reverse = Reverse;
+	//UnitPtr = ptr;
+	//m_Reverse = Reverse;
 	/*using namespace KuroEngine;
 	Point.emplace_back(Vec2<float>(LT.x, RB.y));
 	Point.emplace_back(Vec2<float>(RB.x, RB.y));

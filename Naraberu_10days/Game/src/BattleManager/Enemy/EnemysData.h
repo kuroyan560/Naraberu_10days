@@ -78,8 +78,8 @@ namespace EnemysData {
 			if (m_Tag == ENEMY_TAG::DEFAULT) {
 				m_FrameTex = D3D12App::Instance()->GenerateTextureBuffer(TexDir + "enemy_icon_frame.png");
 				m_HpFrameTex = D3D12App::Instance()->GenerateTextureBuffer(TexDir + "enemy_hp_frame.png");
-				m_FrameTex_Target = D3D12App::Instance()->GenerateTextureBuffer(TexDir + "enemy_icon_frame.png");
-				m_HpFrameTex_Target = D3D12App::Instance()->GenerateTextureBuffer(TexDir + "enemy_hp_frame.png");
+				m_FrameTex_Target = D3D12App::Instance()->GenerateTextureBuffer(TexDir + "target_enemy_icon_frame.png");
+				m_HpFrameTex_Target = D3D12App::Instance()->GenerateTextureBuffer(TexDir + "target_enemy_hp_frame.png");
 				m_HpTex_green = D3D12App::Instance()->GenerateTextureBuffer(TexDir + "enemy_hp_gauge_green.png");
 				m_HpTex_yellow = D3D12App::Instance()->GenerateTextureBuffer(TexDir + "enemy_hp_gauge_yellow.png");
 				m_HpTex_red = D3D12App::Instance()->GenerateTextureBuffer(TexDir + "enemy_hp_gauge_red.png");
@@ -88,6 +88,8 @@ namespace EnemysData {
 			if (m_Tag == ENEMY_TAG::BOSS) {
 				m_FrameTex = D3D12App::Instance()->GenerateTextureBuffer(TexDir + "boss_frame.png");
 				m_HpFrameTex = D3D12App::Instance()->GenerateTextureBuffer(TexDir + "boss_hp_frame.png");
+				m_FrameTex_Target = D3D12App::Instance()->GenerateTextureBuffer(TexDir + "target_enemy_icon_frame.png");
+				m_HpFrameTex_Target = D3D12App::Instance()->GenerateTextureBuffer(TexDir + "target_enemy_hp_frame.png");
 				m_HpTex_green = D3D12App::Instance()->GenerateTextureBuffer(TexDir + "boss_hp_gauge_green.png");
 				m_HpTex_yellow = D3D12App::Instance()->GenerateTextureBuffer(TexDir + "boss_hp_gauge_yellow.png");
 				m_HpTex_red = D3D12App::Instance()->GenerateTextureBuffer(TexDir + "boss_hp_gauge_red.png");
@@ -99,9 +101,9 @@ namespace EnemysData {
 			m_IndexTex_1 = D3D12App::Instance()->GenerateTextureBuffer(TexDir + "enemy_number_1.png");
 			m_IndexTex_2 = D3D12App::Instance()->GenerateTextureBuffer(TexDir + "enemy_number_2.png");
 			m_IndexTex_3 = D3D12App::Instance()->GenerateTextureBuffer(TexDir + "enemy_number_3.png");
-			m_IndexTex_1_Target = D3D12App::Instance()->GenerateTextureBuffer(TexDir + "enemy_number_1.png");
-			m_IndexTex_2_Target = D3D12App::Instance()->GenerateTextureBuffer(TexDir + "enemy_number_2.png");
-			m_IndexTex_3_Target = D3D12App::Instance()->GenerateTextureBuffer(TexDir + "enemy_number_3.png");
+			m_IndexTex_1_Target = D3D12App::Instance()->GenerateTextureBuffer(TexDir + "target_enemy_number_1.png");
+			m_IndexTex_2_Target = D3D12App::Instance()->GenerateTextureBuffer(TexDir + "target_enemy_number_2.png");
+			m_IndexTex_3_Target = D3D12App::Instance()->GenerateTextureBuffer(TexDir + "target_enemy_number_3.png");
 		}
 	};
 
