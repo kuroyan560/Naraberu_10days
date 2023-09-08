@@ -68,6 +68,9 @@ void PanelManager::Reset()
 			x = int(BlockColor::yuka);
 		}
 	}
+
+	// ボーナスアタック
+	PlayerSkills::PlayerSkillMgr::Instance()->StartAction("Bonus_01", 0, ExistUnits::Instance()->m_pPlayer, ExistUnits::Instance()->m_Enemys[0]);
 }
 
 #include "../BattleManager/Player_Act/Skills/PlayerSkills.h"

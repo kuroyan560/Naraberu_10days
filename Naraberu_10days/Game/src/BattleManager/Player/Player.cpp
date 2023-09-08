@@ -176,8 +176,6 @@ void Player::TurnEnd_BeforeTurnChange()
 	// ここにボーナスアタックとか書く
 	// マップをリセット
 	ExistUnits::Instance()->m_StageManager->Reset();
-	// ボーナスアタック
-	PlayerSkills::PlayerSkillMgr::Instance()->StartAction("Bonus_01", 0, ExistUnits::Instance()->m_pPlayer, ExistUnits::Instance()->m_Enemys[0]);
 }
 
 void Player::SetState(int HP, int MaxHP)
