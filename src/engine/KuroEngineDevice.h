@@ -47,7 +47,7 @@ namespace KuroEngine
 		//シーン遷移スタート
 		void Start() { m_nowTrans = true; OnStart(); }
 		//シーンを切り替えるタイミングでtrueを返す
-		virtual bool Update() { m_nowTrans = false; return true; }
+		virtual bool Update() {  return true; }
 		//シーン遷移描画
 		virtual void Draw() {}
 		//シーン遷移が完全に終了したか

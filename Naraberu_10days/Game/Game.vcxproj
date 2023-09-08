@@ -197,6 +197,7 @@ xcopy "$(SolutionDir)dxil.dll" $(TargetDir) /Y</Command>
     <ClCompile Include="src\BattleManager\UnitBase.cpp" />
     <ClCompile Include="src\Block\Block.cpp" />
     <ClCompile Include="src\Block\BlockManager.cpp" />
+    <ClCompile Include="src\Fade\Fade.cpp" />
     <ClCompile Include="src\main.cpp" />
     <ClCompile Include="src\OperationConfig.cpp" />
     <ClCompile Include="src\Panel\PanelManager.cpp" />
@@ -319,6 +320,7 @@ xcopy "$(SolutionDir)dxil.dll" $(TargetDir) /Y</Command>
     <ClInclude Include="src\Block\BaseInformation.h" />
     <ClInclude Include="src\Block\Block.h" />
     <ClInclude Include="src\Block\BlockManager.h" />
+    <ClInclude Include="src\Fade\Fade.h" />
     <ClInclude Include="src\OperationConfig.h" />
     <ClInclude Include="src\Panel\PanelManager.h" />
     <ClInclude Include="src\RefreshRate.h" />

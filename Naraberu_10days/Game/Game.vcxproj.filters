@@ -110,6 +110,9 @@
     <Filter Include="src\user\BattleManager\Reticle">
       <UniqueIdentifier>{78297117-b96c-4d14-ab05-599212c19300}</UniqueIdentifier>
     </Filter>
+    <Filter Include="src\user\Fade">
+      <UniqueIdentifier>{d991640f-9722-4ddc-ae86-8a273bb1f8c7}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="..\..\src\engine\KuroEngineDevice.cpp">
@@ -396,6 +399,9 @@
     </ClCompile>
     <ClCompile Include="src\BattleManager\Reticle\Reticle.cpp">
       <Filter>src\user\BattleManager\Reticle</Filter>
+    </ClCompile>
+    <ClCompile Include="src\Fade\Fade.cpp">
+      <Filter>src</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
@@ -761,6 +767,9 @@
     </ClInclude>
     <ClInclude Include="src\TitleUi.h">
       <Filter>src\user</Filter>
+    </ClInclude>
+    <ClInclude Include="src\Fade\Fade.h">
+      <Filter>src\user\Fade</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>

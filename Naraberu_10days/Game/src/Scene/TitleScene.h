@@ -1,6 +1,7 @@
 #pragma once
 #include "KuroEngineDevice.h"
 #include "../TitleUi.h"
+#include "../Fade/Fade.h"
 
 class TitleScene : public KuroEngine::BaseScene
 {	
@@ -12,6 +13,9 @@ class TitleScene : public KuroEngine::BaseScene
 
 	//ステージ番号
 	int stageNum;
+
+	// フェード
+	Fade m_Fade;
 
 	//タイトルシーン用
 	enum class Select {
