@@ -113,6 +113,9 @@
     <Filter Include="src\user\Fade">
       <UniqueIdentifier>{d991640f-9722-4ddc-ae86-8a273bb1f8c7}</UniqueIdentifier>
     </Filter>
+    <Filter Include="src\user\UI">
+      <UniqueIdentifier>{f533c5ae-587c-4f77-8181-32cf25c7f2f5}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="..\..\src\engine\KuroEngineDevice.cpp">
@@ -402,6 +405,9 @@
     </ClCompile>
     <ClCompile Include="src\Fade\Fade.cpp">
       <Filter>src\user\Fade</Filter>
+    </ClCompile>
+    <ClCompile Include="src\UI\EnemyDamageUI.cpp">
+      <Filter>src\user\UI</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
@@ -770,6 +776,9 @@
     </ClInclude>
     <ClInclude Include="src\Fade\Fade.h">
       <Filter>src\user\Fade</Filter>
+    </ClInclude>
+    <ClInclude Include="src\UI\EnemyDamageUI.h">
+      <Filter>src\user\UI</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>
