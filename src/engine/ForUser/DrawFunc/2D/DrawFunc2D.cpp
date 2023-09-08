@@ -492,7 +492,7 @@ void KuroEngine::DrawFunc2D::DrawRadialWipeGraph2D(
 	s_DrawRadialWipeGraphCount++;
 }
 
-void KuroEngine::DrawFunc2D::DrawNumber2D(const int& arg_num, const Vec2<float>& arg_pos, const std::shared_ptr<TextureBuffer>* arg_numTexArray, const Vec2<float>& arg_expRate,
+void KuroEngine::DrawFunc2D::DrawNumber2D(const int& arg_num, const Vec2<float>& arg_pos, const std::shared_ptr<TextureBuffer>* arg_numTexArray, const Vec2<float>& arg_expRate, const float& arg_alpha,
 	const float& arg_letterSpace, const HORIZONTAL_ALIGN& arg_horizontalAlign, const VERTICAL_ALIGN& arg_verticalAlign, const int arg_fillZeroDigit, const int arg_leftAdditionalIdx,const int arg_rightAdditionalIdx)
 {
 	const auto graphSize = arg_numTexArray[0]->GetGraphSize().Float() * arg_expRate;
@@ -538,20 +538,20 @@ void KuroEngine::DrawFunc2D::DrawNumber2D(const int& arg_num, const Vec2<float>&
 	if (arg_leftAdditionalIdx != -1)
 	{
 		Vec2<float>pos = { x,y };
-		DrawExtendGraph2D(pos, pos + graphSize, arg_numTexArray[arg_leftAdditionalIdx]);
+		DrawExtendGraph2D(pos, pos + graphSize, arg_numTexArray[arg_leftAdditionalIdx], arg_alpha);
 		x += letterSpace;
 	}
 
 	for (int numIdx = 0; numIdx < numStr.size(); ++numIdx)
 	{
 		Vec2<float>pos = { x,y };
-		DrawExtendGraph2D(pos, pos + graphSize, arg_numTexArray[numStr[numIdx] - '0']);
+		DrawExtendGraph2D(pos, pos + graphSize, arg_numTexArray[numStr[numIdx] - '0'], arg_alpha);
 		x += letterSpace;
 	}
 
 	if (arg_rightAdditionalIdx != -1)
 	{
 		Vec2<float>pos = { x,y };
-		DrawExtendGraph2D(pos, pos + graphSize, arg_numTexArray[arg_rightAdditionalIdx]);
+		DrawExtendGraph2D(pos, pos + graphSize, arg_numTexArray[arg_rightAdditionalIdx], arg_alpha);
 	}
 }
