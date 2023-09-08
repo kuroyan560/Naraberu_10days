@@ -96,6 +96,9 @@ public:
 	//操作入力があったか
 	bool CheckAllOperationInput();
 
+	//最新の入力デバイス
+	INPUT_DEVICE GetLatestDevice()const { return m_nowInputDevice; }
+
 	//デバッグ用のキー入力
 	bool DebugKeyInputOnTrigger(int arg_keyCode);
 	bool DebugKeyInput(int arg_keyCode);
