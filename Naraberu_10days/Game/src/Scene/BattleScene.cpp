@@ -58,7 +58,7 @@ void BattleScene::OnInitialize()
 	Reticle::Instance()->m_CanMove = true;
 
 	// ステージをセット
-	SetStage(m_StageName);
+	SetStage(ExistUnits::Instance()->m_StageName);
 	// 最初のウェーブ
 	m_NowWave = 1;
 	// ウェーブの敵を取得
@@ -129,11 +129,11 @@ void BattleScene::OnUpdate()
 				// タイトルへ
 				if (m_GameOverSelectIndex == 1) {
 					ExistUnits::Instance()->m_ChangeStageSelect = true;
-					KuroEngine::KuroEngineDevice::Instance()->ChangeScene("title");
+					KuroEngine::KuroEngineDevice::Instance()->ChangeScene("title", &m_Fade);
 				}
 				// リトライ
 				else if (m_GameOverSelectIndex == 0) {
-					KuroEngine::KuroEngineDevice::Instance()->ChangeScene("Battle");
+					KuroEngine::KuroEngineDevice::Instance()->ChangeScene("Battle", &m_Fade);
 				}
 			}
 		}
@@ -141,10 +141,16 @@ void BattleScene::OnUpdate()
 	// ステージ終了(敵全滅)
 	else if (m_Stage_End) {
 		//KuroEngine::AppearMessageBox("ステージ終了", "ステージ終了");
-		m_End_Timer++;
-		if (m_End_Timer == m_End_Timer_Finish) {
+		if (m_End_Timer < m_End_Timer_Finish) {
+			m_End_Timer++;
+		}
+		// レティクルを動かないように
+		Reticle::Instance()->m_CanMove = false;
+
+		if (OperationConfig::Instance()->GetOperationInput(OperationConfig::OPERATION_TYPE::DONE, OperationConfig::INPUT_PATTERN::ON_TRIGGER)
+			&& m_End_Timer > 1) {
 			ExistUnits::Instance()->m_ChangeStageSelect = true;
-			KuroEngine::KuroEngineDevice::Instance()->ChangeScene("title");
+			KuroEngine::KuroEngineDevice::Instance()->ChangeScene("title", &m_Fade);
 		}
 	}
 
@@ -170,9 +176,9 @@ void BattleScene::OnUpdate()
 
 	Mgr.OnUpdate();
 	stage->Update();
-	//if (!Mgr.GetDefeat() && !m_Stage_End) {
+	if (!Mgr.GetDefeat() && !m_Stage_End) {
 		block->Update();
-	//}
+	}
 
 	//ゲームオーバーもしくはクリアをしたらシーンを切り替えられるようにする
 	/*if (OperationConfig::Instance()->DebugKeyInputOnTrigger(DIK_RETURN)) {
@@ -200,17 +206,17 @@ void BattleScene::OnDraw()
 	DrawFunc2D::DrawGraph(Vec2(1064.0f, 13.0f), m_BattleTex);
 
 	// ステージ名描画
-	if (m_StageName == "Stage1") {
+	if (ExistUnits::Instance()->m_StageName == "Stage1") {
 		DrawFunc2D::DrawNumber2D(1, Vec2(986.0f, 19.0f), &m_NumberTex.front());
 		DrawFunc2D::DrawGraph(Vec2(1003.0f, 19.0f), m_NumberTex[10]);
 		DrawFunc2D::DrawNumber2D(1, Vec2(1022.0f, 19.0f), &m_NumberTex.front());
 	}
-	else if (m_StageName == "Stage2") {
+	else if (ExistUnits::Instance()->m_StageName == "Stage2") {
 		DrawFunc2D::DrawNumber2D(1, Vec2(986.0f, 19.0f), &m_NumberTex.front());
 		DrawFunc2D::DrawGraph(Vec2(1003.0f, 19.0f), m_NumberTex[10]);
 		DrawFunc2D::DrawNumber2D(2, Vec2(1022.0f, 19.0f), &m_NumberTex.front());
 	}
-	else if (m_StageName == "Stage3") {
+	else if (ExistUnits::Instance()->m_StageName == "Stage3") {
 		DrawFunc2D::DrawNumber2D(1, Vec2(986.0f, 19.0f), &m_NumberTex.front());
 		DrawFunc2D::DrawGraph(Vec2(1003.0f, 19.0f), m_NumberTex[10]);
 		DrawFunc2D::DrawNumber2D(3, Vec2(1022.0f, 19.0f), &m_NumberTex.front());

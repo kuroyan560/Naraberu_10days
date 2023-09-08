@@ -7,6 +7,7 @@
 #include "../Block/BlockManager.h"
 #include "../Panel/PanelManager.h"
 #include "../Stage/StageList.h"
+#include "../Fade/Fade.h"
 
 class BattleScene :
     public KuroEngine::BaseScene
@@ -52,7 +53,8 @@ class BattleScene :
 	std::shared_ptr<KuroEngine::TextureBuffer> m_Done_ControllerTex_GameOver;
 	std::shared_ptr<KuroEngine::TextureBuffer> m_DoneTex_GameOver;
 
-
+	// フェード
+	Fade m_Fade;
 
 	void PlayerTurn();
 
