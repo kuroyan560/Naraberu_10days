@@ -262,7 +262,13 @@ bool OperationConfig::GetOperationInput(OPERATION_TYPE arg_operation, INPUT_PATT
 	if (!m_isInGameOperationActive &&
 		std::find(m_inGameOperationArray.begin(), m_inGameOperationArray.end(), arg_operation) != m_inGameOperationArray.end())return false;
 
-	return KeyInput(arg_pattern, m_operationKeyCode[arg_operation]) || ControllerInput(arg_pattern, m_operationButton[arg_operation]);
+	bool key = KeyInput(arg_pattern, m_operationKeyCode[arg_operation]);
+	bool con = ControllerInput(arg_pattern, m_operationButton[arg_operation]);
+
+	if (con)RegisterLatestDevice(INPUT_DEVICE::CONTROLLER);
+	else if (key)RegisterLatestDevice(INPUT_DEVICE::KEY_BOARD_MOUSE);
+
+	return con || key;
 }
 
 bool OperationConfig::CheckAllOperationInput()
