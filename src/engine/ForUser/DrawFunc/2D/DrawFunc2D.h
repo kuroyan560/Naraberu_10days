@@ -147,6 +147,7 @@ namespace KuroEngine
 		/// <param name="arg_letterSpace">字間</param>
 		/// <param name="arg_horizontalAlign">水平方向アライメント（揃え方）</param>
 		/// <param name="arg_verticalAlign">垂直方向アライメント（揃え方）</param>
+		/// <param name="arg_fillZeroDigit">ゼロ埋めする場合、何桁まで描画するか</param>
 		static void DrawNumber2D(
 			const int& arg_num,
 			const Vec2<float>& arg_pos,
@@ -154,6 +155,7 @@ namespace KuroEngine
 			const Vec2<float>& arg_expRate = { 1.0f,1.0f },
 			const float& arg_letterSpace = 0.0f,
 			const HORIZONTAL_ALIGN& arg_horizontalAlign = HORIZONTAL_ALIGN::LEFT,
-			const VERTICAL_ALIGN& arg_verticalAlign = VERTICAL_ALIGN::TOP);
+			const VERTICAL_ALIGN& arg_verticalAlign = VERTICAL_ALIGN::TOP,
+			const int arg_fillZeroDigit = -1);
 	};
 }

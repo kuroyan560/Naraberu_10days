@@ -493,11 +493,20 @@ void KuroEngine::DrawFunc2D::DrawRadialWipeGraph2D(
 }
 
 void KuroEngine::DrawFunc2D::DrawNumber2D(const int& arg_num, const Vec2<float>& arg_pos, const std::shared_ptr<TextureBuffer>* arg_numTexArray, const Vec2<float>& arg_expRate,
-	const float& arg_letterSpace, const HORIZONTAL_ALIGN& arg_horizontalAlign, const VERTICAL_ALIGN& arg_verticalAlign)
+	const float& arg_letterSpace, const HORIZONTAL_ALIGN& arg_horizontalAlign, const VERTICAL_ALIGN& arg_verticalAlign, const int arg_fillZeroDigit)
 {
 	const auto graphSize = arg_numTexArray[0]->GetGraphSize().Float() * arg_expRate;
-	const auto numStr = std::to_string(arg_num);
 	const auto letterSpace = graphSize.x + arg_letterSpace;
+	auto numStr = std::to_string(arg_num);
+
+	if (arg_fillZeroDigit != -1 && numStr.size() < arg_fillZeroDigit)
+	{
+		//ƒ[ƒ–„‚ß
+		for (int i = 0; i < arg_fillZeroDigit - numStr.size(); ++i)
+		{
+			numStr = '0' + numStr;
+		}
+	}
 
 	float startX = arg_pos.x;	//¶‘µ‚¦
 	if (arg_horizontalAlign == HORIZONTAL_ALIGN::CENTER)	//’†‘µ‚¦
