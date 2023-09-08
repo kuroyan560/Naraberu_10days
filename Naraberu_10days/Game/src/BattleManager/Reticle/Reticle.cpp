@@ -11,7 +11,6 @@ Reticle::Reticle()
 	m_BigReticleTex = D3D12App::Instance()->GenerateTextureBuffer(TexDir + "reticle_big.png");
 	D3D12App::Instance()->GenerateTextureBuffer(&m_ReticleTex.front(), TexDir + "reticle.png", 4, Vec2(4, 1));
 	MaskColor = Color(1.0f, 1.0f, 1.0f, 1.0f);
-	Reticle::Instance()->m_CanMove = true;
 }
 
 void Reticle::SetBattleTurnManager(BattleTurnMgr* ptr)
