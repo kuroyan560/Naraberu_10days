@@ -57,13 +57,31 @@ void EnemyDamageUI::Draw()
 
 	if (!m_isActive)return;
 
+	//ダメージ数描画オフセット座標
 	const Vec2<float>NUMBER_OFFSET_POS = { 0.0f,-57.0f };
 
 	Vec2<float>shake = { 0.0f,m_impactShake.GetOffset().y };
 	auto pos = m_nowPos + shake;
 	DrawFunc2D::DrawRotaGraph2D(pos, {1.0f,1.0f}, 0.0f, m_damageTex);
-	DrawFunc2D::DrawNumber2D(m_damageAmount, pos + NUMBER_OFFSET_POS, m_damageNumTex.data(), { 1.0f,1.0f },
-		0.0f, HORIZONTAL_ALIGN::CENTER, VERTICAL_ALIGN::CENTER, 2);
+	DrawFunc2D::DrawNumber2D(m_damageAmount, pos + NUMBER_OFFSET_POS,
+		m_damageNumTex.data(), { 1.0f,1.0f }, 0.0f,
+		HORIZONTAL_ALIGN::CENTER, VERTICAL_ALIGN::CENTER, 2);
+
+	//最新のダメージ履歴の描画オフセット座標
+	const Vec2<float>DAMAGE_HIS_OFFSET_POS = { 40.0f,22.0f };
+	//履歴間の行間
+	const float DAMAGE_HIS_LINE_SPACE = 29.0f;
+
+	auto damageHisPos = m_appearPos + shake + DAMAGE_HIS_OFFSET_POS;
+	for (auto& damage : m_history)
+	{
+		DrawFunc2D::DrawNumber2D(damage, damageHisPos,
+			m_damageHisNumTex.data(), { 1.0f,1.0f }, 0.0f, HORIZONTAL_ALIGN::RIGHT,
+			VERTICAL_ALIGN::TOP, -1, 10, -1);
+
+		//行間ずらし
+		damageHisPos.y += DAMAGE_HIS_LINE_SPACE;
+	}
 }
 
 void EnemyDamageUI::Add(int arg_damage)
@@ -82,6 +100,9 @@ void EnemyDamageUI::Add(int arg_damage)
 	const float DISAPPEAR_TIME = 30.0f;
 	m_disappearTimer.Reset(DISAPPEAR_TIME);
 
+	//与ダメージ最大履歴数
+	const int QUEUE_MAX = 4;
+
 	//非表示状態
 	if (!m_isActive)
 	{
@@ -92,4 +113,10 @@ void EnemyDamageUI::Add(int arg_damage)
 	m_damageAmount += arg_damage;
 	m_impactShake.Shake(SHAKE_TIME, SHAKE_SPAN, SHAKE_POWER_MIN, SHAKE_POWER_MAX);
 	m_nowPos = m_appearPos;
+
+	m_history.push_front(arg_damage);
+	if (QUEUE_MAX < static_cast<int>(m_history.size()))
+	{
+		m_history.pop_back();
+	}
 }

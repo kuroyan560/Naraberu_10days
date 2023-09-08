@@ -5,6 +5,7 @@
 #include<vector>
 #include"ForUser/Timer.h"
 #include"ForUser/ImpactShake.h"
+#include<list>
 
 namespace KuroEngine
 {
@@ -37,6 +38,9 @@ class EnemyDamageUI
 
 	//現在のUI表示座標
 	KuroEngine::Vec2<float>m_nowPos;
+
+	//与ダメージ履歴キュー
+	std::list<int>m_history;
 
 public:
 	EnemyDamageUI();
