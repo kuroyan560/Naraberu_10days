@@ -89,23 +89,23 @@ void BlockManager::Draw()
 	}
 
 	//パスの大本の座標
-	const KuroEngine::Vec2<float> passFoundationPos={ 230.0f,655.0f };
+	const KuroEngine::Vec2<float> passFoundationPos={ 287.0f,668.0f };
 
 	//パス画像
 	const KuroEngine::Vec2<float> passSize = { 107.0f,27.0f };
 	KuroEngine::DrawFunc2D::DrawExtendGraph2D({ passFoundationPos.x - passSize.x ,passFoundationPos.y - passSize.y }, passFoundationPos, passTex[0]);
 	const KuroEngine::Vec2<float> passSlashSize = { 18.0f,27.0f };
-	const KuroEngine::Vec2<float> passSlashPos = { 72.0f,0.0f };
+	const KuroEngine::Vec2<float> passSlashPos = { 54.0f,0.0f };
 	KuroEngine::DrawFunc2D::DrawExtendGraph2D(
 	{ passFoundationPos.x - passSlashSize.x + passSlashPos.x ,passFoundationPos.y - passSlashSize.y + passSlashPos.y },
 	{ passFoundationPos.x + passSlashPos.x ,passFoundationPos.y + passSlashPos.y }, passTex[1]);
 
 	//パス数字画像
 	//最大
-	KuroEngine::Vec2<float> passMaxNumPos = { 80.0f,-27.0f };
+	KuroEngine::Vec2<float> passMaxNumPos = { 55.0f,-27.0f };
 	KuroEngine::DrawFunc2D::DrawNumber2D(passMaxNum, { passFoundationPos.x + passMaxNumPos.x ,passFoundationPos.y + passMaxNumPos.y }, numTex.data(), {1,1});
 	//現在の数
-	KuroEngine::Vec2<float> passNumPos = { 20.0f,-27.0f };
+	KuroEngine::Vec2<float> passNumPos = { 8.0f,-27.0f };
 	KuroEngine::DrawFunc2D::DrawNumber2D(passNum, { passFoundationPos.x + passNumPos.x ,passFoundationPos.y + passNumPos.y }, numTex.data(), { 1,1 });
 
 }
