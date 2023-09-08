@@ -7,7 +7,7 @@
 #include "FrameWork/UsersInput.h"
 #include "Player_Act/Skills/PlayerSkills.h"
 #include "ExistUnits.h"
-
+#include "Reticle/Reticle.h"
 #include"../OperationConfig.h"
 
 void BattleTurnMgr::OnInitialize(std::shared_ptr<UnitBase> Player, std::vector<std::shared_ptr<UnitBase>> Enemys)
@@ -27,6 +27,8 @@ void BattleTurnMgr::OnInitialize(std::shared_ptr<UnitBase> Player, std::vector<s
 	using namespace KuroEngine;
 	std::string TexDir = "resource/user/tex/battle_scene/";
 	m_CutInTex = D3D12App::Instance()->GenerateTextureBuffer(TexDir + "player_turn.png");
+	// レティクル
+	Reticle::Instance()->SetBattleTurnManager(this);
 }
 
 void BattleTurnMgr::SetUnits(std::shared_ptr<UnitBase> Player, std::vector<std::shared_ptr<UnitBase>> Enemys)
@@ -80,7 +82,8 @@ void BattleTurnMgr::OnUpdate()
 	if (EnemyAlive && UnitList[TurnNum]->IsAlive() && UnitList[0]->IsAlive()) {
 		Update_Battle();
 	}
-	
+	// ロックオン
+	Reticle::Instance()->Update();
 
 	/*if (KuroEngine::UsersInput::Instance()->KeyOnTrigger(DIK_T)) {
 		PlayerSkills::PlayerSkillMgr::Instance()->StartAction("Attack_01", ExistUnits::Instance()->m_pPlayer, ExistUnits::Instance()->m_Enemys[0]);
@@ -195,48 +198,7 @@ void BattleTurnMgr::Update_Battle()
 
 	ExistUnits::Instance()->m_NowTurn = TurnNum;
 	// ロックオン
-	if (OperationConfig::Instance()->GetTargetChangeVec(OperationConfig::SELECT_VEC_UP)) {
-		// 生きているユニットまで
-		int iaaa = ExistUnits::Instance()->m_NowTarget;
-		bool ChangeTargetSuccess = false;
-		for (int i = ExistUnits::Instance()->m_NowTarget; i > 0; i--) {
-			if (UnitList[i]->IsAlive()) {
-				ExistUnits::Instance()->m_NowTarget = i - 1;
-				ChangeTargetSuccess = true;
-				break;
-			}
-		}
-		// ターゲットを変更できなかった
-		if (!ChangeTargetSuccess) {
-
-		}
-	}
-	if (OperationConfig::Instance()->GetTargetChangeVec(OperationConfig::SELECT_VEC_DOWN)) {
-		// 生きているユニットまで
-		int iaaa = ExistUnits::Instance()->m_NowTarget;
-		bool ChangeTargetSuccess = false;
-		for (int i = ExistUnits::Instance()->m_NowTarget + 1; i < UnitList.size() - 1; i++) {
-			if (UnitList[i + 1]->IsAlive()) {
-				ExistUnits::Instance()->m_NowTarget = i;
-				ChangeTargetSuccess = true;
-				break;
-			}
-		}
-		// ターゲットを変更できなかった
-		if (!ChangeTargetSuccess) {
-
-		}
-	}
-	// ターゲット中の敵が死んでいる場合
-	if (!UnitList[ExistUnits::Instance()->m_NowTarget + 1]->IsAlive()) {
-		// 一番上の生きている敵を狙う
-		for (int i = 1; i < UnitList.size(); i++) {
-			if (UnitList[i]->IsAlive()) {
-				ExistUnits::Instance()->m_NowTarget = i - 1;
-				break;
-			}
-		}
-	}
+	//Reticle::Instance()->Update();
 }
 
 bool BattleTurnMgr::AliveEnemys()

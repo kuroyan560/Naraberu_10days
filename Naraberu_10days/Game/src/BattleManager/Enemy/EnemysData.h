@@ -44,16 +44,20 @@ namespace EnemysData {
 
 		// ‰æ‘œ
 		std::shared_ptr<KuroEngine::TextureBuffer> m_FrameTex;
+		std::shared_ptr<KuroEngine::TextureBuffer> m_FrameTex_Target;
 		std::shared_ptr<KuroEngine::TextureBuffer> m_HpFrameTex;
+		std::shared_ptr<KuroEngine::TextureBuffer> m_HpFrameTex_Target;
 		std::shared_ptr<KuroEngine::TextureBuffer> m_HpTex_green;
 		std::shared_ptr<KuroEngine::TextureBuffer> m_HpTex_yellow;
 		std::shared_ptr<KuroEngine::TextureBuffer> m_HpTex_red;
 		std::shared_ptr<KuroEngine::TextureBuffer> m_HpTex_break;
 		std::shared_ptr<KuroEngine::TextureBuffer> m_UnitTex;
-
 		std::shared_ptr<KuroEngine::TextureBuffer> m_IndexTex_1;
 		std::shared_ptr<KuroEngine::TextureBuffer> m_IndexTex_2;
 		std::shared_ptr<KuroEngine::TextureBuffer> m_IndexTex_3;
+		std::shared_ptr<KuroEngine::TextureBuffer> m_IndexTex_1_Target;
+		std::shared_ptr<KuroEngine::TextureBuffer> m_IndexTex_2_Target;
+		std::shared_ptr<KuroEngine::TextureBuffer> m_IndexTex_3_Target;
 
 		std::shared_ptr<KuroEngine::TextureBuffer> m_ReticleTex;
 
@@ -74,6 +78,8 @@ namespace EnemysData {
 			if (m_Tag == ENEMY_TAG::DEFAULT) {
 				m_FrameTex = D3D12App::Instance()->GenerateTextureBuffer(TexDir + "enemy_icon_frame.png");
 				m_HpFrameTex = D3D12App::Instance()->GenerateTextureBuffer(TexDir + "enemy_hp_frame.png");
+				m_FrameTex_Target = D3D12App::Instance()->GenerateTextureBuffer(TexDir + "enemy_icon_frame.png");
+				m_HpFrameTex_Target = D3D12App::Instance()->GenerateTextureBuffer(TexDir + "enemy_hp_frame.png");
 				m_HpTex_green = D3D12App::Instance()->GenerateTextureBuffer(TexDir + "enemy_hp_gauge_green.png");
 				m_HpTex_yellow = D3D12App::Instance()->GenerateTextureBuffer(TexDir + "enemy_hp_gauge_yellow.png");
 				m_HpTex_red = D3D12App::Instance()->GenerateTextureBuffer(TexDir + "enemy_hp_gauge_red.png");
@@ -93,6 +99,9 @@ namespace EnemysData {
 			m_IndexTex_1 = D3D12App::Instance()->GenerateTextureBuffer(TexDir + "enemy_number_1.png");
 			m_IndexTex_2 = D3D12App::Instance()->GenerateTextureBuffer(TexDir + "enemy_number_2.png");
 			m_IndexTex_3 = D3D12App::Instance()->GenerateTextureBuffer(TexDir + "enemy_number_3.png");
+			m_IndexTex_1_Target = D3D12App::Instance()->GenerateTextureBuffer(TexDir + "enemy_number_1.png");
+			m_IndexTex_2_Target = D3D12App::Instance()->GenerateTextureBuffer(TexDir + "enemy_number_2.png");
+			m_IndexTex_3_Target = D3D12App::Instance()->GenerateTextureBuffer(TexDir + "enemy_number_3.png");
 		}
 	};
 

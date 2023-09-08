@@ -193,6 +193,7 @@ xcopy "$(SolutionDir)dxil.dll" $(TargetDir) /Y</Command>
     <ClCompile Include="src\BattleManager\Player_Act\Skills\Player_Bonus_Attack_01.cpp" />
     <ClCompile Include="src\BattleManager\Player_Act\Skills\Player_Heal_01.cpp" />
     <ClCompile Include="src\BattleManager\Player_Act\Skills\Player_Ultimate_01.cpp" />
+    <ClCompile Include="src\BattleManager\Reticle\Reticle.cpp" />
     <ClCompile Include="src\BattleManager\UnitBase.cpp" />
     <ClCompile Include="src\Block\Block.cpp" />
     <ClCompile Include="src\Block\BlockManager.cpp" />
@@ -313,6 +314,7 @@ xcopy "$(SolutionDir)dxil.dll" $(TargetDir) /Y</Command>
     <ClInclude Include="src\BattleManager\Player_Act\Skills\Player_Bonus_Attack_01.h" />
     <ClInclude Include="src\BattleManager\Player_Act\Skills\Player_Heal_01.h" />
     <ClInclude Include="src\BattleManager\Player_Act\Skills\Player_Ultimate_01.h" />
+    <ClInclude Include="src\BattleManager\Reticle\Reticle.h" />
     <ClInclude Include="src\BattleManager\UnitBase.h" />
     <ClInclude Include="src\Block\BaseInformation.h" />
     <ClInclude Include="src\Block\Block.h" />

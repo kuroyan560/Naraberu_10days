@@ -6,7 +6,7 @@
 #include "FrameWork/WinApp.h"
 
 #include "../ExistUnits.h"
-
+#include "../Reticle/Reticle.h"
 #include "../../RefreshRate.h"
 
 #include"../../OperationConfig.h"
@@ -202,17 +202,32 @@ void Enemy::Draw(int Index, int NowTurn_Index, int Index_Max, bool Dark, int Fra
 		Move_Width = 0.0f;
 	}
 	
+	std::shared_ptr<KuroEngine::TextureBuffer> FrameTex = m_Data.m_FrameTex;
+	std::shared_ptr<KuroEngine::TextureBuffer> HPFrameTex = m_Data.m_HpFrameTex;
+	if (NowTarget == Index) {
+		FrameTex = m_Data.m_FrameTex_Target;
+		HPFrameTex = m_Data.m_HpFrameTex_Target;
+	}
 
 	// ユニットの描画
 	DrawFunc2D_Color::DrawExtendGraph2D(Vec2(1009.0f - Move_Width, 115.0f + IndexDiff), Vec2(1254.0f - Move_Width, 215.0f + IndexDiff), m_Data.m_UnitTex, Mask,
 		{ false,false }, { 0.0f,0.0f }, { 1.0f,1.0f }, KuroEngine::DrawFunc2D_Color::FILL_MDOE::MUL);
-	DrawFunc2D_Color::DrawExtendGraph2D(Vec2(1002.0f - Move_Width, 108.0f + IndexDiff), Vec2(1261.0f - Move_Width, 222.0f + IndexDiff), m_Data.m_FrameTex, Mask,
+	DrawFunc2D_Color::DrawExtendGraph2D(Vec2(1002.0f - Move_Width, 108.0f + IndexDiff), Vec2(1261.0f - Move_Width, 222.0f + IndexDiff), FrameTex, Mask,
 		{ false,false }, { 0.0f,0.0f }, { 1.0f,1.0f }, KuroEngine::DrawFunc2D_Color::FILL_MDOE::MUL);
-	DrawFunc2D_Color::DrawExtendGraph2D(Vec2(1126.0f - Move_Width, 181.0f + IndexDiff), Vec2(1270.0f - Move_Width, 203.0f + IndexDiff), m_Data.m_HpFrameTex, Mask,
+	DrawFunc2D_Color::DrawExtendGraph2D(Vec2(1126.0f - Move_Width, 181.0f + IndexDiff), Vec2(1270.0f - Move_Width, 203.0f + IndexDiff), HPFrameTex, Mask,
 		{ false,false }, { 0.0f,0.0f }, { 1.0f,1.0f }, KuroEngine::DrawFunc2D_Color::FILL_MDOE::MUL);
+
 	std::shared_ptr<KuroEngine::TextureBuffer> IndexTex = m_Data.m_IndexTex_1;
-	if (Index == 1) IndexTex = m_Data.m_IndexTex_2;
-	else if (Index == 2) IndexTex = m_Data.m_IndexTex_3;
+	if (NowTarget == Index) {
+		IndexTex = m_Data.m_IndexTex_1_Target;
+		if (Index == 1) IndexTex = m_Data.m_IndexTex_2_Target;
+		else if (Index == 2) IndexTex = m_Data.m_IndexTex_3_Target;
+	}
+	else {
+		if (Index == 1) IndexTex = m_Data.m_IndexTex_2;
+		else if (Index == 2) IndexTex = m_Data.m_IndexTex_3;
+	}
+
 	DrawFunc2D_Color::DrawExtendGraph2D(Vec2(1185.0f - Move_Width, 117.0f + IndexDiff), Vec2(1252.0f - Move_Width, 177.0f + IndexDiff), IndexTex, Mask,
 		{ false,false }, { 0.0f,0.0f }, { 1.0f,1.0f }, KuroEngine::DrawFunc2D_Color::FILL_MDOE::MUL);
 
@@ -227,8 +242,9 @@ void Enemy::Draw(int Index, int NowTurn_Index, int Index_Max, bool Dark, int Fra
 
 	// レティクルの描画
 	if (NowTarget == Index) {
-		DrawFunc2D_Color::DrawExtendGraph2D(Vec2(m_Left_Top.x - 48 + 10, m_Right_Bottom.y - 48 - 10), Vec2(m_Left_Top.x + 48 + 10, m_Right_Bottom.y + 48 - 10), m_Data.m_ReticleTex, Mask,
-			{ false,false }, { 0.0f,0.0f }, { 1.0f,1.0f }, KuroEngine::DrawFunc2D_Color::FILL_MDOE::MUL);
+		/*DrawFunc2D_Color::DrawExtendGraph2D(Vec2(m_Left_Top.x - 48 + 10, m_Right_Bottom.y - 48 - 10), Vec2(m_Left_Top.x + 48 + 10, m_Right_Bottom.y + 48 - 10), m_Data.m_ReticleTex, Mask,
+			{ false,false }, { 0.0f,0.0f }, { 1.0f,1.0f }, KuroEngine::DrawFunc2D_Color::FILL_MDOE::MUL);*/
+		Reticle::Instance()->Draw(Index, m_Left_Top, m_Right_Bottom, Mask);
 	}
 
 	// HPゲージが削れる演出用

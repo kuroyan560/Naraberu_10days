@@ -12,7 +12,6 @@
 
 class BattleTurnMgr
 {
-	std::vector<std::shared_ptr<UnitBase>> UnitList;
 	// 全体ターン数
 	int m_Whole_Turn_Count;
 	// 何番目のユニットのターンか
@@ -33,6 +32,8 @@ class BattleTurnMgr
 	bool m_IsDefeat;
 
 public:
+	std::vector<std::shared_ptr<UnitBase>> UnitList;
+
 	BattleTurnMgr() {
 		m_Whole_Turn_Count = 0;
 		TurnNum = 0;

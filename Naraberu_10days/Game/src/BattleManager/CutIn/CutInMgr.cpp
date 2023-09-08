@@ -21,10 +21,10 @@ void CutInMgr::StartCutIn(CutInType Type)
 	switch (Type)
 	{
 	case CutInType::PLAYER_TURN:
-		NowCutInPtr = std::make_shared<CutInData>(Type, 200, TexDir + "player_turn.png");
+		NowCutInPtr = std::make_shared<CutInData>(Type, 80, TexDir + "player_turn.png");
 		break;
 	case CutInType::ENEMY_TURN:
-		NowCutInPtr = std::make_shared<CutInData>(Type, 200, TexDir + "enemy_turn.png");
+		NowCutInPtr = std::make_shared<CutInData>(Type, 80, TexDir + "enemy_turn.png");
 		break;
 	case CutInType::MAX:
 		break;

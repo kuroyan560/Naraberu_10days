@@ -107,6 +107,9 @@
     <Filter Include="src\user\Stage">
       <UniqueIdentifier>{4c64b86b-a20c-452c-a5ef-bd30ec6003da}</UniqueIdentifier>
     </Filter>
+    <Filter Include="src\user\BattleManager\Reticle">
+      <UniqueIdentifier>{78297117-b96c-4d14-ab05-599212c19300}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="..\..\src\engine\KuroEngineDevice.cpp">
@@ -387,6 +390,12 @@
     </ClCompile>
     <ClCompile Include="src\Scene\TitleScene.cpp">
       <Filter>src\user\Scene</Filter>
+    </ClCompile>
+    <ClCompile Include="src\TitleUi.cpp">
+      <Filter>src</Filter>
+    </ClCompile>
+    <ClCompile Include="src\BattleManager\Reticle\Reticle.cpp">
+      <Filter>src</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
@@ -746,6 +755,10 @@
     </ClInclude>
     <ClInclude Include="src\Scene\TitleScene.h">
       <Filter>src\user\Scene</Filter>
+    </ClInclude>
+    <ClInclude Include="src\TitleUi.h" />
+    <ClInclude Include="src\BattleManager\Reticle\Reticle.h">
+      <Filter>src\user\BattleManager\Reticle</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>
