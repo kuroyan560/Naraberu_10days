@@ -156,6 +156,7 @@ void KuroEngine::KuroEngineDevice::Update()
 			//シーン遷移終了
 			if (m_nowSceneTransition->Finish())
 			{
+				m_nextScene.clear();
 				m_nowSceneTransition = nullptr;
 			}
 		}
@@ -166,7 +167,6 @@ void KuroEngine::KuroEngineDevice::Update()
 			m_scenes[m_nowScene]->Finalize();	//切り替え前のシーン終了処理
 			m_nowScene = m_nextScene;		//シーン切り替え
 			m_scenes[m_nowScene]->Initialize();	//切り替え後のシーン初期化処理
-			m_nextScene.clear();
 		}
 	}
 
