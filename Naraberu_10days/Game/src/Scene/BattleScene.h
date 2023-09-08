@@ -31,6 +31,25 @@ class BattleScene :
 
 	BlockAttribute attribute;
 
+	// ステージクリア
+	std::shared_ptr<KuroEngine::TextureBuffer> m_ClearTex;
+	std::shared_ptr<KuroEngine::TextureBuffer> m_MaxComboTex;
+	std::shared_ptr<KuroEngine::TextureBuffer> m_TotalTurnTex;
+	std::shared_ptr<KuroEngine::TextureBuffer> m_Done_KeyTex_Clear;
+	std::shared_ptr<KuroEngine::TextureBuffer> m_Done_ControllerTex_Clear;
+	std::shared_ptr<KuroEngine::TextureBuffer> m_DoneTex_Clear;
+	std::array<std::shared_ptr<KuroEngine::TextureBuffer>, 10> m_ClearNumberTex;
+
+	// ゲームオーバー
+	std::shared_ptr<KuroEngine::TextureBuffer> m_GameoverTex;
+	std::shared_ptr<KuroEngine::TextureBuffer> m_RetryTex;
+	std::shared_ptr<KuroEngine::TextureBuffer> m_StageSelectTex;
+	std::shared_ptr<KuroEngine::TextureBuffer> m_SelectTex;
+	std::shared_ptr<KuroEngine::TextureBuffer> m_Done_KeyTex_GameOver;
+	std::shared_ptr<KuroEngine::TextureBuffer> m_Done_ControllerTex_GameOver;
+	std::shared_ptr<KuroEngine::TextureBuffer> m_DoneTex_GameOver;
+
+
 
 	void PlayerTurn();
 
@@ -58,6 +77,10 @@ class BattleScene :
 	// ステージ終了演出用
 	int m_End_Timer;
 	int m_End_Timer_Finish;
+
+	// ゲームクリア描画
+
+
 public:
 	BattleScene();
 
