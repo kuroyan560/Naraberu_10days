@@ -1,4 +1,4 @@
-#include "TitelVtuber.h"
+#include "TitleVtuber.h"
 #include "ForUser/DrawFunc/2D/DrawFunc2D.h"
 
 //補間で使うデータ
@@ -51,7 +51,7 @@ float splinePosition(const std::vector<float>& points, size_t startIndex, float 
 	return position;
 }
 
-void TitelVtuber::Initialize()
+void TitleVtuber::Initialize()
 {
 	using namespace KuroEngine;
 	std::string TexDir = "resource/user/tex/title_scene/";
@@ -68,12 +68,12 @@ void TitelVtuber::Initialize()
 	}
 }
 
-void TitelVtuber::Update()
+void TitleVtuber::Update()
 {
 	SmallPrismAnimation();
 }
 
-void TitelVtuber::Draw()
+void TitleVtuber::Draw()
 {
 	using namespace KuroEngine;
 	DrawFunc2D::DrawGraph({ 530.0f,-150.0f }, characterTex);
@@ -90,7 +90,7 @@ void TitelVtuber::Draw()
 
 }
 
-void TitelVtuber::SmallPrismAnimation()
+void TitleVtuber::SmallPrismAnimation()
 {
 	const float maxTimer=50.0f;
 
@@ -120,6 +120,6 @@ void TitelVtuber::SmallPrismAnimation()
 
 }
 
-void TitelVtuber::BigPrismAnimation()
+void TitleVtuber::BigPrismAnimation()
 {
 }

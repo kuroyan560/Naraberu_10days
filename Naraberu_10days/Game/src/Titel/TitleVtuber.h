@@ -2,7 +2,7 @@
 #include "KuroEngineDevice.h"
 #include <array>
 
-class TitelVtuber
+class TitleVtuber
 {
 	struct ObjectInfo {
 		KuroEngine::Vec2<float> pos;

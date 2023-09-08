@@ -9,7 +9,7 @@ void TitleScene::OnInitialize()
 	title.reset(new TitleUi());
 	title->Initialize();
 
-	character.reset(new TitelVtuber());
+	character.reset(new TitleVtuber());
 	character->Initialize();
 
 	std::string TexDir_select = "resource/user/tex/select_scene/";

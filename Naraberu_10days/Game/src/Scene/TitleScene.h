@@ -2,7 +2,7 @@
 #include "KuroEngineDevice.h"
 #include "../TitleUi.h"
 #include "../Fade/Fade.h"
-#include "../Titel/TitelVtuber.h"
+#include "../Titel/TitleVtuber.h"
 
 class TitleScene : public KuroEngine::BaseScene
 {	
@@ -10,7 +10,7 @@ class TitleScene : public KuroEngine::BaseScene
 	std::shared_ptr<TitleUi> title;
 
 	//キャラクターアニメーション
-	std::shared_ptr<TitelVtuber> character;
+	std::shared_ptr<TitleVtuber> character;
 
 	//タイトル
 	std::shared_ptr<KuroEngine::TextureBuffer> titleTex;
