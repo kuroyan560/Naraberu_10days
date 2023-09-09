@@ -8,6 +8,7 @@
 #include "../Panel/PanelManager.h"
 #include "../Stage/StageList.h"
 #include "../Fade/Fade.h"
+#include"../Effect/PlayerAttackEffect.h"
 
 class BattleScene :
     public KuroEngine::BaseScene
@@ -87,6 +88,9 @@ class BattleScene :
 	void GameClearDraw();
 	// ゲームオーバー画面
 	void GameOverDraw();
+
+	//プレイヤー攻撃演出
+	std::shared_ptr<PlayerAttackEffect>m_playerAttackEffect;
 
 public:
 	BattleScene();

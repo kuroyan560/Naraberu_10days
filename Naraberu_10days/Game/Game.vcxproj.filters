@@ -119,6 +119,9 @@
     <Filter Include="src\user\Title">
       <UniqueIdentifier>{3f96066e-f730-4cf2-86ef-53f692988448}</UniqueIdentifier>
     </Filter>
+    <Filter Include="src\user\Effect">
+      <UniqueIdentifier>{1e827a03-28a5-4aca-9503-c390bcc92899}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="..\..\src\engine\KuroEngineDevice.cpp">
@@ -406,14 +409,17 @@
     <ClCompile Include="src\Fade\Fade.cpp">
       <Filter>src\user\Fade</Filter>
     </ClCompile>
-    <ClCompile Include="src\UI\EnemyDamageUI.cpp">
-      <Filter>src\user\UI</Filter>
-    </ClCompile>
     <ClCompile Include="src\Titel\TitleVtuber.cpp">
       <Filter>src\user\Title</Filter>
     </ClCompile>
     <ClCompile Include="src\Titel\TitleUi.cpp">
       <Filter>src\user\Title</Filter>
+	</ClCompile>
+	<ClCompile Include="src\Effect\PlayerAttackEffect.cpp">
+      <Filter>src\user\Effect</Filter>
+    </ClCompile>
+    <ClCompile Include="src\UI\EnemyDamageUI.cpp">
+      <Filter>src\user\UI</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
@@ -780,14 +786,17 @@
     <ClInclude Include="src\Fade\Fade.h">
       <Filter>src\user\Fade</Filter>
     </ClInclude>
-    <ClInclude Include="src\UI\EnemyDamageUI.h">
-      <Filter>src\user\UI</Filter>
-    </ClInclude>
     <ClInclude Include="src\Titel\TitleVtuber.h">
       <Filter>src\user\Title</Filter>
     </ClInclude>
     <ClInclude Include="src\Titel\TitleUi.h">
       <Filter>src\user\Title</Filter>
+	</ClInclude>
+	<ClInclude Include="src\Effect\PlayerAttackEffect.h">
+      <Filter>src\user\Effect</Filter>
+    </ClInclude>
+    <ClInclude Include="src\UI\EnemyDamageUI.h">
+      <Filter>src\user\UI</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>

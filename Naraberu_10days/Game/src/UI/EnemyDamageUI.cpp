@@ -18,9 +18,8 @@ EnemyDamageUI::EnemyDamageUI()
 		m_damageHisNumTex.data(), dir + "damage_rireki_number.png", 11, Vec2(11, 1));
 }
 
-void EnemyDamageUI::Init(KuroEngine::Vec2<float>arg_appearPos)
+void EnemyDamageUI::Init()
 {
-	m_appearPos = arg_appearPos;
 	m_isActive = false;
 	m_impactShake.Init();
 }
@@ -51,6 +50,14 @@ void EnemyDamageUI::Update()
 			m_isActive = false;
 		}
 	}
+
+	//履歴のアルファ
+	for (auto itr = m_history.begin(); itr != m_history.end(); ++itr)
+	{
+		size_t idx = std::distance(m_history.begin(), itr);
+		float baseAlpha = 1.0f - static_cast<float>(idx) / m_history.size();
+		itr->second = Math::Lerp(baseAlpha, 0.0f, m_appearTimer.GetTimeRate(std::min(1.0f, baseAlpha + 0.5f)));
+	}
 }
 
 void EnemyDamageUI::Draw()
@@ -77,12 +84,8 @@ void EnemyDamageUI::Draw()
 	auto damageHisPos = m_appearPos + shake + DAMAGE_HIS_OFFSET_POS;
 	for (auto itr = m_history.begin(); itr != m_history.end(); ++itr)
 	{
-		size_t idx = std::distance(m_history.begin(), itr);
-		float alpha = 1.0f - static_cast<float>(idx) / m_history.size();
-		alpha *= 1.0f - m_appearTimer.GetTimeRate();
-
-		DrawFunc2D::DrawNumber2D(*itr, damageHisPos,
-			m_damageHisNumTex.data(), { 1.0f,1.0f }, alpha, 0.0f, HORIZONTAL_ALIGN::RIGHT,
+		DrawFunc2D::DrawNumber2D(itr->first, damageHisPos,
+			m_damageHisNumTex.data(), { 1.0f,1.0f }, itr->second, 0.0f, HORIZONTAL_ALIGN::RIGHT,
 			VERTICAL_ALIGN::TOP, -1, 10, -1);
 
 		//行間ずらし
@@ -99,11 +102,11 @@ void EnemyDamageUI::Add(int arg_damage, bool arg_drawHistory)
 	const float SHAKE_POWER_MAX = 18.0f;
 
 	//表示時間
-	const float APPEAR_TIME = 70.0f;
+	const float APPEAR_TIME = 40.0f;
 	m_appearTimer.Reset(APPEAR_TIME);
 
 	//退場時間
-	const float DISAPPEAR_TIME = 30.0f;
+	const float DISAPPEAR_TIME = 25.0f;
 	m_disappearTimer.Reset(DISAPPEAR_TIME);
 
 	//与ダメージ最大履歴数
@@ -122,7 +125,7 @@ void EnemyDamageUI::Add(int arg_damage, bool arg_drawHistory)
 
 	if (arg_drawHistory)
 	{
-		m_history.push_front(arg_damage);
+		m_history.push_front({ arg_damage,1.0f });
 		if (QUEUE_MAX < static_cast<int>(m_history.size()))
 		{
 			m_history.pop_back();

@@ -89,6 +89,9 @@ void BattleScene::OnInitialize()
 
 	ExistUnits::Instance()->SetMapChipPtr(stage->GetMapChipPtr());
 	ExistUnits::Instance()->SetStageManagerPtr(stage.get());
+
+	//演出初期化
+	m_playerAttackEffect->Init();
 }
 
 void BattleScene::OnUpdate()
@@ -184,6 +187,9 @@ void BattleScene::OnUpdate()
 	/*if (OperationConfig::Instance()->DebugKeyInputOnTrigger(DIK_RETURN)) {
 		KuroEngine::KuroEngineDevice::Instance()->ChangeScene("title");
 	}*/
+
+	//演出更新
+	m_playerAttackEffect->Update(stage);
 }
 
 void BattleScene::OnDraw()
@@ -234,6 +240,9 @@ void BattleScene::OnDraw()
 	block->Draw();
 
 	Mgr.OnDraw();
+
+	//演出更新
+	m_playerAttackEffect->Draw();
 
 
 	// ステージ終了(敗北)
@@ -363,6 +372,7 @@ void BattleScene::GameOverDraw()
 
 BattleScene::BattleScene()
 {
+	m_playerAttackEffect = std::make_shared<PlayerAttackEffect>();
 }
 
 void BattleScene::PlayerTurn()
@@ -377,7 +387,8 @@ void BattleScene::PlayerTurn()
 		//ブロック情報取得
 		block->GetBlock(&nowMapchip, &shape, &attribute, &color);
 		//配置可能なら配置する
-		if (!stage->JudgeSet(nowMapchip, shape, attribute, color)) { return; }
+		//if (!stage->JudgeSet(nowMapchip, shape, attribute, color)) { return; }
+		if (!stage->JudgeWithEffect(nowMapchip, shape, attribute, color, m_playerAttackEffect)) { return; }
 		//次の使用ブロックをセットする
 		block->ChangeBlock();
 	}

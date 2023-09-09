@@ -2,6 +2,8 @@
 #include "../Block/BaseInformation.h"
 #include "KuroEngineDevice.h"
 
+class PlayerAttackEffect;
+
 class PanelManager
 {
 public:
@@ -50,6 +52,26 @@ public:
 	/// <returns></returns>
 	bool JudgeSet(KuroEngine::Vec2<int> _nowMapchip, std::vector<KuroEngine::Vec2<int>> _shape,
 		const BlockAttribute _attribute, BlockColor _color);
+
+	/// <summary>
+	/// 設置　by ハシモト
+	/// </summary>
+	/// <param name="_setChipIdx">はめるインデックス</param>
+	/// <param name="_color">ブロックの色</param>
+	/// <returns>設置出来たか</returns>
+	bool JudgeSet(KuroEngine::Vec2<int> _setChipIdx, BlockColor _color);
+
+	/// <summary>
+	/// Judgeして演出スタート（設置は演出クラスに任せる）by ハシモト
+	/// </summary>
+	/// <param name="_nowMapchip">セットするオブジェクトのmapchip</param>
+	/// <param name="_shape">セットするオブジェクトの形状</param>
+	/// <param name="_attribute">アクション</param>
+	/// <param name="_color">色</param>
+	/// <param name="_playerAttackEffect">演出クラス</param>
+	/// <returns>演出スタートしたか</returns>
+	bool JudgeWithEffect(KuroEngine::Vec2<int> _nowMapchip, std::vector<KuroEngine::Vec2<int>> _shape,
+		const BlockAttribute _attribute, BlockColor _color, std::weak_ptr<PlayerAttackEffect>_playerAttackEffect);
 
 	/// <summary>
 	/// 塊判定

@@ -4,6 +4,7 @@
 #include "../BattleManager/Player_Act/Skills/PlayerSkills.h"
 #include "../BattleManager/ExistUnits.h"
 #include "../RefreshRate.h"
+#include"../Effect/PlayerAttackEffect.h"
 
 KuroEngine::Vec2<int> PanelManager::mapMax;
 
@@ -148,6 +149,53 @@ bool PanelManager::JudgeSet(KuroEngine::Vec2<int> _nowMapchip, std::vector<KuroE
 	else if (_attribute == BlockAttribute::recovery) {
 		// 回復
 		PlayerSkills::PlayerSkillMgr::Instance()->StartAction("Heal_01", Count, ExistUnits::Instance()->m_pPlayer, ExistUnits::Instance()->m_Enemys[ExistUnits::Instance()->m_NowTarget]);
+	}
+	return true;
+}
+
+bool PanelManager::JudgeSet(KuroEngine::Vec2<int> _setChipIdx, BlockColor _color)
+{
+	if (mapchip[_setChipIdx.y][_setChipIdx.x] != int(BlockColor::yuka))return false;
+
+	mapchip[_setChipIdx.y][_setChipIdx.x] = int(_color);
+
+	return true;
+}
+
+bool PanelManager::JudgeWithEffect(KuroEngine::Vec2<int> _nowMapchip, std::vector<KuroEngine::Vec2<int>> _shape, const BlockAttribute _attribute, BlockColor _color, std::weak_ptr<PlayerAttackEffect>_playerAttackEffect)
+{
+	//まだ演出が終わってない
+	if (_playerAttackEffect.lock()->GetIsActive())return false;
+
+	//はめるインデックスの配列構成
+	std::vector<KuroEngine::Vec2<int>>setChipIdxArray;
+	for (auto& i : _shape) {
+		setChipIdxArray.emplace_back(_nowMapchip + i);
+	}
+
+	for (auto& i : setChipIdxArray) {
+		//ステージとの判定 ダメならfalse
+		if (mapchip[i.y][i.x] != int(BlockColor::yuka)) {
+			return false;
+		}
+	}
+
+	// 設置したらアクション
+	if (_attribute == BlockAttribute::attack1) {
+		_playerAttackEffect.lock()->Start(setChipIdxArray, _color, 2, ExistUnits::Instance()->m_NowTarget);
+	}
+	else if (_attribute == BlockAttribute::attack2) {
+		// 強攻撃
+		_playerAttackEffect.lock()->Start(setChipIdxArray, _color, 1);
+	}
+	else if (_attribute == BlockAttribute::recovery) {
+
+		//とりあえず回復演出ないので直接設置
+		for (auto& i : _shape) {
+			mapchip[_nowMapchip.y + i.y][_nowMapchip.x + i.x] = int(_color);
+		}
+		// 回復
+		PlayerSkills::PlayerSkillMgr::Instance()->StartAction("Heal_01", (int)setChipIdxArray.size(), ExistUnits::Instance()->m_pPlayer, ExistUnits::Instance()->m_Enemys[ExistUnits::Instance()->m_NowTarget]);
 	}
 	return true;
 }

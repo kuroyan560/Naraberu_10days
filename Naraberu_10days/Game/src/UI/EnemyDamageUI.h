@@ -34,19 +34,28 @@ class EnemyDamageUI
 	int m_damageAmount = 0;
 
 	//UI初期化座標
-	KuroEngine::Vec2<float>m_appearPos;
+	KuroEngine::Vec2<float>m_appearPos = { 200.0f,200.0f };
 
 	//現在のUI表示座標
 	KuroEngine::Vec2<float>m_nowPos;
 
 	//与ダメージ履歴キュー
-	std::list<int>m_history;
+	std::list<std::pair<int, float>>m_history;
 
 public:
 	EnemyDamageUI();
-	void Init(KuroEngine::Vec2<float>arg_appearPos);
+	void Init();
 	void Update();
 	void Draw();
 
 	void Add(int arg_damage, bool arg_drawHistory);
+
+	//登場位置の設定
+	void SetAppearPos(KuroEngine::Vec2<float>arg_appearPos)
+	{
+		m_appearPos = arg_appearPos;
+	}
+
+	//アクティブ状態のゲッタ
+	const bool& GetIsActive()const { return m_isActive; }
 };
