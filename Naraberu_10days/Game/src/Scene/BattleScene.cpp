@@ -48,6 +48,16 @@ void BattleScene::OnInitialize()
 	m_Done_ControllerTex_GameOver = D3D12App::Instance()->GenerateTextureBuffer(TexDir + "/gameover/done_controller.png");
 	m_DoneTex_GameOver = D3D12App::Instance()->GenerateTextureBuffer(TexDir + "/gameover/done.png");
 
+	// ポーズ
+	m_PauseTex = D3D12App::Instance()->GenerateTextureBuffer(TexDir + "/pause/pause.png");
+	m_ResumeTex_Pause = D3D12App::Instance()->GenerateTextureBuffer(TexDir + "/pause/resume.png");
+	m_RetryTex_Pause = D3D12App::Instance()->GenerateTextureBuffer(TexDir + "/pause/retry.png");
+	m_StageSelectTex_Pause = D3D12App::Instance()->GenerateTextureBuffer(TexDir + "/pause/stage_select.png");
+	m_SelectCosorTex_Pause = D3D12App::Instance()->GenerateTextureBuffer(TexDir + "/pause/select.png");
+	m_Done_KeyTex_Pause = D3D12App::Instance()->GenerateTextureBuffer(TexDir + "/pause/done_key.png");
+	m_Done_ControllerTex_Pause = D3D12App::Instance()->GenerateTextureBuffer(TexDir + "/pause/done_controller.png");
+	m_DoneTex_Pause = D3D12App::Instance()->GenerateTextureBuffer(TexDir + "/pause/done.png");
+
 	// リザルト表示用
 	ResultTimer = 0.0f;
 	ResultTimer_Max = 80.0f * RefreshRate::RefreshRate_Mag;
@@ -61,6 +71,7 @@ void BattleScene::OnInitialize()
 	// ポーズ
 	m_IsPause = false;
 	m_PauseMenu = 0;
+	m_Already_Selected_Pause = false;
 
 	Pl = std::make_shared<Player>();
 	Pl->OnInitialize();
@@ -110,12 +121,45 @@ void BattleScene::OnUpdate()
 {
 	KuroEngine::UsersInput* input = KuroEngine::UsersInput::Instance();
 
-	if (KuroEngine::UsersInput::Instance()->KeyOnTrigger(DIK_P)) {
-		m_IsPause = !m_IsPause;
+	if (KuroEngine::UsersInput::Instance()->KeyOnTrigger(DIK_ESCAPE)) {
+		m_IsPause = true;
 		m_PauseMenu = 0;
 	}
 
 	if (m_IsPause) {
+		if (OperationConfig::Instance()->GetSelectVec(OperationConfig::SELECT_VEC::SELECT_VEC_UP) ||
+			OperationConfig::Instance()->GetTargetChangeVec(OperationConfig::SELECT_VEC_UP)) {
+			if (m_PauseMenu > 0) {
+				m_PauseMenu--;
+				SoundConfig::Instance()->Play(SoundConfig::SE_SELECT);
+			}
+		}
+		if (OperationConfig::Instance()->GetSelectVec(OperationConfig::SELECT_VEC::SELECT_VEC_DOWN) ||
+			OperationConfig::Instance()->GetTargetChangeVec(OperationConfig::SELECT_VEC_DOWN)) {
+			if (m_PauseMenu < 2) {
+				m_PauseMenu++;
+				SoundConfig::Instance()->Play(SoundConfig::SE_SELECT);
+			}
+		}
+		// 決定
+		if (OperationConfig::Instance()->GetOperationInput(OperationConfig::OPERATION_TYPE::DONE, OperationConfig::INPUT_PATTERN::ON_TRIGGER)) {
+			m_Already_Selected_Pause = true;
+			SoundConfig::Instance()->Play(SoundConfig::SE_DONE);
+			// 戻る
+			if (m_PauseMenu == 0) {
+				m_Already_Selected_Pause = false;
+				m_IsPause = false;
+			}
+			// タイトルへ
+			else if (m_PauseMenu == 1) {
+				KuroEngine::KuroEngineDevice::Instance()->ChangeScene("Battle", &m_Fade);
+			}
+			// リトライ
+			else if (m_PauseMenu == 2) {
+				ExistUnits::Instance()->m_ChangeStageSelect = true;
+				KuroEngine::KuroEngineDevice::Instance()->ChangeScene("title", &m_Fade);
+			}
+		}
 		return;
 	}
 
@@ -286,8 +330,7 @@ void BattleScene::OnDraw()
 
 	// Pause
 	if (m_IsPause) {
-		DrawFunc2D::DrawBox2D(Vec2(0.0f, 0.0f)
-			, WinApp::Instance()->GetExpandWinSize(), Color(0.1f, 0.1f, 0.1f, 0.4f), true);
+		PauseDraw();
 	}
 }
 
@@ -444,6 +487,53 @@ void BattleScene::GameOverDraw()
 		DrawFunc2D_Mask::DrawExtendGraph2D(Vec2(770.0f, 350.0f) + Value, Vec2(813.0f, 395.0f) + Value, m_Done_ControllerTex_GameOver, Panel_LT, Panel_RB);
 	}
 	DrawFunc2D_Mask::DrawGraph(Vec2(764.0f, 399.0f) + Value, m_DoneTex_GameOver, Panel_LT, Panel_RB);
+}
+
+void BattleScene::PauseDraw()
+{
+	using namespace KuroEngine;
+	// 後ろを暗く
+	DrawFunc2D::DrawBox2D(Vec2(0.0f, 0.0f)
+		, WinApp::Instance()->GetExpandWinSize(), Color(0.1f, 0.1f, 0.1f, 0.4f), true);
+
+	Vec2 Value = Vec2(0.0f, ResultEasing(ResultTimer_Max / ResultTimer_Max)) * 450.0f;
+	float SubFrame = 0.0f * RefreshRate::RefreshRate_Mag;
+
+	Vec2 Panel_LT = Vec2(391.0f, 67.0f);
+	Vec2 Panel_RB = Vec2(899.0f, 564.0f);
+
+	// 後ろを暗く
+	//float alpha = 0.4f * (ResultTimer / ResultTimer_Max);
+	//DrawFunc2D::DrawBox2D(Panel_LT, Panel_RB, Color(0.1f, 0.1f, 0.1f, alpha > 0.4f ? 0.4f : alpha), true);
+
+	// リザルト描画
+	DrawFunc2D_Mask::DrawGraph(Vec2(570.0f, 173.0f) + Value, m_PauseTex, Panel_LT, Panel_RB);
+	Value = Vec2(0.0f, ResultEasing(((ResultTimer_Max - SubFrame) / ResultTimer_Max))) * 450.0f;
+	DrawFunc2D_Mask::DrawGraph(Vec2(578.0f, 254.0f) + Value, m_ResumeTex_Pause, Panel_LT, Panel_RB);
+	Value = Vec2(0.0f, ResultEasing(((ResultTimer_Max - SubFrame * 2.0f) / ResultTimer_Max))) * 450.0f;
+	DrawFunc2D_Mask::DrawGraph(Vec2(594.0f, 310.0f) + Value, m_RetryTex_Pause, Panel_LT, Panel_RB);
+	Value = Vec2(0.0f, ResultEasing(((ResultTimer_Max - SubFrame * 3.0f) / ResultTimer_Max))) * 450.0f;
+	DrawFunc2D_Mask::DrawGraph(Vec2(541.0f, 365.0f) + Value, m_StageSelectTex_Pause, Panel_LT, Panel_RB);
+
+	Value = Vec2(0.0f, ResultEasing(((ResultTimer_Max - SubFrame) / ResultTimer_Max))) * 450.0f;
+	if (m_PauseMenu == 0) {
+		DrawFunc2D_Mask::DrawGraph(Vec2(552.0f, 254.0f) + Value, m_SelectCosorTex_Pause, Panel_LT, Panel_RB);
+	}
+	else if(m_PauseMenu == 1) {
+		DrawFunc2D_Mask::DrawGraph(Vec2(568.0f, 310.0f) + Value, m_SelectCosorTex_Pause, Panel_LT, Panel_RB);
+	}
+	else {
+	DrawFunc2D_Mask::DrawGraph(Vec2(515.0f, 365.0f) + Value, m_SelectCosorTex_Pause, Panel_LT, Panel_RB);
+	}
+
+	Value = Vec2(0.0f, ResultEasing(((ResultTimer_Max - SubFrame * 3.0f) / ResultTimer_Max))) * 450.0f;
+	if (OperationConfig::Instance()->GetLatestDevice() == OperationConfig::Instance()->KEY_BOARD_MOUSE) {
+		DrawFunc2D_Mask::DrawExtendGraph2D(Vec2(767.0f, 399.0f) + Value, Vec2(817.0f, 450.0f) + Value, m_Done_KeyTex_Pause, Panel_LT, Panel_RB);
+	}
+	else {
+		DrawFunc2D_Mask::DrawExtendGraph2D(Vec2(770.0f, 403.0f) + Value, Vec2(813.0f, 448.0f) + Value, m_Done_ControllerTex_Pause, Panel_LT, Panel_RB);
+	}
+	DrawFunc2D_Mask::DrawGraph(Vec2(764.0f, 452.0f) + Value, m_DoneTex_Pause, Panel_LT, Panel_RB);
 }
 
 float BattleScene::ResultEasing(float time)

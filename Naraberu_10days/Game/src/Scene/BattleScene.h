@@ -88,6 +88,8 @@ class BattleScene :
 	void GameClearDraw();
 	// ゲームオーバー画面
 	void GameOverDraw();
+	// ポーズ画面
+	void PauseDraw();
 	
 	// リザルト表示用
 	float ResultTimer;
@@ -98,10 +100,15 @@ class BattleScene :
 	bool m_IsPause;
 	// 0 : 再開 1 : リトライ 2 : ステージセレクトへ
 	int m_PauseMenu;
+	bool m_Already_Selected_Pause;
 	std::shared_ptr<KuroEngine::TextureBuffer> m_PauseTex;
 	std::shared_ptr<KuroEngine::TextureBuffer> m_ResumeTex_Pause;
 	std::shared_ptr<KuroEngine::TextureBuffer> m_RetryTex_Pause;
 	std::shared_ptr<KuroEngine::TextureBuffer> m_StageSelectTex_Pause;
+	std::shared_ptr<KuroEngine::TextureBuffer> m_SelectCosorTex_Pause;
+	std::shared_ptr<KuroEngine::TextureBuffer> m_Done_KeyTex_Pause;
+	std::shared_ptr<KuroEngine::TextureBuffer> m_Done_ControllerTex_Pause;
+	std::shared_ptr<KuroEngine::TextureBuffer> m_DoneTex_Pause;
 
 	//プレイヤー攻撃演出
 	std::shared_ptr<PlayerAttackEffect>m_playerAttackEffect;
