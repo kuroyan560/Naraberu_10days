@@ -10,6 +10,8 @@
 #include "Reticle/Reticle.h"
 #include"../OperationConfig.h"
 
+#include "../Effect/ScreenShakeManager.h"
+
 void BattleTurnMgr::TurnEndButtonUpdate()
 {
 	using namespace KuroEngine;
@@ -78,34 +80,37 @@ void BattleTurnMgr::TurnEndButtonDraw()
 
 	// 1‰ñ–Ú‚Ì“ü—Í‚ª‚ ‚è‘Ò‹@ó‘Ô‚ªŒp‘±‚µ‚Ä‚¢‚é
 	if (m_Selected_TurnEnd) {
-		DrawFunc2D::DrawExtendGraph2D(SureRB - Scale_Size + Moving_Pos, SureRB + Moving_Pos, m_TurnEnd_SelectedTex);
+		DrawFunc2D::DrawExtendGraph2D(SureRB - Scale_Size + Moving_Pos + ScreenShakeManager::Instance()->GetOffset()
+			, SureRB + Moving_Pos + ScreenShakeManager::Instance()->GetOffset(), m_TurnEnd_SelectedTex);
 	}
 	// ‘Ò‹@ó‘Ô‚Å‚Í‚È‚¢‚Æ‚«
 	else {
-		DrawFunc2D::DrawExtendGraph2D(SureRB - Scale_Size + Moving_Pos, SureRB + Moving_Pos, m_TurnEnd_SelectedTex);
+		DrawFunc2D::DrawExtendGraph2D(SureRB - Scale_Size + Moving_Pos + ScreenShakeManager::Instance()->GetOffset()
+			, SureRB + Moving_Pos + ScreenShakeManager::Instance()->GetOffset(), m_TurnEnd_SelectedTex);
 	}
 
 	Vec2 EndButton_Size_Int = m_TurnEndTex->GetGraphSize();
 	Vec2 EndButton_Size = Vec2(float(EndButton_Size_Int.x), float(EndButton_Size_Int.y));
 	Vec2 EndButton_LT = Vec2(893.0f, 559.0f);
 	Vec2 EndButton_Center = EndButton_LT + EndButton_Size / 2.0f;
-	DrawFunc2D::DrawExtendGraph2D(EndButton_Center - EndButton_Size / 2.0f + Moving_Pos, EndButton_Center + EndButton_Size / 2.0f + Moving_Pos, m_TurnEndTex);
+	DrawFunc2D::DrawExtendGraph2D(EndButton_Center - EndButton_Size / 2.0f + Moving_Pos + ScreenShakeManager::Instance()->GetOffset()
+		, EndButton_Center + EndButton_Size / 2.0f + Moving_Pos + ScreenShakeManager::Instance()->GetOffset(), m_TurnEndTex);
 
 	if (OperationConfig::Instance()->GetLatestDevice() == OperationConfig::Instance()->KEY_BOARD_MOUSE) {
 		Vec2 EnterButton_Size_Int = m_TurnEnd_EnterTex->GetGraphSize();
 		Vec2 EnterButton_Size = Vec2(float(EnterButton_Size_Int.x), float(EnterButton_Size_Int.y));
 		Vec2 Height_ = Vec2(0.0f, EnterButton_Size.y / 2.0f - 8.0f);
 
-		DrawFunc2D::DrawExtendGraph2D(EndButton_Center - EnterButton_Size / 2.0f + Height_ + Moving_Pos,
-			EndButton_Center + EnterButton_Size / 2.0f + Height_ + Moving_Pos, m_TurnEnd_EnterTex);
+		DrawFunc2D::DrawExtendGraph2D(EndButton_Center - EnterButton_Size / 2.0f + Height_ + Moving_Pos + ScreenShakeManager::Instance()->GetOffset(),
+			EndButton_Center + EnterButton_Size / 2.0f + Height_ + Moving_Pos + ScreenShakeManager::Instance()->GetOffset(), m_TurnEnd_EnterTex);
 	}
 	else {
 		Vec2 EnterButton_Size_Int = m_TurnEnd_Crtl_EnterTex->GetGraphSize();
 		Vec2 EnterButton_Size = Vec2(float(EnterButton_Size_Int.x), float(EnterButton_Size_Int.y));
 		Vec2 Height_ = Vec2(0.0f, EnterButton_Size.y / 2.0f - 8.0f);
 
-		DrawFunc2D::DrawExtendGraph2D(EndButton_Center - EnterButton_Size / 2.0f + Height_ + Moving_Pos,
-			EndButton_Center + EnterButton_Size / 2.0f + Height_ + Moving_Pos, m_TurnEnd_Crtl_EnterTex);
+		DrawFunc2D::DrawExtendGraph2D(EndButton_Center - EnterButton_Size / 2.0f + Height_ + Moving_Pos + ScreenShakeManager::Instance()->GetOffset(),
+			EndButton_Center + EnterButton_Size / 2.0f + Height_ + Moving_Pos + ScreenShakeManager::Instance()->GetOffset(), m_TurnEnd_Crtl_EnterTex);
 	}
 }
 

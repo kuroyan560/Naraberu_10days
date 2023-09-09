@@ -6,6 +6,8 @@
 #include "../Panel/PanelManager.h"
 #include"../OperationConfig.h"
 
+#include "../Effect/ScreenShakeManager.h"
+
 Block::Block(bool _isMove)
 {
 	//âÊëúì«Ç›çûÇ›
@@ -34,6 +36,7 @@ void Block::Draw(const std::vector<KuroEngine::Vec2<int>> _shape, BlockAttribute
 {
 	for (auto& i : _shape) {
 		KuroEngine::Vec2<float> inpos = { (pos.x + i.x) * blockSize + difference.x , (pos.y + i.y) * blockSize + difference.y };
+		inpos += ScreenShakeManager::Instance()->GetOffset();
 		BlockOneDraw(inpos, _color);
 	}
 
@@ -44,6 +47,7 @@ void Block::Draw(const std::vector<KuroEngine::Vec2<int>> _shape, const KuroEngi
 	BlockAttribute _attribute, const BlockColor _color, const KuroEngine::Vec2<float>& _pos)
 {
 	KuroEngine::Vec2<float> pos = { _pos.x - shape_dist.x,_pos.y - shape_dist.y };
+	pos += ScreenShakeManager::Instance()->GetOffset();
 	for (auto& i : _shape) {
 		BlockOneDraw(i, pos, _color);
 	}
@@ -116,6 +120,8 @@ void Block::BlockOneDraw(const KuroEngine::Vec2<float> _pos, BlockColor _color)
 	pos1.x += blockSize;
 	pos1.y += blockSize;
 
+	pos1 += ScreenShakeManager::Instance()->GetOffset();
+
 	if (_color == BlockColor::red) {
 		DrawFunc2D::DrawExtendGraph2D(_pos, pos1, lineTex[int(BlockColor::red)]);
 	} else if (_color == BlockColor::blue) {
@@ -139,6 +145,9 @@ void Block::BlockOneDraw(const KuroEngine::Vec2<int> _shape, const KuroEngine::V
 	pos2.x += blockSizeUnder + _shape.x * blockSizeUnder;
 	pos2.y += blockSizeUnder + _shape.y * blockSizeUnder;
 
+	pos1 += ScreenShakeManager::Instance()->GetOffset();
+	pos2 += ScreenShakeManager::Instance()->GetOffset();
+
 	if (_color == BlockColor::red) {
 		DrawFunc2D::DrawExtendGraph2D(pos1, pos2, blockTex[int(BlockColor::red)]);
 	} else if (_color == BlockColor::blue) {
@@ -150,7 +159,9 @@ void Block::BlockOneDraw(const KuroEngine::Vec2<int> _shape, const KuroEngine::V
 
 void Block::ActionDraw(const KuroEngine::Vec2<float> _pos, const BlockAttribute _attribute)
 {
-	const KuroEngine::Vec2<float> actionPos = { _pos.x + 50.0f,_pos.y - 10.0f };
+	KuroEngine::Vec2<float> actionPos = { _pos.x + 50.0f,_pos.y - 10.0f };
+
+	actionPos += ScreenShakeManager::Instance()->GetOffset();
 
 	KuroEngine::DrawFunc2D::DrawRotaGraph2D(actionPos, { 0.5f,0.5f }, 0.0f, actionTex[int(_attribute)]);
 }

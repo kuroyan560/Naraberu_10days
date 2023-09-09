@@ -7,6 +7,8 @@
 #include "FrameWork/WinApp.h"
 #include "FrameWork/UsersInput.h"
 
+#include "../../../Effect/ScreenShakeManager.h"
+
 void Player_Heal_01::Param_Set(int Amount, int Duration)
 {
 	m_Amount = Amount;
@@ -50,7 +52,8 @@ void Player_Heal_01::Action_Draw()
 	// ‰¼‚Å” ‚ð•`‰æ
 	KuroEngine::Vec2 LT = GetUnitPtr_nama<Player*>(m_Initiator)->Get_Left_Top();
 	KuroEngine::Vec2 RB = GetUnitPtr_nama<Player*>(m_Initiator)->Get_Right_Bottom();
-	DrawFunc2D::DrawBox2D(LT, RB, Color(0, 230, 30, 255), true);
+	DrawFunc2D::DrawBox2D(LT + ScreenShakeManager::Instance()->GetOffset()
+		, RB + ScreenShakeManager::Instance()->GetOffset(), Color(0, 230, 30, 255), true);
 }
 
 void Player_Heal_01::Action_End()

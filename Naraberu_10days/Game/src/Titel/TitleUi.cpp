@@ -63,7 +63,7 @@ void TitleUi::Update()
 			StageSelectMove(i);
 		}
 		selectTimer++;
-		if (selectTimer > 20) {
+		if (selectTimer > 20 * RefreshRate::RefreshRate_Mag) {
 			isStageMove = false;
 			selectTimer = 0;
 			if (stageUpDown) {
