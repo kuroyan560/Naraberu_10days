@@ -37,6 +37,13 @@ class PlayerAttackEffect
 	//１ブロックを置くごとのタイマー
 	KuroEngine::Timer m_setBlockTimer;
 
+	//攻撃カウント最大
+	static const int ATTACK_COUNT_SE_MAX = 10;
+	//攻撃カウントSE
+	std::array<int, ATTACK_COUNT_SE_MAX>m_countSeArray;
+	//再生するカウントSEのインデックス
+	int m_countSeIdx;
+
 public:
 	PlayerAttackEffect();
 	void Init();

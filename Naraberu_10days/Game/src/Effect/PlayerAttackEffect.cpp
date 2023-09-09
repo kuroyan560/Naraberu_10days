@@ -2,6 +2,7 @@
 #include "../BattleManager/Player_Act/Skills/PlayerSkills.h"
 #include "../BattleManager/ExistUnits.h"
 #include"../Panel/PanelManager.h"
+#include"FrameWork/AudioApp.h"
 
 PlayerAttackEffect::PlayerAttackEffect()
 {
@@ -18,6 +19,13 @@ PlayerAttackEffect::PlayerAttackEffect()
 	//敵のダメージUIの位置設定
 	for (int enemyIdx = 0; enemyIdx < ENEMY_COUNT_MAX; ++enemyIdx)
 		m_enemyDamageUI[enemyIdx].SetAppearPos(ENEMY_DAMAGE_UI_POS[enemyIdx]);
+
+	//カウントSE
+	for (int i = 0; i < ATTACK_COUNT_SE_MAX; ++i)
+	{
+		std::string fileName = "attack_count_" + std::to_string(i) + ".wav";
+		m_countSeArray[i] = AudioApp::Instance()->LoadAudio("resource/user/sound/attack_count/" + fileName, 0.5f);
+	}
 }
 
 void PlayerAttackEffect::Init()
@@ -56,6 +64,9 @@ void PlayerAttackEffect::Update(std::weak_ptr<PanelManager>arg_panelManager)
 		{
 			m_enemyDamageUI[m_targetEnemyIdx].Add(m_damagePerOneBlock, true);
 		}
+
+		//SE再生
+		KuroEngine::AudioApp::Instance()->PlayWave(m_countSeArray[std::min(m_countSeIdx++, static_cast<int>(m_countSeArray.size()) - 1)]);
 
 		if (!m_setChipIdxArray.empty())
 			m_setBlockTimer.Reset();
@@ -107,6 +118,8 @@ void PlayerAttackEffect::Start(std::vector<KuroEngine::Vec2<int>> arg_setChipIdx
 
 	m_setChipIdxArray = arg_setChipIdxArray;
 	m_blockCount = static_cast<int>(arg_setChipIdxArray.size());
+
+	m_countSeIdx = 0;
 
 	//ソート
 	std::sort(m_setChipIdxArray.begin(), m_setChipIdxArray.end(), [](Vec2<int>a, Vec2<int>b) {
