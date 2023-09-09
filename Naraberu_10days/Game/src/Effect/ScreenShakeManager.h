@@ -3,6 +3,7 @@
 #include"Common/Vec.h"
 class ScreenShakeManager : public KuroEngine::DesignPattern::Singleton<ScreenShakeManager>
 {
+	friend class KuroEngine::DesignPattern::Singleton<ScreenShakeManager>;
 public:
 	KuroEngine::Vec2<float>GetOffset()
 	{

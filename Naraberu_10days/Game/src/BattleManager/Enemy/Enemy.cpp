@@ -11,6 +11,8 @@
 
 #include"../../OperationConfig.h"
 
+#include "../../Effect/ScreenShakeManager.h"
+
 Enemy::Enemy()
 {
 	// ターン関連変数の初期化
@@ -210,11 +212,14 @@ void Enemy::Draw(int Index, int NowTurn_Index, int Index_Max, bool Dark, int Fra
 	}
 
 	// ユニットの描画
-	DrawFunc2D_Color::DrawExtendGraph2D(Vec2(1009.0f - Move_Width, 115.0f + IndexDiff), Vec2(1254.0f - Move_Width, 215.0f + IndexDiff), m_Data.m_UnitTex, Mask,
+	DrawFunc2D_Color::DrawExtendGraph2D(Vec2(1009.0f - Move_Width, 115.0f + IndexDiff) + ScreenShakeManager::Instance()->GetOffset()
+		, Vec2(1254.0f - Move_Width, 215.0f + IndexDiff) + ScreenShakeManager::Instance()->GetOffset(), m_Data.m_UnitTex, Mask,
 		{ false,false }, { 0.0f,0.0f }, { 1.0f,1.0f }, KuroEngine::DrawFunc2D_Color::FILL_MDOE::MUL);
-	DrawFunc2D_Color::DrawExtendGraph2D(Vec2(1002.0f - Move_Width, 108.0f + IndexDiff), Vec2(1261.0f - Move_Width, 222.0f + IndexDiff), FrameTex, Mask,
+	DrawFunc2D_Color::DrawExtendGraph2D(Vec2(1002.0f - Move_Width, 108.0f + IndexDiff) + ScreenShakeManager::Instance()->GetOffset()
+		, Vec2(1261.0f - Move_Width, 222.0f + IndexDiff) + ScreenShakeManager::Instance()->GetOffset(), FrameTex, Mask,
 		{ false,false }, { 0.0f,0.0f }, { 1.0f,1.0f }, KuroEngine::DrawFunc2D_Color::FILL_MDOE::MUL);
-	DrawFunc2D_Color::DrawExtendGraph2D(Vec2(1126.0f - Move_Width, 181.0f + IndexDiff), Vec2(1270.0f - Move_Width, 203.0f + IndexDiff), HPFrameTex, Mask,
+	DrawFunc2D_Color::DrawExtendGraph2D(Vec2(1126.0f - Move_Width, 181.0f + IndexDiff) + ScreenShakeManager::Instance()->GetOffset()
+		, Vec2(1270.0f - Move_Width, 203.0f + IndexDiff) + ScreenShakeManager::Instance()->GetOffset(), HPFrameTex, Mask,
 		{ false,false }, { 0.0f,0.0f }, { 1.0f,1.0f }, KuroEngine::DrawFunc2D_Color::FILL_MDOE::MUL);
 
 	std::shared_ptr<KuroEngine::TextureBuffer> IndexTex = m_Data.m_IndexTex_1;
@@ -228,7 +233,8 @@ void Enemy::Draw(int Index, int NowTurn_Index, int Index_Max, bool Dark, int Fra
 		else if (Index == 2) IndexTex = m_Data.m_IndexTex_3;
 	}
 
-	DrawFunc2D_Color::DrawExtendGraph2D(Vec2(1185.0f - Move_Width, 117.0f + IndexDiff), Vec2(1252.0f - Move_Width, 177.0f + IndexDiff), IndexTex, Mask,
+	DrawFunc2D_Color::DrawExtendGraph2D(Vec2(1185.0f - Move_Width, 117.0f + IndexDiff) + ScreenShakeManager::Instance()->GetOffset()
+		, Vec2(1252.0f - Move_Width, 177.0f + IndexDiff) + ScreenShakeManager::Instance()->GetOffset(), IndexTex, Mask,
 		{ false,false }, { 0.0f,0.0f }, { 1.0f,1.0f }, KuroEngine::DrawFunc2D_Color::FILL_MDOE::MUL);
 
 	//DrawFunc2D::DrawExtendGraph2D(Vec2(977.0f, 115.0f + IndexDiff), Vec2(1222.0f, 215.0f + IndexDiff), m_Data.m_UnitTex);
@@ -278,12 +284,16 @@ void Enemy::Draw(int Index, int NowTurn_Index, int Index_Max, bool Dark, int Fra
 	}
 
 	DrawFunc2D_Mask::DrawExtendGraph2D(
-		Vec2(1132.0f - Move_Width, 187.0f + IndexDiff), Vec2(1264.0f - Move_Width, 197.0f + IndexDiff), m_Data.m_HpTex_break,
-		Vec2(1132.0f - Move_Width, 187.0f + IndexDiff), Vec2(1132.0f - Move_Width + Gauge_Width, 197.0f + IndexDiff));
+		Vec2(1132.0f - Move_Width, 187.0f + IndexDiff) + ScreenShakeManager::Instance()->GetOffset()
+		, Vec2(1264.0f - Move_Width, 197.0f + IndexDiff) + ScreenShakeManager::Instance()->GetOffset(), m_Data.m_HpTex_break,
+		Vec2(1132.0f - Move_Width, 187.0f + IndexDiff) + ScreenShakeManager::Instance()->GetOffset()
+		, Vec2(1132.0f - Move_Width + Gauge_Width, 197.0f + IndexDiff) + ScreenShakeManager::Instance()->GetOffset());
 
 	DrawFunc2D_Mask::DrawExtendGraph2D(
-		Vec2(1132.0f - Move_Width, 187.0f + IndexDiff), Vec2(1264.0f - Move_Width, 197.0f + IndexDiff), HP_Gauge,
-		Vec2(1132.0f - Move_Width, 187.0f + IndexDiff), Vec2(1132.0f - Move_Width + Gauge_Width2, 197.0f + IndexDiff));
+		Vec2(1132.0f - Move_Width, 187.0f + IndexDiff) + ScreenShakeManager::Instance()->GetOffset()
+		, Vec2(1264.0f - Move_Width, 197.0f + IndexDiff) + ScreenShakeManager::Instance()->GetOffset(), HP_Gauge,
+		Vec2(1132.0f - Move_Width, 187.0f + IndexDiff) + ScreenShakeManager::Instance()->GetOffset()
+		, Vec2(1132.0f - Move_Width + Gauge_Width2, 197.0f + IndexDiff) + ScreenShakeManager::Instance()->GetOffset());
 
 
 }
@@ -309,9 +319,11 @@ void Enemy::Draw_Boss(int Index, int NowTurn_Index, int Index_Max, bool Dark, in
 
 	Vec2 Window_Size = WinApp::Instance()->GetExpandWinSize();
 	//DrawFunc2D::DrawExtendGraph2D(Vec2(0.0f, 0.0f), Vec2(Window_Size.x, Window_Size.y), m_Data.m_FrameTex);
-	DrawFunc2D_Color::DrawExtendGraph2D(Vec2(0.0f, 0.0f), Vec2(Window_Size.x, Window_Size.y), m_Data.m_FrameTex, Mask,
+	DrawFunc2D_Color::DrawExtendGraph2D(Vec2(0.0f, 0.0f) + ScreenShakeManager::Instance()->GetOffset()
+		, Vec2(Window_Size.x, Window_Size.y) + ScreenShakeManager::Instance()->GetOffset(), m_Data.m_FrameTex, Mask,
 		{ false,false }, { 0.0f,0.0f }, { 1.0f,1.0f }, KuroEngine::DrawFunc2D_Color::FILL_MDOE::MUL);
-	DrawFunc2D_Color::DrawExtendGraph2D(Vec2(912.0f, 410.0f), Vec2(1269.0f, 595.0f), m_Data.m_HpFrameTex, Mask,
+	DrawFunc2D_Color::DrawExtendGraph2D(Vec2(912.0f, 410.0f) + ScreenShakeManager::Instance()->GetOffset()
+		, Vec2(1269.0f, 595.0f) + ScreenShakeManager::Instance()->GetOffset(), m_Data.m_HpFrameTex, Mask,
 		{ false,false }, { 0.0f,0.0f }, { 1.0f,1.0f }, KuroEngine::DrawFunc2D_Color::FILL_MDOE::MUL);
 
 	// 描画位置の保存
@@ -350,11 +362,15 @@ void Enemy::Draw_Boss(int Index, int NowTurn_Index, int Index_Max, bool Dark, in
 	}
 
 	DrawFunc2D_Mask::DrawExtendGraph2D(
-		Vec2(923.0f, 427.0f), Vec2(1258.0f, 580.0f), m_Data.m_HpTex_break,
-		Vec2(923.0f, 427.0f), Vec2(923.0f + Gauge_Width, 580.0f));
+		Vec2(923.0f, 427.0f) + ScreenShakeManager::Instance()->GetOffset()
+		, Vec2(1258.0f, 580.0f) + ScreenShakeManager::Instance()->GetOffset(), m_Data.m_HpTex_break,
+		Vec2(923.0f, 427.0f) + ScreenShakeManager::Instance()->GetOffset()
+		, Vec2(923.0f + Gauge_Width, 580.0f) + ScreenShakeManager::Instance()->GetOffset());
 
 	DrawFunc2D_Mask::DrawExtendGraph2D(
-		Vec2(923.0f, 427.0f), Vec2(1258.0f, 580.0f), HP_Gauge,
-		Vec2(923.0f, 427.0f), Vec2(923.0f + Gauge_Width2, 580.0f));
+		Vec2(923.0f, 427.0f) + ScreenShakeManager::Instance()->GetOffset()
+		, Vec2(1258.0f, 580.0f) + ScreenShakeManager::Instance()->GetOffset(), HP_Gauge,
+		Vec2(923.0f, 427.0f) + ScreenShakeManager::Instance()->GetOffset()
+		, Vec2(923.0f + Gauge_Width2, 580.0f) + ScreenShakeManager::Instance()->GetOffset());
 
 }

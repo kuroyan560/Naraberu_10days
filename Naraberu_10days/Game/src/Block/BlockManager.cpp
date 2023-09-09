@@ -4,6 +4,8 @@
 #include"../OperationConfig.h"
 #include"../SoundConfig.h"
 
+#include "../Effect/ScreenShakeManager.h"
+
 void BlockManager::Initialize()
 {
 	//âÊëú
@@ -83,9 +85,11 @@ void BlockManager::Draw()
 	const KuroEngine::Vec2<float> arrowSize = { 39.0f,75.0f };
 	if (nowChoice == 0) {
 		KuroEngine::Vec2<float> arrowPos={ 585.0f,610.0f };
+		arrowPos += ScreenShakeManager::Instance()->GetOffset();
 		KuroEngine::DrawFunc2D::DrawExtendGraph2D({ arrowPos .x- arrowSize.x ,arrowPos .y- arrowSize.y }, arrowPos, arrowTex);
 	}else if (nowChoice == 1) {
 		KuroEngine::Vec2<float> arrowPos = { 475.0f,610.0f };
+		arrowPos += ScreenShakeManager::Instance()->GetOffset();
 		KuroEngine::DrawFunc2D::DrawExtendGraph2D({ arrowPos.x - arrowSize.x ,arrowPos.y - arrowSize.y }, arrowPos, arrowTex);
 	}
 
@@ -96,7 +100,8 @@ void BlockManager::Draw()
 	const KuroEngine::Vec2<float> passSize = { 107.0f,27.0f };
 	KuroEngine::DrawFunc2D::DrawExtendGraph2D({ passFoundationPos.x - passSize.x ,passFoundationPos.y - passSize.y }, passFoundationPos, passTex[0]);
 	const KuroEngine::Vec2<float> passSlashSize = { 18.0f,27.0f };
-	const KuroEngine::Vec2<float> passSlashPos = { 54.0f,0.0f };
+	KuroEngine::Vec2<float> passSlashPos = { 54.0f,0.0f };
+	passSlashPos += ScreenShakeManager::Instance()->GetOffset();
 	KuroEngine::DrawFunc2D::DrawExtendGraph2D(
 	{ passFoundationPos.x - passSlashSize.x + passSlashPos.x ,passFoundationPos.y - passSlashSize.y + passSlashPos.y },
 	{ passFoundationPos.x + passSlashPos.x ,passFoundationPos.y + passSlashPos.y }, passTex[1]);
@@ -104,9 +109,11 @@ void BlockManager::Draw()
 	//ÉpÉXêîéöâÊëú
 	//ç≈ëÂ
 	KuroEngine::Vec2<float> passMaxNumPos = { 55.0f,-27.0f };
+	passMaxNumPos += ScreenShakeManager::Instance()->GetOffset();
 	KuroEngine::DrawFunc2D::DrawNumber2D(passMaxNum, { passFoundationPos.x + passMaxNumPos.x ,passFoundationPos.y + passMaxNumPos.y }, numTex.data(), {1,1});
 	//åªç›ÇÃêî
 	KuroEngine::Vec2<float> passNumPos = { 8.0f,-27.0f };
+	passNumPos += ScreenShakeManager::Instance()->GetOffset();
 	KuroEngine::DrawFunc2D::DrawNumber2D(passNum, { passFoundationPos.x + passNumPos.x ,passFoundationPos.y + passNumPos.y }, numTex.data(), { 1,1 });
 
 }

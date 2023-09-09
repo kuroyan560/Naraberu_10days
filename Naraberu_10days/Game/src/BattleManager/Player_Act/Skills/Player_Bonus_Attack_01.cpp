@@ -8,6 +8,8 @@
 #include "FrameWork/WinApp.h"
 #include "FrameWork/UsersInput.h"
 
+#include "../../../Effect/ScreenShakeManager.h"
+
 void Player_Bonus_Attack_01::Param_Set(int Damage, int Duration)
 {
 	m_Damage = Damage;
@@ -69,7 +71,8 @@ void Player_Bonus_Attack_01::Action_Draw()
 	for (auto& tgt : m_Targets) {
 		KuroEngine::Vec2 LT = GetUnitPtr_nama<Enemy*>(tgt)->Get_Left_Top();
 		KuroEngine::Vec2 RB = GetUnitPtr_nama<Enemy*>(tgt)->Get_Right_Bottom();
-		DrawFunc2D::DrawBox2D(LT, RB, Color(255, 0, 0, 255), true);
+		DrawFunc2D::DrawBox2D(LT + ScreenShakeManager::Instance()->GetOffset()
+			, RB + ScreenShakeManager::Instance()->GetOffset(), Color(255, 0, 0, 255), true);
 	}
 }
 

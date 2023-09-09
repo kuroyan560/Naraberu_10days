@@ -5,6 +5,7 @@
 #include "../BattleManager/ExistUnits.h"
 #include "../RefreshRate.h"
 #include"../Effect/PlayerAttackEffect.h"
+#include "../Effect/ScreenShakeManager.h"
 
 KuroEngine::Vec2<int> PanelManager::mapMax;
 
@@ -58,6 +59,8 @@ void PanelManager::Draw()
 			pos1.x += blockSize;
 			pos1.y += blockSize;
 
+			pos += ScreenShakeManager::Instance()->GetOffset();
+			pos1 += ScreenShakeManager::Instance()->GetOffset();
 
 			if (mapchip[y][x] == int(BlockColor::red)) {
 				KuroEngine::DrawFunc2D::DrawExtendGraph2D(pos, pos1, blockTex[int(BlockColor::red)]);

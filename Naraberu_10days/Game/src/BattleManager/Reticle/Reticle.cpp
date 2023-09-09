@@ -4,6 +4,8 @@
 #include "../Enemy/Enemy.h"
 #include "../../src/engine/DirectX12/D3D12App.h"
 
+#include "../../Effect/ScreenShakeManager.h"
+
 Reticle::Reticle()
 {
 	using namespace KuroEngine;
@@ -85,26 +87,33 @@ void Reticle::Draw(int Index, KuroEngine::Vec2<float> LT, KuroEngine::Vec2<float
 	float Size_Y = 35 * (bairitu > 1.0f ? 1.0f : bairitu);
 	// 上下両方のユニットが生きている
 	if (IsAliveUpperUnit() && IsAliveUnderUnit()) {
-		DrawFunc2D_Color::DrawExtendGraph2D(Vec2(LT.x - Size_X, RB.y - Size_Y), Vec2(LT.x + Size_X, RB.y + Size_Y), m_ReticleTex[1], Mask,
+		DrawFunc2D_Color::DrawExtendGraph2D(Vec2(LT.x - Size_X, RB.y - Size_Y) + ScreenShakeManager::Instance()->GetOffset()
+			, Vec2(LT.x + Size_X, RB.y + Size_Y) + ScreenShakeManager::Instance()->GetOffset()
+			, m_ReticleTex[1], Mask,
 			{ false,false }, { 0.0f,0.0f }, { 1.0f,1.0f }, KuroEngine::DrawFunc2D_Color::FILL_MDOE::MUL);
 	}
 	// 上のユニットのみ生きている
 	else if (IsAliveUpperUnit()) {
-		DrawFunc2D_Color::DrawExtendGraph2D(Vec2(LT.x - Size_X, RB.y - Size_Y), Vec2(LT.x + Size_X, RB.y + Size_Y), m_ReticleTex[2], Mask,
+		DrawFunc2D_Color::DrawExtendGraph2D(Vec2(LT.x - Size_X, RB.y - Size_Y) + ScreenShakeManager::Instance()->GetOffset()
+			, Vec2(LT.x + Size_X, RB.y + Size_Y) + ScreenShakeManager::Instance()->GetOffset(), m_ReticleTex[2], Mask,
 			{ false,false }, { 0.0f,0.0f }, { 1.0f,1.0f }, KuroEngine::DrawFunc2D_Color::FILL_MDOE::MUL);
 	}
 	// 下のユニットのみ生きている
 	else if (IsAliveUnderUnit()) {
-		DrawFunc2D_Color::DrawExtendGraph2D(Vec2(LT.x - Size_X, RB.y - Size_Y), Vec2(LT.x + Size_X, RB.y + Size_Y), m_ReticleTex[0], Mask,
+		DrawFunc2D_Color::DrawExtendGraph2D(Vec2(LT.x - Size_X, RB.y - Size_Y) + ScreenShakeManager::Instance()->GetOffset()
+			, Vec2(LT.x + Size_X, RB.y + Size_Y) + ScreenShakeManager::Instance()->GetOffset(), m_ReticleTex[0], Mask,
 			{ false,false }, { 0.0f,0.0f }, { 1.0f,1.0f }, KuroEngine::DrawFunc2D_Color::FILL_MDOE::MUL);
 	}
 	// 自分だけ生きてる
 	else {
-		DrawFunc2D_Color::DrawExtendGraph2D(Vec2(LT.x - Size_X, RB.y - Size_Y), Vec2(LT.x + Size_X, RB.y + Size_Y ), m_ReticleTex[3], Mask,
+		DrawFunc2D_Color::DrawExtendGraph2D(Vec2(LT.x - Size_X, RB.y - Size_Y) + ScreenShakeManager::Instance()->GetOffset()
+			, Vec2(LT.x + Size_X, RB.y + Size_Y ) + ScreenShakeManager::Instance()->GetOffset(), m_ReticleTex[3], Mask,
 			{ false,false }, { 0.0f,0.0f }, { 1.0f,1.0f }, KuroEngine::DrawFunc2D_Color::FILL_MDOE::MUL);
 	}
-	DrawFunc2D::DrawRotaGraph2D(Vec2(LT.x, RB.y), Vec2(0.75f, 0.75f), m_Reticle_Timer / 60.0f, m_BigReticleTex, 0.2f);
-	DrawFunc2D::DrawRotaGraph2D(Vec2(LT.x, RB.y), Vec2(0.65f, 0.65f), -m_Reticle_Timer / 63.0f, m_BigReticleTex, 0.2f);
+	DrawFunc2D::DrawRotaGraph2D(Vec2(LT.x, RB.y) + ScreenShakeManager::Instance()->GetOffset()
+		, Vec2(0.75f, 0.75f), m_Reticle_Timer / 60.0f, m_BigReticleTex, 0.2f);
+	DrawFunc2D::DrawRotaGraph2D(Vec2(LT.x, RB.y) + ScreenShakeManager::Instance()->GetOffset()
+		, Vec2(0.65f, 0.65f), -m_Reticle_Timer / 63.0f, m_BigReticleTex, 0.2f);
 
 	MaskColor = Mask;
 
