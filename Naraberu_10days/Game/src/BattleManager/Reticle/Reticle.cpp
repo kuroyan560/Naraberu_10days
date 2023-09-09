@@ -27,17 +27,12 @@ void Reticle::Update()
 		// ロックオン
 		if (OperationConfig::Instance()->GetTargetChangeVec(OperationConfig::SELECT_VEC_UP)) {
 			// 生きているユニットまで
-			int iaaa = ExistUnits::Instance()->m_NowTarget;
 			bool ChangeTargetSuccess = false;
 			for (int i = ExistUnits::Instance()->m_NowTarget; i > 0; i--) {
 				if (m_pBTM->UnitList[i]->IsAlive()) {
 					ExistUnits::Instance()->m_NowTarget = i - 1;
 					ChangeTargetSuccess = true;
 					m_Reticle_Timer = 0.0f;
-					m_Aura.emplace_back(Reticle_Aura());
-					m_Aura.back().SetPoint(m_pBTM->UnitList[i].get(), false);
-					//m_Aura.emplace_back(Reticle_Aura());
-					//m_Aura.back().SetPoint(m_pBTM->UnitList[i].get(), true);
 					break;
 				}
 			}
@@ -48,17 +43,12 @@ void Reticle::Update()
 		}
 		if (OperationConfig::Instance()->GetTargetChangeVec(OperationConfig::SELECT_VEC_DOWN)) {
 			// 生きているユニットまで
-			int iaaa = ExistUnits::Instance()->m_NowTarget;
 			bool ChangeTargetSuccess = false;
 			for (int i = ExistUnits::Instance()->m_NowTarget + 1; i < m_pBTM->UnitList.size() - 1; i++) {
 				if (m_pBTM->UnitList[i + 1]->IsAlive()) {
 					ExistUnits::Instance()->m_NowTarget = i;
 					ChangeTargetSuccess = true;
 					m_Reticle_Timer = 0.0f;
-					m_Aura.emplace_back(Reticle_Aura());
-					m_Aura.back().SetPoint(m_pBTM->UnitList[i].get(), false);
-					//m_Aura.emplace_back(Reticle_Aura());
-					//m_Aura.back().SetPoint(m_pBTM->UnitList[i].get(), true);
 					break;
 				}
 			}
@@ -79,9 +69,9 @@ void Reticle::Update()
 		}
 	}
 
-	for (auto& data : m_Aura) {
+	/*for (auto& data : m_Aura) {
 		data.Update();
-	}
+	}*/
 }
 
 void Reticle::Draw(int Index, KuroEngine::Vec2<float> LT, KuroEngine::Vec2<float> RB, KuroEngine::Color Mask)
@@ -113,16 +103,14 @@ void Reticle::Draw(int Index, KuroEngine::Vec2<float> LT, KuroEngine::Vec2<float
 		DrawFunc2D_Color::DrawExtendGraph2D(Vec2(LT.x - Size_X, RB.y - Size_Y), Vec2(LT.x + Size_X, RB.y + Size_Y ), m_ReticleTex[3], Mask,
 			{ false,false }, { 0.0f,0.0f }, { 1.0f,1.0f }, KuroEngine::DrawFunc2D_Color::FILL_MDOE::MUL);
 	}
-	Vec2 Pos1 = Lissajou(2.0f, 3.0f, pi/2.0f, m_Reticle_Timer / 360.0f) * 0.0f;
-	DrawFunc2D::DrawRotaGraph2D(Vec2(LT.x, RB.y) + Pos1, Vec2(0.75f, 0.75f), m_Reticle_Timer / 60.0f, m_BigReticleTex, 0.2f);
-	Vec2 Pos2 = Lissajou(1.0f, 1.0f, pi/2.0f, m_Reticle_Timer / 360.0f) * 0.0f;
-	DrawFunc2D::DrawRotaGraph2D(Vec2(LT.x, RB.y) + Pos2, Vec2(0.65f, 0.65f), -m_Reticle_Timer / 63.0f, m_BigReticleTex, 0.2f);
+	DrawFunc2D::DrawRotaGraph2D(Vec2(LT.x, RB.y), Vec2(0.75f, 0.75f), m_Reticle_Timer / 60.0f, m_BigReticleTex, 0.2f);
+	DrawFunc2D::DrawRotaGraph2D(Vec2(LT.x, RB.y), Vec2(0.65f, 0.65f), -m_Reticle_Timer / 63.0f, m_BigReticleTex, 0.2f);
 
 	MaskColor = Mask;
 
-	for (auto& data : m_Aura) {
+	/*for (auto& data : m_Aura) {
 		data.Draw();
-	}
+	}*/
 }
 
 bool Reticle::IsAliveUpperUnit()

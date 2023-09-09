@@ -59,6 +59,11 @@ void Player_Bonus_Attack_01::Action_Draw()
 		return;
 	}
 
+	// 0ƒ_ƒ[ƒW‚Ìê‡‚Í•`‰æ‚µ‚È‚¢
+	if (m_BonusCount < 1) {
+		return;
+	}
+
 	using namespace KuroEngine;
 	// ‰¼‚Å” ‚ğ•`‰æ
 	for (auto& tgt : m_Targets) {

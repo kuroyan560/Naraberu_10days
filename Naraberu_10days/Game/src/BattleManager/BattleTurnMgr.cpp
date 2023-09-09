@@ -85,13 +85,6 @@ void BattleTurnMgr::OnUpdate()
 	// ロックオン
 	Reticle::Instance()->Update();
 
-	/*if (KuroEngine::UsersInput::Instance()->KeyOnTrigger(DIK_T)) {
-		PlayerSkills::PlayerSkillMgr::Instance()->StartAction("Attack_01", ExistUnits::Instance()->m_pPlayer, ExistUnits::Instance()->m_Enemys[0]);
-	}*/
-
-	// ターゲット
-
-
 	// スキルの更新
 	PlayerSkills::PlayerSkillMgr::Instance()->Update();
 }
@@ -197,8 +190,6 @@ void BattleTurnMgr::Update_Battle()
 	}
 
 	ExistUnits::Instance()->m_NowTurn = TurnNum;
-	// ロックオン
-	//Reticle::Instance()->Update();
 }
 
 bool BattleTurnMgr::AliveEnemys()
