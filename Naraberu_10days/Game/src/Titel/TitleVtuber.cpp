@@ -88,6 +88,18 @@ void TitleVtuber::Initialize()
 
 	}
 
+	move = 0;
+	//ステージセレクト選択で横にズレる
+	isLeftMove = false;
+	//タイトルに戻ると横にずれる
+	isRightMove = false;
+	//移動量
+	move = 0;
+	//タイマー
+	moveTimer = 0;
+	//どちらにいるかR true L false
+	LR = true;
+
 	characterShake.Init();
 }
 
@@ -95,6 +107,10 @@ void TitleVtuber::Update()
 {
 	SmallPrismAnimation();
 	BigPrismAnimation();
+
+	if (isLeftMove || isRightMove) {
+		MoveStageSelect();
+	}
 
 	characterShake.Update(1.0f, XMMatrixIdentity());
 }
@@ -115,7 +131,7 @@ void TitleVtuber::Draw()
 
 	//小プリズム
 	for (int i = 0; i < 3; i++) {
-		DrawFunc2D::DrawRotaGraph2D({ smallPrismPos[i].x + smallPrism[i].pos.x,smallPrismPos[i].y + smallPrism[i].pos.y }, { 1.0f,1.0f }, smallPrism[i].rota, smallPrismTex[i]);
+		DrawFunc2D::DrawRotaGraph2D({ smallPrismPos[i].x + smallPrism[i].pos.x + move,smallPrismPos[i].y + smallPrism[i].pos.y }, { 1.0f,1.0f }, smallPrism[i].rota, smallPrismTex[i]);
 	}
 
 	const std::array<Color, 3> prismColor = { {{553,254,137,130} ,{94,253,274,130},{255,93,204,130}} };
@@ -126,7 +142,7 @@ void TitleVtuber::Draw()
 		for (auto& m : bigPrismInfo[i].trajectory) {
 			size += 0.02f;
 			if (m.back || !m.isTrajectoryDraw) { continue; }
-			DrawFunc2D_Color::DrawRotaGraph2D({ bigPrismPos[i].x + m.pos.x,bigPrismPos[i].y + m.pos.y },
+			DrawFunc2D_Color::DrawRotaGraph2D({ bigPrismPos[i].x + m.pos.x + move,bigPrismPos[i].y + m.pos.y },
 				{ 1.0f - size,1.0f - size }, 0.0f, bigPrismTex[i], prismColor[i]);
 		}
 	}
@@ -134,12 +150,12 @@ void TitleVtuber::Draw()
 	//大プリズム裏
 	for (int i = 0; i < 3; i++) {
 		if (bigPrismInfo[i].back) { continue; }
-		DrawFunc2D::DrawRotaGraph2D({ bigPrismPos[i].x + bigPrism[i].pos.x,bigPrismPos[i].y + bigPrism[i].pos.y }, { 1.0f,1.0f }, 0.0f, bigPrismTex[i]);
+		DrawFunc2D::DrawRotaGraph2D({ bigPrismPos[i].x + bigPrism[i].pos.x + move,bigPrismPos[i].y + bigPrism[i].pos.y }, { 1.0f,1.0f }, 0.0f, bigPrismTex[i]);
 	}
 
 	//キャラ
 	Vec2<float>charaShakeAmount = { characterShake.GetOffset().x,characterShake.GetOffset().y };
-	DrawFunc2D::DrawGraph(Vec2<float>(530.0f, -90.0f) + charaShakeAmount, characterTex);
+	DrawFunc2D::DrawGraph(Vec2<float>(530.0f + move, -90.0f) + charaShakeAmount, characterTex);
 
 	//軌跡表
 	size = 0;
@@ -147,7 +163,7 @@ void TitleVtuber::Draw()
 		for (auto& m : bigPrismInfo[i].trajectory) {
 			size += 0.02f;
 			if (!m.back || !m.isTrajectoryDraw) { continue; }
-			DrawFunc2D_Color::DrawRotaGraph2D({ bigPrismPos[i].x + m.pos.x,bigPrismPos[i].y + m.pos.y },
+			DrawFunc2D_Color::DrawRotaGraph2D({ bigPrismPos[i].x + m.pos.x + move,bigPrismPos[i].y + m.pos.y },
 				{ 1.0f - size,1.0f - size }, 0.0f, bigPrismTex[i], prismColor[i]);
 		}
 	}
@@ -155,7 +171,7 @@ void TitleVtuber::Draw()
 	//大プリズム表
 	for (int i = 0; i < 3; i++) {
 		if (!bigPrismInfo[i].back) { continue; }
-		DrawFunc2D::DrawRotaGraph2D({ bigPrismPos[i].x + bigPrism[i].pos.x,bigPrismPos[i].y + bigPrism[i].pos.y }, { 1.0f,1.0f }, 0.0f, bigPrismTex[i]);
+		DrawFunc2D::DrawRotaGraph2D({ bigPrismPos[i].x + bigPrism[i].pos.x + move,bigPrismPos[i].y + bigPrism[i].pos.y }, { 1.0f,1.0f }, 0.0f, bigPrismTex[i]);
 	}
 }
 
@@ -257,4 +273,25 @@ void TitleVtuber::BigPrismAnimation()
 
 		bigPrism[i].pos = splinePosition(points_1, bigPrism[i].number, timeRate);
 	}
+}
+
+void TitleVtuber::MoveStageSelect()
+{
+	const float maxTimer = 40.0f * RefreshRate::RefreshRate_Mag;
+
+	if (isLeftMove) {
+		move = KuroEngine::Math::Ease(KuroEngine::EASE_CHANGE_TYPE::Out, KuroEngine::EASING_TYPE::Back,
+			moveTimer, maxTimer, 0.0f, -1500.0f);
+		if (moveTimer > maxTimer) {
+			isLeftMove = false;
+		}
+	} else if(isRightMove){
+		move = KuroEngine::Math::Ease(KuroEngine::EASE_CHANGE_TYPE::Out, KuroEngine::EASING_TYPE::Back,
+			moveTimer, maxTimer, -1500.0f, 0.0f);
+		if (moveTimer > maxTimer) {
+			isRightMove = false;
+		}
+	}
+
+	moveTimer++;
 }
