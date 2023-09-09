@@ -18,59 +18,7 @@
 
 void BattleScene::OnInitialize()
 {
-	// ---- 背景
 	using namespace KuroEngine;
-	std::string TexDir = "resource/user/tex/battle_scene/";
-	m_SukasiTex = D3D12App::Instance()->GenerateTextureBuffer(TexDir + "Sukasi.png");
-	m_BackTex = D3D12App::Instance()->GenerateTextureBuffer(TexDir + "battle_scene_frame.png");
-	m_StageTex = D3D12App::Instance()->GenerateTextureBuffer(TexDir + "/info/stage.png");
-	m_BattleTex = D3D12App::Instance()->GenerateTextureBuffer(TexDir + "/info/battle.png");
-	D3D12App::Instance()->GenerateTextureBuffer(&m_NumberTex.front(), TexDir + "/info/stage_number.png", 12, Vec2(12, 1));
-	D3D12App::Instance()->GenerateTextureBuffer(&m_NumberTex_Battle.front(), TexDir + "/info/battle_number.png", 11, Vec2(11, 1));
-
-	// ステージクリア
-	m_ClearTex = D3D12App::Instance()->GenerateTextureBuffer(TexDir + "/clear/stage_clear.png");
-	m_MaxComboTex = D3D12App::Instance()->GenerateTextureBuffer(TexDir + "/clear/max_combo.png");
-	m_TotalTurnTex = D3D12App::Instance()->GenerateTextureBuffer(TexDir + "/clear/total_turn.png");
-	m_Done_KeyTex_Clear = D3D12App::Instance()->GenerateTextureBuffer(TexDir + "/clear/done_key.png");
-	m_Done_ControllerTex_Clear = D3D12App::Instance()->GenerateTextureBuffer(TexDir + "/clear/done_controller.png");
-	m_DoneTex_Clear = D3D12App::Instance()->GenerateTextureBuffer(TexDir + "/clear/done.png");
-	D3D12App::Instance()->GenerateTextureBuffer(&m_ClearNumberTex.front(), TexDir + "/clear/clear_number.png", 10, Vec2(10, 1));
-
-	// ゲームオーバー
-	m_GameOverSelectIndex = 0;
-	m_Already_Selected = false;
-	m_GameoverTex = D3D12App::Instance()->GenerateTextureBuffer(TexDir + "/gameover/game_over.png");
-	m_RetryTex = D3D12App::Instance()->GenerateTextureBuffer(TexDir + "/gameover/retry.png");
-	m_StageSelectTex = D3D12App::Instance()->GenerateTextureBuffer(TexDir + "/gameover/stage_select.png");
-	m_SelectTex = D3D12App::Instance()->GenerateTextureBuffer(TexDir + "/gameover/select.png");
-	m_Done_KeyTex_GameOver = D3D12App::Instance()->GenerateTextureBuffer(TexDir + "/gameover/done_key.png");
-	m_Done_ControllerTex_GameOver = D3D12App::Instance()->GenerateTextureBuffer(TexDir + "/gameover/done_controller.png");
-	m_DoneTex_GameOver = D3D12App::Instance()->GenerateTextureBuffer(TexDir + "/gameover/done.png");
-
-	// ポーズ
-	m_PauseTex = D3D12App::Instance()->GenerateTextureBuffer(TexDir + "/pause/pause.png");
-	m_ResumeTex_Pause = D3D12App::Instance()->GenerateTextureBuffer(TexDir + "/pause/resume.png");
-	m_RetryTex_Pause = D3D12App::Instance()->GenerateTextureBuffer(TexDir + "/pause/retry.png");
-	m_StageSelectTex_Pause = D3D12App::Instance()->GenerateTextureBuffer(TexDir + "/pause/stage_select.png");
-	m_SelectCosorTex_Pause = D3D12App::Instance()->GenerateTextureBuffer(TexDir + "/pause/select.png");
-	m_Done_KeyTex_Pause = D3D12App::Instance()->GenerateTextureBuffer(TexDir + "/pause/done_key.png");
-	m_Done_ControllerTex_Pause = D3D12App::Instance()->GenerateTextureBuffer(TexDir + "/pause/done_controller.png");
-	m_DoneTex_Pause = D3D12App::Instance()->GenerateTextureBuffer(TexDir + "/pause/done.png");
-
-	// 操作キー
-	for (int i = 0; i < 2; i++) {
-		std::string TexDir_Opr;
-		if (i == 0) TexDir_Opr = "resource/user/tex/battle_scene/operation/key/";
-		else if (i == 1)TexDir_Opr = "resource/user/tex/battle_scene/operation/controller/";
-		m_Operation_Done[i] = D3D12App::Instance()->GenerateTextureBuffer(TexDir_Opr + "done.png");
-		m_Operation_Pass[i] = D3D12App::Instance()->GenerateTextureBuffer(TexDir_Opr + "pass.png");
-		m_Operation_Left[i] = D3D12App::Instance()->GenerateTextureBuffer(TexDir_Opr + "select_left_prism.png");
-		m_Operation_Right[i] = D3D12App::Instance()->GenerateTextureBuffer(TexDir_Opr + "select_right_prism.png");
-		m_Operation_Set[i] = D3D12App::Instance()->GenerateTextureBuffer(TexDir_Opr + "set_prism.png");
-		m_Operation_TurnEnd[i] = D3D12App::Instance()->GenerateTextureBuffer(TexDir_Opr + "turn_end.png");
-		m_Operation_Ult[i] = D3D12App::Instance()->GenerateTextureBuffer(TexDir_Opr + "ult.png");
-	}
 
 	// リザルト表示用
 	ResultTimer = 0.0f;
@@ -582,6 +530,61 @@ float BattleScene::ResultEasing(float time)
 
 BattleScene::BattleScene()
 {
+	// ---- 背景
+	using namespace KuroEngine;
+	std::string TexDir = "resource/user/tex/battle_scene/";
+	m_SukasiTex = D3D12App::Instance()->GenerateTextureBuffer(TexDir + "Sukasi.png");
+	m_BackTex = D3D12App::Instance()->GenerateTextureBuffer(TexDir + "battle_scene_frame.png");
+	m_StageTex = D3D12App::Instance()->GenerateTextureBuffer(TexDir + "/info/stage.png");
+	m_BattleTex = D3D12App::Instance()->GenerateTextureBuffer(TexDir + "/info/battle.png");
+	D3D12App::Instance()->GenerateTextureBuffer(&m_NumberTex.front(), TexDir + "/info/stage_number.png", 12, Vec2(12, 1));
+	D3D12App::Instance()->GenerateTextureBuffer(&m_NumberTex_Battle.front(), TexDir + "/info/battle_number.png", 11, Vec2(11, 1));
+
+	// ステージクリア
+	m_ClearTex = D3D12App::Instance()->GenerateTextureBuffer(TexDir + "/clear/stage_clear.png");
+	m_MaxComboTex = D3D12App::Instance()->GenerateTextureBuffer(TexDir + "/clear/max_combo.png");
+	m_TotalTurnTex = D3D12App::Instance()->GenerateTextureBuffer(TexDir + "/clear/total_turn.png");
+	m_Done_KeyTex_Clear = D3D12App::Instance()->GenerateTextureBuffer(TexDir + "/clear/done_key.png");
+	m_Done_ControllerTex_Clear = D3D12App::Instance()->GenerateTextureBuffer(TexDir + "/clear/done_controller.png");
+	m_DoneTex_Clear = D3D12App::Instance()->GenerateTextureBuffer(TexDir + "/clear/done.png");
+	D3D12App::Instance()->GenerateTextureBuffer(&m_ClearNumberTex.front(), TexDir + "/clear/clear_number.png", 10, Vec2(10, 1));
+
+	// ゲームオーバー
+	m_GameOverSelectIndex = 0;
+	m_Already_Selected = false;
+	m_GameoverTex = D3D12App::Instance()->GenerateTextureBuffer(TexDir + "/gameover/game_over.png");
+	m_RetryTex = D3D12App::Instance()->GenerateTextureBuffer(TexDir + "/gameover/retry.png");
+	m_StageSelectTex = D3D12App::Instance()->GenerateTextureBuffer(TexDir + "/gameover/stage_select.png");
+	m_SelectTex = D3D12App::Instance()->GenerateTextureBuffer(TexDir + "/gameover/select.png");
+	m_Done_KeyTex_GameOver = D3D12App::Instance()->GenerateTextureBuffer(TexDir + "/gameover/done_key.png");
+	m_Done_ControllerTex_GameOver = D3D12App::Instance()->GenerateTextureBuffer(TexDir + "/gameover/done_controller.png");
+	m_DoneTex_GameOver = D3D12App::Instance()->GenerateTextureBuffer(TexDir + "/gameover/done.png");
+
+	// ポーズ
+	m_PauseTex = D3D12App::Instance()->GenerateTextureBuffer(TexDir + "/pause/pause.png");
+	m_ResumeTex_Pause = D3D12App::Instance()->GenerateTextureBuffer(TexDir + "/pause/resume.png");
+	m_RetryTex_Pause = D3D12App::Instance()->GenerateTextureBuffer(TexDir + "/pause/retry.png");
+	m_StageSelectTex_Pause = D3D12App::Instance()->GenerateTextureBuffer(TexDir + "/pause/stage_select.png");
+	m_SelectCosorTex_Pause = D3D12App::Instance()->GenerateTextureBuffer(TexDir + "/pause/select.png");
+	m_Done_KeyTex_Pause = D3D12App::Instance()->GenerateTextureBuffer(TexDir + "/pause/done_key.png");
+	m_Done_ControllerTex_Pause = D3D12App::Instance()->GenerateTextureBuffer(TexDir + "/pause/done_controller.png");
+	m_DoneTex_Pause = D3D12App::Instance()->GenerateTextureBuffer(TexDir + "/pause/done.png");
+
+	// 操作キー
+	for (int i = 0; i < 2; i++) {
+		std::string TexDir_Opr;
+		if (i == 0) TexDir_Opr = "resource/user/tex/battle_scene/operation/key/";
+		else if (i == 1)TexDir_Opr = "resource/user/tex/battle_scene/operation/controller/";
+		m_Operation_Done[i] = D3D12App::Instance()->GenerateTextureBuffer(TexDir_Opr + "done.png");
+		m_Operation_Pass[i] = D3D12App::Instance()->GenerateTextureBuffer(TexDir_Opr + "pass.png");
+		m_Operation_Left[i] = D3D12App::Instance()->GenerateTextureBuffer(TexDir_Opr + "select_left_prism.png");
+		m_Operation_Right[i] = D3D12App::Instance()->GenerateTextureBuffer(TexDir_Opr + "select_right_prism.png");
+		m_Operation_Set[i] = D3D12App::Instance()->GenerateTextureBuffer(TexDir_Opr + "set_prism.png");
+		m_Operation_TurnEnd[i] = D3D12App::Instance()->GenerateTextureBuffer(TexDir_Opr + "turn_end.png");
+		m_Operation_Ult[i] = D3D12App::Instance()->GenerateTextureBuffer(TexDir_Opr + "ult.png");
+	}
+
+
 	m_playerAttackEffect = std::make_shared<PlayerAttackEffect>();
 }
 
