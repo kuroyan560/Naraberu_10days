@@ -1,6 +1,7 @@
 #include "TitleVtuber.h"
 #include "ForUser/DrawFunc/2D/DrawFunc2D.h"
 #include "ForUser/DrawFunc/2D/DrawFunc2D_Color.h"
+#include "../RefreshRate.h"
 
 //補間で使うデータ
 std::array<KuroEngine::Vec2<float>, 4>smallPrismHokanPos = { {{0.0f, 0.0f},{10.0f, -20.0f},{5.0f, 5.0f},{-5.0f, 10.0f}} };
@@ -160,7 +161,7 @@ void TitleVtuber::Draw()
 
 void TitleVtuber::SmallPrismAnimation()
 {
-	const float maxTimer=50.0f;
+	const float maxTimer=50.0f * RefreshRate::RefreshRate_Mag;
 
 	std::vector<KuroEngine::Vec2<float>> points = {
 		smallPrismHokanPos[0], smallPrismHokanPos[0], smallPrismHokanPos[1], smallPrismHokanPos[2],
@@ -194,7 +195,7 @@ void TitleVtuber::SmallPrismAnimation()
 
 void TitleVtuber::BigPrismAnimation()
 {
-	const float maxTimer = 60.0f;
+	const float maxTimer = 60.0f * RefreshRate::RefreshRate_Mag;
 
 	std::vector<KuroEngine::Vec2<float>> points_1 = {
 	bigPrismHokanPos_1[0], bigPrismHokanPos_1[0], bigPrismHokanPos_1[1], bigPrismHokanPos_1[2],
@@ -256,29 +257,4 @@ void TitleVtuber::BigPrismAnimation()
 
 		bigPrism[i].pos = splinePosition(points_1, bigPrism[i].number, timeRate);
 	}
-
-		//for (auto& i : bigPrism) {
-		//	i.timer++;
-
-		//	float timeRate = i.timer / maxTimer;
-
-		//	if (timeRate >= 1.0f)
-		//	{
-		//		if (i.number < points_1.size() - 3) {
-		//			i.number += 1;
-		//			timeRate -= 1.0f;
-		//			i.timer = 0.0f;
-		//			back = !back;
-		//		} else {
-		//			i.number = 0;
-		//		}
-		//		if (i.number == 0) {
-		//			useEase = true;
-		//			useEase = true;
-		//			back = false;
-		//			easeNum = 0;
-		//		}
-		//	}
-		//	i.pos = splinePosition(points_1, i.number, timeRate);
-		//}
 }
