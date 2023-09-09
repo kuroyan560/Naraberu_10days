@@ -200,7 +200,7 @@ void Player::TurnEnd_BeforeTurnChange()
 	m_IsEndTurnFunc = true;
 	// ここにボーナスアタックとか書く
 	// マップをリセット
-	ExistUnits::Instance()->m_StageManager->Reset();
+	ExistUnits::Instance()->m_StageManager->SetBouns();
 }
 
 void Player::SetState(int HP, int MaxHP)

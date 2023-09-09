@@ -109,9 +109,6 @@ void PanelManager::Draw()
 
 void PanelManager::Reset()
 {
-	//ボーナス計算
-	SetBouns();
-
 	for (auto& y : mapchip) {
 		for (auto& x : y) {
 			if (x == int(BlockColor::eizoku_obstacle)) { continue; }
@@ -364,6 +361,11 @@ void PanelManager::BonusDirection()
 	//時間になったら次に行く
 	bonusTimer++;
 	if (bonusTimer > maxTimer) {
+		if (int(bonusData.size()) == nowBonusNum) {
+			isBonusDirection == Bonas::non;
+			Reset();
+			return;
+		}
 		nowBonusNum++;
 		bonusTimer = 0;
 	}
