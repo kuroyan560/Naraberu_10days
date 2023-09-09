@@ -22,7 +22,7 @@ void TitleScene::OnInitialize()
 	titleBarTex = KuroEngine::D3D12App::Instance()->GenerateTextureBuffer(TexDir_title + "select_line.png");
 	m_SukasiTex = KuroEngine::D3D12App::Instance()->GenerateTextureBuffer(TexDir_title + "sukasi.png");
 
-	selectNum = Select::title;
+	selectNum = Select::stageSelect;
 	stageNum = 0;
 	onSelect = false;
 
@@ -66,9 +66,9 @@ void TitleScene::OnDraw()
 
 	//タイトルセレクト
 	if (!onSelect) {
-		if (selectNum == Select::title) {
+		if (selectNum == Select::stageSelect) {
 			DrawFunc2D::DrawGraph({ 0.0f,selectPos.y - 45.0f }, titleBarTex);
-		} else if (selectNum == Select::stageSelect) {
+		} else if (selectNum == Select::exit) {
 			DrawFunc2D::DrawGraph({ 0.0f,selectPos.y - 45.0f + 115.0f }, titleBarTex);
 		}
 	}
@@ -106,8 +106,8 @@ void TitleScene::Title()
 	}
 	if (OperationConfig::Instance()->GetSelectVec(OperationConfig::SELECT_VEC::SELECT_VEC_UP)) {
 		selectNum = Select(int(selectNum) - 1);
-		if (selectNum < Select::title) {
-			selectNum = Select::title;
+		if (selectNum < Select::stageSelect) {
+			selectNum = Select::stageSelect;
 		}
 	}
 
@@ -116,6 +116,12 @@ void TitleScene::Title()
 		OperationConfig::INPUT_PATTERN::ON_TRIGGER) && selectNum == Select::stageSelect) {
 		onSelect = true;
 		title->SetIsStageSelectInMove();
+	}
+
+	//ゲームを落とす処理
+	if (OperationConfig::Instance()->GetOperationInput(OperationConfig::OPERATION_TYPE::DONE,
+		OperationConfig::INPUT_PATTERN::ON_TRIGGER) && selectNum == Select::exit) {
+		KuroEngine::KuroEngineDevice::Instance()->GameEnd();
 	}
 }
 

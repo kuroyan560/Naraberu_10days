@@ -205,8 +205,8 @@ xcopy "$(SolutionDir)dxil.dll" $(TargetDir) /Y</Command>
     <ClCompile Include="src\Scene\GameScene.cpp" />
     <ClCompile Include="src\Stage\StageList.cpp" />
     <ClCompile Include="src\Scene\TitleScene.cpp" />
+    <ClCompile Include="src\Titel\TitleUi.cpp" />
     <ClCompile Include="src\Titel\TitleVtuber.cpp" />
-    <ClCompile Include="src\TitleUi.cpp" />
     <ClCompile Include="src\UI\EnemyDamageUI.cpp" />
   </ItemGroup>
   <ItemGroup>
@@ -330,8 +330,8 @@ xcopy "$(SolutionDir)dxil.dll" $(TargetDir) /Y</Command>
     <ClInclude Include="src\Scene\GameScene.h" />
     <ClInclude Include="src\Scene\TitleScene.h" />
     <ClInclude Include="src\Stage\StageList.h" />
+    <ClInclude Include="src\Titel\TitleUi.h" />
     <ClInclude Include="src\Titel\TitleVtuber.h" />
-    <ClInclude Include="src\TitleUi.h" />
     <ClInclude Include="src\UI\EnemyDamageUI.h" />
   </ItemGroup>
   <ItemGroup>

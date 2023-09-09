@@ -1,6 +1,6 @@
 #pragma once
 #include "KuroEngineDevice.h"
-#include "../TitleUi.h"
+#include "../Titel/TitleUi.h"
 #include "../Fade/Fade.h"
 #include "../Titel/TitleVtuber.h"
 
@@ -33,8 +33,8 @@ class TitleScene : public KuroEngine::BaseScene
 
 	//タイトルシーン用
 	enum class Select {
-		title,
 		stageSelect,
+		exit,
 		size,
 	};
 
