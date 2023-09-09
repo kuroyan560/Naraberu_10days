@@ -27,11 +27,14 @@ void TitleScene::OnInitialize()
 	stageNum = 0;
 	onSelect = false;
 
+	character->SetMoveTitle(false);
+
 	if (ExistUnits::Instance()->m_ChangeStageSelect == true) {
 		selectNum = Select::stageSelect;
 		onSelect = true;
 		title->SetIsStageSelectInMove();
 		ExistUnits::Instance()->m_ChangeStageSelect = false;
+		character->SetMoveStageSelect(true);
 	}
 }
 
@@ -61,7 +64,9 @@ void TitleScene::OnDraw()
 		DrawFunc2D::DrawExtendGraph2D(Vec2(0.0f, 0.0f), WinApp::Instance()->GetExpandWinSize(), m_SukasiTex);
 	}
 
-	const Vec2<float> selectPos = { 65.0f,50.0f };
+	float move = character->GetMove();
+
+	const Vec2<float> selectPos = { 65.0f + move,50.0f };
 	DrawFunc2D::DrawGraph(selectPos, startTex);
 	DrawFunc2D::DrawGraph({ selectPos.x,selectPos.y + 115.0f }, quitTex);
 
@@ -77,7 +82,7 @@ void TitleScene::OnDraw()
 	title->Draw();
 	character->Draw();
 
-	const Vec2<float> titelPos = { 30.0f,421.0f };
+	const Vec2<float> titelPos = { 30.0f + move,421.0f };
 	DrawFunc2D::DrawGraph(titelPos, titleTex);
 
 }
@@ -120,6 +125,7 @@ void TitleScene::Title()
 		onSelect = true;
 		title->SetIsStageSelectInMove();
 		SoundConfig::Instance()->Play(SoundConfig::SE_DONE);
+		character->SetMoveStageSelect();
 	}
 
 	//ƒQ[ƒ€‚ð—Ž‚Æ‚·ˆ—
@@ -144,6 +150,7 @@ void TitleScene::StageSelect()
 		onSelect = false;
 		title->SetIsStageSelectOutMove();
 		SoundConfig::Instance()->Play(SoundConfig::SE_CANCEL);
+		character->SetMoveTitle(false);
 	}
 
 	//ˆÚ“®

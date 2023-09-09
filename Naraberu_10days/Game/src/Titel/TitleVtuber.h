@@ -48,6 +48,32 @@ public:
 	//プリズム大アニメーション
 	void BigPrismAnimation();
 
+	void MoveStageSelect();
+
+	//ステージセレクト選択で横にズレる
+	void SetMoveStageSelect(bool _mouzureteru = false) {
+		if (_mouzureteru) {
+			move = 1500.0f;
+			LR = false;
+		} else {
+			isLeftMove = true;
+			moveTimer = 0;
+		}
+	}
+
+	//タイトルに戻る時
+	void SetMoveTitle(bool _mouzureteru = false) {
+		if (_mouzureteru) {
+			move = 0.0f;
+			LR = true;
+		} else {
+			isRightMove = true;
+			moveTimer = 0;
+		}
+	}
+
+	float GetMove() { return move; }
+
 private:
 
 	//キャラ
@@ -67,5 +93,15 @@ private:
 	//キャラの揺れ
 	KuroEngine::HandShake characterShake;
 
+	//ステージセレクト選択で横にズレる
+	bool isLeftMove;
+	//タイトルに戻ると横にずれる
+	bool isRightMove;
+	//移動量
+	float move;
+	//タイマー
+	float moveTimer;
+	//どちらにいるかR true L false
+	bool LR;
 };
 
