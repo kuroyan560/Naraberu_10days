@@ -331,24 +331,34 @@ void BattleScene::NextWave()
 void BattleScene::GameClearDraw()
 {
 	using namespace KuroEngine;
-	Vec2 Value = Vec2(ResultEasing(ResultTimer / ResultTimer_Max), 0.0f);
-	Value *= 450.0f;
+
+	Vec2 Value = Vec2(0.0f, ResultEasing(ResultTimer / ResultTimer_Max)) * 450.0f;
+	float SubFrame = 6.6f * RefreshRate::RefreshRate_Mag;
 
 	Vec2 Panel_LT = Vec2(391.0f, 67.0f);
 	Vec2 Panel_RB = Vec2(899.0f, 564.0f);
 
-	DrawFunc2D_Mask::DrawGraph(Vec2(503.0f, 175.0f) + Value, m_ClearTex, Panel_LT, Panel_RB);
+	// Œã‚ë‚ðˆÃ‚­
+	float alpha = 0.4f * (ResultTimer / ResultTimer_Max);
+	DrawFunc2D::DrawBox2D(Panel_LT, Panel_RB, Color(0.1f, 0.1f, 0.1f, alpha > 0.4f ? 0.4f : alpha), true);
 
+	// ƒŠƒUƒ‹ƒg•`‰æ
+	DrawFunc2D_Mask::DrawGraph(Vec2(503.0f, 175.0f) + Value, m_ClearTex, Panel_LT, Panel_RB);
+	Value = Vec2(0.0f, ResultEasing(((ResultTimer - SubFrame) / ResultTimer_Max))) * 450.0f;
+
+	Value = Vec2(0.0f, ResultEasing(((ResultTimer - SubFrame * 2.0f) / ResultTimer_Max))) * 450.0f;
 	DrawFunc2D_Mask::DrawGraph(Vec2(484.0f, 257.0f) + Value, m_MaxComboTex, Panel_LT, Panel_RB);
 	if (ResultTimer >= ResultTimer_Max + 30 * RefreshRate::RefreshRate_Mag) {
 		DrawFunc2D::DrawNumber2D(ExistUnits::Instance()->m_MaxBonusCount, Vec2(697.0f, 257.0f) + Value, &m_ClearNumberTex.front());
 	}
 
-	DrawFunc2D_Mask::DrawGraph(Vec2(493.0f, 308.0f) + Value, m_TotalTurnTex, Panel_LT, Panel_RB);
+	Value = Vec2(0.0f, ResultEasing(((ResultTimer - SubFrame * 3.0f) / ResultTimer_Max))) * 450.0f;
+	DrawFunc2D_Mask::DrawGraph(Vec2(489.0f, 308.0f) + Value, m_TotalTurnTex, Panel_LT, Panel_RB);
 	if (ResultTimer >= ResultTimer_Max + 60 * RefreshRate::RefreshRate_Mag) {
 		DrawFunc2D::DrawNumber2D(Mgr.GetTotalTurn(), Vec2(697.0f, 308.0f) + Value, &m_ClearNumberTex.front());
 	}
 
+	Value = Vec2(0.0f, ResultEasing(((ResultTimer - SubFrame * 4.0f) / ResultTimer_Max))) * 450.0f;
 	if (OperationConfig::Instance()->GetLatestDevice() == OperationConfig::Instance()->KEY_BOARD_MOUSE) {
 		DrawFunc2D_Mask::DrawGraph(Vec2(613.0f, 365.0f) + Value, m_Done_KeyTex_Clear, Panel_LT, Panel_RB);
 	}
@@ -361,16 +371,24 @@ void BattleScene::GameClearDraw()
 void BattleScene::GameOverDraw()
 {
 	using namespace KuroEngine;
-	Vec2 Value = Vec2(ResultEasing(ResultTimer / ResultTimer_Max), 0.0f);
-	Value *= 450.0f;
+	Vec2 Value = Vec2(0.0f, ResultEasing(ResultTimer / ResultTimer_Max)) * 450.0f;
+	float SubFrame = 6.6f * RefreshRate::RefreshRate_Mag;
 
 	Vec2 Panel_LT = Vec2(391.0f, 67.0f);
 	Vec2 Panel_RB = Vec2(899.0f, 564.0f);
 
+	// Œã‚ë‚ðˆÃ‚­
+	float alpha = 0.4f * (ResultTimer / ResultTimer_Max);
+	DrawFunc2D::DrawBox2D(Panel_LT, Panel_RB, Color(0.1f, 0.1f, 0.1f, alpha > 0.4f ? 0.4f : alpha), true);
+
+	// ƒŠƒUƒ‹ƒg•`‰æ
 	DrawFunc2D_Mask::DrawGraph(Vec2(524.0f, 175.0f) + Value, m_GameoverTex, Panel_LT, Panel_RB);
+	Value = Vec2(0.0f, ResultEasing(((ResultTimer - SubFrame) / ResultTimer_Max))) * 450.0f;
 	DrawFunc2D_Mask::DrawGraph(Vec2(594.0f, 254.0f) + Value, m_RetryTex, Panel_LT, Panel_RB);
+	Value = Vec2(0.0f, ResultEasing(((ResultTimer - SubFrame * 2.0f) / ResultTimer_Max))) * 450.0f;
 	DrawFunc2D_Mask::DrawGraph(Vec2(541.0f, 309.0f) + Value, m_StageSelectTex, Panel_LT, Panel_RB);
 
+	Value = Vec2(0.0f, ResultEasing(((ResultTimer - SubFrame) / ResultTimer_Max))) * 450.0f;
 	if (m_GameOverSelectIndex == 0) {
 		DrawFunc2D_Mask::DrawGraph(Vec2(565.0f, 254.0f) + Value, m_SelectTex, Panel_LT, Panel_RB);
 	}
@@ -378,6 +396,7 @@ void BattleScene::GameOverDraw()
 		DrawFunc2D_Mask::DrawGraph(Vec2(512.0f, 309.0f) + Value, m_SelectTex, Panel_LT, Panel_RB);
 	}
 
+	Value = Vec2(0.0f, ResultEasing(((ResultTimer - SubFrame * 3.0f) / ResultTimer_Max))) * 450.0f;
 	if (OperationConfig::Instance()->GetLatestDevice() == OperationConfig::Instance()->KEY_BOARD_MOUSE) {
 		DrawFunc2D_Mask::DrawExtendGraph2D(Vec2(772.0f, 350.0f) + Value, Vec2(813.0f, 395.0f) + Value, m_Done_KeyTex_GameOver, Panel_LT, Panel_RB);
 	}
