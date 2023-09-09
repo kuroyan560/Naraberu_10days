@@ -1,6 +1,7 @@
 #include "TitleUi.h"
 #include "../../src/engine/DirectX12/D3D12App.h"
 #include "ForUser/DrawFunc/2D/DrawFunc2D.h"
+#include "../RefreshRate.h"
 
 const KuroEngine::Vec2<float> c_pos = { 700.0f,400.0f };
 const KuroEngine::Vec2<float> u_pos = { 950.0f,250.0f };
@@ -103,7 +104,7 @@ void TitleUi::Draw()
 
 void TitleUi::StageSelectInMove()
 {
-	const float maxTimer = 20.0f;
+	const float maxTimer = 20.0f * RefreshRate::RefreshRate_Mag;
 
 	stageSelectInMoveTimer++;
 
@@ -126,7 +127,7 @@ void TitleUi::StageSelectInMove()
 
 void TitleUi::StageSelectOutMove()
 {
-	const float maxTimer = 20.0f;
+	const float maxTimer = 20.0f * RefreshRate::RefreshRate_Mag;
 
 	stageSelectOutMoveTimer++;
 
@@ -151,7 +152,7 @@ void TitleUi::StageSelectMove(int _number)
 {
 	if (stageTexInfo[_number].nowPos == stageTexInfo[_number].nextPos) { return; }
 
-	const float maxTimer = 20.0f;
+	const float maxTimer = 20.0f * RefreshRate::RefreshRate_Mag;
 
 	const float u_scale = 0.7f;
 	const float d_scale = 0.8f;
