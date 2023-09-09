@@ -45,10 +45,6 @@ void Player::OnInitialize()
 void Player::OnUpdate()
 {
 	using namespace KuroEngine;
-	if (OperationConfig::Instance()->GetOperationInput(OperationConfig::END_TURN,OperationConfig::ON_TRIGGER)) {
-		TurnChangeTimer = 1;
-		//EndTurn();
-	}
 
 	// タイマーの加算
 	TimerUpdate();
@@ -227,4 +223,10 @@ void Player::UltMaxEffect()
 			i = size;
 		}
 	}
+}
+
+void Player::TurnEndTrigger()
+{
+	TurnChangeTimer = 1;
+	//EndTurn();
 }
