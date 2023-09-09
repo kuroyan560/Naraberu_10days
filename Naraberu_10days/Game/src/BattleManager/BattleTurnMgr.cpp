@@ -23,7 +23,7 @@ void BattleTurnMgr::TurnEndButtonUpdate()
 			}
 		}
 		// 2回目以降
-		else if (m_Selected_TurnEnd) {
+		else if (m_Selected_TurnEnd && !m_Checked_TurnEnd) {
 			// ターンエンドボタンが押された
 			if (OperationConfig::Instance()->GetOperationInput(OperationConfig::END_TURN, OperationConfig::ON_TRIGGER)) {
 				m_Checked_TurnEnd = true;
@@ -159,6 +159,9 @@ void BattleTurnMgr::OnInitialize(std::shared_ptr<UnitBase> Player, std::vector<s
 
 	// レティクル
 	Reticle::Instance()->SetBattleTurnManager(this);
+
+	// カットインスタート
+	CutInMgr::Instance()->StartCutIn(CutInType::PLAYER_TURN);
 }
 
 void BattleTurnMgr::SetUnits(std::shared_ptr<UnitBase> Player, std::vector<std::shared_ptr<UnitBase>> Enemys)
