@@ -1,6 +1,7 @@
 #pragma once
 #include "KuroEngineDevice.h"
 #include <array>
+#include"ForUser/HandShake.h"
 
 class TitleVtuber
 {
@@ -21,6 +22,7 @@ class TitleVtuber
 	};
 
 public:
+	TitleVtuber();
 
 	void Initialize();
 
@@ -49,6 +51,9 @@ private:
 	std::array<ObjectInfo, 3> bigPrism;
 	//‚Ç‚¿‚ç‚Ì•âŠÔ‚ðŽg—p‚·‚é‚©
 	std::array<BigPrismInfo,3> bigPrismInfo;
+
+	//ƒLƒƒƒ‰‚Ì—h‚ê
+	KuroEngine::HandShake characterShake;
 
 };
 
