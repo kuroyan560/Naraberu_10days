@@ -22,6 +22,7 @@ void BattleTurnMgr::TurnEndButtonUpdate()
 		if (!m_Selected_TurnEnd && !m_Checked_TurnEnd ) {
 			if (OperationConfig::Instance()->GetOperationInput(OperationConfig::END_TURN, OperationConfig::ON_TRIGGER)) {
 				m_Selected_TurnEnd = true;
+				m_Selected_TurnEnd_Timer = 0;
 			}
 		}
 		// 2‰ñ–ÚˆÈ~
@@ -103,6 +104,10 @@ void BattleTurnMgr::TurnEndButtonDraw()
 
 		DrawFunc2D::DrawExtendGraph2D(EndButton_Center - EnterButton_Size / 2.0f + Height_ + Moving_Pos + ScreenShakeManager::Instance()->GetOffset(),
 			EndButton_Center + EnterButton_Size / 2.0f + Height_ + Moving_Pos + ScreenShakeManager::Instance()->GetOffset(), m_TurnEnd_EnterTex);
+
+		if (Scale_Value > 0.98f) {
+			DrawFunc2D::DrawGraph(Vec2(849.0f, 483.0f) + Moving_Pos + ScreenShakeManager::Instance()->GetOffset(), m_TurnEnd_EnterTex);
+		}
 	}
 	else {
 		Vec2 EnterButton_Size_Int = m_TurnEnd_Crtl_EnterTex->GetGraphSize();
@@ -111,6 +116,10 @@ void BattleTurnMgr::TurnEndButtonDraw()
 
 		DrawFunc2D::DrawExtendGraph2D(EndButton_Center - EnterButton_Size / 2.0f + Height_ + Moving_Pos + ScreenShakeManager::Instance()->GetOffset(),
 			EndButton_Center + EnterButton_Size / 2.0f + Height_ + Moving_Pos + ScreenShakeManager::Instance()->GetOffset(), m_TurnEnd_Crtl_EnterTex);
+
+		if (Scale_Value > 0.98f) {
+			DrawFunc2D::DrawGraph(Vec2(849.0f, 483.0f) + Moving_Pos + ScreenShakeManager::Instance()->GetOffset(), m_TurnEnd_Crtl_EnterTex);
+		}
 	}
 }
 

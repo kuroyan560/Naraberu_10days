@@ -58,6 +58,20 @@ void BattleScene::OnInitialize()
 	m_Done_ControllerTex_Pause = D3D12App::Instance()->GenerateTextureBuffer(TexDir + "/pause/done_controller.png");
 	m_DoneTex_Pause = D3D12App::Instance()->GenerateTextureBuffer(TexDir + "/pause/done.png");
 
+	// 操作キー
+	for (int i = 0; i < 2; i++) {
+		std::string TexDir_Opr;
+		if (i == 0) TexDir_Opr = "resource/user/tex/battle_scene/operation/key/";
+		else if (i == 1)TexDir_Opr = "resource/user/tex/battle_scene/operation/controller/";
+		m_Operation_Done[i] = D3D12App::Instance()->GenerateTextureBuffer(TexDir_Opr + "done.png");
+		m_Operation_Pass[i] = D3D12App::Instance()->GenerateTextureBuffer(TexDir_Opr + "pass.png");
+		m_Operation_Left[i] = D3D12App::Instance()->GenerateTextureBuffer(TexDir_Opr + "select_left_prism.png");
+		m_Operation_Right[i] = D3D12App::Instance()->GenerateTextureBuffer(TexDir_Opr + "select_right_prism.png");
+		m_Operation_Set[i] = D3D12App::Instance()->GenerateTextureBuffer(TexDir_Opr + "set_prism.png");
+		m_Operation_TurnEnd[i] = D3D12App::Instance()->GenerateTextureBuffer(TexDir_Opr + "turn_end.png");
+		m_Operation_Ult[i] = D3D12App::Instance()->GenerateTextureBuffer(TexDir_Opr + "ult.png");
+	}
+
 	// リザルト表示用
 	ResultTimer = 0.0f;
 	ResultTimer_Max = 80.0f * RefreshRate::RefreshRate_Mag;
@@ -314,6 +328,22 @@ void BattleScene::OnDraw()
 	block->Draw();
 
 	Mgr.OnDraw();
+
+	// キー描画
+	if (OperationConfig::Instance()->GetLatestDevice() == OperationConfig::Instance()->KEY_BOARD_MOUSE) {
+		DrawFunc2D::DrawGraph(Vec2(320.0f, 90.0f), m_Operation_Ult[0]);
+		DrawFunc2D::DrawGraph(Vec2(718.0f, 0.0f), m_Operation_Set[0]);
+		DrawFunc2D::DrawGraph(Vec2(105.0f, 621.0f), m_Operation_Pass[0]);
+		DrawFunc2D::DrawGraph(Vec2(374.0f, 655.0f), m_Operation_Left[0]);
+		DrawFunc2D::DrawGraph(Vec2(587.0f, 655.0f), m_Operation_Right[0]);
+	}
+	else {
+		DrawFunc2D::DrawGraph(Vec2(322.0f, 92.0f), m_Operation_Ult[1]);
+		DrawFunc2D::DrawGraph(Vec2(719.0f, 1.0f), m_Operation_Set[1]);
+		DrawFunc2D::DrawGraph(Vec2(108.0f, 623.0f), m_Operation_Pass[1]);
+		DrawFunc2D::DrawGraph(Vec2(357.0f, 670.0f), m_Operation_Left[1]);
+		DrawFunc2D::DrawGraph(Vec2(578.0f, 670.0f), m_Operation_Right[1]);
+	}
 
 	//演出
 	m_playerAttackEffect->Draw();

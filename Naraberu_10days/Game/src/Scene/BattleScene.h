@@ -110,6 +110,14 @@ class BattleScene :
 	std::shared_ptr<KuroEngine::TextureBuffer> m_Done_ControllerTex_Pause;
 	std::shared_ptr<KuroEngine::TextureBuffer> m_DoneTex_Pause;
 
+	std::array<std::shared_ptr<KuroEngine::TextureBuffer>, 2> m_Operation_Done;
+	std::array<std::shared_ptr<KuroEngine::TextureBuffer>, 2> m_Operation_Pass;
+	std::array<std::shared_ptr<KuroEngine::TextureBuffer>, 2> m_Operation_Left;
+	std::array<std::shared_ptr<KuroEngine::TextureBuffer>, 2> m_Operation_Right;
+	std::array<std::shared_ptr<KuroEngine::TextureBuffer>, 2> m_Operation_Set;
+	std::array<std::shared_ptr<KuroEngine::TextureBuffer>, 2> m_Operation_TurnEnd;
+	std::array<std::shared_ptr<KuroEngine::TextureBuffer>, 2> m_Operation_Ult;
+
 	//プレイヤー攻撃演出
 	std::shared_ptr<PlayerAttackEffect>m_playerAttackEffect;
 
