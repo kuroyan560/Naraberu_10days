@@ -123,11 +123,11 @@ void Block::BlockOneDraw(const KuroEngine::Vec2<float> _pos, BlockColor _color)
 	pos1 += ScreenShakeManager::Instance()->GetOffset();
 
 	if (_color == BlockColor::red) {
-		DrawFunc2D::DrawExtendGraph2D(_pos, pos1, lineTex[int(BlockColor::red)]);
+		DrawFunc2D::DrawExtendGraph2D(_pos + ScreenShakeManager::Instance()->GetOffset(), pos1, lineTex[int(BlockColor::red)]);
 	} else if (_color == BlockColor::blue) {
-		DrawFunc2D::DrawExtendGraph2D(_pos, pos1, lineTex[int(BlockColor::blue)]);
+		DrawFunc2D::DrawExtendGraph2D(_pos + ScreenShakeManager::Instance()->GetOffset(), pos1, lineTex[int(BlockColor::blue)]);
 	} else if (_color == BlockColor::yellow) {
-		DrawFunc2D::DrawExtendGraph2D(_pos, pos1, lineTex[int(BlockColor::yellow)]);
+		DrawFunc2D::DrawExtendGraph2D(_pos + ScreenShakeManager::Instance()->GetOffset(), pos1, lineTex[int(BlockColor::yellow)]);
 	}
 
 }

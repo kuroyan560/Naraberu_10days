@@ -111,9 +111,9 @@ void Reticle::Draw(int Index, KuroEngine::Vec2<float> LT, KuroEngine::Vec2<float
 			{ false,false }, { 0.0f,0.0f }, { 1.0f,1.0f }, KuroEngine::DrawFunc2D_Color::FILL_MDOE::MUL);
 	}
 	DrawFunc2D::DrawRotaGraph2D(Vec2(LT.x, RB.y) + ScreenShakeManager::Instance()->GetOffset()
-		, Vec2(0.75f, 0.75f) + ScreenShakeManager::Instance()->GetOffset(), m_Reticle_Timer / 60.0f, m_BigReticleTex, 0.2f);
+		, Vec2(0.75f, 0.75f), m_Reticle_Timer / 60.0f, m_BigReticleTex, 0.2f);
 	DrawFunc2D::DrawRotaGraph2D(Vec2(LT.x, RB.y) + ScreenShakeManager::Instance()->GetOffset()
-		, Vec2(0.65f, 0.65f) + ScreenShakeManager::Instance()->GetOffset(), -m_Reticle_Timer / 63.0f, m_BigReticleTex, 0.2f);
+		, Vec2(0.65f, 0.65f), -m_Reticle_Timer / 63.0f, m_BigReticleTex, 0.2f);
 
 	MaskColor = Mask;
 
