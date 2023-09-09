@@ -125,6 +125,14 @@ void BattleScene::OnUpdate()
 		return;
 	}
 
+	if (ExistUnits::Instance()->volume[0] < 0.5f) {
+		ExistUnits::Instance()->volume[0] += 0.01f;
+		KuroEngine::AudioApp::Instance()->ChangeVolume(ExistUnits::Instance()->bgm[0], ExistUnits::Instance()->volume[0]);
+	}if (ExistUnits::Instance()->volume[1] > 0.0f * ExistUnits::Instance()->nowVolume) {
+		ExistUnits::Instance()->volume[1] -= 0.01f;
+		KuroEngine::AudioApp::Instance()->ChangeVolume(ExistUnits::Instance()->bgm[1], ExistUnits::Instance()->volume[1]);
+	}
+
 	// ウェーブ終了・次ウェーブスタート
 	if (Mgr.ChangeNextWave()) {
 		NextWave();
@@ -198,11 +206,6 @@ void BattleScene::OnUpdate()
 	//リセット
 	if (OperationConfig::Instance()->DebugKeyInputOnTrigger(DIK_I)) {
 		stage->Reset();
-	}
-
-	//ボーナス
-	if (OperationConfig::Instance()->DebugKeyInputOnTrigger(DIK_L)) {
-		stage->SetBouns();
 	}
 
 	// 設置不可時間の更新

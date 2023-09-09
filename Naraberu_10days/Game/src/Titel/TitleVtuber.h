@@ -53,8 +53,9 @@ public:
 	//ステージセレクト選択で横にズレる
 	void SetMoveStageSelect(bool _mouzureteru = false) {
 		if (_mouzureteru) {
-			move = 1500.0f;
+			move = -1500.0f;
 			LR = false;
+			isRightMove = false;
 		} else {
 			isLeftMove = true;
 			moveTimer = 0;
