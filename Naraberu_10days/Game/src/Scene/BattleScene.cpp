@@ -56,6 +56,10 @@ void BattleScene::OnInitialize()
 	m_End_Timer = 0;
 	m_End_Timer_Finish = int(500.0f * RefreshRate::RefreshRate_Mag);
 
+	// ポーズ
+	m_IsPause = false;
+	m_PauseMenu = 0;
+
 	Pl = std::make_shared<Player>();
 	Pl->OnInitialize();
 	Pl->StartTurn();
@@ -103,6 +107,15 @@ void BattleScene::OnInitialize()
 void BattleScene::OnUpdate()
 {
 	KuroEngine::UsersInput* input = KuroEngine::UsersInput::Instance();
+
+	if (KuroEngine::UsersInput::Instance()->KeyOnTrigger(DIK_P)) {
+		m_IsPause = !m_IsPause;
+		m_PauseMenu = 0;
+	}
+
+	if (m_IsPause) {
+		return;
+	}
 
 	// ウェーブ終了・次ウェーブスタート
 	if (Mgr.ChangeNextWave()) {
@@ -209,8 +222,8 @@ void BattleScene::OnDraw()
 		});
 
 	// 背景色
-	DrawFunc2D::DrawBox2D(Vec2(0.0f, 0.0f) + ScreenShakeManager::Instance()->GetOffset()
-		, WinApp::Instance()->GetExpandWinSize() + ScreenShakeManager::Instance()->GetOffset(), Color(50, 49, 59, 255), true);
+	DrawFunc2D::DrawBox2D(Vec2(0.0f, 0.0f)
+		, WinApp::Instance()->GetExpandWinSize(), Color(50, 49, 59, 255), true);
 	// Vキーを押してる間だけ透かしを描画
 	/*if (UsersInput::Instance()->KeyInput(DIK_V)) {
 		DrawFunc2D::DrawExtendGraph2D(Vec2(0.0f, 0.0f), WinApp::Instance()->GetExpandWinSize(), m_SukasiTex);
@@ -252,7 +265,7 @@ void BattleScene::OnDraw()
 
 	Mgr.OnDraw();
 
-	//演出更新
+	//演出
 	m_playerAttackEffect->Draw();
 
 
@@ -263,6 +276,12 @@ void BattleScene::OnDraw()
 	// ステージ終了(敵全滅)
 	else if (m_Stage_End) {
 		GameClearDraw();
+	}
+
+	// Pause
+	if (m_IsPause) {
+		DrawFunc2D::DrawBox2D(Vec2(0.0f, 0.0f)
+			, WinApp::Instance()->GetExpandWinSize(), Color(0.1f, 0.1f, 0.1f, 0.4f), true);
 	}
 }
 

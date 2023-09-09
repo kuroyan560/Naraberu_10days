@@ -94,6 +94,15 @@ class BattleScene :
 	float ResultTimer_Max;
 	float ResultEasing(float time);
 
+	// ポーズ用
+	bool m_IsPause;
+	// 0 : 再開 1 : リトライ 2 : ステージセレクトへ
+	int m_PauseMenu;
+	std::shared_ptr<KuroEngine::TextureBuffer> m_PauseTex;
+	std::shared_ptr<KuroEngine::TextureBuffer> m_ResumeTex_Pause;
+	std::shared_ptr<KuroEngine::TextureBuffer> m_RetryTex_Pause;
+	std::shared_ptr<KuroEngine::TextureBuffer> m_StageSelectTex_Pause;
+
 	//プレイヤー攻撃演出
 	std::shared_ptr<PlayerAttackEffect>m_playerAttackEffect;
 
