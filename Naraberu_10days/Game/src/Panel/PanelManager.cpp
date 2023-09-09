@@ -289,7 +289,7 @@ void PanelManager::BonusCount()
 	//ƒ‰ƒCƒ“”»’è
 	LineProcess();
 
-	ExistUnits::Instance()->m_NowBonusCount = int(bonusData.size());
+	ExistUnits::Instance()->SetBonusCount(int(bonusData.size()));
 
 	nowBonusNum = 0;
 	bonusTimer = 0;

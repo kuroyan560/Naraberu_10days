@@ -18,6 +18,7 @@ public:
 	int m_NowTurn;
 	int m_NowTarget;
 	int m_NowBonusCount = 0;
+	int m_MaxBonusCount = 0;
 
 	// 
 	bool m_ChangeStageSelect = false;
@@ -51,5 +52,12 @@ public:
 
 	void AllClear() {
 		m_Enemys.clear();
+	}
+
+	void SetBonusCount(int _nowBonusCount) {
+		m_NowBonusCount = _nowBonusCount;
+		if (_nowBonusCount > m_MaxBonusCount) {
+			m_MaxBonusCount = _nowBonusCount;
+		}
 	}
 };
