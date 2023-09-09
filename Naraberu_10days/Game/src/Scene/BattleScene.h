@@ -88,6 +88,11 @@ class BattleScene :
 	void GameClearDraw();
 	// ゲームオーバー画面
 	void GameOverDraw();
+	
+	// リザルト表示用
+	float ResultTimer;
+	float ResultTimer_Max;
+	float ResultEasing(float time);
 
 	//プレイヤー攻撃演出
 	std::shared_ptr<PlayerAttackEffect>m_playerAttackEffect;

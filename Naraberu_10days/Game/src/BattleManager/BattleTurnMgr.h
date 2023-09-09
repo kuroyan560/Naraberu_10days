@@ -12,8 +12,10 @@
 
 class BattleTurnMgr
 {
-	// 全体ターン数
+	// 全体ターン数 (個別合算)
 	int m_Whole_Turn_Count;
+	// 全体ターン数 (個別合算)
+	int m_Total_Turn_Count;
 	// 何番目のユニットのターンか
 	int TurnNum;
 	// ターンの経過フレーム
@@ -66,5 +68,8 @@ public:
 
 	// プレイヤーが死んでおり、敗北が確定しているか
 	bool GetDefeat() { return m_IsDefeat; }
+
+	// 合計ターン取得
+	int GetTotalTurn() { return m_Total_Turn_Count; }
 };
 

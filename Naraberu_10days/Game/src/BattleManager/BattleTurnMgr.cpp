@@ -18,6 +18,7 @@ void BattleTurnMgr::OnInitialize(std::shared_ptr<UnitBase> Player, std::vector<s
 		UnitList.emplace_back(en);
 	}
 	m_Whole_Turn_Count = 0;
+	m_Total_Turn_Count = 1;
 	TurnNum = 0;
 	TurnFrameTime = 0;
 	NextGameTimer = 0;
@@ -39,6 +40,7 @@ void BattleTurnMgr::SetUnits(std::shared_ptr<UnitBase> Player, std::vector<std::
 		UnitList.emplace_back(en);
 	}
 	m_Whole_Turn_Count = 0;
+	m_Total_Turn_Count++;
 	TurnNum = 0;
 	TurnFrameTime = 0;
 	NextGameTimer = 0;

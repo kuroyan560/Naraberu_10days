@@ -11,6 +11,15 @@ class TitleVtuber
 		int number;
 	};
 
+	struct BigPrismInfo {
+		//補間回数
+		int easeNum;
+		//どちらの補間を使用するか
+		bool useEase;
+		//裏表
+		bool back;
+	};
+
 public:
 
 	void Initialize();
@@ -38,6 +47,8 @@ private:
 	std::array<ObjectInfo,3> smallPrism;
 	//大きいプリズム
 	std::array<ObjectInfo, 3> bigPrism;
+	//どちらの補間を使用するか
+	std::array<BigPrismInfo,3> bigPrismInfo;
 
 };
 

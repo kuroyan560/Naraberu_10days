@@ -2,8 +2,10 @@
 #include "ForUser/DrawFunc/2D/DrawFunc2D.h"
 
 //補間で使うデータ
-std::array<KuroEngine::Vec2<float>, 4>hokanPos = { {{0.0f, 0.0f},{10.0f, -20.0f},{5.0f, 5.0f},{-5.0f, 10.0f}} };
-std::array<float, 4>hokanAngle = { 0.0f,10.0f * (3.14f / 180.0f),-5.0f * (3.14f / 180.0f),-10.0f * (3.14f / 180.0f) };
+std::array<KuroEngine::Vec2<float>, 4>smallPrismHokanPos = { {{0.0f, 0.0f},{10.0f, -20.0f},{5.0f, 5.0f},{-5.0f, 10.0f}} };
+std::array<float, 4>smallPrismHokanAngle = { 0.0f,10.0f * (3.14f / 180.0f),-5.0f * (3.14f / 180.0f),-10.0f * (3.14f / 180.0f) };
+std::array<KuroEngine::Vec2<float>, 4>bigPrismHokanPos_1 = { {{0.0f, 0.0f},{5.0f, -10.0f},{-5.0f, -15.0f},{5.0f, -5.0f}} };
+std::array<KuroEngine::Vec2<float>, 3>bigPrismHokanPos_2 = { {{-600.0f,100.0f},{0.0f,200.0f},{-600.0f,300.0f}}};
 
 //制御点の集合(vectorコンテナ)、保管する区間の添字、時間経過
 KuroEngine::Vec2<float> splinePosition(const std::vector<KuroEngine::Vec2<float>>& points, size_t startIndex, float t) {
@@ -61,33 +63,59 @@ void TitleVtuber::Initialize()
 	D3D12App::Instance()->GenerateTextureBuffer(bigPrismTex.data(), TexDir + "title_block_particle.png", 3, { 3, 1 });
 
 	for (int i = 0; i < 3; i++) {
-		smallPrism[i].pos = hokanPos[i];
+		smallPrism[i].pos = smallPrismHokanPos[i];
 		smallPrism[i].rota = 0.0f;
 		smallPrism[i].number = 0;
 		smallPrism[i].timer = 0.0f + 20.0f * (2 - i);
+	}
+
+	for (int i = 0; i < 3; i++) {
+		bigPrism[i].pos = smallPrismHokanPos[i];
+		bigPrism[i].rota = 0.0f;
+		bigPrism[i].number = 2;
+		bigPrism[i].timer = 0.0f + 20.0f * (2 - i);
+		bigPrismInfo[i].useEase = true;
+		bigPrismInfo[i].easeNum = 0;
+		bigPrismInfo[i].back = false;
+
 	}
 }
 
 void TitleVtuber::Update()
 {
 	SmallPrismAnimation();
+	BigPrismAnimation();
 }
 
 void TitleVtuber::Draw()
 {
 	using namespace KuroEngine;
-	DrawFunc2D::DrawGraph({ 530.0f,-150.0f }, characterTex);
 
-	std::array<Vec2<float>,3> pos;
-	pos[0] = { 546.0f,95.0f };
-	pos[1] = { 515.0f,145.0f };
-	pos[2] = { 470.0f,220.0f };
+	std::array<Vec2<float>,3> smallPrismPos;
+	smallPrismPos[0] = { 546.0f,95.0f };
+	smallPrismPos[1] = { 515.0f,145.0f };
+	smallPrismPos[2] = { 470.0f,220.0f };
+	
+	std::array<Vec2<float>, 3> bigPrismPos;
+	bigPrismPos[0] = { 1180.0f,95.0f };
+	bigPrismPos[1] = { 1140.0f,220.0f };
+	bigPrismPos[2] = { 1170.0f,360.0f };
 
 	for (int i = 0; i < 3; i++) {
-		//DrawFunc2D::DrawRotaGraph2D({pos[i]},{1.0f,1.0f}, smallPrism[i].rota, smallPrismTex[i]);
-		DrawFunc2D::DrawRotaGraph2D({ pos[i].x + smallPrism[i].pos.x,pos[i].y + smallPrism[i].pos.y }, { 1.0f,1.0f }, smallPrism[i].rota, smallPrismTex[i]);
+		DrawFunc2D::DrawRotaGraph2D({ smallPrismPos[i].x + smallPrism[i].pos.x,smallPrismPos[i].y + smallPrism[i].pos.y }, { 1.0f,1.0f }, smallPrism[i].rota, smallPrismTex[i]);
 	}
 
+	for (int i = 0; i < 3; i++) {
+		if(bigPrismInfo[i].back){continue;}
+		DrawFunc2D::DrawRotaGraph2D({ bigPrismPos[i].x + bigPrism[i].pos.x,bigPrismPos[i].y + bigPrism[i].pos.y }, { 1.0f,1.0f }, 0.0f, bigPrismTex[i]);
+	}
+
+	DrawFunc2D::DrawGraph({ 530.0f,-150.0f }, characterTex);
+
+	for (int i = 0; i < 3; i++) {
+		if (!bigPrismInfo[i].back) { continue; }
+		DrawFunc2D::DrawRotaGraph2D({ bigPrismPos[i].x + bigPrism[i].pos.x,bigPrismPos[i].y + bigPrism[i].pos.y }, { 1.0f,1.0f }, 0.0f, bigPrismTex[i]);
+	}
 }
 
 void TitleVtuber::SmallPrismAnimation()
@@ -95,9 +123,13 @@ void TitleVtuber::SmallPrismAnimation()
 	const float maxTimer=50.0f;
 
 	std::vector<KuroEngine::Vec2<float>> points = {
-	hokanPos[0], hokanPos[0], hokanPos[1], hokanPos[2], hokanPos[3], hokanPos[0], hokanPos[0],hokanPos[1] };
+		smallPrismHokanPos[0], smallPrismHokanPos[0], smallPrismHokanPos[1], smallPrismHokanPos[2],
+		smallPrismHokanPos[3], smallPrismHokanPos[0], smallPrismHokanPos[0], smallPrismHokanPos[1]
+	};
 	std::vector<float> rotas = {
-	hokanAngle[0], hokanAngle[0], hokanAngle[1], hokanAngle[2], hokanAngle[3], hokanAngle[0], hokanAngle[0],hokanAngle[1] };
+		smallPrismHokanAngle[0], smallPrismHokanAngle[0], smallPrismHokanAngle[1], smallPrismHokanAngle[2],
+		smallPrismHokanAngle[3], smallPrismHokanAngle[0], smallPrismHokanAngle[0], smallPrismHokanAngle[1]
+	};
 
 	for (auto& i : smallPrism) {
 		i.timer++;
@@ -112,14 +144,86 @@ void TitleVtuber::SmallPrismAnimation()
 				i.timer = 0.0f;
 			} else {
 				i.number = 0;
+				i.timer = 0;
 			}
 		}
 		i.pos = splinePosition(points, i.number, timeRate);
 		i.rota= splinePosition(rotas, i.number, timeRate);
 	}
-
 }
 
 void TitleVtuber::BigPrismAnimation()
 {
+	const float maxTimer = 60.0f;
+
+	std::vector<KuroEngine::Vec2<float>> points_1 = {
+	bigPrismHokanPos_1[0], bigPrismHokanPos_1[0], bigPrismHokanPos_1[1], bigPrismHokanPos_1[2],
+	bigPrismHokanPos_1[3], bigPrismHokanPos_1[0], bigPrismHokanPos_1[0],
+	bigPrismHokanPos_2[2], bigPrismHokanPos_2[1],bigPrismHokanPos_2[0], bigPrismHokanPos_1[0], bigPrismHokanPos_1[0], };
+
+	for (int i=0;i<3;i++) {
+		bigPrism[i].timer++;
+
+		float timeRate = bigPrism[i].timer / maxTimer;
+
+		if (timeRate >= 1.0f)
+		{
+			if (bigPrismInfo[i].useEase) {
+				if (bigPrism[i].number < points_1.size() - 3 - 5) {
+					bigPrism[i].number += 1;
+					timeRate -= 1.0f;
+					bigPrism[i].timer = 0.0f;
+				} else {
+					bigPrism[i].number = 0;
+				}
+
+				if (bigPrism[i].number == 0) {
+					bigPrismInfo[i].easeNum++;
+					if (bigPrismInfo[i].easeNum == 3) {
+						bigPrismInfo[i].useEase = false;
+					}
+				}
+			} else {
+				if (bigPrism[i].number < points_1.size() - 3) {
+					bigPrism[i].number += 1;
+					timeRate -= 1.0f;
+					bigPrism[i].timer = 0.0f;
+					bigPrismInfo[i].back = !bigPrismInfo[i].back;
+				} else {
+					bigPrism[i].number = 0;
+				}
+				if (bigPrism[i].number == 0) {
+					bigPrismInfo[i].useEase = true;
+					bigPrismInfo[i].back = false;
+					bigPrismInfo[i].easeNum = 0;
+				}
+			}
+		}
+		bigPrism[i].pos = splinePosition(points_1, bigPrism[i].number, timeRate);
+	}
+
+		//for (auto& i : bigPrism) {
+		//	i.timer++;
+
+		//	float timeRate = i.timer / maxTimer;
+
+		//	if (timeRate >= 1.0f)
+		//	{
+		//		if (i.number < points_1.size() - 3) {
+		//			i.number += 1;
+		//			timeRate -= 1.0f;
+		//			i.timer = 0.0f;
+		//			back = !back;
+		//		} else {
+		//			i.number = 0;
+		//		}
+		//		if (i.number == 0) {
+		//			useEase = true;
+		//			useEase = true;
+		//			back = false;
+		//			easeNum = 0;
+		//		}
+		//	}
+		//	i.pos = splinePosition(points_1, i.number, timeRate);
+		//}
 }
