@@ -53,7 +53,7 @@ float splinePosition(const std::vector<float>& points, size_t startIndex, float 
 	return position;
 }
 
-void TitleVtuber::Initialize()
+TitleVtuber::TitleVtuber()
 {
 	using namespace KuroEngine;
 	std::string TexDir = "resource/user/tex/title_scene/";
@@ -62,6 +62,12 @@ void TitleVtuber::Initialize()
 	D3D12App::Instance()->GenerateTextureBuffer(smallPrismTex.data(), TexDir + "title_prism_particle.png", 3, { 3, 1 });
 	D3D12App::Instance()->GenerateTextureBuffer(bigPrismTex.data(), TexDir + "title_block_particle.png", 3, { 3, 1 });
 
+	characterShake.m_val = { 128.0f,128.0f };
+	characterShake.m_interval = 300.0f;
+}
+
+void TitleVtuber::Initialize()
+{
 	for (int i = 0; i < 3; i++) {
 		smallPrism[i].pos = smallPrismHokanPos[i];
 		smallPrism[i].rota = 0.0f;
@@ -79,12 +85,16 @@ void TitleVtuber::Initialize()
 		bigPrismInfo[i].back = false;
 
 	}
+
+	characterShake.Init();
 }
 
 void TitleVtuber::Update()
 {
 	SmallPrismAnimation();
 	BigPrismAnimation();
+
+	characterShake.Update(1.0f, XMMatrixIdentity());
 }
 
 void TitleVtuber::Draw()
@@ -110,7 +120,8 @@ void TitleVtuber::Draw()
 		DrawFunc2D::DrawRotaGraph2D({ bigPrismPos[i].x + bigPrism[i].pos.x,bigPrismPos[i].y + bigPrism[i].pos.y }, { 1.0f,1.0f }, 0.0f, bigPrismTex[i]);
 	}
 
-	DrawFunc2D::DrawGraph({ 530.0f,-150.0f }, characterTex);
+	Vec2<float>charaShakeAmount = { characterShake.GetOffset().x,characterShake.GetOffset().y };
+	DrawFunc2D::DrawGraph(Vec2<float>(530.0f, -90.0f) + charaShakeAmount, characterTex);
 
 	for (int i = 0; i < 3; i++) {
 		if (!bigPrismInfo[i].back) { continue; }
