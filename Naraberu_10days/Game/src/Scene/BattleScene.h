@@ -87,6 +87,11 @@ class BattleScene :
 	void GameClearDraw();
 	// ゲームオーバー画面
 	void GameOverDraw();
+	
+	// リザルト表示用
+	float ResultTimer;
+	float ResultTimer_Max;
+	float ResultEasing(float time);
 
 public:
 	BattleScene();
