@@ -362,7 +362,8 @@ void PanelManager::BonusDirection()
 	bonusTimer++;
 	if (bonusTimer > maxTimer) {
 		if (int(bonusData.size()) == nowBonusNum) {
-			isBonusDirection == Bonas::non;
+			isBonusDirection = Bonas::non;
+			ExistUnits::Instance()->m_IsEndBonusCount = true;
 			Reset();
 			return;
 		}

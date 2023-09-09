@@ -35,6 +35,9 @@ void BattleScene::OnInitialize()
 	m_PauseMenu = 0;
 	m_Already_Selected_Pause = false;
 
+
+	m_Already_Selected = false;
+
 	Pl = std::make_shared<Player>();
 	Pl->OnInitialize();
 	Pl->StartTurn();

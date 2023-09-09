@@ -19,6 +19,8 @@ public:
 	int m_NowTarget;
 	int m_NowBonusCount = 0;
 	int m_MaxBonusCount = 0;
+	// ボーナスカウント演出が終わったかどうか
+	bool m_IsEndBonusCount = false;
 
 	// 
 	bool m_ChangeStageSelect = false;

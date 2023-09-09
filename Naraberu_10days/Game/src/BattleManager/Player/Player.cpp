@@ -31,7 +31,7 @@ Player::Player()
 	D3D12App::Instance()->GenerateTextureBuffer(&m_NumberTex.front(), TexDir + "player_hp_number.png", 11, Vec2(11, 1));
 
 	TurnChangeTimer = 0;
-	TurnChangeTime_Fin = int(150.0f * RefreshRate::RefreshRate_Mag);
+	TurnChangeTime_Fin = int(100.0f * RefreshRate::RefreshRate_Mag);
 
 	//ウルト演出系
 	const KuroEngine::Vec2<float> size = { 57.5f ,57.5f };
@@ -53,8 +53,9 @@ void Player::OnUpdate()
 
 	if (TurnChangeTimer == 1) {
 		TurnEnd_BeforeTurnChange();
+		TurnChangeTimer++;
 	}
-	if (TurnChangeTimer > 0) {
+	if (TurnChangeTimer > 0 && ExistUnits::Instance()->m_IsEndBonusCount) {
 		TurnChangeTimer++;
 	}
 	if (TurnChangeTimer == TurnChangeTime_Fin) {
@@ -200,6 +201,7 @@ void Player::TurnEnd_BeforeTurnChange()
 	m_IsEndTurnFunc = true;
 	// ここにボーナスアタックとか書く
 	// マップをリセット
+	ExistUnits::Instance()->m_IsEndBonusCount = false;
 	ExistUnits::Instance()->m_StageManager->SetBouns();
 }
 
