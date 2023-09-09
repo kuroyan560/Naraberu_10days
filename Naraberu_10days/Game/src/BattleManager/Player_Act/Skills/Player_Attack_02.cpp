@@ -42,7 +42,8 @@ void Player_Attack_02::Action_Update()
 		//m_Targets[0]->Damage(m_Damage);
 		// 全てのターゲットに攻撃する
 		for (auto& tgt : m_Targets) {
-			tgt->Damage(m_Damage * 2000);
+			//tgt->Damage(m_Damage * 2000);
+			tgt->Damage(m_Damage);
 		}
 
 		// アルティメットポイントを加算
