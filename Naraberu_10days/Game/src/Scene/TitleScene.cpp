@@ -3,6 +3,7 @@
 #include "../../src/engine/DirectX12/D3D12App.h"
 #include "../BattleManager/ExistUnits.h"
 #include "ForUser/DrawFunc/2D/DrawFunc2D.h"
+#include"../SoundConfig.h"
 
 void TitleScene::OnInitialize()
 {
@@ -103,12 +104,14 @@ void TitleScene::Title()
 		if (selectNum >= Select::size) {
 			selectNum = Select(int(Select::size) - 1);
 		}
+		SoundConfig::Instance()->Play(SoundConfig::SE_SELECT);
 	}
 	if (OperationConfig::Instance()->GetSelectVec(OperationConfig::SELECT_VEC::SELECT_VEC_UP)) {
 		selectNum = Select(int(selectNum) - 1);
 		if (selectNum < Select::stageSelect) {
 			selectNum = Select::stageSelect;
 		}
+		SoundConfig::Instance()->Play(SoundConfig::SE_SELECT);
 	}
 
 	//ステージセレクトへ
@@ -116,12 +119,14 @@ void TitleScene::Title()
 		OperationConfig::INPUT_PATTERN::ON_TRIGGER) && selectNum == Select::stageSelect) {
 		onSelect = true;
 		title->SetIsStageSelectInMove();
+		SoundConfig::Instance()->Play(SoundConfig::SE_DONE);
 	}
 
 	//ゲームを落とす処理
 	if (OperationConfig::Instance()->GetOperationInput(OperationConfig::OPERATION_TYPE::DONE,
 		OperationConfig::INPUT_PATTERN::ON_TRIGGER) && selectNum == Select::exit) {
 		KuroEngine::KuroEngineDevice::Instance()->GameEnd();
+		SoundConfig::Instance()->Play(SoundConfig::SE_DONE);
 	}
 }
 
@@ -131,12 +136,14 @@ void TitleScene::StageSelect()
 	if (OperationConfig::Instance()->GetOperationInput(OperationConfig::OPERATION_TYPE::DONE, OperationConfig::INPUT_PATTERN::ON_TRIGGER)) {
 		ExistUnits::Instance()->m_StageName = "Stage" + std::to_string(title->GetStageNum());
 		KuroEngine::KuroEngineDevice::Instance()->ChangeScene("Battle", &m_Fade);
+		SoundConfig::Instance()->Play(SoundConfig::SE_DONE);
 	}
 
 	//タイトルへ
 	if (OperationConfig::Instance()->GetOperationInput(OperationConfig::OPERATION_TYPE::CANCEL, OperationConfig::INPUT_PATTERN::ON_TRIGGER)) {
 		onSelect = false;
 		title->SetIsStageSelectOutMove();
+		SoundConfig::Instance()->Play(SoundConfig::SE_CANCEL);
 	}
 
 	//移動
@@ -144,10 +151,12 @@ void TitleScene::StageSelect()
 		if (!title->GetIsStageMove()) {
 			title->SetStageSelectMove(true);
 		}
+		SoundConfig::Instance()->Play(SoundConfig::SE_SELECT);
 	}
 	if (OperationConfig::Instance()->GetSelectVec(OperationConfig::SELECT_VEC::SELECT_VEC_UP)) {
 		if (!title->GetIsStageMove()) {
 			title->SetStageSelectMove(false);
 		}
+		SoundConfig::Instance()->Play(SoundConfig::SE_SELECT);
 	}
 }

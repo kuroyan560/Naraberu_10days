@@ -2,6 +2,7 @@
 #include "FrameWork/UsersInput.h"
 #include "ForUser/DrawFunc/2D/DrawFunc2D.h"
 #include"../OperationConfig.h"
+#include"../SoundConfig.h"
 
 #include "../Effect/ScreenShakeManager.h"
 
@@ -131,11 +132,13 @@ void BlockManager::ChoiceBlock()
 		SetOneChangeBlock(int(ObjectType::use), int(ObjectType::choice1));
 		//使用ブロック変更処理
 		block[int(ObjectType::use)].block->ChangeBlock({ -1,-1 }, shape[block[int(ObjectType::use)].blockNum]);
+		SoundConfig::Instance()->Play(SoundConfig::SE_SELECT_PRISM);
 	} else if (OperationConfig::Instance()->GetOperationInput(OperationConfig::SELECT_LEFT_PRISM, OperationConfig::ON_TRIGGER)) {
 		nowChoice = 1;
 		SetOneChangeBlock(int(ObjectType::use), int(ObjectType::choice2));
 		//使用ブロック変更処理
 		block[int(ObjectType::use)].block->ChangeBlock({ -1,-1 }, shape[block[int(ObjectType::use)].blockNum]);
+		SoundConfig::Instance()->Play(SoundConfig::SE_SELECT_PRISM);
 	}
 
 	input = nullptr;

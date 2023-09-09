@@ -12,6 +12,8 @@
 #include "../BattleManager/Player_Act/Skills/PlayerSkills.h"
 #include "../BattleManager/Enemy_Act/EnemyActList.h"
 
+#include"../SoundConfig.h"
+
 #include "../Effect/ScreenShakeManager.h"
 
 void BattleScene::OnInitialize()
@@ -137,18 +139,21 @@ void BattleScene::OnUpdate()
 				OperationConfig::Instance()->GetTargetChangeVec(OperationConfig::SELECT_VEC_UP)) {
 				if (m_GameOverSelectIndex > 0) {
 					m_GameOverSelectIndex--;
+					SoundConfig::Instance()->Play(SoundConfig::SE_SELECT);
 				}
 			}
 			if (OperationConfig::Instance()->GetSelectVec(OperationConfig::SELECT_VEC::SELECT_VEC_DOWN) || 
 				OperationConfig::Instance()->GetTargetChangeVec(OperationConfig::SELECT_VEC_DOWN)) {
 				if (m_GameOverSelectIndex < 1) {
 					m_GameOverSelectIndex++;
+					SoundConfig::Instance()->Play(SoundConfig::SE_SELECT);
 				}
 			}
 			// Œˆ’è
 			if (OperationConfig::Instance()->GetOperationInput(OperationConfig::OPERATION_TYPE::DONE, OperationConfig::INPUT_PATTERN::ON_TRIGGER)
 				&& m_End_Timer > 1) {
 				m_Already_Selected = true;
+				SoundConfig::Instance()->Play(SoundConfig::SE_DONE);
 				// ƒ^ƒCƒgƒ‹‚Ö
 				if (m_GameOverSelectIndex == 1) {
 					ExistUnits::Instance()->m_ChangeStageSelect = true;
@@ -174,6 +179,7 @@ void BattleScene::OnUpdate()
 			&& m_End_Timer > 1) {
 			ExistUnits::Instance()->m_ChangeStageSelect = true;
 			KuroEngine::KuroEngineDevice::Instance()->ChangeScene("title", &m_Fade);
+			SoundConfig::Instance()->Play(SoundConfig::SE_DONE);
 		}
 	}
 

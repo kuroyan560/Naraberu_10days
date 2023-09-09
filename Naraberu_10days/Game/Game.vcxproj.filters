@@ -424,6 +424,9 @@
     <ClCompile Include="src\Effect\ScreenShakeManager.cpp">
       <Filter>src\user\Effect</Filter>
     </ClCompile>
+    <ClCompile Include="src\SoundConfig.cpp">
+      <Filter>src\user</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="..\..\src\engine\KuroEngineDevice.h">
@@ -803,6 +806,9 @@
     </ClInclude>
     <ClInclude Include="src\Effect\ScreenShakeManager.h">
       <Filter>src\user\Effect</Filter>
+    </ClInclude>
+    <ClInclude Include="src\SoundConfig.h">
+      <Filter>src\user</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>

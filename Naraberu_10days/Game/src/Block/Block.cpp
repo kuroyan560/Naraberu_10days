@@ -5,6 +5,7 @@
 #include "BaseInformation.h"
 #include "../Panel/PanelManager.h"
 #include"../OperationConfig.h"
+#include"../SoundConfig.h"
 
 #include "../Effect/ScreenShakeManager.h"
 
@@ -64,6 +65,7 @@ void Block::Move()
 {
 	KuroEngine::Vec2<int> max = PanelManager::GetMapMax();
 	KuroEngine::UsersInput* input = KuroEngine::UsersInput::Instance();
+	auto before = pos;
 	if (OperationConfig::Instance()->GetMoveVec(OperationConfig::SELECT_VEC_LEFT)) {
 		if (pos.x <= -shapeMin.x) { return; }
 		pos.x -= 1;
@@ -77,7 +79,11 @@ void Block::Move()
 		if (pos.y >= max.y - 1 - shapeMax.y) { return; }
 		pos.y += 1;
 	}
-	input = nullptr;
+
+	if (before != pos)
+	{
+		SoundConfig::Instance()->Play(SoundConfig::SE_SELECT);
+	}
 }
 
 void Block::ChangeBlock(const KuroEngine::Vec2<int> _mapchipNum, const std::vector<KuroEngine::Vec2<int>> _shape)
