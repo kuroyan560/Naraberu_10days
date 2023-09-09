@@ -29,6 +29,22 @@ class BattleTurnMgr
 
 	// 画像
 	std::shared_ptr<KuroEngine::TextureBuffer> m_CutInTex;
+	// ターンエンド
+	bool m_Selected_TurnEnd;
+	bool m_Checked_TurnEnd;
+	int m_Selected_TurnEnd_Timer;
+	float m_Scaling_Timer;
+	float m_Scaling_Timer_Max;
+	bool m_Moving_Flag;
+	float m_Moving_Timer;
+	float m_Moving_Timer_Max;
+	std::shared_ptr<KuroEngine::TextureBuffer> m_TurnEndTex;
+	std::shared_ptr<KuroEngine::TextureBuffer> m_TurnEnd_EnterTex;
+	std::shared_ptr<KuroEngine::TextureBuffer> m_TurnEnd_Crtl_EnterTex;
+	std::shared_ptr<KuroEngine::TextureBuffer> m_TurnEnd_SelectedTex;
+	void TurnEndButtonUpdate();
+	void TurnEndButtonDraw();
+	float ResultEasing(float time);
 
 	// 敗北フラグ
 	bool m_IsDefeat;
@@ -71,5 +87,8 @@ public:
 
 	// 合計ターン取得
 	int GetTotalTurn() { return m_Total_Turn_Count; }
+
+	// ターンエンドボタン選択中か
+	bool GetSelectedTurnEnd() { return m_Selected_TurnEnd; }
 };
 

@@ -1,5 +1,6 @@
 #include "TitleVtuber.h"
 #include "ForUser/DrawFunc/2D/DrawFunc2D.h"
+#include "ForUser/DrawFunc/2D/DrawFunc2D_Color.h"
 
 //補間で使うデータ
 std::array<KuroEngine::Vec2<float>, 4>smallPrismHokanPos = { {{0.0f, 0.0f},{10.0f, -20.0f},{5.0f, 5.0f},{-5.0f, 10.0f}} };
@@ -111,18 +112,46 @@ void TitleVtuber::Draw()
 	bigPrismPos[1] = { 1140.0f,220.0f };
 	bigPrismPos[2] = { 1170.0f,360.0f };
 
+	//小プリズム
 	for (int i = 0; i < 3; i++) {
 		DrawFunc2D::DrawRotaGraph2D({ smallPrismPos[i].x + smallPrism[i].pos.x,smallPrismPos[i].y + smallPrism[i].pos.y }, { 1.0f,1.0f }, smallPrism[i].rota, smallPrismTex[i]);
 	}
 
+	const std::array<Color, 3> prismColor = { {{553,254,137,130} ,{94,253,274,130},{255,93,204,130}} };
+
+	//軌跡裏
+	float size = 0;
 	for (int i = 0; i < 3; i++) {
-		if(bigPrismInfo[i].back){continue;}
+		for (auto& m : bigPrismInfo[i].trajectory) {
+			size += 0.02f;
+			if (m.back || !m.isTrajectoryDraw) { continue; }
+			DrawFunc2D_Color::DrawRotaGraph2D({ bigPrismPos[i].x + m.pos.x,bigPrismPos[i].y + m.pos.y },
+				{ 1.0f - size,1.0f - size }, 0.0f, bigPrismTex[i], prismColor[i]);
+		}
+	}
+
+	//大プリズム裏
+	for (int i = 0; i < 3; i++) {
+		if (bigPrismInfo[i].back) { continue; }
 		DrawFunc2D::DrawRotaGraph2D({ bigPrismPos[i].x + bigPrism[i].pos.x,bigPrismPos[i].y + bigPrism[i].pos.y }, { 1.0f,1.0f }, 0.0f, bigPrismTex[i]);
 	}
 
+	//キャラ
 	Vec2<float>charaShakeAmount = { characterShake.GetOffset().x,characterShake.GetOffset().y };
 	DrawFunc2D::DrawGraph(Vec2<float>(530.0f, -90.0f) + charaShakeAmount, characterTex);
 
+	//軌跡表
+	size = 0;
+	for (int i = 0; i < 3; i++) {
+		for (auto& m : bigPrismInfo[i].trajectory) {
+			size += 0.02f;
+			if (!m.back || !m.isTrajectoryDraw) { continue; }
+			DrawFunc2D_Color::DrawRotaGraph2D({ bigPrismPos[i].x + m.pos.x,bigPrismPos[i].y + m.pos.y },
+				{ 1.0f - size,1.0f - size }, 0.0f, bigPrismTex[i], prismColor[i]);
+		}
+	}
+
+	//大プリズム表
 	for (int i = 0; i < 3; i++) {
 		if (!bigPrismInfo[i].back) { continue; }
 		DrawFunc2D::DrawRotaGraph2D({ bigPrismPos[i].x + bigPrism[i].pos.x,bigPrismPos[i].y + bigPrism[i].pos.y }, { 1.0f,1.0f }, 0.0f, bigPrismTex[i]);
@@ -194,6 +223,8 @@ void TitleVtuber::BigPrismAnimation()
 						bigPrismInfo[i].useEase = false;
 					}
 				}
+
+				bigPrismInfo[i].trajectory[0].isTrajectoryDraw = false;
 			} else {
 				if (bigPrism[i].number < points_1.size() - 3) {
 					bigPrism[i].number += 1;
@@ -208,8 +239,21 @@ void TitleVtuber::BigPrismAnimation()
 					bigPrismInfo[i].back = false;
 					bigPrismInfo[i].easeNum = 0;
 				}
+
+				if (bigPrism[i].number > 3) {
+					bigPrismInfo[i].trajectory[0].isTrajectoryDraw = true;
+				}
 			}
 		}
+
+		//軌跡記録
+		bigPrismInfo[i].trajectory[0].back = bigPrismInfo[i].back;
+		bigPrismInfo[i].trajectory[0].pos = bigPrism[i].pos;
+
+		for (int trajectoryNum = TrajectorySize-1; trajectoryNum > 0; trajectoryNum--) {
+			bigPrismInfo[i].trajectory[trajectoryNum] = bigPrismInfo[i].trajectory[trajectoryNum - 1];
+		}
+
 		bigPrism[i].pos = splinePosition(points_1, bigPrism[i].number, timeRate);
 	}
 

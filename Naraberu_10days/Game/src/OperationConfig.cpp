@@ -284,6 +284,19 @@ bool OperationConfig::CheckAllOperationInput()
 	return false;
 }
 
+bool OperationConfig::CheckAllOperationInputTrigger()
+{
+	//ƒ{ƒ^ƒ““ü—Í
+	for (int ope = 0; ope < OPERATION_TYPE_NUM; ++ope)
+	{
+		if (GetOperationInput((OPERATION_TYPE)ope, ON_TRIGGER))
+		{
+			return true;
+		}
+	}
+	return false;
+}
+
 bool OperationConfig::DebugKeyInputOnTrigger(int arg_keyCode)
 {
 	if (!m_isDebug)return false;

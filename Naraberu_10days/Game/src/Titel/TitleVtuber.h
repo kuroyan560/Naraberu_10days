@@ -5,11 +5,21 @@
 
 class TitleVtuber
 {
+	static const int TrajectorySize=10;
 	struct ObjectInfo {
 		KuroEngine::Vec2<float> pos;
 		float rota;
 		float timer;
 		int number;
+	};
+
+	struct Trajectory {
+		//ãOê’ï`âÊ
+		bool isTrajectoryDraw;
+		//ç¿ïW
+		KuroEngine::Vec2<float> pos;
+		//ó†ï\
+		bool back;
 	};
 
 	struct BigPrismInfo {
@@ -19,6 +29,8 @@ class TitleVtuber
 		bool useEase;
 		//ó†ï\
 		bool back;
+		//ãOê’
+		std::array<Trajectory, TrajectorySize> trajectory;
 	};
 
 public:

@@ -10,6 +10,119 @@
 #include "Reticle/Reticle.h"
 #include"../OperationConfig.h"
 
+void BattleTurnMgr::TurnEndButtonUpdate()
+{
+	using namespace KuroEngine;
+
+	// プレイヤーターンのみ
+	if (TurnNum == 0 && UnitList[0]->IsAlive() && AliveEnemys()) {
+		// ターンエンドボタンが押された(一回目)
+		if (!m_Selected_TurnEnd && !m_Checked_TurnEnd ) {
+			if (OperationConfig::Instance()->GetOperationInput(OperationConfig::END_TURN, OperationConfig::ON_TRIGGER)) {
+				m_Selected_TurnEnd = true;
+			}
+		}
+		// 2回目以降
+		else if (m_Selected_TurnEnd) {
+			// ターンエンドボタンが押された
+			if (OperationConfig::Instance()->GetOperationInput(OperationConfig::END_TURN, OperationConfig::ON_TRIGGER)) {
+				m_Checked_TurnEnd = true;
+				m_Moving_Flag = true;
+				GetUnitPtr<Player>(UnitList[0])->TurnEndTrigger();
+			}
+			// それ以外のボタンが押された
+			else if (OperationConfig::Instance()->CheckAllOperationInputTrigger()) {
+				m_Selected_TurnEnd = false;
+			}
+		}
+	}
+
+	// 移動フラグが立ってる時(ターンエンド確定時)
+	if (m_Moving_Flag) {
+		m_Moving_Timer < m_Moving_Timer_Max ? m_Moving_Timer++ : 0;
+	}
+	else {
+		m_Moving_Timer > 0 ? m_Moving_Timer-- : m_Moving_Timer = 0;
+	}
+
+	// 1回目の入力があり待機状態が継続している時
+	if (m_Selected_TurnEnd) {
+		// タイマーの更新
+		m_Selected_TurnEnd_Timer++;
+		m_Scaling_Timer < m_Scaling_Timer_Max ? m_Scaling_Timer++ : 0;
+	}
+	// 待機状態ではないとき
+	else {
+		// タイマーの更新
+		m_Selected_TurnEnd_Timer > 0 ? m_Selected_TurnEnd_Timer-- : m_Selected_TurnEnd_Timer = 0;
+		m_Scaling_Timer > 0 ? m_Scaling_Timer-- : m_Scaling_Timer = 0;
+	}
+}
+
+void BattleTurnMgr::TurnEndButtonDraw()
+{
+	using namespace KuroEngine;
+
+	// SURE大きさ
+	Vec2 SureTexSize_Int = m_TurnEnd_SelectedTex->GetGraphSize();
+	Vec2 SureTexSize = Vec2(float(SureTexSize_Int.x), float(SureTexSize_Int.y));
+	Vec2 SureRB = Vec2(930.0f, 583.0f);
+
+	// スケール
+	float Scale_Value = m_Scaling_Timer / m_Scaling_Timer_Max;
+	Vec2 Scale_Size = SureTexSize * (Scale_Value > 1.0f ? 1.0f : Scale_Value);
+
+	// 位置
+	float Moving_Pars = m_Moving_Timer / m_Moving_Timer_Max;
+	Vec2 Moving_Pos = Vec2(0.0f, 400.0f - ResultEasing(Moving_Pars) * 400.0f);
+
+	// 1回目の入力があり待機状態が継続している時
+	if (m_Selected_TurnEnd) {
+		DrawFunc2D::DrawExtendGraph2D(SureRB - Scale_Size + Moving_Pos, SureRB + Moving_Pos, m_TurnEnd_SelectedTex);
+	}
+	// 待機状態ではないとき
+	else {
+		DrawFunc2D::DrawExtendGraph2D(SureRB - Scale_Size + Moving_Pos, SureRB + Moving_Pos, m_TurnEnd_SelectedTex);
+	}
+
+	Vec2 EndButton_Size_Int = m_TurnEndTex->GetGraphSize();
+	Vec2 EndButton_Size = Vec2(float(EndButton_Size_Int.x), float(EndButton_Size_Int.y));
+	Vec2 EndButton_LT = Vec2(893.0f, 559.0f);
+	Vec2 EndButton_Center = EndButton_LT + EndButton_Size / 2.0f;
+	DrawFunc2D::DrawExtendGraph2D(EndButton_Center - EndButton_Size / 2.0f + Moving_Pos, EndButton_Center + EndButton_Size / 2.0f + Moving_Pos, m_TurnEndTex);
+
+	if (OperationConfig::Instance()->GetLatestDevice() == OperationConfig::Instance()->KEY_BOARD_MOUSE) {
+		Vec2 EnterButton_Size_Int = m_TurnEnd_EnterTex->GetGraphSize();
+		Vec2 EnterButton_Size = Vec2(float(EnterButton_Size_Int.x), float(EnterButton_Size_Int.y));
+		Vec2 Height_ = Vec2(0.0f, EnterButton_Size.y / 2.0f - 8.0f);
+
+		DrawFunc2D::DrawExtendGraph2D(EndButton_Center - EnterButton_Size / 2.0f + Height_ + Moving_Pos,
+			EndButton_Center + EnterButton_Size / 2.0f + Height_ + Moving_Pos, m_TurnEnd_EnterTex);
+	}
+	else {
+		Vec2 EnterButton_Size_Int = m_TurnEnd_Crtl_EnterTex->GetGraphSize();
+		Vec2 EnterButton_Size = Vec2(float(EnterButton_Size_Int.x), float(EnterButton_Size_Int.y));
+		Vec2 Height_ = Vec2(0.0f, EnterButton_Size.y / 2.0f - 8.0f);
+
+		DrawFunc2D::DrawExtendGraph2D(EndButton_Center - EnterButton_Size / 2.0f + Height_ + Moving_Pos,
+			EndButton_Center + EnterButton_Size / 2.0f + Height_ + Moving_Pos, m_TurnEnd_Crtl_EnterTex);
+	}
+}
+
+float BattleTurnMgr::ResultEasing(float time)
+{
+	float t = time;
+	if (t > 1.0f) {
+		t = 1.0f;
+	}
+	const float c1 = 1.70158f;
+	const float c2 = c1 * 1.525f;
+	float Ret = t < 0.5f
+		? (powf(2.0f * t, 2.0f) * ((c2 + 1.0f) * 2.0f * t - c2)) / 2.0f
+		: (powf(2.0f * t - 2.0f, 2.0f) * ((c2 + 1.0f) * (t * 2.0f - 2.0f) + c2) + 2.0f) / 2.0f;
+	return 1.0f - Ret;
+}
+
 void BattleTurnMgr::OnInitialize(std::shared_ptr<UnitBase> Player, std::vector<std::shared_ptr<UnitBase>> Enemys)
 {
 	UnitList.clear();
@@ -28,6 +141,22 @@ void BattleTurnMgr::OnInitialize(std::shared_ptr<UnitBase> Player, std::vector<s
 	using namespace KuroEngine;
 	std::string TexDir = "resource/user/tex/battle_scene/";
 	m_CutInTex = D3D12App::Instance()->GenerateTextureBuffer(TexDir + "player_turn.png");
+
+	// ターンエンド
+	m_Selected_TurnEnd = false;
+	m_Checked_TurnEnd = false;
+	m_Selected_TurnEnd_Timer = 0;
+	m_Scaling_Timer = 0;
+	m_Scaling_Timer_Max = 20.0f * RefreshRate::RefreshRate_Mag;
+	m_Moving_Flag = false;
+	m_Moving_Timer = 0;
+	m_Moving_Timer_Max = 80.0f * RefreshRate::RefreshRate_Mag;
+
+	m_TurnEndTex = D3D12App::Instance()->GenerateTextureBuffer(TexDir + "turn_end.png");
+	m_TurnEnd_EnterTex = D3D12App::Instance()->GenerateTextureBuffer(TexDir + "/clear/done_key.png");
+	m_TurnEnd_Crtl_EnterTex = D3D12App::Instance()->GenerateTextureBuffer(TexDir + "/clear/done_controller.png");
+	m_TurnEnd_SelectedTex = D3D12App::Instance()->GenerateTextureBuffer(TexDir + "turn_end_sure.png");
+
 	// レティクル
 	Reticle::Instance()->SetBattleTurnManager(this);
 }
@@ -44,6 +173,12 @@ void BattleTurnMgr::SetUnits(std::shared_ptr<UnitBase> Player, std::vector<std::
 	TurnNum = 0;
 	TurnFrameTime = 0;
 	NextGameTimer = 0;
+	// ターンエンド
+	m_Selected_TurnEnd = false;
+	m_Checked_TurnEnd = false;
+	m_Moving_Flag = false;
+	m_Scaling_Timer_Max = 20.0f * RefreshRate::RefreshRate_Mag;
+
 	ExistUnits::Instance()->m_NowTarget = 0;
 	m_IsDefeat = false;
 }
@@ -80,6 +215,8 @@ void BattleTurnMgr::OnUpdate()
 		Update_NextWave();
 	}
 
+	TurnEndButtonUpdate();
+
 	// 通常の更新処理
 	if (EnemyAlive && UnitList[TurnNum]->IsAlive() && UnitList[0]->IsAlive()) {
 		Update_Battle();
@@ -115,6 +252,9 @@ void BattleTurnMgr::OnDraw()
 
 	// プレイヤースキル描画
 	PlayerSkills::PlayerSkillMgr::Instance()->Draw();
+
+	// ターンエンドボタン
+	TurnEndButtonDraw();
 
 	using namespace KuroEngine;
 	// カットイン中であれば
@@ -168,6 +308,11 @@ void BattleTurnMgr::Update_Battle()
 			// 生きてるユニットのターン
 			if (UnitList[TurnNum]->IsAlive()) {
 				UnitList[TurnNum]->StartTurn();
+				if (TurnNum == 0) {
+					m_Moving_Flag = false;
+				}
+				m_Checked_TurnEnd = false;
+				m_Selected_TurnEnd = false;
 				NextTurnStart();
 				break;
 			}

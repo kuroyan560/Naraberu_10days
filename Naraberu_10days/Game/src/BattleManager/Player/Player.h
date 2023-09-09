@@ -48,6 +48,9 @@ public:
 	// ウルトが溜まった時の演出
 	void UltMaxEffect();
 
+	// ターンエンド
+	void TurnEndTrigger();
+
 	// アルティメット関連
 private:
 	// 現在のアルティメットポイントの値

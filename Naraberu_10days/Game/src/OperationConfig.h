@@ -97,6 +97,8 @@ public:
 
 	//操作入力があったか
 	bool CheckAllOperationInput();
+	//操作入力(Trigger)があったか
+	bool CheckAllOperationInputTrigger();
 
 	//最新の入力デバイス
 	INPUT_DEVICE GetLatestDevice()const { return m_nowInputDevice; }
