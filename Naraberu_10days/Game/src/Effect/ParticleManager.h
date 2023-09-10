@@ -11,7 +11,7 @@
 class ParticleEmitter
 {
 public:
-	virtual void Emit(KuroEngine::Vec2<float>arg_pos, int arg_emitNum) = 0;
+	virtual void Emit(KuroEngine::Vec2<float>arg_pos, int arg_emitNum, int arg_pattern = -1) = 0;
 };
 
 class ParticleManager : public KuroEngine::DesignPattern::Singleton<ParticleManager>
@@ -32,7 +32,7 @@ class ParticleManager : public KuroEngine::DesignPattern::Singleton<ParticleMana
 		//生きているパーティクル
 		std::forward_list<ParticleBase*>m_aliveParticles;
 
-		void Emit(KuroEngine::Vec2<float>arg_pos, int arg_emitNum)override;
+		void Emit(KuroEngine::Vec2<float>arg_pos, int arg_emitNum, int arg_pattern = -1)override;
 
 	public:
 		ParticleArray(int arg_elem, size_t arg_onePtSize, std::shared_ptr<ParticleBase>arg_ptData)

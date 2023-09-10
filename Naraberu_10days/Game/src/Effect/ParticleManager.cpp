@@ -71,7 +71,7 @@ void ParticleManager::ParticleArray::Draw()
 	}
 }
 
-void ParticleManager::ParticleArray::Emit(KuroEngine::Vec2<float> arg_pos, int arg_emitNum)
+void ParticleManager::ParticleArray::Emit(KuroEngine::Vec2<float> arg_pos, int arg_emitNum, int arg_pattern)
 {
 	if (m_deadParticle.empty())return;
 	if (std::distance(m_deadParticle.begin(), m_deadParticle.end()) < arg_emitNum)return;
@@ -83,7 +83,7 @@ void ParticleManager::ParticleArray::Emit(KuroEngine::Vec2<float> arg_pos, int a
 	{
 		if (!(*itr)->IsAlive())
 		{
-			(*itr)->Emit(arg_pos);
+			(*itr)->Emit(arg_pos, arg_pattern);
 			emitCount++;
 			m_aliveParticles.push_front((*itr));
 			itr = m_deadParticle.erase_after(before);

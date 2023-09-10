@@ -4,6 +4,7 @@ class ParticleBase
 {
 protected:
 	bool m_isAlive = false;
+	int m_pattern = -1;
 
 	ParticleBase() {}
 
@@ -30,9 +31,10 @@ public:
 		if (!m_isAlive)return;
 		OnDraw();
 	}
-	void Emit(KuroEngine::Vec2<float>arg_pos)
+	void Emit(KuroEngine::Vec2<float>arg_pos, int arg_pattern)
 	{
 		m_isAlive = true;
+		m_pattern = arg_pattern;
 		OnEmit(arg_pos);
 	}
 
