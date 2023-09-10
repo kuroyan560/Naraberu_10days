@@ -39,7 +39,8 @@ void Player_Attack_01::Action_Update()
 	if (m_Timer == 1) {
 		// 
 		if (m_Targets.size() < 1 || m_Targets[0] == nullptr) {
-			exit(1);
+			//exit(1);
+			return;
 		}
 		// 1番目のターゲットに攻撃する
 		m_Targets[0]->Damage(m_Damage * 2);
@@ -51,6 +52,9 @@ void Player_Attack_01::Action_Draw()
 {
 	// 終了済みの場合は描画しない
 	if (GetEnd()) {
+		return;
+	}
+	if (m_Targets.size() < 1 || m_Targets[0] == nullptr) {
 		return;
 	}
 

@@ -26,7 +26,7 @@ class BattleTurnMgr
 	// 次のバトルに移動する場合のタイマーの終了値
 	int NextGameTimeFinish;
 	// 上のタイマーのデフォルト値
-	const int NextGameTimeFinish_Default = 300;
+	const int NextGameTimeFinish_Default = 150;
 
 	// 画像
 	std::shared_ptr<KuroEngine::TextureBuffer> m_CutInTex;

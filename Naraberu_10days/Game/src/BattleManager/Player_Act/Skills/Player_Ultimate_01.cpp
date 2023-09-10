@@ -41,7 +41,7 @@ void Player_Ultimate_01::Action_Update()
 	if (m_Timer == 1) {
 		// 
 		if (m_Targets.size() < 1 || m_Targets[0] == nullptr) {
-			exit(1);
+			return;
 		}
 		// ‘S‚Ä‚Ìƒ^[ƒQƒbƒg‚ÉUŒ‚‚·‚é
 		for (auto& tgt : m_Targets) {
@@ -58,6 +58,9 @@ void Player_Ultimate_01::Action_Draw()
 {
 	// I—¹Ï‚Ý‚Ìê‡‚Í•`‰æ‚µ‚È‚¢
 	if (GetEnd()) {
+		return;
+	}
+	if (m_Targets.size() < 1 || m_Targets[0] == nullptr) {
 		return;
 	}
 

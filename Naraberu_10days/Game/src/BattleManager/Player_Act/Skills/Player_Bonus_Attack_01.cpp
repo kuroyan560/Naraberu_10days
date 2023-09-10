@@ -42,7 +42,7 @@ void Player_Bonus_Attack_01::Action_Update()
 	if (m_Timer == 1) {
 		// 
 		if (m_Targets.size() < 1 || m_Targets[0] == nullptr) {
-			exit(1);
+			return;
 		}
 
 		m_BonusCount = ExistUnits::Instance()->m_NowBonusCount;
@@ -59,6 +59,9 @@ void Player_Bonus_Attack_01::Action_Draw()
 {
 	// I—¹Ï‚İ‚Ìê‡‚Í•`‰æ‚µ‚È‚¢
 	if (GetEnd()) {
+		return;
+	}
+	if (m_Targets.size() < 1 || m_Targets[0] == nullptr) {
 		return;
 	}
 

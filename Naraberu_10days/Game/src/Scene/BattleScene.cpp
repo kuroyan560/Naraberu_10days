@@ -433,12 +433,14 @@ void BattleScene::NextWave()
 	m_Impossible_Put_Block_Timer = m_Impossible_Put_Block_Effect_Time;
 
 	// 現在が最後のウェーブだった場合
-	if (!m_Stage_End && m_NowWave > m_NowStage.m_Stage_Wave_Count) {
-		m_Stage_End = true;
-		// 攻撃等をクリア
-		PlayerSkills::PlayerSkillMgr::Instance()->AllClear();
-		EnemyActions::EnemyActionMgr::Instance()->AllClear();
-		SoundConfig::Instance()->Play(SoundConfig::SE_STAGE_CLEAR);
+	if (m_NowWave > m_NowStage.m_Stage_Wave_Count) {
+		if (!m_Stage_End) {
+			m_Stage_End = true;
+			// 攻撃等をクリア
+			PlayerSkills::PlayerSkillMgr::Instance()->AllClear();
+			EnemyActions::EnemyActionMgr::Instance()->AllClear();
+			SoundConfig::Instance()->Play(SoundConfig::SE_STAGE_CLEAR);
+		}
 		return;
 	}
 
