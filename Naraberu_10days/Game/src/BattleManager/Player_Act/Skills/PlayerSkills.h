@@ -13,6 +13,8 @@
 #include "Player_Bonus_Attack_01.h"
 #include "Player_Ultimate_01.h"
 
+#include "../../../RefreshRate.h"
+
 class UnitBase;
 
 namespace PlayerSkills {
@@ -63,7 +65,7 @@ namespace PlayerSkills {
 		{
 			if (Action_Name == "Attack_01") {
 				m_List.emplace_front(std::make_shared<Player_Attack_01>());
-				GetPtr<Player_Attack_01>(m_List.front())->Param_Set(Block_Count, 3);
+				GetPtr<Player_Attack_01>(m_List.front())->Param_Set(Block_Count, int(100.0f * RefreshRate::RefreshRate_Mag));
 				m_Initiator = Initiator;
 				std::vector<UnitBase*>m_Targets;
 				m_Targets.clear();
@@ -74,7 +76,7 @@ namespace PlayerSkills {
 			}
 			if (Action_Name == "Attack_02") {
 				m_List.emplace_front(std::make_shared<Player_Attack_02>());
-				GetPtr<Player_Attack_02>(m_List.front())->Param_Set(Block_Count, 3);
+				GetPtr<Player_Attack_02>(m_List.front())->Param_Set(Block_Count, int(100.0f * RefreshRate::RefreshRate_Mag));
 				m_Initiator = Initiator;
 				std::vector<UnitBase*>m_Targets;
 				m_Targets.clear();
@@ -85,13 +87,13 @@ namespace PlayerSkills {
 			}
 			if (Action_Name == "Heal_01") {
 				m_List.emplace_front(std::make_shared<Player_Heal_01>());
-				GetPtr<Player_Heal_01>(m_List.front())->Param_Set(Block_Count, 3);
+				GetPtr<Player_Heal_01>(m_List.front())->Param_Set(Block_Count, int(100.0f * RefreshRate::RefreshRate_Mag));
 				m_Initiator = Initiator;
 				GetPtr<Player_Heal_01>(m_List.front())->Need_Object_Set(Initiator);
 			}
 			if (Action_Name == "Bonus_01") {
 				m_List.emplace_front(std::make_shared<Player_Bonus_Attack_01>());
-				GetPtr<Player_Bonus_Attack_01>(m_List.front())->Param_Set(3, 3);
+				GetPtr<Player_Bonus_Attack_01>(m_List.front())->Param_Set(3, int(100.0f * RefreshRate::RefreshRate_Mag));
 				m_Initiator = Initiator;
 				std::vector<UnitBase*>m_Targets;
 				m_Targets.clear();
@@ -102,7 +104,7 @@ namespace PlayerSkills {
 			}
 			if (Action_Name == "Ultimate_01") {
 				m_List.emplace_front(std::make_shared<Player_Ultimate_01>());
-				GetPtr<Player_Ultimate_01>(m_List.front())->Param_Set(50, 3);
+				GetPtr<Player_Ultimate_01>(m_List.front())->Param_Set(50, int(100.0f * RefreshRate::RefreshRate_Mag));
 				m_Initiator = Initiator;
 				GetPtr<Player_Ultimate_01>(m_List.front())->Need_Object_Set(Initiator, ExistUnits::Instance()->GetAliveUnit());
 			}

@@ -8,6 +8,30 @@
 #include "ForUser/DrawFunc/2D/DrawFunc2D.h"
 #include "FrameWork/WinApp.h"
 
+namespace Moji_kugiri {
+	static std::vector<std::string> split(std::string str, char del) {
+		int first = 0;
+		int last = int(str.find_first_of(del));
+
+		std::vector<std::string> result;
+
+		while (first < int(str.size())) {
+			std::string subStr(str, first, last - first);
+
+			result.push_back(subStr);
+
+			first = last + 1;
+			last = int(str.find_first_of(del, first));
+
+			if (last == std::string::npos) {
+				last = int(str.size());
+			}
+		}
+
+		return result;
+	}
+}
+
 namespace EnemysData {
 
 	enum class AI_TYPE {
@@ -58,6 +82,7 @@ namespace EnemysData {
 		std::shared_ptr<KuroEngine::TextureBuffer> m_HpTex_red;
 		std::shared_ptr<KuroEngine::TextureBuffer> m_HpTex_break;
 		std::shared_ptr<KuroEngine::TextureBuffer> m_UnitTex;
+		std::shared_ptr<KuroEngine::TextureBuffer> m_UnitTex_Damage;
 		std::shared_ptr<KuroEngine::TextureBuffer> m_IndexTex_1;
 		std::shared_ptr<KuroEngine::TextureBuffer> m_IndexTex_2;
 		std::shared_ptr<KuroEngine::TextureBuffer> m_IndexTex_3;
@@ -110,6 +135,10 @@ namespace EnemysData {
 			m_IndexTex_1_Target = D3D12App::Instance()->GenerateTextureBuffer(TexDir + "target_enemy_number_1.png");
 			m_IndexTex_2_Target = D3D12App::Instance()->GenerateTextureBuffer(TexDir + "target_enemy_number_2.png");
 			m_IndexTex_3_Target = D3D12App::Instance()->GenerateTextureBuffer(TexDir + "target_enemy_number_3.png");
+
+			// ”íƒ_ƒ
+			auto First = Moji_kugiri::split(m_Name, '_');
+			m_UnitTex_Damage = D3D12App::Instance()->GenerateTextureBuffer("resource/user/tex/battle_scene/enemy/" + First[0] + "_damage.png");
 		}
 	};
 
@@ -118,7 +147,7 @@ namespace EnemysData {
 	static const EnemyData Inu_Yellow_1 =		EnemyData("inu_yellow", ENEMY_TAG::DEFAULT, 64, 15, AI_TYPE::DEFAULT, "Attack_01", "Heal_01", "Heal_01");
 	static const EnemyData Inu_Red_1 =			EnemyData("inu_red", ENEMY_TAG::DEFAULT, 96, 15, AI_TYPE::DEFAULT, "Attack_01", "Heal_01", "Heal_01");
 
-	static const EnemyData Lizard_Blue_1 =		EnemyData("lizard_blue", ENEMY_TAG::DEFAULT, 64, 30, AI_TYPE::DEFAULT, "Attack_01", "Attack_01", "Attack_02");
+	static const EnemyData Lizard_Blue_1 =		EnemyData("lizard_blue", ENEMY_TAG::DEFAULT, 64, 25, AI_TYPE::DEFAULT, "Attack_01", "Attack_01", "Attack_02");
 	static const EnemyData Lizard_Yellow_1 =	EnemyData("lizard_yellow", ENEMY_TAG::DEFAULT, 96, 30, AI_TYPE::DEFAULT, "Attack_01", "Attack_01", "Attack_02");
 	static const EnemyData Lizard_Red_1 =		EnemyData("lizard_red", ENEMY_TAG::DEFAULT, 128, 40, AI_TYPE::DEFAULT, "Attack_01", "Attack_01", "Attack_02");
 

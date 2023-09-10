@@ -9,6 +9,7 @@
 #include "FrameWork/UsersInput.h"
 
 #include "../../../Effect/ScreenShakeManager.h"
+#include "../../../RefreshRate.h"
 
 void Player_Bonus_Attack_01::Param_Set(int Damage, int Duration)
 {
@@ -65,6 +66,11 @@ void Player_Bonus_Attack_01::Action_Draw()
 
 	using namespace KuroEngine;
 	//// ‰¼‚Å” ‚ð•`‰æ
+	if (int(float(m_Timer) / (20.0f * RefreshRate::RefreshRate_Mag)) % 2 == 0) {
+		for (auto& tgt : m_Targets) {
+			GetUnitPtr_nama<Enemy*>(tgt)->Draw_Damage();
+		}
+	}
 	//for (auto& tgt : m_Targets) {
 	//	KuroEngine::Vec2 LT = GetUnitPtr_nama<Enemy*>(tgt)->Get_Left_Top();
 	//	KuroEngine::Vec2 RB = GetUnitPtr_nama<Enemy*>(tgt)->Get_Right_Bottom();

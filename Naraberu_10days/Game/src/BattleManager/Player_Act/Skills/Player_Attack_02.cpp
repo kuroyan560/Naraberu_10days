@@ -8,6 +8,7 @@
 #include "FrameWork/UsersInput.h"
 
 #include "../../../Effect/ScreenShakeManager.h"
+#include "../../../RefreshRate.h"
 
 void Player_Attack_02::Param_Set(int Damage, int Duration)
 {
@@ -59,12 +60,15 @@ void Player_Attack_02::Action_Draw()
 
 	using namespace KuroEngine;
 	// ‰¼‚Å” ‚ð•`‰æ
-	/*for (auto& tgt : m_Targets) {
-		KuroEngine::Vec2 LT = GetUnitPtr_nama<Enemy*>(tgt)->Get_Left_Top();
-		KuroEngine::Vec2 RB = GetUnitPtr_nama<Enemy*>(tgt)->Get_Right_Bottom();
-		DrawFunc2D::DrawBox2D(LT + ScreenShakeManager::Instance()->GetOffset()
-			, RB + ScreenShakeManager::Instance()->GetOffset(), Color(255, 0, 0, 255), true);
-	}*/
+	if (int(float(m_Timer) / (20.0f * RefreshRate::RefreshRate_Mag)) % 2 == 0) {
+		for (auto& tgt : m_Targets) {
+			GetUnitPtr_nama<Enemy*>(tgt)->Draw_Damage();
+			/*KuroEngine::Vec2 LT = GetUnitPtr_nama<Enemy*>(tgt)->Get_Left_Top();
+			KuroEngine::Vec2 RB = GetUnitPtr_nama<Enemy*>(tgt)->Get_Right_Bottom();
+			DrawFunc2D::DrawBox2D(LT + ScreenShakeManager::Instance()->GetOffset()
+				, RB + ScreenShakeManager::Instance()->GetOffset(), Color(255, 0, 0, 255), true);*/
+		}
+	}
 }
 
 void Player_Attack_02::Action_End()

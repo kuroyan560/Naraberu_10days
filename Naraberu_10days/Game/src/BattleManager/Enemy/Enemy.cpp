@@ -211,6 +211,8 @@ void Enemy::Draw(int Index, int NowTurn_Index, int Index_Max, bool Dark, int Fra
 		HPFrameTex = m_Data.m_HpFrameTex_Target;
 	}
 
+	D_Move_Width = Move_Width;
+	D_IndexDiff = IndexDiff;
 	// ƒ†ƒjƒbƒg‚Ì•`‰æ
 	DrawFunc2D_Color::DrawExtendGraph2D(Vec2(1009.0f - Move_Width, 115.0f + IndexDiff) + ScreenShakeManager::Instance()->GetOffset()
 		, Vec2(1254.0f - Move_Width, 215.0f + IndexDiff) + ScreenShakeManager::Instance()->GetOffset(), m_Data.m_UnitTex, Mask,
@@ -373,4 +375,11 @@ void Enemy::Draw_Boss(int Index, int NowTurn_Index, int Index_Max, bool Dark, in
 		Vec2(923.0f, 427.0f) + ScreenShakeManager::Instance()->GetOffset()
 		, Vec2(923.0f + Gauge_Width2, 580.0f) + ScreenShakeManager::Instance()->GetOffset());
 
+}
+
+void Enemy::Draw_Damage()
+{
+	using namespace KuroEngine;
+	DrawFunc2D::DrawExtendGraph2D(Vec2(1009.0f - D_Move_Width, 115.0f + D_IndexDiff) + ScreenShakeManager::Instance()->GetOffset()
+		, Vec2(1254.0f - D_Move_Width, 215.0f + D_IndexDiff) + ScreenShakeManager::Instance()->GetOffset(), m_Data.m_UnitTex_Damage, 0.6f);
 }

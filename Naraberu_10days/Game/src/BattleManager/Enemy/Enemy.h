@@ -40,6 +40,12 @@ public:
 
 	void Draw_Boss(int Index, int NowTurn_Index, int Index_Max, bool Dark, int FrameTime, bool FirstTurn);
 
+private: // ”íƒ_ƒ•`‰æ—p
+	float D_Move_Width;
+	float D_IndexDiff;
+public:
+	void Draw_Damage();
+
 private:
 	KuroEngine::Vec2<float> m_Left_Top;
 	KuroEngine::Vec2<float> m_Right_Bottom;

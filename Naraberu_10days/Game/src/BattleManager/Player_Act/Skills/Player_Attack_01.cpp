@@ -7,6 +7,7 @@
 #include "FrameWork/WinApp.h"
 #include "FrameWork/UsersInput.h"
 #include "../../../Effect/ScreenShakeManager.h"
+#include "../../../RefreshRate.h"
 
 void Player_Attack_01::Param_Set(int Damage, int Duration)
 {
@@ -53,6 +54,9 @@ void Player_Attack_01::Action_Draw()
 
 	using namespace KuroEngine;
 	//// ‰¼‚Å” ‚ð•`‰æ
+	if (int(float(m_Timer) / (20.0f * RefreshRate::RefreshRate_Mag)) % 2 == 0) {
+		GetUnitPtr_nama<Enemy*>(m_Targets[0])->Draw_Damage();
+	}
 	//KuroEngine::Vec2 LT = GetUnitPtr_nama<Enemy*>(m_Targets[0])->Get_Left_Top();
 	//KuroEngine::Vec2 RB = GetUnitPtr_nama<Enemy*>(m_Targets[0])->Get_Right_Bottom();
 	//DrawFunc2D::DrawBox2D(LT + ScreenShakeManager::Instance()->GetOffset()

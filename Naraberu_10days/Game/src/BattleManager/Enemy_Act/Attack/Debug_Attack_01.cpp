@@ -3,6 +3,7 @@
 
 #include "DirectX12/D3D12App.h"
 #include "ForUser/DrawFunc/2D/DrawFunc2D.h"
+#include "ForUser/DrawFunc/2D/DrawFunc2D_Color.h"
 #include "FrameWork/WinApp.h"
 #include "FrameWork/UsersInput.h"
 
@@ -48,6 +49,7 @@ void Debug_Attack_01::Action_Draw()
 	using namespace KuroEngine;
 	// ‰¼‚Å” ‚ð•`‰æ
 	//DrawFunc2D::DrawBox2D(Vec2(0.0f, 0.0f), Vec2(100.0f, 100.0f), Color(255, 0, 0, 255), true);
+	
 }
 
 void Debug_Attack_01::Action_End()
