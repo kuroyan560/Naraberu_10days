@@ -1,6 +1,7 @@
 #pragma once
 #include "Common/Singleton.h"
 #include <vector>
+#include <array>
 #include <string>
 
 class UnitBase;
@@ -67,4 +68,7 @@ public:
 			m_MaxBonusCount = _nowBonusCount;
 		}
 	}
+
+	std::vector<UnitBase*> GetAliveUnit();
+	std::vector<int> GetAliveEnemyIndex();
 };

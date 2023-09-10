@@ -81,7 +81,7 @@ namespace PlayerSkills {
 				for (UnitBase* Target : std::initializer_list<UnitBase*>{ Targets... }) {
 					m_Targets.emplace_back(Target);
 				}
-				GetPtr<Player_Attack_02>(m_List.front())->Need_Object_Set(Initiator, ExistUnits::Instance()->m_Enemys);
+				GetPtr<Player_Attack_02>(m_List.front())->Need_Object_Set(Initiator, ExistUnits::Instance()->GetAliveUnit());
 			}
 			if (Action_Name == "Heal_01") {
 				m_List.emplace_front(std::make_shared<Player_Heal_01>());
@@ -98,13 +98,13 @@ namespace PlayerSkills {
 				for (UnitBase* Target : std::initializer_list<UnitBase*>{ Targets... }) {
 					m_Targets.emplace_back(Target);
 				}
-				GetPtr<Player_Bonus_Attack_01>(m_List.front())->Need_Object_Set(Initiator, ExistUnits::Instance()->m_Enemys);
+				GetPtr<Player_Bonus_Attack_01>(m_List.front())->Need_Object_Set(Initiator, ExistUnits::Instance()->GetAliveUnit());
 			}
 			if (Action_Name == "Ultimate_01") {
 				m_List.emplace_front(std::make_shared<Player_Ultimate_01>());
 				GetPtr<Player_Ultimate_01>(m_List.front())->Param_Set(50, 3);
 				m_Initiator = Initiator;
-				GetPtr<Player_Ultimate_01>(m_List.front())->Need_Object_Set(Initiator, ExistUnits::Instance()->m_Enemys);
+				GetPtr<Player_Ultimate_01>(m_List.front())->Need_Object_Set(Initiator, ExistUnits::Instance()->GetAliveUnit());
 			}
 		}
 
