@@ -16,6 +16,9 @@
 
 #include "../Effect/ScreenShakeManager.h"
 #include"ForUser/Debugger.h"
+#include"../Effect/ParticleManager.h"
+#include"../Effect/Particle/HealParticle.h"
+#include"../Effect/Particle/BackPrismParticle.h"
 
 void BattleScene::OnInitialize()
 {
@@ -87,12 +90,28 @@ void BattleScene::OnInitialize()
 	Debugger::Register({
 	SoundConfig::Instance(),
 		});
+
+	ParticleManager::Instance()->Init();
 }
 
 void BattleScene::OnUpdate()
 {
 	KuroEngine::UsersInput* input = KuroEngine::UsersInput::Instance();
 
+	static int mmmm = 0;
+
+	if (OperationConfig::Instance()->DebugKeyInput(DIK_L) && mmmm % 3 == 0)
+	{
+		auto randPos = KuroEngine::GetRand(KuroEngine::Vec2<float>(-240.0f, -240.0f), KuroEngine::Vec2<float>(240.0f, 240.0f));
+		m_healPtEmitter->Emit(KuroEngine::Vec2<float>(640.0f, 360.0f) + randPos, 1);
+	}
+	if (OperationConfig::Instance()->DebugKeyInput(DIK_K) && mmmm % 2 == 0)
+	{
+		auto randPos = KuroEngine::GetRand(KuroEngine::Vec2<float>(-240.0f, -240.0f), KuroEngine::Vec2<float>(240.0f, 240.0f));
+		m_backPrismPtEmitter->Emit(KuroEngine::Vec2<float>(640.0f, 360.0f) + randPos, 1);
+	}
+
+	mmmm++;
 
 	if (OperationConfig::Instance()->GetOperationInput(OperationConfig::MENU_IN_GAME,OperationConfig::ON_TRIGGER)) {
 		m_IsPause = true;
@@ -233,6 +252,7 @@ void BattleScene::OnUpdate()
 
 	//演出更新
 	m_playerAttackEffect->Update(stage);
+	ParticleManager::Instance()->Update();
 }
 
 void BattleScene::OnDraw()
@@ -306,6 +326,7 @@ void BattleScene::OnDraw()
 	}
 
 	//演出
+	ParticleManager::Instance()->Draw();
 	m_playerAttackEffect->Draw();
 
 
@@ -604,6 +625,9 @@ BattleScene::BattleScene()
 
 
 	m_playerAttackEffect = std::make_shared<SetPrismEffect>();
+
+	m_healPtEmitter = ParticleManager::Instance()->Register<HealParticle>(1000);
+	m_backPrismPtEmitter = ParticleManager::Instance()->Register<BackPrismParticle>(1000);
 }
 
 void BattleScene::PlayerTurn()

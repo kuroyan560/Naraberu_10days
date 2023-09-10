@@ -10,6 +10,8 @@
 #include "../Fade/Fade.h"
 #include"../Effect/SetPrismEffect.h"
 
+class ParticleEmitter;
+
 class BattleScene :
     public KuroEngine::BaseScene
 {
@@ -56,6 +58,9 @@ class BattleScene :
 
 	// フェード
 	Fade m_Fade;
+
+	std::shared_ptr<ParticleEmitter>m_healPtEmitter;
+	std::shared_ptr<ParticleEmitter>m_backPrismPtEmitter;
 
 	void PlayerTurn();
 
