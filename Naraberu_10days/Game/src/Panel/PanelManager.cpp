@@ -6,6 +6,7 @@
 #include "../RefreshRate.h"
 #include"../Effect/SetPrismEffect.h"
 #include "../Effect/ScreenShakeManager.h"
+#include"../SoundConfig.h"
 
 KuroEngine::Vec2<int> PanelManager::mapMax;
 
@@ -79,30 +80,18 @@ void PanelManager::Draw()
 	}
 
 	//ボーナスパネル
-	if (isBonusDirection != Bonas::add) {return;}
+	if (isBonusDirection == Bonas::add) {
+		for (int i = 0; i<int(bonusData.size()); i++) {
+			//描画するボーナスで無いなら抜ける
+			if (i != nowBonusNum) { continue; }
 
-	for (int i = 0; i<int(bonusData.size()); i++) {
-		if (i != nowBonusNum) { continue; }
+			for (auto& itr : bonusData[i].pos) {
+				KuroEngine::Vec2<float> pos = {
+				itr.x * blockSize + difference.x + blockSize / 2.0f ,itr.y * blockSize + difference.y + blockSize / 2.0f };
 
-		float dist = bonusEaseScale - blockSize;
-		dist = dist / 2.0f;
-
-		for (auto& itr : bonusData[i].pos) {
-			//KuroEngine::Vec2<float> pos1 = { itr.x * blockSize + difference.x,itr.y * blockSize + difference.y };
-			//KuroEngine::Vec2<float> pos2 = pos1;
-			//pos1.x -= blockSize + dist;
-			//pos1.y -= blockSize + dist;
-			//pos2.x += blockSize + dist;
-			//pos2.y += blockSize + dist;
-
-			KuroEngine::Vec2<float> pos = { itr.x * blockSize + difference.x ,itr.y * blockSize + difference.y };
-
-			KuroEngine::Vec2<float> pos1 = pos;
-			pos1.x += blockSize;
-			pos1.y += blockSize;
-
-			KuroEngine::DrawFunc2D::DrawExtendGraph2D(pos, pos1,
-			blockTex[int(BlockColor::eizoku_obstacle)], bonusAlpha);
+				KuroEngine::DrawFunc2D::DrawRotaGraph2D(pos, { 1.0f,1.0f }, 0.0f,// bonusAngle * (3.14f / 180.0f),
+					blockTex[int(bonusData[i].color)], bonusAlpha,{0.5f,0.5f}, KuroEngine::AlphaBlendMode::AlphaBlendMode_Add);
+			}
 		}
 	}
 }
@@ -223,6 +212,7 @@ void PanelManager::MassProcess()
 				bonusData.resize(size);
 				continue;
 			}
+			bonusData[count].color = BlockColor(mapchip[y][x]);
 			bonusData[count].mass = true;
 			count++;
 		}
@@ -271,23 +261,11 @@ void PanelManager::LineProcess()
 	for (int y = 0; y < mapMax.y; y++) {
 		for (int x = 0; x < mapMax.x; x++) {
 			if (y == 0) {
-				bonusData.emplace_back();
 				int size = int(bonusData.size());
-				if (!LineBlock(size, { x,y }, false)) {
-					bonusData.resize(size - 1);
-					continue;
-				}
-				bonusData[size].mass = false;
-
+				if (!LineBlock(size, { x,y }, false)) { continue; }
 			} else if (x == 0) {
-				bonusData.emplace_back();
 				int size = int(bonusData.size());
-				if (!LineBlock(size,{ x,y }, true)) {
-					bonusData.resize(size - 1);
-					continue;
-				}
-
-				bonusData[size].mass = false;
+				if (!LineBlock(size, { x,y }, true)) { continue; }
 			}
 		}
 	}
@@ -320,8 +298,9 @@ bool PanelManager::LineBlock(int _number, const KuroEngine::Vec2<int> _lineMap, 
 			KuroEngine::Vec2<int> data = { i, _lineMap.y };
 			bonusData[_number].pos.emplace_back(data);
 		}
-
 	}
+	bonusData[_number].color = BlockColor(mapchip[_lineMap.y][_lineMap.x]);
+	bonusData[_number].mass = false;
 
 	return true;
 }
@@ -344,14 +323,14 @@ void PanelManager::BonusCount()
 
 void PanelManager::BonusDirection()
 {
-	float maxTimer = 20.0f * RefreshRate::RefreshRate_Mag;
+	float maxTimer = 10.0f * RefreshRate::RefreshRate_Mag;
 
-	bonusEaseScale = KuroEngine::Math::Ease(KuroEngine::EASE_CHANGE_TYPE::In, KuroEngine::EASING_TYPE::Back,
-		bonusTimer, maxTimer, blockSize, 60.0f);
-	bonusAngle = KuroEngine::Math::Ease(KuroEngine::EASE_CHANGE_TYPE::In, KuroEngine::EASING_TYPE::Back,
+	bonusEaseScale = KuroEngine::Math::Ease(KuroEngine::EASE_CHANGE_TYPE::Out, KuroEngine::EASING_TYPE::Quart,
+		bonusTimer, maxTimer, 1.0f, 1.5f);
+	bonusAngle = KuroEngine::Math::Ease(KuroEngine::EASE_CHANGE_TYPE::Out, KuroEngine::EASING_TYPE::Quart,
 		bonusTimer, maxTimer, 0, 90.0f);
-	bonusAlpha = KuroEngine::Math::Ease(KuroEngine::EASE_CHANGE_TYPE::In, KuroEngine::EASING_TYPE::Back,
-		bonusTimer, maxTimer, 1.0, 0.0f);
+	bonusAlpha = KuroEngine::Math::Ease(KuroEngine::EASE_CHANGE_TYPE::Out, KuroEngine::EASING_TYPE::Quart,
+		bonusTimer, maxTimer, 1.0f, 0.0f);
 
 	//時間になったら次に行く
 	bonusTimer++;
