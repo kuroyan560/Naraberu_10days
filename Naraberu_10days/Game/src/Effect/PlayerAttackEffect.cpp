@@ -53,16 +53,12 @@ void PlayerAttackEffect::Update(std::weak_ptr<PanelManager>arg_panelManager)
 		m_setChipIdxArray.pop_back();
 
 		//全体攻撃
-		if (m_targetEnemyIdx == ALL_ENEMY_ATTACK)
+		for (auto& enemyIdx : m_targetEnemyIdxArray)
 		{
-			for (int enemyIdx = 0; enemyIdx < ENEMY_COUNT_MAX; ++enemyIdx)
-				m_enemyDamageUI[enemyIdx].Add(m_damagePerOneBlock, true);
-				//m_enemyDamageUI[enemyIdx].Add(m_damagePerOneBlock, enemyIdx == ENEMY_COUNT_MAX - 1);
-		}
-		//単体攻撃
-		else
-		{
-			m_enemyDamageUI[m_targetEnemyIdx].Add(m_damagePerOneBlock, true);
+			if (enemyIdx < 0)continue;
+			if (ENEMY_COUNT_MAX <= enemyIdx)continue;
+
+			m_enemyDamageUI[enemyIdx].Add(m_damagePerOneBlock, true);
 		}
 
 		//SE再生
@@ -73,21 +69,13 @@ void PlayerAttackEffect::Update(std::weak_ptr<PanelManager>arg_panelManager)
 	}
 
 	//敵への与ダメージ演出終了したか
-	int finishUiIdx = (m_targetEnemyIdx == ALL_ENEMY_ATTACK ? 0 : m_targetEnemyIdx);
-
+	int finishUiIdx = m_targetEnemyIdxArray[0];
 	if (m_setChipIdxArray.empty() && !m_enemyDamageUI[finishUiIdx].GetIsActive())
 	{
 		m_isActive = false;
 
 		// 設置したらアクション
-		if (m_targetEnemyIdx != ALL_ENEMY_ATTACK) {
-			// 弱攻撃
-			PlayerSkills::PlayerSkillMgr::Instance()->StartAction("Attack_01", m_blockCount, ExistUnits::Instance()->m_pPlayer, ExistUnits::Instance()->m_Enemys[ExistUnits::Instance()->m_NowTarget]);
-		}
-		else {
-			// 強攻撃
-			PlayerSkills::PlayerSkillMgr::Instance()->StartAction("Attack_02", m_blockCount, ExistUnits::Instance()->m_pPlayer, ExistUnits::Instance()->m_Enemys[ExistUnits::Instance()->m_NowTarget]);
-		}
+		PlayerSkills::PlayerSkillMgr::Instance()->StartAction(m_skillName, m_blockCount, ExistUnits::Instance()->m_pPlayer, ExistUnits::Instance()->m_Enemys[ExistUnits::Instance()->m_NowTarget]);
 	}
 }
 
@@ -101,7 +89,7 @@ void PlayerAttackEffect::Draw()
 	}
 }
 
-void PlayerAttackEffect::Start(std::vector<KuroEngine::Vec2<int>> arg_setChipIdxArray, BlockColor arg_color, int arg_damagePerOneBlock, int arg_targetEnemyIdx)
+void PlayerAttackEffect::Start(std::vector<KuroEngine::Vec2<int>> arg_setChipIdxArray, BlockColor arg_color, int arg_damagePerOneBlock, std::vector<int>arg_targetEnemyIdxArray, std::string arg_skillName)
 {
 	using namespace KuroEngine;
 
@@ -111,7 +99,7 @@ void PlayerAttackEffect::Start(std::vector<KuroEngine::Vec2<int>> arg_setChipIdx
 	}
 
 	m_isActive = true;
-	m_targetEnemyIdx = arg_targetEnemyIdx;
+	m_targetEnemyIdxArray = arg_targetEnemyIdxArray;
 	m_damagePerOneBlock = arg_damagePerOneBlock;
 	m_setBlockTimer.Reset(5);
 	m_color = arg_color;
@@ -120,6 +108,7 @@ void PlayerAttackEffect::Start(std::vector<KuroEngine::Vec2<int>> arg_setChipIdx
 	m_blockCount = static_cast<int>(arg_setChipIdxArray.size());
 
 	m_countSeIdx = 0;
+	m_skillName = arg_skillName;
 
 	//ソート
 	std::sort(m_setChipIdxArray.begin(), m_setChipIdxArray.end(), [](Vec2<int>a, Vec2<int>b) {

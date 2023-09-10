@@ -220,7 +220,7 @@
   },
   "SoundConfig": {
     "debuggerSetting": {
-      "active": true,
+      "active": false,
       "customParamActive": true,
       "imageColor": [
         0.800000011920929,

@@ -16,7 +16,7 @@ std::vector<int> SoundConfig::LoadSoundArray(std::string arg_dir, std::string ar
 	return result;
 }
 
-SoundConfig::SoundConfig() : Debugger("SoundConfig")
+SoundConfig::SoundConfig() : Debugger("SoundConfig", false)
 {
 	using namespace KuroEngine;
 

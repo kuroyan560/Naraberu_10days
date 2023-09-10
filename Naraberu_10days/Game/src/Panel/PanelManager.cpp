@@ -185,11 +185,11 @@ bool PanelManager::JudgeWithEffect(KuroEngine::Vec2<int> _nowMapchip, std::vecto
 
 	// 設置したらアクション
 	if (_attribute == BlockAttribute::attack1) {
-		_playerAttackEffect.lock()->Start(setChipIdxArray, _color, 2, ExistUnits::Instance()->m_NowTarget);
+		_playerAttackEffect.lock()->Start(setChipIdxArray, _color, 2, { ExistUnits::Instance()->m_NowTarget }, "Attack_01");
 	}
 	else if (_attribute == BlockAttribute::attack2) {
 		// 強攻撃
-		_playerAttackEffect.lock()->Start(setChipIdxArray, _color, 1);
+		_playerAttackEffect.lock()->Start(setChipIdxArray, _color, 1, ExistUnits::Instance()->GetAliveEnemyIndex(), "Attack_02");
 	}
 	else if (_attribute == BlockAttribute::recovery) {
 
