@@ -204,6 +204,7 @@ xcopy "$(SolutionDir)dxil.dll" $(TargetDir) /Y</Command>
     <ClCompile Include="src\Effect\Particle\UltParticle.cpp" />
     <ClCompile Include="src\Effect\SetPrismEffect.cpp" />
     <ClCompile Include="src\Effect\ScreenShakeManager.cpp" />
+    <ClCompile Include="src\Effect\UltAttackEffect.cpp" />
     <ClCompile Include="src\Fade\Fade.cpp" />
     <ClCompile Include="src\main.cpp" />
     <ClCompile Include="src\OperationConfig.cpp" />
@@ -338,6 +339,7 @@ xcopy "$(SolutionDir)dxil.dll" $(TargetDir) /Y</Command>
     <ClInclude Include="src\Effect\Particle\UltParticle.h" />
     <ClInclude Include="src\Effect\SetPrismEffect.h" />
     <ClInclude Include="src\Effect\ScreenShakeManager.h" />
+    <ClInclude Include="src\Effect\UltAttackEffect.h" />
     <ClInclude Include="src\Fade\Fade.h" />
     <ClInclude Include="src\OperationConfig.h" />
     <ClInclude Include="src\Panel\PanelManager.h" />

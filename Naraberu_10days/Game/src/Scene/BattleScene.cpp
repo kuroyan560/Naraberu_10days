@@ -99,6 +99,10 @@ void BattleScene::OnInitialize()
 
 	dame.reset(new PlayerDamageUi());
 	dame->Initialize();
+
+	ultAttackEffect.reset(new UltAttackEffect());
+	ultAttackEffect->Initialize();
+
 	ScreenShakeManager::Instance()->Init();
 }
 
@@ -113,10 +117,15 @@ void BattleScene::OnUpdate()
 		ScreenShakeManager::Instance()->Shake();
 	}
 
-	if (OperationConfig::Instance()->DebugKeyInput(DIK_H)) {
-		dame->SetDamage(123);
+	//ダメージ表記（移動する）
+	{
+		if (OperationConfig::Instance()->DebugKeyInput(DIK_H)) {
+			dame->SetDamage(123);
+			ultAttackEffect->SetUltAttack();
+		}
+		dame->Update();
+		ultAttackEffect->Update();
 	}
-	dame->Update();
 
 	if (OperationConfig::Instance()->DebugKeyInput(DIK_L) && mmmm % 3 == 0)
 	{
@@ -384,6 +393,7 @@ void BattleScene::OnDraw()
 	}
 
 	dame->Draw();
+	ultAttackEffect->Draw();
 }
 
 void BattleScene::OnImguiDebug()
