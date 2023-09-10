@@ -290,7 +290,7 @@ void BattleTurnMgr::SetUnits(std::shared_ptr<UnitBase> Player, std::vector<std::
 	// Œ»ÝŽž
 	m_PauseTime = 0;
 	m_PauseTimeContainer.clear();
-	GetLocalTime(&NowTime);
+	GetLocalTime(&StartTime);
 
 	ExistUnits::Instance()->m_NowTarget = 0;
 	m_IsDefeat = false;

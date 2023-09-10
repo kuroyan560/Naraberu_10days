@@ -186,14 +186,14 @@ void Enemy::Draw(int Index, int NowTurn_Index, int Index_Max, bool Dark, int Fra
 		Mask = Color(255, 255, 255, 255);
 		// プレイヤーターンの場合
 		if (NowTurn_Index == 0) {
-			if (Index == EnemyCount) {
-				Mask = Color(255, 255, 255, 255);
-			}
-			else {
+			//if (Index == EnemyCount) {
+			//	Mask = Color(255, 255, 255, 255);
+			//}
+			//else {
 				int BlackCol = 255 - Mask_Black;
 				BlackCol = int(float(BlackCol) + float(Mask_Black) * float(Progress_Frame_Color));
 				Mask = Color(BlackCol, BlackCol, BlackCol, 255);
-			}
+			//}
 		}
 	}
 
