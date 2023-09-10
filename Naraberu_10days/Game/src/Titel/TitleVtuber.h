@@ -54,7 +54,6 @@ public:
 	void SetMoveStageSelect(bool _mouzureteru = false) {
 		if (_mouzureteru) {
 			move = -1500.0f;
-			LR = false;
 			isRightMove = false;
 		} else {
 			isLeftMove = true;
@@ -66,7 +65,7 @@ public:
 	void SetMoveTitle(bool _mouzureteru = false) {
 		if (_mouzureteru) {
 			move = 0.0f;
-			LR = true;
+			isLeftMove = false;
 		} else {
 			isRightMove = true;
 			moveTimer = 0;
@@ -74,6 +73,7 @@ public:
 	}
 
 	float GetMove() { return move; }
+	bool GetisMove() { return isMove; }
 
 private:
 
@@ -102,7 +102,7 @@ private:
 	float move;
 	//タイマー
 	float moveTimer;
-	//どちらにいるかR true L false
-	bool LR;
+	//移動を行っているか
+	bool isMove;
 };
 
