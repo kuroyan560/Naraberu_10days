@@ -11,7 +11,7 @@
 
 #include "../BattleManager/Player_Act/Skills/PlayerSkills.h"
 #include "../BattleManager/Enemy_Act/EnemyActList.h"
-
+#include "../BattleManager/CutIn/CutInMgr.h"
 #include"../SoundConfig.h"
 
 #include "../Effect/ScreenShakeManager.h"
@@ -137,6 +137,11 @@ void BattleScene::OnUpdate()
 
 	// ウェーブ終了・次ウェーブスタート
 	if (Mgr.ChangeNextWave()) {
+		// カットイン
+		// 現在が最後のウェーブではなかった場合
+		if (!(m_NowWave + 1 > m_NowStage.m_Stage_Wave_Count)) {
+			CutInMgr::Instance()->StartCutIn(CutInType::NEXT_BATTLE);
+		}
 		NextWave();
 	}
 
