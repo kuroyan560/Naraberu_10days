@@ -14,12 +14,21 @@ namespace KuroEngine
 
 class SkillResultUI
 {
-	//「Damage」画像
-	std::shared_ptr<KuroEngine::TextureBuffer>m_damageTex;
-	//ダメージ数字画像
-	std::array<std::shared_ptr<KuroEngine::TextureBuffer>, 10>m_damageNumTex;
-	//ダメージ履歴数字画像（１１枚なのは「+」分）
-	std::array<std::shared_ptr<KuroEngine::TextureBuffer>, 11>m_damageHisNumTex;
+public:
+	enum SKILL
+	{
+		SKILL_ENEMY_DAMAGE,
+		SKILL_PLAYER_HEAL,
+		SKILL_NUM
+	};
+
+private:
+	//効果画像
+	std::array<std::shared_ptr<KuroEngine::TextureBuffer>, SKILL_NUM>m_skillTex;
+	//デカ数字画像
+	std::array<std::array<std::shared_ptr<KuroEngine::TextureBuffer>, 10>, SKILL_NUM>m_amountNumTex;
+	//履歴数字画像（１１枚なのは「+」分）
+	std::array <std::array<std::shared_ptr<KuroEngine::TextureBuffer>, 11>, SKILL_NUM>m_historyNumTex;
 
 	//振動
 	KuroEngine::ImpactShake m_impactShake;
@@ -30,11 +39,20 @@ class SkillResultUI
 	//退場タイマー
 	KuroEngine::Timer m_disappearTimer;
 
+	//アクティブ状態
 	bool m_isActive = false;
-	int m_damageAmount = 0;
+
+	//スキル種別
+	SKILL m_skillType;
+
+	//総量
+	int m_amount = 0;
 
 	//UI初期化座標
 	KuroEngine::Vec2<float>m_appearPos = { 200.0f,200.0f };
+	//UI退場後のX座標
+	float m_disappearPosX = 0.0f;
+
 
 	//現在のUI表示座標
 	KuroEngine::Vec2<float>m_nowPos;
@@ -51,9 +69,11 @@ public:
 	void Add(int arg_damage, bool arg_drawHistory);
 
 	//登場位置の設定
-	void SetAppearPos(KuroEngine::Vec2<float>arg_appearPos)
+	void Set(SKILL arg_skill, KuroEngine::Vec2<float>arg_appearPos, float arg_disappearPosX)
 	{
+		m_skillType = arg_skill;
 		m_appearPos = arg_appearPos;
+		m_disappearPosX = arg_disappearPosX;
 	}
 
 	//アクティブ状態のゲッタ

@@ -8,7 +8,7 @@
 #include "../Panel/PanelManager.h"
 #include "../Stage/StageList.h"
 #include "../Fade/Fade.h"
-#include"../Effect/PlayerAttackEffect.h"
+#include"../Effect/SetPrismEffect.h"
 
 class BattleScene :
     public KuroEngine::BaseScene
@@ -119,7 +119,7 @@ class BattleScene :
 	std::array<std::shared_ptr<KuroEngine::TextureBuffer>, 2> m_Operation_Ult;
 
 	//プレイヤー攻撃演出
-	std::shared_ptr<PlayerAttackEffect>m_playerAttackEffect;
+	std::shared_ptr<SetPrismEffect>m_playerAttackEffect;
 
 public:
 	BattleScene();

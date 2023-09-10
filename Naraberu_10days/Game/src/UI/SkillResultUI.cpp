@@ -7,15 +7,27 @@ SkillResultUI::SkillResultUI()
 {
 	using namespace KuroEngine;
 
+	std::array<std::string, SKILL_NUM>fileNameArray =
+	{
+		"damage",
+		"heal"
+	};
+
 	std::string dir = "resource/user/tex/battle_scene/";
-	//「Damage」
-	m_damageTex = D3D12App::Instance()->GenerateTextureBuffer(dir + "damage.png");
-	//与ダメージ数字
-	D3D12App::Instance()->GenerateTextureBuffer(
-		m_damageNumTex.data(), dir + "damage_number.png", 10, Vec2(10, 1));
-	//与ダメージ履歴数字
-	D3D12App::Instance()->GenerateTextureBuffer(
-		m_damageHisNumTex.data(), dir + "damage_rireki_number.png", 11, Vec2(11, 1));
+
+	for (int skillIdx = 0; skillIdx < SKILL_NUM; ++skillIdx)
+	{
+		//スキル効果画像
+		m_skillTex[skillIdx] = D3D12App::Instance()->GenerateTextureBuffer(dir + fileNameArray[skillIdx] + ".png");
+
+		//総量数字画像
+		D3D12App::Instance()->GenerateTextureBuffer(
+			m_amountNumTex[skillIdx].data(), dir + fileNameArray[skillIdx] + "_number.png", 10, Vec2(10, 1));
+
+		//履歴数字画像
+		D3D12App::Instance()->GenerateTextureBuffer(
+			m_historyNumTex[skillIdx].data(), dir + fileNameArray[skillIdx] + "_rireki_number.png", 11, Vec2(11, 1));
+	}
 }
 
 void SkillResultUI::Init()
@@ -32,15 +44,12 @@ void SkillResultUI::Update()
 
 	m_impactShake.Update(1.0f);
 
-	//退場後の座標X
-	const float DISAPPEAR_POS_X = 1500.0f;
-
 	//退場開始までの時間
 	if (m_appearTimer.UpdateTimer())
 	{
 		//退場中
 		m_disappearTimer.UpdateTimer();
-		m_nowPos.x = Math::Ease(In, Back, m_disappearTimer.GetTimeRate(), m_appearPos.x, DISAPPEAR_POS_X);
+		m_nowPos.x = Math::Ease(In, Back, m_disappearTimer.GetTimeRate(), m_appearPos.x, m_disappearPosX);
 
 		//退場完了
 		if (m_disappearTimer.IsTimeUp())
@@ -71,9 +80,9 @@ void SkillResultUI::Draw()
 
 	Vec2<float>shake = { 0.0f,m_impactShake.GetOffset().y };
 	auto pos = m_nowPos + shake;
-	DrawFunc2D::DrawRotaGraph2D(pos, {1.0f,1.0f}, 0.0f, m_damageTex);
-	DrawFunc2D::DrawNumber2D(m_damageAmount, pos + NUMBER_OFFSET_POS,
-		m_damageNumTex.data(), { 1.0f,1.0f }, 1.0f, 0.0f,
+	DrawFunc2D::DrawRotaGraph2D(pos, {1.0f,1.0f}, 0.0f, m_skillTex[m_skillType]);
+	DrawFunc2D::DrawNumber2D(m_amount, pos + NUMBER_OFFSET_POS,
+		m_amountNumTex[m_skillType].data(), {1.0f,1.0f}, 1.0f, 0.0f,
 		HORIZONTAL_ALIGN::CENTER, VERTICAL_ALIGN::CENTER, 2);
 
 	//最新のダメージ履歴の描画オフセット座標
@@ -85,7 +94,7 @@ void SkillResultUI::Draw()
 	for (auto itr = m_history.begin(); itr != m_history.end(); ++itr)
 	{
 		DrawFunc2D::DrawNumber2D(itr->first, damageHisPos,
-			m_damageHisNumTex.data(), { 1.0f,1.0f }, itr->second, 0.0f, HORIZONTAL_ALIGN::RIGHT,
+			m_historyNumTex[m_skillType].data(), {1.0f,1.0f}, itr->second, 0.0f, HORIZONTAL_ALIGN::RIGHT,
 			VERTICAL_ALIGN::TOP, -1, 10, -1);
 
 		//行間ずらし
@@ -115,11 +124,11 @@ void SkillResultUI::Add(int arg_damage, bool arg_drawHistory)
 	//非表示状態
 	if (!m_isActive)
 	{
-		m_damageAmount = 0;
+		m_amount = 0;
 	}
 
 	m_isActive = true;
-	m_damageAmount += arg_damage;
+	m_amount += arg_damage;
 	m_impactShake.Shake(SHAKE_TIME, SHAKE_SPAN, SHAKE_POWER_MIN, SHAKE_POWER_MAX);
 	m_nowPos = m_appearPos;
 

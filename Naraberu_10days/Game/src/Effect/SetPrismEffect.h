@@ -10,8 +10,8 @@
 
 class PanelManager;
 
-//攻撃のブロックを置いたときの演出
-class PlayerAttackEffect
+//プリズムを置いたときの演出
+class SetPrismEffect
 {
 	bool m_isActive = false;
 
@@ -28,26 +28,35 @@ class PlayerAttackEffect
 	static const int ENEMY_COUNT_MAX = 3;
 	std::array<SkillResultUI, ENEMY_COUNT_MAX>m_enemyDamageUI;
 
+	//プレイヤーに対する回復UI
+	SkillResultUI m_playerHealUI;
+
+	//起動中のUI
+	std::vector<SkillResultUI*>m_activeUIArray;
+
 	//ターゲットの敵
 	std::vector<int>m_targetEnemyIdxArray;
 
-	//1ブロックにつき何ダメージか
-	int m_damagePerOneBlock = 1;
+	//1ブロックにつきどれくらいの効果があるか
+	int m_amountPerOneBlock = 1;
 
 	//１ブロックを置くごとのタイマー
-	KuroEngine::Timer m_setBlockTimer;
+	KuroEngine::Timer m_setPrismTimer;
 
 	//攻撃カウント最大
-	static const int ATTACK_COUNT_SE_MAX = 10;
+	static const int SET_PRISM_COUNT_SE_MAX = 10;
 	//攻撃カウントSE
-	std::array<int, ATTACK_COUNT_SE_MAX>m_countSeArray;
+	std::array<int, SET_PRISM_COUNT_SE_MAX>m_countSeArray;
 	//再生するカウントSEのインデックス
 	int m_countSeIdx;
 
 	std::string m_skillName;
 
+	//共通のスタート時の初期化
+	void CommonInitOnStart(std::vector<KuroEngine::Vec2<int>>arg_setChipIdxArray, BlockColor arg_color, int arg_amountPerOneBlock, std::string arg_skillName);
+
 public:
-	PlayerAttackEffect();
+	SetPrismEffect();
 	void Init();
 	void Update(std::weak_ptr<PanelManager>arg_panelManager);
 	void Draw();
@@ -58,9 +67,11 @@ public:
 	/// <param name="arg_setChipIdxArray">設置位置インデックスの配列</param>
 	/// <param name="arg_color">ブロックの色</param>
 	/// <param name="arg_damagePerOneBlock">1ブロックにつき何ダメージか</param>
-	/// <param name="arg_targetEnemyIdxArray">ターゲットの敵のインデックス配列</param>
 	/// <param name="arg_skillName">スキル名</param>
-	void Start(std::vector<KuroEngine::Vec2<int>>arg_setChipIdxArray, BlockColor arg_color, int arg_damagePerOneBlock, std::vector<int>arg_targetEnemyIdxArray, std::string arg_skillName);
+	/// <param name="arg_targetEnemyIdxArray">ターゲットの敵のインデックス配列</param>
+	void Start(std::vector<KuroEngine::Vec2<int>>arg_setChipIdxArray, BlockColor arg_color, int arg_damagePerOneBlock, std::string arg_skillName, std::vector<int>arg_targetEnemyIdxArray);
+	
+	void Start(std::vector<KuroEngine::Vec2<int>>arg_setChipIdxArray, BlockColor arg_color, int arg_healPerOneBlock, std::string arg_skillName);
 
 	//アクティブ状態ゲッタ
 	const bool& GetIsActive()const { return m_isActive; }

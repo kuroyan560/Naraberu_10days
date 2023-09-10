@@ -594,7 +594,7 @@ BattleScene::BattleScene()
 	}
 
 
-	m_playerAttackEffect = std::make_shared<PlayerAttackEffect>();
+	m_playerAttackEffect = std::make_shared<SetPrismEffect>();
 }
 
 void BattleScene::PlayerTurn()

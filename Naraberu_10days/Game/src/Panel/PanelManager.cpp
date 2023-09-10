@@ -4,7 +4,7 @@
 #include "../BattleManager/Player_Act/Skills/PlayerSkills.h"
 #include "../BattleManager/ExistUnits.h"
 #include "../RefreshRate.h"
-#include"../Effect/PlayerAttackEffect.h"
+#include"../Effect/SetPrismEffect.h"
 #include "../Effect/ScreenShakeManager.h"
 
 KuroEngine::Vec2<int> PanelManager::mapMax;
@@ -165,7 +165,7 @@ bool PanelManager::JudgeSet(KuroEngine::Vec2<int> _setChipIdx, BlockColor _color
 	return true;
 }
 
-bool PanelManager::JudgeWithEffect(KuroEngine::Vec2<int> _nowMapchip, std::vector<KuroEngine::Vec2<int>> _shape, const BlockAttribute _attribute, BlockColor _color, std::weak_ptr<PlayerAttackEffect>_playerAttackEffect)
+bool PanelManager::JudgeWithEffect(KuroEngine::Vec2<int> _nowMapchip, std::vector<KuroEngine::Vec2<int>> _shape, const BlockAttribute _attribute, BlockColor _color, std::weak_ptr<SetPrismEffect>_playerAttackEffect)
 {
 	//まだ演出が終わってない
 	if (_playerAttackEffect.lock()->GetIsActive())return false;
@@ -185,20 +185,15 @@ bool PanelManager::JudgeWithEffect(KuroEngine::Vec2<int> _nowMapchip, std::vecto
 
 	// 設置したらアクション
 	if (_attribute == BlockAttribute::attack1) {
-		_playerAttackEffect.lock()->Start(setChipIdxArray, _color, 2, { ExistUnits::Instance()->m_NowTarget }, "Attack_01");
+		_playerAttackEffect.lock()->Start(setChipIdxArray, _color, 2, "Attack_01", { ExistUnits::Instance()->m_NowTarget });
 	}
 	else if (_attribute == BlockAttribute::attack2) {
 		// 強攻撃
-		_playerAttackEffect.lock()->Start(setChipIdxArray, _color, 1, ExistUnits::Instance()->GetAliveEnemyIndex(), "Attack_02");
+		_playerAttackEffect.lock()->Start(setChipIdxArray, _color, 1, "Attack_02", ExistUnits::Instance()->GetAliveEnemyIndex());
 	}
 	else if (_attribute == BlockAttribute::recovery) {
-
-		//とりあえず回復演出ないので直接設置
-		for (auto& i : _shape) {
-			mapchip[_nowMapchip.y + i.y][_nowMapchip.x + i.x] = int(_color);
-		}
 		// 回復
-		PlayerSkills::PlayerSkillMgr::Instance()->StartAction("Heal_01", (int)setChipIdxArray.size(), ExistUnits::Instance()->m_pPlayer, ExistUnits::Instance()->m_Enemys[ExistUnits::Instance()->m_NowTarget]);
+		_playerAttackEffect.lock()->Start(setChipIdxArray, _color, 1, "Heal_01");
 	}
 	return true;
 }

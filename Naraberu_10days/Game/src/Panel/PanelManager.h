@@ -2,7 +2,7 @@
 #include "../Block/BaseInformation.h"
 #include "KuroEngineDevice.h"
 
-class PlayerAttackEffect;
+class SetPrismEffect;
 
 class PanelManager
 {
@@ -71,7 +71,7 @@ public:
 	/// <param name="_playerAttackEffect">演出クラス</param>
 	/// <returns>演出スタートしたか</returns>
 	bool JudgeWithEffect(KuroEngine::Vec2<int> _nowMapchip, std::vector<KuroEngine::Vec2<int>> _shape,
-		const BlockAttribute _attribute, BlockColor _color, std::weak_ptr<PlayerAttackEffect>_playerAttackEffect);
+		const BlockAttribute _attribute, BlockColor _color, std::weak_ptr<SetPrismEffect>_playerAttackEffect);
 
 	/// <summary>
 	/// 塊判定
