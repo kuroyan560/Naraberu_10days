@@ -92,6 +92,10 @@ void BattleScene::OnInitialize()
 		});
 
 	ParticleManager::Instance()->Init();
+
+
+	dame.reset(new PlayerDamageUi());
+	dame->Initialize();
 }
 
 void BattleScene::OnUpdate()
@@ -99,6 +103,11 @@ void BattleScene::OnUpdate()
 	KuroEngine::UsersInput* input = KuroEngine::UsersInput::Instance();
 
 	static int mmmm = 0;
+
+	if (OperationConfig::Instance()->DebugKeyInput(DIK_H)) {
+		dame->SetDamage(123);
+	}
+	dame->Update();
 
 	if (OperationConfig::Instance()->DebugKeyInput(DIK_L) && mmmm % 3 == 0)
 	{
@@ -343,6 +352,8 @@ void BattleScene::OnDraw()
 	if (m_IsPause) {
 		PauseDraw();
 	}
+
+	dame->Draw();
 }
 
 void BattleScene::OnImguiDebug()
