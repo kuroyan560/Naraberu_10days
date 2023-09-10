@@ -63,7 +63,7 @@ void Player::OnUpdate()
 	}
 
 	// ƒEƒ‹ƒg”­“®
-	if (UsersInput::Instance()->KeyOnTrigger(DIK_Z) && GetUltRate() == 1.0f) {
+	if (OperationConfig::Instance()->GetOperationInput(OperationConfig::EXECUTE_ULT, OperationConfig::ON_TRIGGER) && GetUltRate() == 1.0f) {
 		SubUltPoint(Max_UltimatePoint);
 		PlayerSkills::PlayerSkillMgr::Instance()->StartAction("Ultimate_01", 0, ExistUnits::Instance()->m_pPlayer);
 	}

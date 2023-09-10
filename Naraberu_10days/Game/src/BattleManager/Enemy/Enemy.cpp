@@ -45,7 +45,7 @@ void Enemy::OnUpdate()
 		// 必要な情報をセット(あとで分岐無しでいい設計にする)
 		//m_Actions[m_Action_Num]->Action_Start();
 		EnemyActions::EnemyActionMgr::Instance()->SetUnits(this, ExistUnits::Instance()->m_pPlayer);
-		EnemyActions::EnemyActionMgr::Instance()->StartAction(m_Data.ActionList[1]);
+		EnemyActions::EnemyActionMgr::Instance()->StartAction(m_Data.ActionList[GetRand(0,3)]);
 
 		m_Now_Action = true;
 	}

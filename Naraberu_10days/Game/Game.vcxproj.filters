@@ -427,6 +427,9 @@
     <ClCompile Include="src\SoundConfig.cpp">
       <Filter>src\user</Filter>
     </ClCompile>
+    <ClCompile Include="src\BattleManager\ExistUnits.cpp">
+      <Filter>src\user\BattleManager</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="..\..\src\engine\KuroEngineDevice.h">

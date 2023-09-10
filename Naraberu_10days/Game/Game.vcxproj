@@ -186,6 +186,7 @@ xcopy "$(SolutionDir)dxil.dll" $(TargetDir) /Y</Command>
     <ClCompile Include="src\BattleManager\Enemy_Act\E_Ac_Base.cpp" />
     <ClCompile Include="src\BattleManager\Enemy_Act\Heal\Debug_Heal_01.cpp" />
     <ClCompile Include="src\BattleManager\Enemy_Act\Jamming\Debug_Jamming_01.cpp" />
+    <ClCompile Include="src\BattleManager\ExistUnits.cpp" />
     <ClCompile Include="src\BattleManager\Player\Player.cpp" />
     <ClCompile Include="src\BattleManager\Player_Act\Skills\PlayerSkills.cpp" />
     <ClCompile Include="src\BattleManager\Player_Act\Skills\Player_Attack_01.cpp" />

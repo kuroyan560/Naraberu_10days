@@ -108,9 +108,9 @@ namespace EnemysData {
 	};
 
 	// ‚±‚±‚É“G‚ð’Ç‰Á‚µ‚Ä‚¢‚­
-	static const EnemyData DebugEnemy_1 = EnemyData("Debug_1", ENEMY_TAG::DEFAULT, 64, 50, AI_TYPE::DEFAULT, "Attack_01", "Attack_02");
-	static const EnemyData DebugEnemy_2 = EnemyData("Debug_2", ENEMY_TAG::DEFAULT, 128, 50, AI_TYPE::DEFAULT, "Attack_02", "Heal_01", "Jamming_01");
-	static const EnemyData DebugEnemy_3 = EnemyData("Debug_3", ENEMY_TAG::DEFAULT, 128, 50, AI_TYPE::DEFAULT, "Attack_01", "Jamming_01", "Attack_01");
+	static const EnemyData DebugEnemy_1 = EnemyData("Debug_1", ENEMY_TAG::DEFAULT, 64, 45, AI_TYPE::DEFAULT, "Attack_01", "Attack_01", "Attack_02");
+	static const EnemyData DebugEnemy_2 = EnemyData("Debug_2", ENEMY_TAG::DEFAULT, 128, 30, AI_TYPE::DEFAULT, "Attack_02", "Heal_01", "Heal_01");
+	static const EnemyData DebugEnemy_3 = EnemyData("Debug_3", ENEMY_TAG::DEFAULT, 128, 30, AI_TYPE::DEFAULT, "Attack_01", "Jamming_01", "Jamming_01");
 
-	static const EnemyData DebugEnemy_Boss_1 = EnemyData("Debug_1", ENEMY_TAG::BOSS, 1000, 100, AI_TYPE::DEFAULT, "Attack_01", "Attack_01", "Attack_01");
+	static const EnemyData DebugEnemy_Boss_1 = EnemyData("Debug_1", ENEMY_TAG::BOSS, 1000, 80, AI_TYPE::DEFAULT, "Attack_01", "Attack_01", "Attack_01");
 }
