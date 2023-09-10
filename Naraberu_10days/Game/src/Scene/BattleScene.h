@@ -10,6 +10,7 @@
 #include "../Fade/Fade.h"
 #include"../Effect/SetPrismEffect.h"
 #include "../UI/PlayerDamageUi.h"
+#include "../Effect/UltAttackEffect.h"
 
 class ParticleEmitter;
 
@@ -64,7 +65,10 @@ class BattleScene :
 	std::shared_ptr<ParticleEmitter>m_backPrismPtEmitter;
 	std::shared_ptr<ParticleEmitter>m_ultPtEmitter;
 
+	//（移動する）
+	//プレイヤーのダメージ
 	std::shared_ptr<PlayerDamageUi> dame;
+	std::shared_ptr<UltAttackEffect> ultAttackEffect;
 
 	void PlayerTurn();
 
