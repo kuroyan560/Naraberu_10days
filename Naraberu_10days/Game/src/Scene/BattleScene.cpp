@@ -93,7 +93,8 @@ void BattleScene::OnUpdate()
 {
 	KuroEngine::UsersInput* input = KuroEngine::UsersInput::Instance();
 
-	if (KuroEngine::UsersInput::Instance()->KeyOnTrigger(DIK_ESCAPE)) {
+
+	if (OperationConfig::Instance()->GetOperationInput(OperationConfig::MENU_IN_GAME,OperationConfig::ON_TRIGGER)) {
 		m_IsPause = true;
 		m_PauseMenu = 0;
 	}
