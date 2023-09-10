@@ -242,6 +242,8 @@ void BattleTurnMgr::SetUnits(std::shared_ptr<UnitBase> Player, std::vector<std::
 	m_Checked_TurnEnd = false;
 	m_Moving_Flag = false;
 	m_Scaling_Timer_Max = 20.0f * RefreshRate::RefreshRate_Mag;
+	// Œ»ÝŽž
+	GetLocalTime(&NowTime);
 
 	ExistUnits::Instance()->m_NowTarget = 0;
 	m_IsDefeat = false;

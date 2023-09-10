@@ -205,11 +205,6 @@ void BattleScene::OnUpdate()
 		PlayerTurn();
 	}
 
-	//リセット
-	if (OperationConfig::Instance()->DebugKeyInputOnTrigger(DIK_I)) {
-		stage->Reset();
-	}
-
 	// 設置不可時間の更新
 	if (m_Impossible_Put_Block_Timer > 0) {
 		m_Impossible_Put_Block_Timer--;
