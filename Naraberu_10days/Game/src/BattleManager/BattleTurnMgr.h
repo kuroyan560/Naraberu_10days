@@ -56,19 +56,16 @@ class BattleTurnMgr
 	__int64 m_ProgressTime;
 	std::shared_ptr<KuroEngine::TextureBuffer> m_Timer_Frame_Tex;
 	std::shared_ptr<KuroEngine::TextureBuffer> m_Timer_Gauge_Tex;
+public:
+	SYSTEMTIME PauseStartTime;
+	SYSTEMTIME PauseEndTime;
+	__int64 m_PauseTime;
+	std::vector<__int64> m_PauseTimeContainer;
 
 public:
 	std::vector<std::shared_ptr<UnitBase>> UnitList;
 
-	BattleTurnMgr() {
-		m_Whole_Turn_Count = 0;
-		TurnNum = 0;
-		TurnFrameTime = 0;
-		NextGameTimer = 0;
-		NextGameTimeFinish = int(float(NextGameTimeFinish_Default) * RefreshRate::RefreshRate_Mag);
-		m_IsDefeat = false;
-		m_ProgressTime = 0;
-	}
+	BattleTurnMgr();
 
 	void OnInitialize(std::shared_ptr<UnitBase> Player, std::vector<std::shared_ptr<UnitBase>> Enemys);
 	// ウェーブに開始時にユニットをセット

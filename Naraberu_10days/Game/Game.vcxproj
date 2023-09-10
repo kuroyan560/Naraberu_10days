@@ -215,6 +215,7 @@ xcopy "$(SolutionDir)dxil.dll" $(TargetDir) /Y</Command>
     <ClCompile Include="src\Scene\TitleScene.cpp" />
     <ClCompile Include="src\Titel\TitleUi.cpp" />
     <ClCompile Include="src\Titel\TitleVtuber.cpp" />
+    <ClCompile Include="src\UI\PlayerDamageUi.cpp" />
     <ClCompile Include="src\UI\SkillResultUI.cpp" />
   </ItemGroup>
   <ItemGroup>
@@ -348,6 +349,7 @@ xcopy "$(SolutionDir)dxil.dll" $(TargetDir) /Y</Command>
     <ClInclude Include="src\Stage\StageList.h" />
     <ClInclude Include="src\Titel\TitleUi.h" />
     <ClInclude Include="src\Titel\TitleVtuber.h" />
+    <ClInclude Include="src\UI\PlayerDamageUi.h" />
     <ClInclude Include="src\UI\SkillResultUI.h" />
   </ItemGroup>
   <ItemGroup>

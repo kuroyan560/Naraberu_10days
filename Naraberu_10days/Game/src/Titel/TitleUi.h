@@ -55,6 +55,8 @@ public:
 	void SetIsStageSelectOutMove(bool _isStageSelectOutMove = true) { isStageSelectOutMove = _isStageSelectOutMove; }
 	bool GetIsStageMove() { return isStageMove; }
 	int GetStageNum() { return nowStageNum + 1; }
+	bool GetIsStageSelectInMove() { return isStageSelectInMove; }
+	bool GetIsStageSelectOutMove() { return isStageSelectOutMove; }
 
 	// îwåi
 	std::shared_ptr<KuroEngine::TextureBuffer> backTex;

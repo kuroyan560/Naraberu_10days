@@ -9,6 +9,7 @@
 #include "../Stage/StageList.h"
 #include "../Fade/Fade.h"
 #include"../Effect/SetPrismEffect.h"
+#include "../UI/PlayerDamageUi.h"
 
 class ParticleEmitter;
 
@@ -62,6 +63,8 @@ class BattleScene :
 	std::shared_ptr<ParticleEmitter>m_healPtEmitter;
 	std::shared_ptr<ParticleEmitter>m_backPrismPtEmitter;
 	std::shared_ptr<ParticleEmitter>m_ultPtEmitter;
+
+	std::shared_ptr<PlayerDamageUi> dame;
 
 	void PlayerTurn();
 

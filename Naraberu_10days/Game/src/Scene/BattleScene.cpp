@@ -95,6 +95,10 @@ void BattleScene::OnInitialize()
 		});
 
 	ParticleManager::Instance()->Init();
+
+
+	dame.reset(new PlayerDamageUi());
+	dame->Initialize();
 	ScreenShakeManager::Instance()->Init();
 }
 
@@ -108,6 +112,11 @@ void BattleScene::OnUpdate()
 	{
 		ScreenShakeManager::Instance()->Shake();
 	}
+
+	if (OperationConfig::Instance()->DebugKeyInput(DIK_H)) {
+		dame->SetDamage(123);
+	}
+	dame->Update();
 
 	if (OperationConfig::Instance()->DebugKeyInput(DIK_L) && mmmm % 3 == 0)
 	{
@@ -125,9 +134,26 @@ void BattleScene::OnUpdate()
 	if (OperationConfig::Instance()->GetOperationInput(OperationConfig::MENU_IN_GAME,OperationConfig::ON_TRIGGER)) {
 		m_IsPause = true;
 		m_PauseMenu = 0;
+		// 現在時刻
+		GetLocalTime(&Mgr.PauseStartTime);
+		// ポーズ時間の計算
+		Mgr.m_PauseTimeContainer.emplace_back(Mgr.m_PauseTime);
 	}
 
 	if (m_IsPause) {
+		// 現在時刻
+		GetLocalTime(&Mgr.PauseEndTime);
+		// 変換
+		FILETIME ftime1;
+		FILETIME ftime2;
+		SystemTimeToFileTime(&Mgr.PauseStartTime, &ftime1);
+		SystemTimeToFileTime(&Mgr.PauseEndTime, &ftime2);
+		// int64にキャスト
+		__int64* nTime1 = (__int64*)&ftime1;
+		__int64* nTime2 = (__int64*)&ftime2;
+		// 経過秒
+		Mgr.m_PauseTime = (*nTime2 - *nTime1);
+
 		if (OperationConfig::Instance()->GetSelectVec(OperationConfig::SELECT_VEC::SELECT_VEC_UP) ||
 			OperationConfig::Instance()->GetTargetChangeVec(OperationConfig::SELECT_VEC_UP)) {
 			if (m_PauseMenu > 0) {
@@ -151,7 +177,7 @@ void BattleScene::OnUpdate()
 				m_Already_Selected_Pause = false;
 				m_IsPause = false;
 			}
-			// タイトルへ
+			// タイトル
 			else if (m_PauseMenu == 1) {
 				KuroEngine::KuroEngineDevice::Instance()->ChangeScene("Battle", &m_Fade);
 			}
@@ -325,18 +351,18 @@ void BattleScene::OnDraw()
 
 	// キー描画
 	if (OperationConfig::Instance()->GetLatestDevice() == OperationConfig::Instance()->KEY_BOARD_MOUSE) {
-		DrawFunc2D::DrawGraph(Vec2(320.0f, 90.0f), m_Operation_Ult[0]);
-		DrawFunc2D::DrawGraph(Vec2(718.0f, 0.0f), m_Operation_Set[0]);
-		DrawFunc2D::DrawGraph(Vec2(105.0f, 621.0f), m_Operation_Pass[0]);
-		DrawFunc2D::DrawGraph(Vec2(374.0f, 655.0f), m_Operation_Left[0]);
-		DrawFunc2D::DrawGraph(Vec2(587.0f, 655.0f), m_Operation_Right[0]);
+		DrawFunc2D::DrawGraph(Vec2(320.0f, 90.0f) + ScreenShakeManager::Instance()->GetOffset(), m_Operation_Ult[0]);
+		DrawFunc2D::DrawGraph(Vec2(718.0f, 0.0f) + ScreenShakeManager::Instance()->GetOffset(), m_Operation_Set[0]);
+		DrawFunc2D::DrawGraph(Vec2(105.0f, 621.0f) + ScreenShakeManager::Instance()->GetOffset(), m_Operation_Pass[0]);
+		DrawFunc2D::DrawGraph(Vec2(374.0f, 655.0f) + ScreenShakeManager::Instance()->GetOffset(), m_Operation_Left[0]);
+		DrawFunc2D::DrawGraph(Vec2(587.0f, 655.0f) + ScreenShakeManager::Instance()->GetOffset(), m_Operation_Right[0]);
 	}
 	else {
-		DrawFunc2D::DrawGraph(Vec2(322.0f, 92.0f), m_Operation_Ult[1]);
-		DrawFunc2D::DrawGraph(Vec2(719.0f, 1.0f), m_Operation_Set[1]);
-		DrawFunc2D::DrawGraph(Vec2(108.0f, 623.0f), m_Operation_Pass[1]);
-		DrawFunc2D::DrawGraph(Vec2(357.0f, 670.0f), m_Operation_Left[1]);
-		DrawFunc2D::DrawGraph(Vec2(578.0f, 670.0f), m_Operation_Right[1]);
+		DrawFunc2D::DrawGraph(Vec2(322.0f, 92.0f) + ScreenShakeManager::Instance()->GetOffset(), m_Operation_Ult[1]);
+		DrawFunc2D::DrawGraph(Vec2(719.0f, 1.0f) + ScreenShakeManager::Instance()->GetOffset(), m_Operation_Set[1]);
+		DrawFunc2D::DrawGraph(Vec2(108.0f, 623.0f) + ScreenShakeManager::Instance()->GetOffset(), m_Operation_Pass[1]);
+		DrawFunc2D::DrawGraph(Vec2(357.0f, 670.0f) + ScreenShakeManager::Instance()->GetOffset(), m_Operation_Left[1]);
+		DrawFunc2D::DrawGraph(Vec2(578.0f, 670.0f) + ScreenShakeManager::Instance()->GetOffset(), m_Operation_Right[1]);
 	}
 
 	//演出
@@ -356,6 +382,8 @@ void BattleScene::OnDraw()
 	if (m_IsPause) {
 		PauseDraw();
 	}
+
+	dame->Draw();
 }
 
 void BattleScene::OnImguiDebug()

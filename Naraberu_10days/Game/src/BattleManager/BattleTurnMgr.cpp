@@ -12,6 +12,27 @@
 
 #include "../Effect/ScreenShakeManager.h"
 
+BattleTurnMgr::BattleTurnMgr() {
+	m_Whole_Turn_Count = 0;
+	TurnNum = 0;
+	TurnFrameTime = 0;
+	NextGameTimer = 0;
+	NextGameTimeFinish = int(float(NextGameTimeFinish_Default) * RefreshRate::RefreshRate_Mag);
+	m_IsDefeat = false;
+	m_ProgressTime = 0;
+
+	using namespace KuroEngine;
+	std::string TexDir = "resource/user/tex/battle_scene/";
+	m_CutInTex = D3D12App::Instance()->GenerateTextureBuffer(TexDir + "player_turn.png");
+
+	m_Timer_Frame_Tex = D3D12App::Instance()->GenerateTextureBuffer(TexDir + "timer_gauge_frame.png");
+	m_Timer_Gauge_Tex = D3D12App::Instance()->GenerateTextureBuffer(TexDir + "timer_gauge.png");
+	m_TurnEndTex = D3D12App::Instance()->GenerateTextureBuffer(TexDir + "turn_end.png");
+	m_TurnEnd_EnterTex = D3D12App::Instance()->GenerateTextureBuffer(TexDir + "/operation/key/done.png");
+	m_TurnEnd_Crtl_EnterTex = D3D12App::Instance()->GenerateTextureBuffer(TexDir + "/clear/done_controller.png");
+	m_TurnEnd_SelectedTex = D3D12App::Instance()->GenerateTextureBuffer(TexDir + "turn_end_sure.png");
+}
+
 void BattleTurnMgr::TurnEndButtonUpdate()
 {
 	using namespace KuroEngine;
@@ -33,7 +54,16 @@ void BattleTurnMgr::TurnEndButtonUpdate()
 		//m_ProgressTime = (*nTime2 - *nTime1) / 10000 / 1000;
 		m_ProgressTime = (*nTime2 - *nTime1);
 
-		if (m_ProgressTime >= __int64(600000000) && !m_Checked_TurnEnd) {
+		// ボーズタイムコンテナ
+		__int64 TotalPuaseTime = 0;
+		for (int i = int(m_PauseTimeContainer.size()) - 1; i >= 0; --i) {
+			//if (i != int(m_PauseTimeContainer.size()) - 1) {
+				TotalPuaseTime += m_PauseTimeContainer[i];
+			//}
+		}
+
+
+		if (m_ProgressTime >= (__int64(600000000) + m_PauseTime + TotalPuaseTime) && !m_Checked_TurnEnd) {
 			m_Checked_TurnEnd = true;
 			m_Moving_Flag = true;
 			GetUnitPtr<Player>(UnitList[0])->TurnEndTrigger();
@@ -160,22 +190,45 @@ float BattleTurnMgr::ResultEasing(float time)
 
 void BattleTurnMgr::AutoTurnEndTimerDraw()
 {
+	// 自動ターンエンド
+		// 現在時刻
+	GetLocalTime(&NowTime);
+	// 変換
+	FILETIME ftime1;
+	FILETIME ftime2;
+	SystemTimeToFileTime(&StartTime, &ftime1);
+	SystemTimeToFileTime(&NowTime, &ftime2);
+	// int64にキャスト
+	__int64* nTime1 = (__int64*)&ftime1;
+	__int64* nTime2 = (__int64*)&ftime2;
+	// 経過秒
+	m_ProgressTime = (*nTime2 - *nTime1);
+
 	using namespace KuroEngine;
 	Vec2 LT = Vec2(384.0f, 576.0f);
 	Vec2 RB = Vec2(896.0f, 589.0f);
-	DrawFunc2D::DrawExtendGraph2D(LT, RB, m_Timer_Frame_Tex);
+	DrawFunc2D::DrawExtendGraph2D(LT + ScreenShakeManager::Instance()->GetOffset(), RB + ScreenShakeManager::Instance()->GetOffset(), m_Timer_Frame_Tex);
 
 	Vec2 LT_Gauge = Vec2(386.0f, 578.0f);
 	Vec2 RB_Gauge = Vec2(894.0f, 587.0f);
+
+	// ボーズタイムコンテナ
+	__int64 TotalPuaseTime = 0;
+	for (int i = int(m_PauseTimeContainer.size()) - 1; i >= 0; --i) {
+		//if (i != int(m_PauseTimeContainer.size()) - 1) {
+			TotalPuaseTime += m_PauseTimeContainer[i];
+		//}
+	}
+
 	// 現在の割合
-	float Now_Rate = float(m_ProgressTime) / 600000000.0f;
+	float Now_Rate = float(m_ProgressTime - m_PauseTime - TotalPuaseTime) / (600000000.0f);
 	// ゲージの長さ
 	float Gauge_Max_Width = RB_Gauge.x - LT_Gauge.x;
 	// 現在のゲージの長さ
 	float Gauge_Width = Gauge_Max_Width * Now_Rate;
 
-	DrawFunc2D_Mask::DrawExtendGraph2D(LT_Gauge, RB_Gauge, m_Timer_Gauge_Tex,
-		LT_Gauge, RB_Gauge - Vec2(Gauge_Width, 0.0f));
+	DrawFunc2D_Mask::DrawExtendGraph2D(LT_Gauge + ScreenShakeManager::Instance()->GetOffset(), RB_Gauge + ScreenShakeManager::Instance()->GetOffset(), m_Timer_Gauge_Tex,
+		LT_Gauge + ScreenShakeManager::Instance()->GetOffset(), RB_Gauge - Vec2(Gauge_Width, 0.0f) + ScreenShakeManager::Instance()->GetOffset());
 }
 
 void BattleTurnMgr::OnInitialize(std::shared_ptr<UnitBase> Player, std::vector<std::shared_ptr<UnitBase>> Enemys)
@@ -194,8 +247,6 @@ void BattleTurnMgr::OnInitialize(std::shared_ptr<UnitBase> Player, std::vector<s
 	m_IsDefeat = false;
 
 	using namespace KuroEngine;
-	std::string TexDir = "resource/user/tex/battle_scene/";
-	m_CutInTex = D3D12App::Instance()->GenerateTextureBuffer(TexDir + "player_turn.png");
 
 	// ターンエンド
 	m_Selected_TurnEnd = false;
@@ -208,15 +259,9 @@ void BattleTurnMgr::OnInitialize(std::shared_ptr<UnitBase> Player, std::vector<s
 	m_Moving_Timer_Max = 80.0f * RefreshRate::RefreshRate_Mag;
 
 	// 自動ターンエンド
+	m_PauseTime = 0;
+	m_PauseTimeContainer.clear();
 	GetLocalTime(&StartTime);
-	m_Timer_Frame_Tex = D3D12App::Instance()->GenerateTextureBuffer(TexDir + "timer_gauge_frame.png");
-	m_Timer_Gauge_Tex = D3D12App::Instance()->GenerateTextureBuffer(TexDir + "timer_gauge.png");
-
-
-	m_TurnEndTex = D3D12App::Instance()->GenerateTextureBuffer(TexDir + "turn_end.png");
-	m_TurnEnd_EnterTex = D3D12App::Instance()->GenerateTextureBuffer(TexDir + "/operation/key/done.png");
-	m_TurnEnd_Crtl_EnterTex = D3D12App::Instance()->GenerateTextureBuffer(TexDir + "/clear/done_controller.png");
-	m_TurnEnd_SelectedTex = D3D12App::Instance()->GenerateTextureBuffer(TexDir + "turn_end_sure.png");
 
 	// レティクル
 	Reticle::Instance()->SetBattleTurnManager(this);
@@ -243,6 +288,8 @@ void BattleTurnMgr::SetUnits(std::shared_ptr<UnitBase> Player, std::vector<std::
 	m_Moving_Flag = false;
 	m_Scaling_Timer_Max = 20.0f * RefreshRate::RefreshRate_Mag;
 	// 現在時刻
+	m_PauseTime = 0;
+	m_PauseTimeContainer.clear();
 	GetLocalTime(&NowTime);
 
 	ExistUnits::Instance()->m_NowTarget = 0;
@@ -376,6 +423,8 @@ void BattleTurnMgr::Update_Battle()
 				if (TurnNum == 0) {
 					m_Moving_Flag = false;
 					//m_AutoTurnEndTimer = 0;
+					m_PauseTime = 0;
+					m_PauseTimeContainer.clear();
 					GetLocalTime(&StartTime);
 				}
 				m_Checked_TurnEnd = false;
