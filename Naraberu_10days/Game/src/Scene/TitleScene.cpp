@@ -135,10 +135,12 @@ void TitleScene::Title()
 	//ステージセレクトへ
 	if (OperationConfig::Instance()->GetOperationInput(OperationConfig::OPERATION_TYPE::DONE,
 		OperationConfig::INPUT_PATTERN::ON_TRIGGER) && selectNum == Select::stageSelect) {
-		onSelect = true;
-		title->SetIsStageSelectInMove();
-		SoundConfig::Instance()->Play(SoundConfig::SE_DONE);
-		character->SetMoveStageSelect();
+		if (!title->GetIsStageSelectOutMove() && !character->GetisMove()) {
+			onSelect = true;
+			title->SetIsStageSelectInMove();
+			SoundConfig::Instance()->Play(SoundConfig::SE_DONE);
+			character->SetMoveStageSelect();
+		}
 	}
 
 	//ゲームを落とす処理
@@ -153,17 +155,21 @@ void TitleScene::StageSelect()
 {
 	//battleへ
 	if (OperationConfig::Instance()->GetOperationInput(OperationConfig::OPERATION_TYPE::DONE, OperationConfig::INPUT_PATTERN::ON_TRIGGER)) {
-		ExistUnits::Instance()->m_StageName = "Stage" + std::to_string(title->GetStageNum());
-		KuroEngine::KuroEngineDevice::Instance()->ChangeScene("Battle", &m_Fade);
-		SoundConfig::Instance()->Play(SoundConfig::SE_DONE);
+		if (!title->GetIsStageMove()) {
+			ExistUnits::Instance()->m_StageName = "Stage" + std::to_string(title->GetStageNum());
+			KuroEngine::KuroEngineDevice::Instance()->ChangeScene("Battle", &m_Fade);
+			SoundConfig::Instance()->Play(SoundConfig::SE_DONE);
+		}
 	}
 
 	//タイトルへ
 	if (OperationConfig::Instance()->GetOperationInput(OperationConfig::OPERATION_TYPE::CANCEL, OperationConfig::INPUT_PATTERN::ON_TRIGGER)) {
-		onSelect = false;
-		title->SetIsStageSelectOutMove();
-		SoundConfig::Instance()->Play(SoundConfig::SE_CANCEL);
-		character->SetMoveTitle(false);
+		if (!title->GetIsStageSelectInMove() && !character->GetisMove()) {
+			onSelect = false;
+			title->SetIsStageSelectOutMove();
+			SoundConfig::Instance()->Play(SoundConfig::SE_CANCEL);
+			character->SetMoveTitle(false);
+		}
 	}
 
 	//移動

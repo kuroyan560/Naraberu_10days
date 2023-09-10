@@ -97,8 +97,6 @@ void TitleVtuber::Initialize()
 	move = 0;
 	//タイマー
 	moveTimer = 0;
-	//どちらにいるかR true L false
-	LR = true;
 
 	characterShake.Init();
 }
@@ -110,6 +108,8 @@ void TitleVtuber::Update()
 
 	if (isLeftMove || isRightMove) {
 		MoveStageSelect();
+	} else {
+		isMove = false;
 	}
 
 	characterShake.Update(1.0f, XMMatrixIdentity());
@@ -278,6 +278,8 @@ void TitleVtuber::BigPrismAnimation()
 void TitleVtuber::MoveStageSelect()
 {
 	const float maxTimer = 40.0f * RefreshRate::RefreshRate_Mag;
+
+	isMove = true;
 
 	if (isLeftMove) {
 		move = KuroEngine::Math::Ease(KuroEngine::EASE_CHANGE_TYPE::Out, KuroEngine::EASING_TYPE::Back,
