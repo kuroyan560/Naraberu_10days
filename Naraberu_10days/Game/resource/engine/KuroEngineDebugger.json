@@ -231,6 +231,10 @@
       "textColorFlg": false
     },
     "individualVolme": {
+      "bgm": {
+        "bgm_main": 0.15000000596046448,
+        "bgm_sub": 1.0
+      },
       "se": {
         "cancel": 1.0,
         "done": 1.0,

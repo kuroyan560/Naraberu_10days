@@ -19,6 +19,7 @@
 #include "../src/Scene/GameScene.h"
 #include "../src/Scene/BattleScene.h"
 #include "../src/Scene/TitleScene.h"
+#include "../src/SoundConfig.h"
 
 #ifdef _DEBUG
 int main()
@@ -61,6 +62,8 @@ int WINAPI WinMain(HINSTANCE, HINSTANCE, LPSTR, int)
 	//エンジンにシーンリストを渡す
 	engine.SetSceneList(sceneList, awakeScene);
 
+	SoundConfig::Instance();
+
 	bool winEnd = false;
 
 	//ループ
@@ -86,6 +89,7 @@ int WINAPI WinMain(HINSTANCE, HINSTANCE, LPSTR, int)
 			break;
 		}
 
+		SoundConfig::Instance()->Update();
 		engine.Update();
 		engine.Draw();
 

@@ -28,12 +28,6 @@ public:
 	// ロードするステージ名(現在のステージ名)
 	std::string m_StageName;
 
-	//BGM
-	std::array<int ,2> bgm;
-	std::array<float, 2> volume;
-	//現在の音量（割合）
-	float nowVolume = 1.0f;
-
 	ExistUnits() {
 	}
 

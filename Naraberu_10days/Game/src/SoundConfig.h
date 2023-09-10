@@ -4,6 +4,7 @@
 #include<array>
 #include<string>
 #include"ForUser/Debugger.h"
+#include"ForUser/Timer.h"
 
 class SoundConfig : public KuroEngine::DesignPattern::Singleton<SoundConfig>, public KuroEngine::Debugger
 {
@@ -23,7 +24,10 @@ public:
 	//BGM（ループ再生あり）
 	enum BGM
 	{
-		BGM_NUM
+		BGM_MAIN,
+		BGM_SUB,
+		BGM_NUM,
+		BGM_NONE,
 	};
 
 private:
@@ -77,16 +81,19 @@ private:
 	std::array<float, SE_NUM>m_seEachVol;
 	std::array<float, BGM_NUM>m_bgmEachVol;
 
-	//現在再生中のBGMのハンドル
-	int m_nowPlayBGMHandle = INVALID_SOUND;
+	//BGMのフェード用（０でメイン、１でサブ）
+	BGM m_nowBgm = BGM_SUB;
+	BGM m_nextBgm = BGM_NONE;
+	KuroEngine::Timer m_bgmSwitchTimer;
 
-	void OnImguiItems() { if (CustomParamDirty())UpdateIndividualVolume(); }
+	void OnImguiItems();
 
 public:
 	void Init();
+	void Update();
 
 	void Play(SE arg_se, int arg_delay = -1, int arg_soundIdx = -1);
-	void Play(BGM arg_bgm);
+	void SwitchBGM(BGM arg_bgm);
 
 	void UpdateIndividualVolume();
 };
