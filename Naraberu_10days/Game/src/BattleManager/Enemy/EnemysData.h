@@ -128,7 +128,9 @@ namespace EnemysData {
 			}
 
 			m_ReticleTex = D3D12App::Instance()->GenerateTextureBuffer(TexDir + "reticle.png");
-			m_UnitTex = D3D12App::Instance()->GenerateTextureBuffer(EnemyTexturesDir[m_Name]);
+			if (m_Name != "Debug_1") {
+				m_UnitTex = D3D12App::Instance()->GenerateTextureBuffer(EnemyTexturesDir[m_Name]);
+			}
 			m_IndexTex_1 = D3D12App::Instance()->GenerateTextureBuffer(TexDir + "enemy_number_1.png");
 			m_IndexTex_2 = D3D12App::Instance()->GenerateTextureBuffer(TexDir + "enemy_number_2.png");
 			m_IndexTex_3 = D3D12App::Instance()->GenerateTextureBuffer(TexDir + "enemy_number_3.png");
@@ -137,6 +139,9 @@ namespace EnemysData {
 			m_IndexTex_3_Target = D3D12App::Instance()->GenerateTextureBuffer(TexDir + "target_enemy_number_3.png");
 
 			// ”íƒ_ƒ
+			if (m_Name == "Debug_1") {
+				return;
+			}
 			auto First = Moji_kugiri::split(m_Name, '_');
 			m_UnitTex_Damage = D3D12App::Instance()->GenerateTextureBuffer("resource/user/tex/battle_scene/enemy/" + First[0] + "_damage.png");
 		}

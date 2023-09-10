@@ -56,6 +56,9 @@ class BattleTurnMgr
 	__int64 m_ProgressTime;
 	std::shared_ptr<KuroEngine::TextureBuffer> m_Timer_Frame_Tex;
 	std::shared_ptr<KuroEngine::TextureBuffer> m_Timer_Gauge_Tex;
+
+	// そのバトルの最初のターンか
+	bool m_FirstTurn;
 public:
 	SYSTEMTIME PauseStartTime;
 	SYSTEMTIME PauseEndTime;

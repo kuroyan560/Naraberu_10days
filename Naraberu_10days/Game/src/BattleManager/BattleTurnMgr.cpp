@@ -21,6 +21,7 @@ BattleTurnMgr::BattleTurnMgr() {
 	NextGameTimeFinish = int(float(NextGameTimeFinish_Default) * RefreshRate::RefreshRate_Mag);
 	m_IsDefeat = false;
 	m_ProgressTime = 0;
+	m_FirstTurn = true;
 
 	using namespace KuroEngine;
 	std::string TexDir = "resource/user/tex/battle_scene/";
@@ -68,6 +69,7 @@ void BattleTurnMgr::TurnEndButtonUpdate()
 			m_Checked_TurnEnd = true;
 			m_Moving_Flag = true;
 			GetUnitPtr<Player>(UnitList[0])->TurnEndTrigger();
+			m_FirstTurn = false;
 		}
 
 		// ターンエンドボタンが押された(一回目)
@@ -84,6 +86,7 @@ void BattleTurnMgr::TurnEndButtonUpdate()
 				m_Checked_TurnEnd = true;
 				m_Moving_Flag = true;
 				GetUnitPtr<Player>(UnitList[0])->TurnEndTrigger();
+				m_FirstTurn = false;
 			}
 			// それ以外のボタンが押された
 			else if (OperationConfig::Instance()->CheckAllOperationInputTrigger()) {
@@ -259,6 +262,8 @@ void BattleTurnMgr::OnInitialize(std::shared_ptr<UnitBase> Player, std::vector<s
 	m_Moving_Timer = 0;
 	m_Moving_Timer_Max = 80.0f * RefreshRate::RefreshRate_Mag;
 
+	m_FirstTurn = true;
+
 	// 自動ターンエンド
 	m_PauseTime = 0;
 	m_PauseTimeContainer.clear();
@@ -295,6 +300,8 @@ void BattleTurnMgr::SetUnits(std::shared_ptr<UnitBase> Player, std::vector<std::
 
 	ExistUnits::Instance()->m_NowTarget = 0;
 	m_IsDefeat = false;
+
+	m_FirstTurn = true;
 }
 
 void BattleTurnMgr::OnUpdate()
@@ -412,6 +419,11 @@ void BattleTurnMgr::NextTurnStart()
 
 void BattleTurnMgr::Update_NextWave()
 {
+
+	UnitList[0]->StartTurn();
+	m_FirstTurn = true;
+	GetUnitPtr<Player>(UnitList[0])->m_DoBonus = false;
+	GetUnitPtr<Player>(UnitList[0])->TurnChangeTimer = 0;
 	NextGameTimer++;
 	if (NextGameTimer >= NextGameTimeFinish) {
 
@@ -420,36 +432,80 @@ void BattleTurnMgr::Update_NextWave()
 
 void BattleTurnMgr::Update_Battle()
 {
-	if (UnitList[TurnNum]->IsNextTurn()) {
-		// ターン終了処理
-		UnitList[TurnNum]->End();
-
-		// ターン切り替え・全体ターン数加算
-		// 生きてるユニットまで飛ばす
-		while (1) {
-			TurnNum < UnitList.size() - 1 ? TurnNum++ : TurnNum = 0, m_Whole_Turn_Count++;
-			// 生きてるユニットのターン
-			if (UnitList[TurnNum]->IsAlive()) {
-				UnitList[TurnNum]->StartTurn();
-				if (TurnNum == 0) {
-					m_Moving_Flag = false;
-					//m_AutoTurnEndTimer = 0;
-					m_PauseTime = 0;
-					m_PauseTimeContainer.clear();
-					GetLocalTime(&StartTime);
+	if (UnitList[TurnNum]->IsNextTurn() && m_FirstTurn == false) {
+		if (TurnNum == 0) {
+			if(GetUnitPtr<Player>(UnitList[TurnNum])->GetEndBonusAttack() == true && GetUnitPtr<Player>(UnitList[TurnNum])->m_DoBonus){
+				// ターン終了処理
+				UnitList[TurnNum]->End();
+				m_FirstTurn = false;
+				// ターン切り替え・全体ターン数加算
+				// 生きてるユニットまで飛ばす
+				while (1) {
+					TurnNum < UnitList.size() - 1 ? TurnNum++ : TurnNum = 0, m_Whole_Turn_Count++;
+					// 生きてるユニットのターン
+					if (UnitList[TurnNum]->IsAlive()) {
+						UnitList[TurnNum]->StartTurn();
+						if (TurnNum == 0) {
+							m_Moving_Flag = false;
+							//m_AutoTurnEndTimer = 0;
+							m_PauseTime = 0;
+							m_PauseTimeContainer.clear();
+							GetLocalTime(&StartTime);
+						}
+						m_Checked_TurnEnd = false;
+						m_Selected_TurnEnd = false;
+						NextTurnStart();
+						break;
+					}
 				}
-				m_Checked_TurnEnd = false;
-				m_Selected_TurnEnd = false;
-				NextTurnStart();
-				break;
+
+				if (TurnNum == 0) {
+					UnitList[TurnNum]->m_isMyTurn = true;
+					UnitList[TurnNum]->m_NextTurn = false;
+					CutInMgr::Instance()->StartCutIn(CutInType::PLAYER_TURN);
+					GetUnitPtr<Player>(UnitList[TurnNum])->m_DoBonus = false;
+					GetUnitPtr<Player>(UnitList[TurnNum])->TurnChangeTimer = 0;
+				}
+				else if (TurnNum == 1) {
+					CutInMgr::Instance()->StartCutIn(CutInType::ENEMY_TURN);
+				}
 			}
 		}
+		else {
+			// ターン終了処理
+			UnitList[TurnNum]->End();
 
-		if (TurnNum == 0) {
-			CutInMgr::Instance()->StartCutIn(CutInType::PLAYER_TURN);
-		}
-		else if (TurnNum == 1) {
-			CutInMgr::Instance()->StartCutIn(CutInType::ENEMY_TURN);
+			// ターン切り替え・全体ターン数加算
+			// 生きてるユニットまで飛ばす
+			while (1) {
+				TurnNum < UnitList.size() - 1 ? TurnNum++ : TurnNum = 0, m_Whole_Turn_Count++;
+				// 生きてるユニットのターン
+				if (UnitList[TurnNum]->IsAlive()) {
+					UnitList[TurnNum]->StartTurn();
+					if (TurnNum == 0) {
+						m_Moving_Flag = false;
+						//m_AutoTurnEndTimer = 0;
+						m_PauseTime = 0;
+						m_PauseTimeContainer.clear();
+						GetLocalTime(&StartTime);
+					}
+					m_Checked_TurnEnd = false;
+					m_Selected_TurnEnd = false;
+					NextTurnStart();
+					break;
+				}
+			}
+
+			if (TurnNum == 0) {
+				UnitList[TurnNum]->m_isMyTurn = true;
+				UnitList[TurnNum]->m_NextTurn = false;
+				CutInMgr::Instance()->StartCutIn(CutInType::PLAYER_TURN);
+				GetUnitPtr<Player>(UnitList[TurnNum])->m_DoBonus = false;
+				GetUnitPtr<Player>(UnitList[TurnNum])->TurnChangeTimer = 0;
+			}
+			else if (TurnNum == 1) {
+				CutInMgr::Instance()->StartCutIn(CutInType::ENEMY_TURN);
+			}
 		}
 	}
 	// カットイン中であれば

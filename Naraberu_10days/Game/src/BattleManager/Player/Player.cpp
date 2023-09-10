@@ -14,6 +14,8 @@ Player::Player()
 	m_isMyTurn = false;
 	m_NextTurn = false;
 
+	m_IsEndBonus = true;
+	m_DoBonus = false;
 	m_UltimatePoint = 0;
 	m_BeforeUltimatePoint = 0;
 	Max_UltimatePoint = 20;
@@ -42,6 +44,8 @@ Player::Player()
 
 void Player::OnInitialize()
 {
+	m_IsEndBonus = true;
+	m_DoBonus = false;
 }
 
 void Player::OnUpdate()
@@ -196,8 +200,11 @@ void Player::TurnEnd_BeforeTurnChange()
 	m_IsEndTurnFunc = true;
 	// ここにボーナスアタックとか書く
 	// マップをリセット
+	m_DoBonus = true;
 	ExistUnits::Instance()->m_IsEndBonusCount = false;
 	ExistUnits::Instance()->m_StageManager->SetBouns();
+	// ボーナス
+	m_IsEndBonus = false;
 }
 
 void Player::SetState(int HP, int MaxHP)
@@ -209,6 +216,7 @@ void Player::SetState(int HP, int MaxHP)
 	m_BeforeUltimatePoint = 0;
 	Max_UltimatePoint = 100;
 	m_IsEndTurnFunc = false;
+	m_DoBonus = false;
 }
 
 void Player::UltMaxEffect()

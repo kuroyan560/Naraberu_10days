@@ -15,10 +15,12 @@ protected:
 	// HPゲージが削れてく時間
 	int m_HP_GAUGE_BREAK_TIME;
 
+public:
 	// 現在自分のターンか
 	bool m_isMyTurn;
 	// 次のターンに移行するフラグ
 	bool m_NextTurn;
+private:
 	// 自ターンの経過フレームタイマー
 	int m_Frame_Timer;
 

@@ -51,7 +51,11 @@ void Player_Bonus_Attack_01::Action_Update()
 		for (auto& tgt : m_Targets) {
 			tgt->Damage(m_BonusCount);
 		}
-		SoundConfig::Instance()->Play(SoundConfig::SE_DAMAGE);
+		if (m_BonusCount > 0) {
+			SoundConfig::Instance()->Play(SoundConfig::SE_DAMAGE);
+		}
+
+		GetUnitPtr_nama<Player*>(m_Initiator)->EndBonusAttack();
 	}
 }
 

@@ -26,6 +26,7 @@ private:
 	//キャラ画像
 	std::shared_ptr<KuroEngine::TextureBuffer> m_CharacterTex;
 
+public:
 	int TurnChangeTimer;
 	int TurnChangeTime_Fin;
 
@@ -49,6 +50,8 @@ public:
 	void UltMaxEffect();
 
 	// ターンエンド
+	bool m_IsEndBonus;
+	bool m_DoBonus;
 	void TurnEndTrigger();
 
 	// アルティメット関連
@@ -83,6 +86,9 @@ public:
 	float GetUltRate() { return float(m_UltimatePoint) / float(Max_UltimatePoint); }
 	// アルティメットが溜まっているかどうか
 	bool IsReadyUltimate() { return m_UltimatePoint >= Max_UltimatePoint; }
+
+	void EndBonusAttack() { m_IsEndBonus = true; }
+	bool GetEndBonusAttack() { return m_IsEndBonus; }
 
 	// 描画位置関連
 private:

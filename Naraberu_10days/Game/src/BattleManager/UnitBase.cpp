@@ -8,6 +8,8 @@ void UnitBase::StartTurn()
 	m_Frame_Timer = 0;
 	// 
 	m_IsEndTurnFunc = false;
+
+	m_NextTurn = false;
 }
 
 void UnitBase::EndTurn()

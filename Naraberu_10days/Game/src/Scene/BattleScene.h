@@ -97,6 +97,7 @@ class BattleScene :
 	int m_End_Timer;
 	int m_End_Timer_Finish;
 
+
 	// ゲームクリア描画
 	void GameClearDraw();
 	// ゲームオーバー画面
