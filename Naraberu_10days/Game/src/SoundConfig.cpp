@@ -46,6 +46,15 @@ SoundConfig::SoundConfig() : Debugger("SoundConfig", false)
 		"attack_count_7",
 		"attack_count_8",
 		"attack_count_9",
+
+		"heal",
+		"damage",
+		"ult_charge",
+
+		"put_ojama",
+
+		"clear",
+		"game_over"
 	};
 	//BGMのファイル名指定
 	std::array<std::string, BGM_NUM>bgmFileName =
@@ -68,8 +77,14 @@ SoundConfig::SoundConfig() : Debugger("SoundConfig", false)
 		m_seTable[i].Load(audioApp->LoadAudio(seDir + "attack_count/" + seFileName[i] + ".wav"));
 	}
 
-	//m_seTable[SE_SURFACE_JUMP].Load(LoadSoundArray(seDir, seFileName[SE_SURFACE_JUMP]), SoundSE::ORDER_TYPE::RANDOM);
-	//m_seTable[SE_LEVER_ON].Load(LoadSoundArray(seDir, seFileName[SE_LEVER_ON]), SoundSE::ORDER_TYPE::IN_ORDER);
+	m_seTable[SE_HEAL].Load(audioApp->LoadAudio(seDir + seFileName[SE_HEAL] + ".wav"));
+	m_seTable[SE_CHARGE_ULT].Load(LoadSoundArray(seDir, seFileName[SE_CHARGE_ULT]), SoundSE::RANDOM);
+	m_seTable[SE_DAMAGE].Load(audioApp->LoadAudio(seDir + seFileName[SE_DAMAGE] + ".wav"));
+
+	m_seTable[SE_PUT_OJAMA].Load(audioApp->LoadAudio(seDir + seFileName[SE_PUT_OJAMA] + ".wav"));
+
+	m_seTable[SE_STAGE_CLEAR].Load(audioApp->LoadAudio(seDir + seFileName[SE_STAGE_CLEAR] + ".wav"));
+	m_seTable[SE_GAME_OVER].Load(audioApp->LoadAudio(seDir + seFileName[SE_GAME_OVER] + ".wav"));
 	
 	//BGM読み込み
 	std::string bgmDir = "resource/user/sound/";
@@ -139,7 +154,7 @@ int SoundConfig::SoundSE::GetPlaySoundHandle()
 void SoundConfig::SoundSE::Play(int arg_delay, int arg_soundIdx)
 {
 	int soundIdx = arg_soundIdx == -1 ? GetPlaySoundHandle() : m_sounds[arg_soundIdx];
-	arg_delay == -1 ? KuroEngine::AudioApp::Instance()->PlayWave(soundIdx) : KuroEngine::AudioApp::Instance()->PlayWaveDelay(arg_delay);
+	arg_delay == -1 ? KuroEngine::AudioApp::Instance()->PlayWave(soundIdx) : KuroEngine::AudioApp::Instance()->PlayWaveDelay(soundIdx, arg_delay);
 }
 
 void SoundConfig::SoundSE::SetVolume(float arg_vol)

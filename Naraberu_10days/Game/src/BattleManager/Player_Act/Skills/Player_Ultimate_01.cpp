@@ -9,6 +9,8 @@
 
 #include "../../../Effect/ScreenShakeManager.h"
 
+#include"../../../SoundConfig.h"
+
 void Player_Ultimate_01::Param_Set(int Damage, int Duration)
 {
 	m_Damage = Damage;
@@ -45,6 +47,7 @@ void Player_Ultimate_01::Action_Update()
 			tgt->Damage(m_Damage);
 		}
 
+		SoundConfig::Instance()->Play(SoundConfig::SE_DAMAGE);
 		// アルティメットポイントを加算
 		//GetUnitPtr_nama<Player*>(m_Initiator)->AddUltPoint(1);
 	}

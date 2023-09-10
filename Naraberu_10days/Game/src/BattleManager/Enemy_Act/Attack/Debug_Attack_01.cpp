@@ -6,6 +6,7 @@
 #include "FrameWork/WinApp.h"
 #include "FrameWork/UsersInput.h"
 
+#include"../../../SoundConfig.h"
 
 void Debug_Attack_01::Action_Start()
 {
@@ -35,6 +36,7 @@ void Debug_Attack_01::Action_Update()
 		float Power = float(GetUnitPtr_nama<Enemy*>(m_Initiator)->GetEnemyData().m_ATK);
 		int Damage_Result = int(Power * m_Data.m_AttackRate);
 		m_Targets[0]->Damage(Damage_Result);
+		SoundConfig::Instance()->Play(SoundConfig::SE_DAMAGE);
 	}
 }
 

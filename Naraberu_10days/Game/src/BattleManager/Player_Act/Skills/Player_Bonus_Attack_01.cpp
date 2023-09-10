@@ -10,6 +10,8 @@
 
 #include "../../../Effect/ScreenShakeManager.h"
 
+#include"../../../SoundConfig.h"
+
 void Player_Bonus_Attack_01::Param_Set(int Damage, int Duration)
 {
 	m_Damage = Damage;
@@ -48,6 +50,7 @@ void Player_Bonus_Attack_01::Action_Update()
 		for (auto& tgt : m_Targets) {
 			tgt->Damage(m_BonusCount);
 		}
+		SoundConfig::Instance()->Play(SoundConfig::SE_DAMAGE);
 	}
 }
 

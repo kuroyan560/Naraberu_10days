@@ -11,6 +11,7 @@
 #include"../OperationConfig.h"
 
 #include "../Effect/ScreenShakeManager.h"
+#include"../SoundConfig.h"
 
 BattleTurnMgr::BattleTurnMgr() {
 	m_Whole_Turn_Count = 0;
@@ -317,6 +318,11 @@ void BattleTurnMgr::OnUpdate()
 
 	// プレイヤーが死んでいる
 	if (!UnitList[0]->IsAlive()) {
+		if (m_IsDefeat)
+		{
+			SoundConfig::Instance()->Play(SoundConfig::SE_GAME_OVER);
+		}
+
 		// バトル終了処理(敗北)
 		m_IsDefeat = true;
 	}

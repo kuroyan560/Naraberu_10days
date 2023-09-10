@@ -9,6 +9,8 @@
 
 #include "../../../Effect/ScreenShakeManager.h"
 
+#include"../../../SoundConfig.h"
+
 void Player_Heal_01::Param_Set(int Amount, int Duration)
 {
 	m_Amount = Amount;
@@ -38,6 +40,7 @@ void Player_Heal_01::Action_Update()
 	if (m_Timer == 1) {
 		// Ž©•ª‚ð‰ñ•œ‚·‚é(Š„‡)
 		m_Initiator->Heal_Par(m_Amount * 2);
+		SoundConfig::Instance()->Play(SoundConfig::SE_HEAL);
 	}
 }
 

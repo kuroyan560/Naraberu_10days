@@ -30,6 +30,15 @@ public:
 		SE_ATTACK_COUNT_8,
 		SE_ATTACK_COUNT_9,
 
+		SE_HEAL,
+		SE_DAMAGE,	//敵にダメージ
+		SE_CHARGE_ULT,	//ULTのチャージ
+
+		SE_PUT_OJAMA,
+
+		SE_STAGE_CLEAR,
+		SE_GAME_OVER,
+
 		SE_NUM
 	};
 	//BGM（ループ再生あり）
