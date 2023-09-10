@@ -78,7 +78,6 @@ void Player::OnAlwaysUpdate()
 	if (OperationConfig::Instance()->DebugKeyInput(DIK_N)) {
 		m_HP < m_MaxHP ? m_HP++ : 0;
 	}
-
 }
 
 void Player::OnDraw()
@@ -135,10 +134,6 @@ void Player::OnDraw()
 	DrawFunc2D_Mask::DrawExtendGraph2D(
 		Vec2(22.0f, 427.0f) + ScreenShakeManager::Instance()->GetOffset(), Vec2(357.0f, 580.0f) + ScreenShakeManager::Instance()->GetOffset(), HP_Gauge,
 		Vec2(22.0f, 427.0f) + ScreenShakeManager::Instance()->GetOffset(), Vec2(22.0f + Gauge_Width2, 580.0f) + ScreenShakeManager::Instance()->GetOffset());
-
-	if (UsersInput::Instance()->KeyOnTrigger(DIK_X)) {
-		m_HP--;
-	}
 
 	// HP‚Ì”’l•`‰æ
 	DrawFunc2D::DrawNumber2D(KuroEngine::GetSpecifiedDigitNum(m_MaxHP, 0, false), Vec2(333.0f + 5.0f, 489.0f - 2.0f) + ScreenShakeManager::Instance()->GetOffset(), &m_NumberTex.front());

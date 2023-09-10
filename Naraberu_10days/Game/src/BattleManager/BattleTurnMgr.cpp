@@ -318,7 +318,7 @@ void BattleTurnMgr::OnUpdate()
 
 	// プレイヤーが死んでいる
 	if (!UnitList[0]->IsAlive()) {
-		if (m_IsDefeat)
+		if (!m_IsDefeat)
 		{
 			SoundConfig::Instance()->Play(SoundConfig::SE_GAME_OVER);
 		}
@@ -370,6 +370,11 @@ void BattleTurnMgr::OnDraw()
 
 	// プレイヤースキル描画
 	PlayerSkills::PlayerSkillMgr::Instance()->Draw();
+
+	for (int i = 1; i < UnitList.size(); i++) {
+		std::shared_ptr<Enemy> En = GetUnitPtr<Enemy>(UnitList[i]);
+		En->DrawHpGauge();
+	}
 
 	// ターンエンドボタン
 	TurnEndButtonDraw();

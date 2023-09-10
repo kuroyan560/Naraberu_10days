@@ -45,6 +45,7 @@ private: // ”íƒ_ƒ•`‰æ—p
 	float D_IndexDiff;
 public:
 	void Draw_Damage();
+	void DrawHpGauge();
 
 private:
 	KuroEngine::Vec2<float> m_Left_Top;

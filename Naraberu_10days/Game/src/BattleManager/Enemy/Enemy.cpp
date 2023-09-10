@@ -255,47 +255,6 @@ void Enemy::Draw(int Index, int NowTurn_Index, int Index_Max, bool Dark, int Fra
 		Reticle::Instance()->Draw(Index, m_Left_Top, m_Right_Bottom, Mask);
 	}
 
-	// HPゲージが削れる演出用
-	float HP_Gauge_Now_Value = float(m_HP);
-
-	// タイマーが1以上　かつ　最大値以下なら減少演出
-	if (m_HP_Break_Timer > 0 && m_HP_Break_Timer < m_HP_GAUGE_BREAK_TIME) {
-		m_HP_Break_Timer++;
-		HP_Gauge_Now_Value = float(m_HP) + float(m_Before_HP - m_HP) * (1.0f - (float(m_HP_Break_Timer) / float(m_HP_GAUGE_BREAK_TIME)));
-	}
-	// 減少演出終わり
-	if (m_HP_Break_Timer == m_HP_GAUGE_BREAK_TIME) {
-		m_HP_Break_Timer = 0;
-	}
-
-	// 現在のHP割合
-	float Now_HP_Rate = float(HP_Gauge_Now_Value) / float(m_MaxHP);
-	float Now_HP_Rate2 = float(m_HP) / float(m_MaxHP);
-	// HPゲージの長さ
-	float Gauge_Max_Width = 1247.0f - 1115.0f;
-	// 現在のHPゲージの長さ
-	float Gauge_Width = Gauge_Max_Width * Now_HP_Rate;
-	float Gauge_Width2 = Gauge_Max_Width * Now_HP_Rate2;
-
-	std::shared_ptr<KuroEngine::TextureBuffer> HP_Gauge = m_Data.m_HpTex_green;
-	if (Now_HP_Rate <= 0.2f) {
-		HP_Gauge = m_Data.m_HpTex_red;
-	}
-	else if (Now_HP_Rate <= 0.5f) {
-		HP_Gauge = m_Data.m_HpTex_yellow;
-	}
-
-	DrawFunc2D_Mask::DrawExtendGraph2D(
-		Vec2(1132.0f - Move_Width, 187.0f + IndexDiff) + ScreenShakeManager::Instance()->GetOffset()
-		, Vec2(1264.0f - Move_Width, 197.0f + IndexDiff) + ScreenShakeManager::Instance()->GetOffset(), m_Data.m_HpTex_break,
-		Vec2(1132.0f - Move_Width, 187.0f + IndexDiff) + ScreenShakeManager::Instance()->GetOffset()
-		, Vec2(1132.0f - Move_Width + Gauge_Width, 197.0f + IndexDiff) + ScreenShakeManager::Instance()->GetOffset());
-
-	DrawFunc2D_Mask::DrawExtendGraph2D(
-		Vec2(1132.0f - Move_Width, 187.0f + IndexDiff) + ScreenShakeManager::Instance()->GetOffset()
-		, Vec2(1264.0f - Move_Width, 197.0f + IndexDiff) + ScreenShakeManager::Instance()->GetOffset(), HP_Gauge,
-		Vec2(1132.0f - Move_Width, 187.0f + IndexDiff) + ScreenShakeManager::Instance()->GetOffset()
-		, Vec2(1132.0f - Move_Width + Gauge_Width2, 197.0f + IndexDiff) + ScreenShakeManager::Instance()->GetOffset());
 
 
 }
@@ -331,7 +290,7 @@ void Enemy::Draw_Boss(int Index, int NowTurn_Index, int Index_Max, bool Dark, in
 	// 描画位置の保存
 	m_Left_Top = Vec2(926.0f, 60.0f);
 	m_Right_Bottom = Vec2(1247.0f, 610.0f);
-	m_Center = m_Left_Top + ((m_Right_Bottom - m_Left_Top) / 2.0f);
+	m_Center = m_Left_Top + ((m_Right_Bottom - m_Left_Top) / 2.0f);	
 
 	// HPゲージが削れる演出用
 	float HP_Gauge_Now_Value = float(m_HP);
@@ -363,6 +322,8 @@ void Enemy::Draw_Boss(int Index, int NowTurn_Index, int Index_Max, bool Dark, in
 		HP_Gauge = m_Data.m_HpTex_yellow;
 	}
 
+	using namespace KuroEngine;
+
 	DrawFunc2D_Mask::DrawExtendGraph2D(
 		Vec2(923.0f, 427.0f) + ScreenShakeManager::Instance()->GetOffset()
 		, Vec2(1258.0f, 580.0f) + ScreenShakeManager::Instance()->GetOffset(), m_Data.m_HpTex_break,
@@ -374,7 +335,6 @@ void Enemy::Draw_Boss(int Index, int NowTurn_Index, int Index_Max, bool Dark, in
 		, Vec2(1258.0f, 580.0f) + ScreenShakeManager::Instance()->GetOffset(), HP_Gauge,
 		Vec2(923.0f, 427.0f) + ScreenShakeManager::Instance()->GetOffset()
 		, Vec2(923.0f + Gauge_Width2, 580.0f) + ScreenShakeManager::Instance()->GetOffset());
-
 }
 
 void Enemy::Draw_Damage()
@@ -382,4 +342,51 @@ void Enemy::Draw_Damage()
 	using namespace KuroEngine;
 	DrawFunc2D::DrawExtendGraph2D(Vec2(1009.0f - D_Move_Width, 115.0f + D_IndexDiff) + ScreenShakeManager::Instance()->GetOffset()
 		, Vec2(1254.0f - D_Move_Width, 215.0f + D_IndexDiff) + ScreenShakeManager::Instance()->GetOffset(), m_Data.m_UnitTex_Damage, 0.6f);
+}
+
+void Enemy::DrawHpGauge()
+{
+	using namespace KuroEngine;
+
+	// HPゲージが削れる演出用
+	float HP_Gauge_Now_Value = float(m_HP);
+
+	// タイマーが1以上　かつ　最大値以下なら減少演出
+	if (m_HP_Break_Timer > 0 && m_HP_Break_Timer < m_HP_GAUGE_BREAK_TIME) {
+		m_HP_Break_Timer++;
+		HP_Gauge_Now_Value = float(m_HP) + float(m_Before_HP - m_HP) * (1.0f - (float(m_HP_Break_Timer) / float(m_HP_GAUGE_BREAK_TIME)));
+	}
+	// 減少演出終わり
+	if (m_HP_Break_Timer == m_HP_GAUGE_BREAK_TIME) {
+		m_HP_Break_Timer = 0;
+	}
+
+	// 現在のHP割合
+	float Now_HP_Rate = float(HP_Gauge_Now_Value) / float(m_MaxHP);
+	float Now_HP_Rate2 = float(m_HP) / float(m_MaxHP);
+	// HPゲージの長さ
+	float Gauge_Max_Width = 1247.0f - 1115.0f;
+	// 現在のHPゲージの長さ
+	float Gauge_Width = Gauge_Max_Width * Now_HP_Rate;
+	float Gauge_Width2 = Gauge_Max_Width * Now_HP_Rate2;
+
+	std::shared_ptr<KuroEngine::TextureBuffer> HP_Gauge = m_Data.m_HpTex_green;
+	if (Now_HP_Rate <= 0.2f) {
+		HP_Gauge = m_Data.m_HpTex_red;
+	}
+	else if (Now_HP_Rate <= 0.5f) {
+		HP_Gauge = m_Data.m_HpTex_yellow;
+	}
+
+	DrawFunc2D_Mask::DrawExtendGraph2D(
+		Vec2(1132.0f - D_Move_Width, 187.0f + D_IndexDiff) + ScreenShakeManager::Instance()->GetOffset()
+		, Vec2(1264.0f - D_Move_Width, 197.0f + D_IndexDiff) + ScreenShakeManager::Instance()->GetOffset(), m_Data.m_HpTex_break,
+		Vec2(1132.0f - D_Move_Width, 187.0f + D_IndexDiff) + ScreenShakeManager::Instance()->GetOffset()
+		, Vec2(1132.0f - D_Move_Width + Gauge_Width, 197.0f + D_IndexDiff) + ScreenShakeManager::Instance()->GetOffset());
+
+	DrawFunc2D_Mask::DrawExtendGraph2D(
+		Vec2(1132.0f - D_Move_Width, 187.0f + D_IndexDiff) + ScreenShakeManager::Instance()->GetOffset()
+		, Vec2(1264.0f - D_Move_Width, 197.0f + D_IndexDiff) + ScreenShakeManager::Instance()->GetOffset(), HP_Gauge,
+		Vec2(1132.0f - D_Move_Width, 187.0f + D_IndexDiff) + ScreenShakeManager::Instance()->GetOffset()
+		, Vec2(1132.0f - D_Move_Width + Gauge_Width2, 197.0f + D_IndexDiff) + ScreenShakeManager::Instance()->GetOffset());
 }
