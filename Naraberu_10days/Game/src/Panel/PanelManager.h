@@ -10,6 +10,7 @@ public:
 
 	struct BonusData {
 		std::vector<KuroEngine::Vec2<int>> pos;
+		BlockColor color;
 		bool mass;
 	};
 
