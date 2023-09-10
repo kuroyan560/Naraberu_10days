@@ -112,12 +112,14 @@ void PanelManager::Draw()
 			if (i > nowBonusNum) { continue; }
 			KuroEngine::Vec2<float> pos = { bonusPos[i].x * blockSize + difference.x,bonusPos[i].y * blockSize + difference.y};
 
-			////ボーナス文字
-			//KuroEngine::DrawFunc2D::DrawExtendGraph2D(pos, { pos.x + 100.0f,pos.y + 36.0f }, bonusTex);
+			//ボーナス文字
+			const KuroEngine::Vec2 bonusSize = { 99.0f,20.0f };
+			KuroEngine::DrawFunc2D::DrawExtendGraph2D(pos, { pos.x + bonusSize.x,pos.y + bonusSize.y }, bonusTex);
 			////!!!
 			//KuroEngine::DrawFunc2D::DrawExtendGraph2D(pos, { pos.x + 20.0f,pos.y + 20.0f }, bonusMarkTex);
 
-			KuroEngine::DrawFunc2D::DrawNumber2D(i, { pos.x + 50.0f ,pos.y+36.0f }, bonusNumberTex.data());
+			const KuroEngine::Vec2 numSize = { 18.0f,20.0f };
+			KuroEngine::DrawFunc2D::DrawNumber2D(i, { pos.x + numSize.x+20.0f ,pos.y + numSize.y }, bonusNumberTex.data());
 		}
 
 		for (int i = 0; i<int(bonusData.size()); i++) {
