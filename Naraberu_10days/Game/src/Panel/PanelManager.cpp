@@ -10,9 +10,35 @@
 
 KuroEngine::Vec2<int> PanelManager::mapMax;
 
+KuroEngine::Vec2<int> center(std::vector<KuroEngine::Vec2<int>> _shape)
+{
+	KuroEngine::Vec2<int> shapeMax = _shape[0];
+	KuroEngine::Vec2<int> shapeMin = _shape[0];
+	for (auto& i : _shape) {
+		std::array<int, 4> moveHit = {
+			int((i.x < shapeMin.x)),
+			int((i.y < shapeMin.y)),
+			int((i.x > shapeMax.x)),
+			int((i.y > shapeMax.y))
+		};
+
+		shapeMin.x = moveHit[0] * i.x + (1 - moveHit[0]) * shapeMin.x;
+		shapeMin.y = moveHit[1] * i.y + (1 - moveHit[1]) * shapeMin.y;
+		shapeMax.x = moveHit[2] * i.x + (1 - moveHit[2]) * shapeMax.x;
+		shapeMax.y = moveHit[3] * i.y + (1 - moveHit[3]) * shapeMax.y;
+	}
+
+	return { ((shapeMax.x + shapeMin.x) / 2),((shapeMax.y + shapeMin.y) / 2) };
+}
+
 void PanelManager::Initialize()
 {
 	//画像読み込み
+	std::string TexBonusDir = "resource/user/tex/battle_scene/bonus/";
+	bonusTex = KuroEngine::D3D12App::Instance()->GenerateTextureBuffer(TexBonusDir + "bonus.png");
+	bonusMarkTex = KuroEngine::D3D12App::Instance()->GenerateTextureBuffer(TexBonusDir + "bonus_mark.png");
+	KuroEngine::D3D12App::Instance()->GenerateTextureBuffer(bonusNumberTex.data(), TexBonusDir + "bonus_number.png", 10, { 10, 1 });
+
 	std::string TexDir = "resource/user/tex/block/";
 	blockTex[int(BlockColor::red)] = KuroEngine::D3D12App::Instance()->GenerateTextureBuffer(TexDir + "block_pink.png");
 	blockTex[int(BlockColor::blue)] = KuroEngine::D3D12App::Instance()->GenerateTextureBuffer(TexDir + "block_blue.png");
@@ -81,6 +107,19 @@ void PanelManager::Draw()
 
 	//ボーナスパネル
 	if (isBonusDirection == Bonas::add) {
+		//ボーナス数表示
+		for (int i = 0; i<int(bonusData.size()); i++) {
+			if (i > nowBonusNum) { continue; }
+			KuroEngine::Vec2<float> pos = { bonusPos[i].x * blockSize + difference.x,bonusPos[i].y * blockSize + difference.y};
+
+			////ボーナス文字
+			//KuroEngine::DrawFunc2D::DrawExtendGraph2D(pos, { pos.x + 100.0f,pos.y + 36.0f }, bonusTex);
+			////!!!
+			//KuroEngine::DrawFunc2D::DrawExtendGraph2D(pos, { pos.x + 20.0f,pos.y + 20.0f }, bonusMarkTex);
+
+			KuroEngine::DrawFunc2D::DrawNumber2D(i, { pos.x + 50.0f ,pos.y+36.0f }, bonusNumberTex.data());
+		}
+
 		for (int i = 0; i<int(bonusData.size()); i++) {
 			//描画するボーナスで無いなら抜ける
 			if (i != nowBonusNum) { continue; }
@@ -89,12 +128,14 @@ void PanelManager::Draw()
 				KuroEngine::Vec2<float> pos = {
 				itr.x * blockSize + difference.x + blockSize / 2.0f ,itr.y * blockSize + difference.y + blockSize / 2.0f };
 
-				KuroEngine::DrawFunc2D::DrawRotaGraph2D(pos, { 1.0f,1.0f },bonusAngle * (3.14f / 180.0f),
-					blockTex[int(bonusData[i].color)], bonusAlpha,{0.5f,0.5f}, KuroEngine::AlphaBlendMode::AlphaBlendMode_Add);
+				KuroEngine::DrawFunc2D::DrawRotaGraph2D(pos, { 1.0f,1.0f }, bonusAngle * (3.14f / 180.0f),
+					blockTex[int(bonusData[i].color)], bonusAlpha, { 0.5f,0.5f }, KuroEngine::AlphaBlendMode::AlphaBlendMode_Add);
 			}
 		}
 	}
+
 }
+
 
 void PanelManager::Reset()
 {
@@ -214,6 +255,10 @@ void PanelManager::MassProcess()
 			}
 			bonusData[count].color = BlockColor(mapchip[y][x]);
 			bonusData[count].mass = true;
+			//座標記録
+			bonusPos.emplace_back(center(bonusData[count].pos));
+
+			//次
 			count++;
 		}
 	}
@@ -299,6 +344,9 @@ bool PanelManager::LineBlock(int _number, const KuroEngine::Vec2<int> _lineMap, 
 			bonusData[_number].pos.emplace_back(data);
 		}
 	}
+	//座標記録
+	bonusPos.emplace_back(center(bonusData[_number].pos));
+
 	bonusData[_number].color = BlockColor(mapchip[_lineMap.y][_lineMap.x]);
 	bonusData[_number].mass = false;
 
@@ -308,6 +356,7 @@ bool PanelManager::LineBlock(int _number, const KuroEngine::Vec2<int> _lineMap, 
 void PanelManager::BonusCount()
 {
 	bonusData.clear();
+	bonusPos.clear();
 
 	//塊判定
 	MassProcess();

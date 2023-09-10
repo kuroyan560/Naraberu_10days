@@ -73,10 +73,10 @@ void Enemy::OnUpdate()
 void Enemy::OnAlwaysUpdate()
 {
 	using namespace KuroEngine;
-	if (OperationConfig::Instance()->DebugKeyInput(DIK_B)) {
+	if (OperationConfig::Instance()->DebugKeyInput(DIK_G)) {
 		m_HP > 0 ? m_HP-- : 0;
 	}
-	if (OperationConfig::Instance()->DebugKeyInput(DIK_N)) {
+	if (OperationConfig::Instance()->DebugKeyInput(DIK_H)) {
 		m_HP < m_MaxHP ? m_HP++ : 0;
 	}
 	if (OperationConfig::Instance()->DebugKeyInputOnTrigger(DIK_M)) {

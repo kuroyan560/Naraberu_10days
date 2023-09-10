@@ -809,7 +809,7 @@
     </ClInclude>
     <ClInclude Include="src\Effect\SetPrismEffect.h" />
     <ClInclude Include="src\Scene\BattleScene.h">
-      <Filter>src\user\Panel</Filter>
+      <Filter>src\user\Scene</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>

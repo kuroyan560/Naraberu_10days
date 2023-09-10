@@ -13,6 +13,7 @@
 enum class CutInType {
 	PLAYER_TURN,
 	ENEMY_TURN,
+	NEXT_BATTLE,
 	MAX
 };
 

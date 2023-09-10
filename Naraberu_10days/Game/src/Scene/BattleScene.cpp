@@ -11,7 +11,7 @@
 
 #include "../BattleManager/Player_Act/Skills/PlayerSkills.h"
 #include "../BattleManager/Enemy_Act/EnemyActList.h"
-
+#include "../BattleManager/CutIn/CutInMgr.h"
 #include"../SoundConfig.h"
 
 #include "../Effect/ScreenShakeManager.h"
@@ -138,6 +138,11 @@ void BattleScene::OnUpdate()
 
 	// ウェーブ終了・次ウェーブスタート
 	if (Mgr.ChangeNextWave()) {
+		// カットイン
+		// 現在が最後のウェーブではなかった場合
+		if (!(m_NowWave + 1 > m_NowStage.m_Stage_Wave_Count)) {
+			CutInMgr::Instance()->StartCutIn(CutInType::NEXT_BATTLE);
+		}
 		NextWave();
 	}
 
@@ -215,6 +220,10 @@ void BattleScene::OnUpdate()
 	stage->Update();
 	if (!Mgr.GetDefeat() && !m_Stage_End) {
 		block->Update();
+	}
+
+	if (Mgr.GetNowTurn() == 1) {
+		block->ResetPass();
 	}
 
 	//ゲームオーバーもしくはクリアをしたらシーンを切り替えられるようにする
@@ -381,6 +390,8 @@ void BattleScene::NextWave()
 		GetUnitPtr<Enemy>(En.back())->SetEnemyData(data);
 	}
 	Mgr.SetUnits(Pl, En);
+	// パスのリセット
+	block->ResetPass();
 	if (En.size() == 1) {
 		ExistUnits::Instance()->Set(Pl.get(), En[0].get());
 	}
