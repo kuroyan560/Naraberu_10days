@@ -49,6 +49,11 @@ class BattleTurnMgr
 	// 敗北フラグ
 	bool m_IsDefeat;
 
+	// ターンエンド時間
+	int m_AutoTurnEndTimer;
+	int m_AutoTurnEndTimer_Max;
+	void AutoTurnEndTimerDraw();
+
 public:
 	std::vector<std::shared_ptr<UnitBase>> UnitList;
 
@@ -59,6 +64,8 @@ public:
 		NextGameTimer = 0;
 		NextGameTimeFinish = int(float(NextGameTimeFinish_Default) * RefreshRate::RefreshRate_Mag);
 		m_IsDefeat = false;
+		m_AutoTurnEndTimer = 0;
+		m_AutoTurnEndTimer_Max = int(13100.0f * (1.0f / RefreshRate::RefreshRate_Mag));
 	}
 
 	void OnInitialize(std::shared_ptr<UnitBase> Player, std::vector<std::shared_ptr<UnitBase>> Enemys);

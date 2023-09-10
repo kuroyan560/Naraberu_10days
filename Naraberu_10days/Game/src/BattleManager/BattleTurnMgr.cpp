@@ -15,9 +15,17 @@
 void BattleTurnMgr::TurnEndButtonUpdate()
 {
 	using namespace KuroEngine;
-
+	
 	// プレイヤーターンのみ
 	if (TurnNum == 0 && UnitList[0]->IsAlive() && AliveEnemys()) {
+		// 自動ターンエンド
+		m_AutoTurnEndTimer < m_AutoTurnEndTimer_Max ? m_AutoTurnEndTimer++ : m_AutoTurnEndTimer = m_AutoTurnEndTimer_Max;
+		if (m_AutoTurnEndTimer == m_AutoTurnEndTimer_Max && !m_Checked_TurnEnd) {
+			m_Checked_TurnEnd = true;
+			m_Moving_Flag = true;
+			GetUnitPtr<Player>(UnitList[0])->TurnEndTrigger();
+		}
+
 		// ターンエンドボタンが押された(一回目)
 		if (!m_Selected_TurnEnd && !m_Checked_TurnEnd ) {
 			if (OperationConfig::Instance()->GetOperationInput(OperationConfig::END_TURN, OperationConfig::ON_TRIGGER)) {
@@ -102,11 +110,11 @@ void BattleTurnMgr::TurnEndButtonDraw()
 		Vec2 EnterButton_Size = Vec2(float(EnterButton_Size_Int.x), float(EnterButton_Size_Int.y));
 		Vec2 Height_ = Vec2(0.0f, EnterButton_Size.y / 2.0f - 8.0f);
 
-		DrawFunc2D::DrawExtendGraph2D(EndButton_Center - EnterButton_Size / 2.0f + Height_ + Moving_Pos + ScreenShakeManager::Instance()->GetOffset(),
-			EndButton_Center + EnterButton_Size / 2.0f + Height_ + Moving_Pos + ScreenShakeManager::Instance()->GetOffset(), m_TurnEnd_EnterTex);
+		DrawFunc2D::DrawExtendGraph2D(EndButton_Center - EnterButton_Size / 2.0f + Height_ + Moving_Pos + ScreenShakeManager::Instance()->GetOffset() - Vec2(5.0f, 0.0f),
+			EndButton_Center + EnterButton_Size / 2.0f + Height_ + Moving_Pos + ScreenShakeManager::Instance()->GetOffset() - Vec2(5.0f, 0.0f), m_TurnEnd_EnterTex);
 
 		if (Scale_Value > 0.98f) {
-			DrawFunc2D::DrawGraph(Vec2(849.0f, 483.0f) + Moving_Pos + ScreenShakeManager::Instance()->GetOffset(), m_TurnEnd_EnterTex);
+			DrawFunc2D::DrawGraph(Vec2(845.0f, 483.0f) + Moving_Pos + ScreenShakeManager::Instance()->GetOffset(), m_TurnEnd_EnterTex);
 		}
 	}
 	else {
@@ -135,6 +143,25 @@ float BattleTurnMgr::ResultEasing(float time)
 		? (powf(2.0f * t, 2.0f) * ((c2 + 1.0f) * 2.0f * t - c2)) / 2.0f
 		: (powf(2.0f * t - 2.0f, 2.0f) * ((c2 + 1.0f) * (t * 2.0f - 2.0f) + c2) + 2.0f) / 2.0f;
 	return 1.0f - Ret;
+}
+
+void BattleTurnMgr::AutoTurnEndTimerDraw()
+{
+	using namespace KuroEngine;
+	Vec2 LT = Vec2(384.0f, 572.0f);
+	Vec2 RB = Vec2(896.0f, 585.0f);
+	DrawFunc2D::DrawBox2D(LT, RB, Color(76, 73, 96, 255), true);
+
+	Vec2 LT_Gauge = Vec2(386.0f, 574.0f);
+	Vec2 RB_Gauge = Vec2(894.0f, 583.0f);
+	// 現在の割合
+	float Now_Rate = float(m_AutoTurnEndTimer) / float(m_AutoTurnEndTimer_Max);
+	// ゲージの長さ
+	float Gauge_Max_Width = RB_Gauge.x - LT_Gauge.x;
+	// 現在のゲージの長さ
+	float Gauge_Width = Gauge_Max_Width * Now_Rate;
+
+	DrawFunc2D::DrawBox2D(LT_Gauge, RB_Gauge - Vec2(Gauge_Width, 0.0f), Color(94, 253, 247, 255), true);
 }
 
 void BattleTurnMgr::OnInitialize(std::shared_ptr<UnitBase> Player, std::vector<std::shared_ptr<UnitBase>> Enemys)
@@ -166,8 +193,11 @@ void BattleTurnMgr::OnInitialize(std::shared_ptr<UnitBase> Player, std::vector<s
 	m_Moving_Timer = 0;
 	m_Moving_Timer_Max = 80.0f * RefreshRate::RefreshRate_Mag;
 
+	// 自動ターンエンド
+	m_AutoTurnEndTimer = 0;
+
 	m_TurnEndTex = D3D12App::Instance()->GenerateTextureBuffer(TexDir + "turn_end.png");
-	m_TurnEnd_EnterTex = D3D12App::Instance()->GenerateTextureBuffer(TexDir + "/clear/done_key.png");
+	m_TurnEnd_EnterTex = D3D12App::Instance()->GenerateTextureBuffer(TexDir + "/operation/key/done.png");
 	m_TurnEnd_Crtl_EnterTex = D3D12App::Instance()->GenerateTextureBuffer(TexDir + "/clear/done_controller.png");
 	m_TurnEnd_SelectedTex = D3D12App::Instance()->GenerateTextureBuffer(TexDir + "turn_end_sure.png");
 
@@ -222,7 +252,6 @@ void BattleTurnMgr::OnUpdate()
 	// プレイヤーが死んでいる
 	if (!UnitList[0]->IsAlive()) {
 		// バトル終了処理(敗北)
-		int a = 0;
 		m_IsDefeat = true;
 	}
 
@@ -272,6 +301,8 @@ void BattleTurnMgr::OnDraw()
 
 	// ターンエンドボタン
 	TurnEndButtonDraw();
+	//
+	AutoTurnEndTimerDraw();
 
 	using namespace KuroEngine;
 	// カットイン中であれば
@@ -327,6 +358,7 @@ void BattleTurnMgr::Update_Battle()
 				UnitList[TurnNum]->StartTurn();
 				if (TurnNum == 0) {
 					m_Moving_Flag = false;
+					m_AutoTurnEndTimer = 0;
 				}
 				m_Checked_TurnEnd = false;
 				m_Selected_TurnEnd = false;
