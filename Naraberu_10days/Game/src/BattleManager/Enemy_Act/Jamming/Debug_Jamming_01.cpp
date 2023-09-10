@@ -26,9 +26,15 @@ void Debug_Jamming_01::Action_Update()
 	// タイマー加算
 	m_Timer++;
 
+	using namespace KuroEngine;
+
+	// お邪魔プリズムを設置
 	// 行動は一回のみ
 	if (m_Timer == 10) {
-
+		for (int i = 0; i < 3; i++) {
+			Vec2<int> SetPos = Vec2<int>(KuroEngine::GetRand(0, 10), KuroEngine::GetRand(0, 10));
+			ExistUnits::Instance()->m_StageManager->SetObstacle(SetPos);
+		}
 	}
 }
 
@@ -37,17 +43,6 @@ void Debug_Jamming_01::Action_Draw()
 	// 終了済みの場合は描画しない
 	if (GetEnd()) {
 		return;
-	}
-
-	using namespace KuroEngine;
-
-	// お邪魔プリズムを設置
-	// 攻撃は一回のみ
-	if (m_Timer == 10) {
-		for (int i = 0; i < 3; i++) {
-			Vec2<int> SetPos = Vec2<int>(KuroEngine::GetRand(0, 10), KuroEngine::GetRand(0, 10));
-			ExistUnits::Instance()->m_StageManager->SetObstacle(SetPos);
-		}
 	}
 
 	// 仮で箱を描画

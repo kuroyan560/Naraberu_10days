@@ -10,6 +10,8 @@
 #include "../../../Effect/ScreenShakeManager.h"
 #include "../../../RefreshRate.h"
 
+#include"../../../SoundConfig.h"
+
 void Player_Attack_02::Param_Set(int Damage, int Duration)
 {
 	m_Damage = Damage;
@@ -48,6 +50,7 @@ void Player_Attack_02::Action_Update()
 			//tgt->Damage(m_Damage * 2000);
 			tgt->Damage(m_Damage);
 		}
+		SoundConfig::Instance()->Play(SoundConfig::SE_DAMAGE);
 	}
 }
 

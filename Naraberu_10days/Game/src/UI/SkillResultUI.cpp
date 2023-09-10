@@ -4,6 +4,7 @@
 #include"KuroEngine.h"
 #include"../Effect/ParticleManager.h"
 #include"../Effect/ScreenShakeManager.h"
+#include"../SoundConfig.h"
 
 SkillResultUI::SkillResultUI()
 {
@@ -66,6 +67,8 @@ void SkillResultUI::Update(std::weak_ptr<ParticleEmitter>arg_ultParticleEmitter)
 				arg_ultParticleEmitter.lock()->Emit({ m_disappearPosX,m_appearPos.y }, m_amount);
 				//‰æ–Ê—h‚ç‚µ
 				ScreenShakeManager::Instance()->Shake();
+
+				SoundConfig::Instance()->Play(SoundConfig::SE_DAMAGE, 2);
 			}
 		}
 	}

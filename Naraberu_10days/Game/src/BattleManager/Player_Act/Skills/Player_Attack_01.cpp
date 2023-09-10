@@ -8,6 +8,7 @@
 #include "FrameWork/UsersInput.h"
 #include "../../../Effect/ScreenShakeManager.h"
 #include "../../../RefreshRate.h"
+#include"../../../SoundConfig.h"
 
 void Player_Attack_01::Param_Set(int Damage, int Duration)
 {
@@ -42,6 +43,7 @@ void Player_Attack_01::Action_Update()
 		}
 		// 1”Ô–Ú‚Ìƒ^[ƒQƒbƒg‚ÉUŒ‚‚·‚é
 		m_Targets[0]->Damage(m_Damage * 2);
+		SoundConfig::Instance()->Play(SoundConfig::SE_DAMAGE);
 	}
 }
 

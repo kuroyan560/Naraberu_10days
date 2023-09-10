@@ -4,6 +4,7 @@
 #include"ForUser/DrawFunc/2D/DrawFunc2D.h"
 #include"FrameWork/WinApp.h"
 #include"../../BattleManager/Player/Player.h"
+#include"../../SoundConfig.h"
 
 std::shared_ptr<KuroEngine::TextureBuffer>UltParticle::s_tex;
 std::weak_ptr<Player>UltParticle::s_player;
@@ -92,6 +93,7 @@ void UltParticle::OnUpdate()
 		{
 			m_isAlive = false;
 			s_player.lock()->AddUltPoint(1);
+			SoundConfig::Instance()->Play(SoundConfig::SE_CHARGE_ULT, 2);
 		}
 
 		const Vec2<float>dest = { 305.0f,71.0f };

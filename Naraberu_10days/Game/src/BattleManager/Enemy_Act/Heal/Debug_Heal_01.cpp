@@ -6,6 +6,8 @@
 #include "FrameWork/WinApp.h"
 #include "FrameWork/UsersInput.h"
 
+#include"../../../SoundConfig.h"
+
 void Debug_Heal_01::Action_Start()
 {
 	// Šî’ê‰Šú‰»
@@ -32,6 +34,7 @@ void Debug_Heal_01::Action_Update()
 		// Ž©•ª‚ð‰ñ•œ‚·‚é
 		m_Initiator->Heal_Par(int(m_Data.m_HealRate));
 		//m_Targets[0]->Damage(int(m_Data.m_HealRate));
+		SoundConfig::Instance()->Play(SoundConfig::SE_HEAL);
 	}
 }
 
