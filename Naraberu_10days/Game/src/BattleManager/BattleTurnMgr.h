@@ -52,6 +52,8 @@ class BattleTurnMgr
 	// ターンエンド時間
 	int m_AutoTurnEndTimer;
 	int m_AutoTurnEndTimer_Max;
+	std::shared_ptr<KuroEngine::TextureBuffer> m_Timer_Frame_Tex;
+	std::shared_ptr<KuroEngine::TextureBuffer> m_Timer_Gauge_Tex;
 	void AutoTurnEndTimerDraw();
 
 public:

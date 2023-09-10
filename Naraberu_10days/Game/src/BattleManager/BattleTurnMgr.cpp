@@ -148,12 +148,12 @@ float BattleTurnMgr::ResultEasing(float time)
 void BattleTurnMgr::AutoTurnEndTimerDraw()
 {
 	using namespace KuroEngine;
-	Vec2 LT = Vec2(384.0f, 572.0f);
-	Vec2 RB = Vec2(896.0f, 585.0f);
-	DrawFunc2D::DrawBox2D(LT, RB, Color(76, 73, 96, 255), true);
+	Vec2 LT = Vec2(384.0f, 576.0f);
+	Vec2 RB = Vec2(896.0f, 589.0f);
+	DrawFunc2D::DrawExtendGraph2D(LT, RB, m_Timer_Frame_Tex);
 
-	Vec2 LT_Gauge = Vec2(386.0f, 574.0f);
-	Vec2 RB_Gauge = Vec2(894.0f, 583.0f);
+	Vec2 LT_Gauge = Vec2(386.0f, 578.0f);
+	Vec2 RB_Gauge = Vec2(894.0f, 587.0f);
 	// 現在の割合
 	float Now_Rate = float(m_AutoTurnEndTimer) / float(m_AutoTurnEndTimer_Max);
 	// ゲージの長さ
@@ -161,7 +161,8 @@ void BattleTurnMgr::AutoTurnEndTimerDraw()
 	// 現在のゲージの長さ
 	float Gauge_Width = Gauge_Max_Width * Now_Rate;
 
-	DrawFunc2D::DrawBox2D(LT_Gauge, RB_Gauge - Vec2(Gauge_Width, 0.0f), Color(94, 253, 247, 255), true);
+	DrawFunc2D_Mask::DrawExtendGraph2D(LT_Gauge, RB_Gauge, m_Timer_Gauge_Tex,
+		LT_Gauge, RB_Gauge - Vec2(Gauge_Width, 0.0f));
 }
 
 void BattleTurnMgr::OnInitialize(std::shared_ptr<UnitBase> Player, std::vector<std::shared_ptr<UnitBase>> Enemys)
@@ -195,6 +196,9 @@ void BattleTurnMgr::OnInitialize(std::shared_ptr<UnitBase> Player, std::vector<s
 
 	// 自動ターンエンド
 	m_AutoTurnEndTimer = 0;
+	m_Timer_Frame_Tex = D3D12App::Instance()->GenerateTextureBuffer(TexDir + "timer_gauge_frame.png");
+	m_Timer_Gauge_Tex = D3D12App::Instance()->GenerateTextureBuffer(TexDir + "timer_gauge.png");
+
 
 	m_TurnEndTex = D3D12App::Instance()->GenerateTextureBuffer(TexDir + "turn_end.png");
 	m_TurnEnd_EnterTex = D3D12App::Instance()->GenerateTextureBuffer(TexDir + "/operation/key/done.png");

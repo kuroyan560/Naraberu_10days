@@ -37,7 +37,7 @@ void Player_Heal_01::Action_Update()
 	// UŒ‚‚Íˆê‰ñ‚Ì‚Ý
 	if (m_Timer == 1) {
 		// Ž©•ª‚ð‰ñ•œ‚·‚é(Š„‡)
-		m_Initiator->Heal_Par(m_Amount);
+		m_Initiator->Heal_Par(m_Amount * 2);
 	}
 }
 
