@@ -63,7 +63,7 @@ void BattleTurnMgr::TurnEndButtonUpdate()
 		}
 
 
-		if (m_ProgressTime >= (__int64(60000000) + m_PauseTime + TotalPuaseTime) && !m_Checked_TurnEnd) {
+		if (m_ProgressTime >= (__int64(600000000) + m_PauseTime + TotalPuaseTime) && !m_Checked_TurnEnd) {
 			m_Checked_TurnEnd = true;
 			m_Moving_Flag = true;
 			GetUnitPtr<Player>(UnitList[0])->TurnEndTrigger();
@@ -221,7 +221,7 @@ void BattleTurnMgr::AutoTurnEndTimerDraw()
 	}
 
 	// 現在の割合
-	float Now_Rate = float(m_ProgressTime - m_PauseTime - TotalPuaseTime) / (60000000.0f);
+	float Now_Rate = float(m_ProgressTime - m_PauseTime - TotalPuaseTime) / (600000000.0f);
 	// ゲージの長さ
 	float Gauge_Max_Width = RB_Gauge.x - LT_Gauge.x;
 	// 現在のゲージの長さ
