@@ -98,7 +98,7 @@ void BlockManager::Draw()
 
 	//ƒpƒX‰æ‘œ
 	const KuroEngine::Vec2<float> passSize = { 107.0f,27.0f };
-	KuroEngine::DrawFunc2D::DrawExtendGraph2D({ passFoundationPos.x - passSize.x ,passFoundationPos.y - passSize.y }, passFoundationPos, passTex[0]);
+	KuroEngine::DrawFunc2D::DrawExtendGraph2D(KuroEngine::Vec2(passFoundationPos.x - passSize.x, passFoundationPos.y - passSize.y) + ScreenShakeManager::Instance()->GetOffset(), passFoundationPos, passTex[0]);
 	const KuroEngine::Vec2<float> passSlashSize = { 18.0f,27.0f };
 	KuroEngine::Vec2<float> passSlashPos = { 54.0f,0.0f };
 	passSlashPos += ScreenShakeManager::Instance()->GetOffset();

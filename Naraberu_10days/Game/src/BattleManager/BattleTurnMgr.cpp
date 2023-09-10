@@ -207,7 +207,7 @@ void BattleTurnMgr::AutoTurnEndTimerDraw()
 	using namespace KuroEngine;
 	Vec2 LT = Vec2(384.0f, 576.0f);
 	Vec2 RB = Vec2(896.0f, 589.0f);
-	DrawFunc2D::DrawExtendGraph2D(LT, RB, m_Timer_Frame_Tex);
+	DrawFunc2D::DrawExtendGraph2D(LT + ScreenShakeManager::Instance()->GetOffset(), RB + ScreenShakeManager::Instance()->GetOffset(), m_Timer_Frame_Tex);
 
 	Vec2 LT_Gauge = Vec2(386.0f, 578.0f);
 	Vec2 RB_Gauge = Vec2(894.0f, 587.0f);
@@ -227,8 +227,8 @@ void BattleTurnMgr::AutoTurnEndTimerDraw()
 	// Œ»Ý‚ÌƒQ[ƒW‚Ì’·‚³
 	float Gauge_Width = Gauge_Max_Width * Now_Rate;
 
-	DrawFunc2D_Mask::DrawExtendGraph2D(LT_Gauge, RB_Gauge, m_Timer_Gauge_Tex,
-		LT_Gauge, RB_Gauge - Vec2(Gauge_Width, 0.0f));
+	DrawFunc2D_Mask::DrawExtendGraph2D(LT_Gauge + ScreenShakeManager::Instance()->GetOffset(), RB_Gauge + ScreenShakeManager::Instance()->GetOffset(), m_Timer_Gauge_Tex,
+		LT_Gauge + ScreenShakeManager::Instance()->GetOffset(), RB_Gauge - Vec2(Gauge_Width, 0.0f) + ScreenShakeManager::Instance()->GetOffset());
 }
 
 void BattleTurnMgr::OnInitialize(std::shared_ptr<UnitBase> Player, std::vector<std::shared_ptr<UnitBase>> Enemys)

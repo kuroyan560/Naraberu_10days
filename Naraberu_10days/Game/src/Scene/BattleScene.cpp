@@ -337,18 +337,18 @@ void BattleScene::OnDraw()
 
 	// ƒL[•`‰æ
 	if (OperationConfig::Instance()->GetLatestDevice() == OperationConfig::Instance()->KEY_BOARD_MOUSE) {
-		DrawFunc2D::DrawGraph(Vec2(320.0f, 90.0f), m_Operation_Ult[0]);
-		DrawFunc2D::DrawGraph(Vec2(718.0f, 0.0f), m_Operation_Set[0]);
-		DrawFunc2D::DrawGraph(Vec2(105.0f, 621.0f), m_Operation_Pass[0]);
-		DrawFunc2D::DrawGraph(Vec2(374.0f, 655.0f), m_Operation_Left[0]);
-		DrawFunc2D::DrawGraph(Vec2(587.0f, 655.0f), m_Operation_Right[0]);
+		DrawFunc2D::DrawGraph(Vec2(320.0f, 90.0f) + ScreenShakeManager::Instance()->GetOffset(), m_Operation_Ult[0]);
+		DrawFunc2D::DrawGraph(Vec2(718.0f, 0.0f) + ScreenShakeManager::Instance()->GetOffset(), m_Operation_Set[0]);
+		DrawFunc2D::DrawGraph(Vec2(105.0f, 621.0f) + ScreenShakeManager::Instance()->GetOffset(), m_Operation_Pass[0]);
+		DrawFunc2D::DrawGraph(Vec2(374.0f, 655.0f) + ScreenShakeManager::Instance()->GetOffset(), m_Operation_Left[0]);
+		DrawFunc2D::DrawGraph(Vec2(587.0f, 655.0f) + ScreenShakeManager::Instance()->GetOffset(), m_Operation_Right[0]);
 	}
 	else {
-		DrawFunc2D::DrawGraph(Vec2(322.0f, 92.0f), m_Operation_Ult[1]);
-		DrawFunc2D::DrawGraph(Vec2(719.0f, 1.0f), m_Operation_Set[1]);
-		DrawFunc2D::DrawGraph(Vec2(108.0f, 623.0f), m_Operation_Pass[1]);
-		DrawFunc2D::DrawGraph(Vec2(357.0f, 670.0f), m_Operation_Left[1]);
-		DrawFunc2D::DrawGraph(Vec2(578.0f, 670.0f), m_Operation_Right[1]);
+		DrawFunc2D::DrawGraph(Vec2(322.0f, 92.0f) + ScreenShakeManager::Instance()->GetOffset(), m_Operation_Ult[1]);
+		DrawFunc2D::DrawGraph(Vec2(719.0f, 1.0f) + ScreenShakeManager::Instance()->GetOffset(), m_Operation_Set[1]);
+		DrawFunc2D::DrawGraph(Vec2(108.0f, 623.0f) + ScreenShakeManager::Instance()->GetOffset(), m_Operation_Pass[1]);
+		DrawFunc2D::DrawGraph(Vec2(357.0f, 670.0f) + ScreenShakeManager::Instance()->GetOffset(), m_Operation_Left[1]);
+		DrawFunc2D::DrawGraph(Vec2(578.0f, 670.0f) + ScreenShakeManager::Instance()->GetOffset(), m_Operation_Right[1]);
 	}
 
 	//‰‰o
