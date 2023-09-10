@@ -97,9 +97,26 @@ void BattleScene::OnUpdate()
 	if (OperationConfig::Instance()->GetOperationInput(OperationConfig::MENU_IN_GAME,OperationConfig::ON_TRIGGER)) {
 		m_IsPause = true;
 		m_PauseMenu = 0;
+		// 現在時刻
+		GetLocalTime(&Mgr.PauseStartTime);
+		// ポーズ時間の計算
+		Mgr.m_PauseTimeContainer.emplace_back(Mgr.m_PauseTime);
 	}
 
 	if (m_IsPause) {
+		// 現在時刻
+		GetLocalTime(&Mgr.PauseEndTime);
+		// 変換
+		FILETIME ftime1;
+		FILETIME ftime2;
+		SystemTimeToFileTime(&Mgr.PauseStartTime, &ftime1);
+		SystemTimeToFileTime(&Mgr.PauseEndTime, &ftime2);
+		// int64にキャスト
+		__int64* nTime1 = (__int64*)&ftime1;
+		__int64* nTime2 = (__int64*)&ftime2;
+		// 経過秒
+		Mgr.m_PauseTime = (*nTime2 - *nTime1);
+
 		if (OperationConfig::Instance()->GetSelectVec(OperationConfig::SELECT_VEC::SELECT_VEC_UP) ||
 			OperationConfig::Instance()->GetTargetChangeVec(OperationConfig::SELECT_VEC_UP)) {
 			if (m_PauseMenu > 0) {
@@ -123,7 +140,7 @@ void BattleScene::OnUpdate()
 				m_Already_Selected_Pause = false;
 				m_IsPause = false;
 			}
-			// タイトルへ
+			// タイトル
 			else if (m_PauseMenu == 1) {
 				KuroEngine::KuroEngineDevice::Instance()->ChangeScene("Battle", &m_Fade);
 			}
