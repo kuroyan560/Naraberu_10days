@@ -2,10 +2,11 @@
 #include"../Block/BaseInformation.h"
 #include"Common/Vec.h"
 #include<vector>
-#include"../UI/EnemyDamageUI.h"
+#include"../UI/SkillResultUI.h"
 #include<array>
 #include"ForUser/Timer.h"
 #include<memory>
+#include<string>
 
 class PanelManager;
 
@@ -25,11 +26,10 @@ class PlayerAttackEffect
 
 	//敵に対する与ダメージUI
 	static const int ENEMY_COUNT_MAX = 3;
-	std::array<EnemyDamageUI, ENEMY_COUNT_MAX>m_enemyDamageUI;
+	std::array<SkillResultUI, ENEMY_COUNT_MAX>m_enemyDamageUI;
 
 	//ターゲットの敵
-	static const int ALL_ENEMY_ATTACK = -1;
-	int m_targetEnemyIdx = ALL_ENEMY_ATTACK;
+	std::vector<int>m_targetEnemyIdxArray;
 
 	//1ブロックにつき何ダメージか
 	int m_damagePerOneBlock = 1;
@@ -44,6 +44,8 @@ class PlayerAttackEffect
 	//再生するカウントSEのインデックス
 	int m_countSeIdx;
 
+	std::string m_skillName;
+
 public:
 	PlayerAttackEffect();
 	void Init();
@@ -56,8 +58,9 @@ public:
 	/// <param name="arg_setChipIdxArray">設置位置インデックスの配列</param>
 	/// <param name="arg_color">ブロックの色</param>
 	/// <param name="arg_damagePerOneBlock">1ブロックにつき何ダメージか</param>
-	/// <param name="arg_targetEnemy">特定の敵に対する攻撃ならその対象は誰か（デフォルトは全体攻撃扱い）</param>
-	void Start(std::vector<KuroEngine::Vec2<int>>arg_setChipIdxArray, BlockColor arg_color, int arg_damagePerOneBlock, int arg_targetEnemyIdx = ALL_ENEMY_ATTACK);
+	/// <param name="arg_targetEnemyIdxArray">ターゲットの敵のインデックス配列</param>
+	/// <param name="arg_skillName">スキル名</param>
+	void Start(std::vector<KuroEngine::Vec2<int>>arg_setChipIdxArray, BlockColor arg_color, int arg_damagePerOneBlock, std::vector<int>arg_targetEnemyIdxArray, std::string arg_skillName);
 
 	//アクティブ状態ゲッタ
 	const bool& GetIsActive()const { return m_isActive; }

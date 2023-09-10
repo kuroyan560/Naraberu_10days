@@ -5,6 +5,7 @@
 #include "ForUser/DrawFunc/2D/DrawFunc2D.h"
 #include"../SoundConfig.h"
 #include"FrameWork/AudioApp.h"
+#include"ForUser/Debugger.h"
 
 void TitleScene::OnInitialize()
 {
@@ -38,30 +39,16 @@ void TitleScene::OnInitialize()
 		character->SetMoveStageSelect(true);
 	}
 
-	std::array<std::string,2> soundName={"bgm_main","bgm_sub"};
-	std::array<float, 2> vo = { 0.0f,0.5f };
+	SoundConfig::Instance()->SwitchBGM(SoundConfig::BGM_SUB);
 
-	for (int i = 0; i < 2; i++) {
-		ExistUnits::Instance()->volume[i] = vo[i];
-		ExistUnits::Instance()->bgm[i] = KuroEngine::AudioApp::Instance()->LoadAudio(
-		"resource/user/sound/" + soundName[i]+".wav", vo[i]);
-		KuroEngine::AudioApp::Instance()->PlayWave(ExistUnits::Instance()->bgm[i], true);
-	}
+	KuroEngine::Debugger::Register(
+		{
+			SoundConfig::Instance(),
+		});
 }
 
 void TitleScene::OnUpdate()
 {
-	if (ExistUnits::Instance()->volume[0] > 0) {
-		ExistUnits::Instance()->volume[0] -= 0.01f;
-		KuroEngine::AudioApp::Instance()->ChangeVolume(ExistUnits::Instance()->bgm[0], ExistUnits::Instance()->volume[0]);
-	}if (ExistUnits::Instance()->volume[1] < 0.5f * ExistUnits::Instance()->nowVolume) {
-		ExistUnits::Instance()->volume[1] += 0.01f;
-		KuroEngine::AudioApp::Instance()->ChangeVolume(ExistUnits::Instance()->bgm[1], ExistUnits::Instance()->volume[1]);
-	}
-
-	float a= ExistUnits::Instance()->volume[0];
-	float aa = ExistUnits::Instance()->volume[1];
-
 	//タイトルかステージセレクトかの判定
 	if (selectNum == Select::stageSelect && onSelect) {
 		StageSelect();
@@ -84,23 +71,6 @@ void TitleScene::OnDraw()
 	// Vキーを押してる間だけ透かしを描画
 	if (UsersInput::Instance()->KeyInput(DIK_V)) {
 		DrawFunc2D::DrawExtendGraph2D(Vec2(0.0f, 0.0f), WinApp::Instance()->GetExpandWinSize(), m_SukasiTex);
-	}
-
-	if (UsersInput::Instance()->KeyInput(DIK_U)) {
-		ExistUnits::Instance()->volume[0] +=0.01f;
-		if (ExistUnits::Instance()->volume[0] > 1.0f) {
-			ExistUnits::Instance()->volume[0] =1.0f;
-		}
-	}
-	else if (UsersInput::Instance()->KeyInput(DIK_J)) {
-		ExistUnits::Instance()->volume[0] -= 0.01f;
-		if (ExistUnits::Instance()->volume[0] < 0.0f) {
-			ExistUnits::Instance()->volume[0] = 0.0f;
-		}
-	}
-
-	for (int i = 0; i < 2; i++) {
-		KuroEngine::AudioApp::Instance()->ChangeVolume(ExistUnits::Instance()->bgm[i], ExistUnits::Instance()->volume[i]);
 	}
 
 	//遷移移動量
@@ -130,12 +100,14 @@ void TitleScene::OnDraw()
 
 void TitleScene::OnImguiDebug()
 {
+	KuroEngine::Debugger::Draw();
 	//ImGui::Begin("title");
 	//ImGui::End();
 }
 
 void TitleScene::OnFinalize()
 {
+	KuroEngine::Debugger::ClearRegister();
 }
 
 TitleScene::TitleScene()

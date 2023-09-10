@@ -15,6 +15,7 @@
 #include"../SoundConfig.h"
 
 #include "../Effect/ScreenShakeManager.h"
+#include"ForUser/Debugger.h"
 
 void BattleScene::OnInitialize()
 {
@@ -80,6 +81,12 @@ void BattleScene::OnInitialize()
 
 	//演出初期化
 	m_playerAttackEffect->Init();
+
+	SoundConfig::Instance()->SwitchBGM(SoundConfig::BGM_MAIN);
+
+	Debugger::Register({
+	SoundConfig::Instance(),
+		});
 }
 
 void BattleScene::OnUpdate()
@@ -126,14 +133,6 @@ void BattleScene::OnUpdate()
 			}
 		}
 		return;
-	}
-
-	if (ExistUnits::Instance()->volume[0] < 0.5f) {
-		ExistUnits::Instance()->volume[0] += 0.01f;
-		KuroEngine::AudioApp::Instance()->ChangeVolume(ExistUnits::Instance()->bgm[0], ExistUnits::Instance()->volume[0]);
-	}if (ExistUnits::Instance()->volume[1] > 0.0f * ExistUnits::Instance()->nowVolume) {
-		ExistUnits::Instance()->volume[1] -= 0.01f;
-		KuroEngine::AudioApp::Instance()->ChangeVolume(ExistUnits::Instance()->bgm[1], ExistUnits::Instance()->volume[1]);
 	}
 
 	// ウェーブ終了・次ウェーブスタート
@@ -337,6 +336,8 @@ void BattleScene::OnImguiDebug()
 		ImGui::Text("recovery");
 	}
 	ImGui::End();
+
+	KuroEngine::Debugger::Draw();
 }
 
 void BattleScene::OnFinalize()
@@ -347,6 +348,8 @@ void BattleScene::OnFinalize()
 	En.clear();
 	PlayerSkills::PlayerSkillMgr::Instance()->AllClear();
 	EnemyActions::EnemyActionMgr::Instance()->AllClear();
+
+	KuroEngine::Debugger::ClearRegister();
 }
 
 void BattleScene::SetStage(std::string StageName)

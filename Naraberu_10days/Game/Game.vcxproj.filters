@@ -418,7 +418,7 @@
     <ClCompile Include="src\Effect\PlayerAttackEffect.cpp">
       <Filter>src\user\Effect</Filter>
     </ClCompile>
-    <ClCompile Include="src\UI\EnemyDamageUI.cpp">
+    <ClCompile Include="src\UI\SkillResultUI.cpp">
       <Filter>src\user\UI</Filter>
     </ClCompile>
     <ClCompile Include="src\Effect\ScreenShakeManager.cpp">
@@ -804,7 +804,7 @@
     <ClInclude Include="src\Effect\PlayerAttackEffect.h">
       <Filter>src\user\Effect</Filter>
     </ClInclude>
-    <ClInclude Include="src\UI\EnemyDamageUI.h">
+    <ClInclude Include="src\UI\SkillResultUI.h">
       <Filter>src\user\UI</Filter>
     </ClInclude>
     <ClInclude Include="src\Effect\ScreenShakeManager.h">

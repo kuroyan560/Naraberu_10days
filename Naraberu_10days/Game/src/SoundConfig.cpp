@@ -16,9 +16,12 @@ std::vector<int> SoundConfig::LoadSoundArray(std::string arg_dir, std::string ar
 	return result;
 }
 
-SoundConfig::SoundConfig() : Debugger("SoundConfig")
+SoundConfig::SoundConfig() : Debugger("SoundConfig", false)
 {
 	using namespace KuroEngine;
+
+	//BGMフェード完了までのフレーム数
+	m_bgmSwitchTimer.Reset(100.0f);
 
 	std::fill(m_seEachVol.begin(), m_seEachVol.end(), 1.0f);
 	std::fill(m_bgmEachVol.begin(), m_bgmEachVol.end(), 1.0f);
@@ -36,6 +39,8 @@ SoundConfig::SoundConfig() : Debugger("SoundConfig")
 	//BGMのファイル名指定
 	std::array<std::string, BGM_NUM>bgmFileName =
 	{
+		"bgm_main",
+		"bgm_sub",
 	};
 
 	auto audioApp = AudioApp::Instance();
@@ -50,8 +55,11 @@ SoundConfig::SoundConfig() : Debugger("SoundConfig")
 
 	//m_seTable[SE_SURFACE_JUMP].Load(LoadSoundArray(seDir, seFileName[SE_SURFACE_JUMP]), SoundSE::ORDER_TYPE::RANDOM);
 	//m_seTable[SE_LEVER_ON].Load(LoadSoundArray(seDir, seFileName[SE_LEVER_ON]), SoundSE::ORDER_TYPE::IN_ORDER);
+	
 	//BGM読み込み
-	std::string bgmDir = "resource/user/sound/bgm/";
+	std::string bgmDir = "resource/user/sound/";
+	m_bgmTable[BGM_MAIN] = audioApp->LoadAudio(bgmDir + bgmFileName[BGM_MAIN] + ".wav");
+	m_bgmTable[BGM_SUB] = audioApp->LoadAudio(bgmDir + bgmFileName[BGM_SUB] + ".wav");
 
 	//全部読み込んだか確認
 	for (int seIdx = 0; seIdx < SE_NUM; ++seIdx)
@@ -80,6 +88,10 @@ SoundConfig::SoundConfig() : Debugger("SoundConfig")
 
 	//音量個別設定
 	UpdateIndividualVolume();
+
+	KuroEngine::AudioApp::Instance()->ChangeVolume(m_bgmTable[BGM_MAIN], 0.0f);
+	KuroEngine::AudioApp::Instance()->PlayWave(m_bgmTable[BGM_MAIN], true);
+	KuroEngine::AudioApp::Instance()->PlayWave(m_bgmTable[BGM_SUB], true);
 }
 
 int SoundConfig::SoundSE::GetPlaySoundHandle()
@@ -135,9 +147,42 @@ void SoundConfig::UpdateIndividualVolume()
 	}
 }
 
+void SoundConfig::OnImguiItems()
+{
+	if (CustomParamDirty())
+	{
+		for (int seIdx = 0; seIdx < SE_NUM; ++seIdx)
+		{
+			m_seTable[seIdx].SetVolume(m_seEachVol[seIdx]);
+		}
+
+		KuroEngine::AudioApp::Instance()->ChangeVolume(m_bgmTable[m_nowBgm], m_bgmEachVol[m_nowBgm]);
+	}
+}
+
 void SoundConfig::Init()
 {
 	for (auto& se : m_seTable)se.Init();
+}
+
+void SoundConfig::Update()
+{
+	//BGMのフェード
+	if (m_nextBgm != BGM_NONE)
+	{
+		m_bgmSwitchTimer.UpdateTimer();
+
+		KuroEngine::AudioApp::Instance()->ChangeVolume(
+			m_bgmTable[m_nowBgm], (1.0f - m_bgmSwitchTimer.GetTimeRate()) * m_bgmEachVol[m_nowBgm]);
+		KuroEngine::AudioApp::Instance()->ChangeVolume(
+			m_bgmTable[m_nextBgm], m_bgmSwitchTimer.GetTimeRate() * m_bgmEachVol[m_nextBgm]);
+
+		if (m_bgmSwitchTimer.IsTimeUpOnTrigger())
+		{
+			m_nowBgm = m_nextBgm;
+			m_nextBgm = BGM_NONE;
+		}
+	}
 }
 
 void SoundConfig::Play(SE arg_se, int arg_delay, int arg_soundIdx)
@@ -145,14 +190,11 @@ void SoundConfig::Play(SE arg_se, int arg_delay, int arg_soundIdx)
 	m_seTable[arg_se].Play(arg_delay, arg_soundIdx);
 }
 
-void SoundConfig::Play(BGM arg_bgm)
+void SoundConfig::SwitchBGM(BGM arg_bgm)
 {
-	//既に再生中ならそれを停止
-	if (m_nowPlayBGMHandle != INVALID_SOUND)
-	{
-		KuroEngine::AudioApp::Instance()->StopWave(m_nowPlayBGMHandle);
-	}
-	KuroEngine::AudioApp::Instance()->PlayWave(m_bgmTable[arg_bgm], true);
-
-	m_nowPlayBGMHandle = m_bgmTable[arg_bgm];
+	if (m_nowBgm == arg_bgm)return;
+	if (m_nextBgm != BGM_NONE)return;
+	
+	m_nextBgm = arg_bgm;
+	m_bgmSwitchTimer.Reset();
 }
