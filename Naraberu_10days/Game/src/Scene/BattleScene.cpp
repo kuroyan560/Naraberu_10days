@@ -236,7 +236,7 @@ void BattleScene::OnUpdate()
 			}
 			// Œˆ’è
 			if (OperationConfig::Instance()->GetOperationInput(OperationConfig::OPERATION_TYPE::DONE, OperationConfig::INPUT_PATTERN::ON_TRIGGER)
-				&& m_End_Timer > 1) {
+				&& m_End_Timer > 1 && m_End_Timer >= int(float(m_End_Timer_Finish) / 2.0f)) {
 				m_Already_Selected = true;
 				SoundConfig::Instance()->Play(SoundConfig::SE_DONE);
 				// ƒ^ƒCƒgƒ‹‚Ö
@@ -261,7 +261,7 @@ void BattleScene::OnUpdate()
 		Reticle::Instance()->m_CanMove = false;
 
 		if (OperationConfig::Instance()->GetOperationInput(OperationConfig::OPERATION_TYPE::DONE, OperationConfig::INPUT_PATTERN::ON_TRIGGER)
-			&& m_End_Timer > 1) {
+			&& m_End_Timer > 1 && m_End_Timer >= int(float(m_End_Timer_Finish) / 2.0f)) {
 			ExistUnits::Instance()->m_ChangeStageSelect = true;
 			KuroEngine::KuroEngineDevice::Instance()->ChangeScene("title", &m_Fade);
 			SoundConfig::Instance()->Play(SoundConfig::SE_DONE);

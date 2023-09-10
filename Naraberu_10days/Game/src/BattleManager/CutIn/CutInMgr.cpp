@@ -22,9 +22,9 @@ void CutInMgr::StartCutIn(CutInType Type)
 	{
 	case CutInType::PLAYER_TURN:
 		// 現在次バトル遷移カットイン中の場合は生成しない
-		if (!(NowCutInPtr != nullptr && NowCutInPtr->m_Type == CutInType::NEXT_BATTLE)) {
+		//if (!(NowCutInPtr != nullptr && NowCutInPtr->m_Type == CutInType::NEXT_BATTLE)) {
 			NowCutInPtr = std::make_shared<CutInData>(Type, 130, TexDir + "player_turn.png");
-		}
+		//}
 		break;
 	case CutInType::ENEMY_TURN:
 		NowCutInPtr = std::make_shared<CutInData>(Type, 130, TexDir + "enemy_turn.png");
