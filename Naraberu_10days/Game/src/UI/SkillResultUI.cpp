@@ -64,9 +64,9 @@ void SkillResultUI::Update(std::weak_ptr<ParticleEmitter>arg_ultParticleEmitter)
 			if (m_skillType == SKILL_ENEMY_DAMAGE)
 			{
 				arg_ultParticleEmitter.lock()->Emit({ m_disappearPosX,m_appearPos.y }, m_amount);
+				//‰æ–Ê—h‚ç‚µ
+				ScreenShakeManager::Instance()->Shake();
 			}
-			//‰æ–Ê—h‚ç‚µ
-			ScreenShakeManager::Instance()->Shake();
 		}
 	}
 

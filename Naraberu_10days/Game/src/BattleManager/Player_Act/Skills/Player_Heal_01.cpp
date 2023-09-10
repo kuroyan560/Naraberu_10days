@@ -50,10 +50,10 @@ void Player_Heal_01::Action_Draw()
 
 	using namespace KuroEngine;
 	// ‰¼‚Å” ‚ð•`‰æ
-	KuroEngine::Vec2 LT = GetUnitPtr_nama<Player*>(m_Initiator)->Get_Left_Top();
+	/*KuroEngine::Vec2 LT = GetUnitPtr_nama<Player*>(m_Initiator)->Get_Left_Top();
 	KuroEngine::Vec2 RB = GetUnitPtr_nama<Player*>(m_Initiator)->Get_Right_Bottom();
 	DrawFunc2D::DrawBox2D(LT + ScreenShakeManager::Instance()->GetOffset()
-		, RB + ScreenShakeManager::Instance()->GetOffset(), Color(0, 230, 30, 255), true);
+		, RB + ScreenShakeManager::Instance()->GetOffset(), Color(0, 230, 30, 255), true);*/
 }
 
 void Player_Heal_01::Action_End()

@@ -122,6 +122,9 @@
     <Filter Include="src\user\Effect">
       <UniqueIdentifier>{1e827a03-28a5-4aca-9503-c390bcc92899}</UniqueIdentifier>
     </Filter>
+    <Filter Include="src\user\Effect\Particle">
+      <UniqueIdentifier>{fe29ccad-8ba5-4e41-8b7e-35e59ecae967}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="..\..\src\engine\KuroEngineDevice.cpp">
@@ -430,17 +433,20 @@
     <ClCompile Include="src\UI\PlayerDamageUi.cpp">
       <Filter>src\user\UI</Filter>
     </ClCompile>
-    <ClCompile Include="src\Effect\Particle\BackPrismParticle.cpp">
-      <Filter>src\user\Effect</Filter>
-    </ClCompile>
-    <ClCompile Include="src\Effect\Particle\HealParticle.cpp">
-      <Filter>src\user\Effect</Filter>
-    </ClCompile>
     <ClCompile Include="src\Effect\ParticleManager.cpp">
       <Filter>src\user\Effect</Filter>
     </ClCompile>
     <ClCompile Include="src\Effect\SetPrismEffect.cpp">
       <Filter>src\user\Effect</Filter>
+    </ClCompile>
+    <ClCompile Include="src\Effect\Particle\BackPrismParticle.cpp">
+      <Filter>src\user\Effect\Particle</Filter>
+    </ClCompile>
+    <ClCompile Include="src\Effect\Particle\HealParticle.cpp">
+      <Filter>src\user\Effect\Particle</Filter>
+    </ClCompile>
+    <ClCompile Include="src\Effect\Particle\UltParticle.cpp">
+      <Filter>src\user\Effect\Particle</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
@@ -825,12 +831,6 @@
     <ClInclude Include="src\UI\PlayerDamageUi.h">
       <Filter>src\user\UI</Filter>
     </ClInclude>
-    <ClInclude Include="src\Effect\Particle\BackPrismParticle.h">
-      <Filter>src\user\Effect</Filter>
-    </ClInclude>
-    <ClInclude Include="src\Effect\Particle\HealParticle.h">
-      <Filter>src\user\Effect</Filter>
-    </ClInclude>
     <ClInclude Include="src\Effect\ParticleBase.h">
       <Filter>src\user\Effect</Filter>
     </ClInclude>
@@ -839,6 +839,15 @@
     </ClInclude>
     <ClInclude Include="src\Effect\SetPrismEffect.h">
       <Filter>src\user\Effect</Filter>
+    </ClInclude>
+    <ClInclude Include="src\Effect\Particle\BackPrismParticle.h">
+      <Filter>src\user\Effect\Particle</Filter>
+    </ClInclude>
+    <ClInclude Include="src\Effect\Particle\HealParticle.h">
+      <Filter>src\user\Effect\Particle</Filter>
+    </ClInclude>
+    <ClInclude Include="src\Effect\Particle\UltParticle.h">
+      <Filter>src\user\Effect\Particle</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>

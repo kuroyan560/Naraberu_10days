@@ -14,5 +14,5 @@ void ScreenShakeManager::Update()
 
 void ScreenShakeManager::Shake()
 {
-	m_impactShake.Shake(30.0f, 3.0f, 0.0f, 30.0f);
+	m_impactShake.Shake(35.0f, 2.0f, 0.0f, 35.0f);
 }
