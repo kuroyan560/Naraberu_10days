@@ -69,13 +69,13 @@ void SetPrismEffect::Init()
 
 }
 
-void SetPrismEffect::Update(std::weak_ptr<PanelManager>arg_panelManager)
+void SetPrismEffect::Update(std::weak_ptr<PanelManager>arg_panelManager, std::weak_ptr<ParticleEmitter>arg_ultParticleEmitter)
 {
 	if (!m_isActive)return;
 
 	for (auto& ui : m_activeUIArray)
 	{
-		ui->Update();
+		ui->Update(arg_ultParticleEmitter);
 	}
 
 	m_setPrismTimer.UpdateTimer();

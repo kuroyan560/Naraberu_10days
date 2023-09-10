@@ -9,6 +9,7 @@
 #include<string>
 
 class PanelManager;
+class ParticleEmitter;
 
 //プリズムを置いたときの演出
 class SetPrismEffect
@@ -58,7 +59,7 @@ class SetPrismEffect
 public:
 	SetPrismEffect();
 	void Init();
-	void Update(std::weak_ptr<PanelManager>arg_panelManager);
+	void Update(std::weak_ptr<PanelManager>arg_panelManager, std::weak_ptr<ParticleEmitter>arg_ultParticleEmitter);
 	void Draw();
 
 	/// <summary>

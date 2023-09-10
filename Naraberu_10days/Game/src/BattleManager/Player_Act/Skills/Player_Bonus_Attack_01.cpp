@@ -48,9 +48,6 @@ void Player_Bonus_Attack_01::Action_Update()
 		for (auto& tgt : m_Targets) {
 			tgt->Damage(m_BonusCount);
 		}
-
-		// アルティメットポイントを加算
-		GetUnitPtr_nama<Player*>(m_Initiator)->AddUltPoint(m_BonusCount);
 	}
 }
 

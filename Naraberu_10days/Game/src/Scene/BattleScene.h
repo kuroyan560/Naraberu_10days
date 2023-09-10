@@ -61,6 +61,7 @@ class BattleScene :
 
 	std::shared_ptr<ParticleEmitter>m_healPtEmitter;
 	std::shared_ptr<ParticleEmitter>m_backPrismPtEmitter;
+	std::shared_ptr<ParticleEmitter>m_ultPtEmitter;
 
 	void PlayerTurn();
 

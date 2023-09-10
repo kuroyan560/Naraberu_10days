@@ -12,6 +12,8 @@ namespace KuroEngine
 	class TextureBuffer;
 };
 
+class ParticleEmitter;
+
 class SkillResultUI
 {
 public:
@@ -63,7 +65,7 @@ private:
 public:
 	SkillResultUI();
 	void Init();
-	void Update();
+	void Update(std::weak_ptr<ParticleEmitter>arg_ultParticleEmitter);
 	void Draw();
 
 	void Add(int arg_damage, bool arg_drawHistory);

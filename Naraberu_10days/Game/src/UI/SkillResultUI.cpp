@@ -2,6 +2,8 @@
 #include"DirectX12/D3D12App.h"
 #include"ForUser/DrawFunc/2D/DrawFunc2D.h"
 #include"KuroEngine.h"
+#include"../Effect/ParticleManager.h"
+#include"../Effect/ScreenShakeManager.h"
 
 SkillResultUI::SkillResultUI()
 {
@@ -36,7 +38,7 @@ void SkillResultUI::Init()
 	m_impactShake.Init();
 }
 
-void SkillResultUI::Update()
+void SkillResultUI::Update(std::weak_ptr<ParticleEmitter>arg_ultParticleEmitter)
 {
 	using namespace KuroEngine;
 
@@ -57,6 +59,14 @@ void SkillResultUI::Update()
 			//履歴削除
 			m_history.clear();
 			m_isActive = false;
+
+			//ULTのパーティクルを出す
+			if (m_skillType == SKILL_ENEMY_DAMAGE)
+			{
+				arg_ultParticleEmitter.lock()->Emit({ m_disappearPosX,m_appearPos.y }, m_amount);
+			}
+			//画面揺らし
+			ScreenShakeManager::Instance()->Shake();
 		}
 	}
 

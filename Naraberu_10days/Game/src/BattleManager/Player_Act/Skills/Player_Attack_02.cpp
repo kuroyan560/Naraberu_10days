@@ -47,9 +47,6 @@ void Player_Attack_02::Action_Update()
 			//tgt->Damage(m_Damage * 2000);
 			tgt->Damage(m_Damage);
 		}
-
-		// アルティメットポイントを加算
-		GetUnitPtr_nama<Player*>(m_Initiator)->AddUltPoint(3);
 	}
 }
 

@@ -19,6 +19,8 @@
 #include"../Effect/ParticleManager.h"
 #include"../Effect/Particle/HealParticle.h"
 #include"../Effect/Particle/BackPrismParticle.h"
+#include"../Effect/Particle/UltParticle.h"
+#include"../Effect/ScreenShakeManager.h"
 
 void BattleScene::OnInitialize()
 {
@@ -45,6 +47,7 @@ void BattleScene::OnInitialize()
 	Pl = std::make_shared<Player>();
 	Pl->OnInitialize();
 	Pl->StartTurn();
+	UltParticle::SetPlayer(Pl);
 
 	// レティクルが動くように
 	Reticle::Instance()->m_CanMove = true;
@@ -92,6 +95,7 @@ void BattleScene::OnInitialize()
 		});
 
 	ParticleManager::Instance()->Init();
+	ScreenShakeManager::Instance()->Init();
 }
 
 void BattleScene::OnUpdate()
@@ -99,6 +103,11 @@ void BattleScene::OnUpdate()
 	KuroEngine::UsersInput* input = KuroEngine::UsersInput::Instance();
 
 	static int mmmm = 0;
+
+	if (OperationConfig::Instance()->DebugKeyInputOnTrigger(DIK_J))
+	{
+		ScreenShakeManager::Instance()->Shake();
+	}
 
 	if (OperationConfig::Instance()->DebugKeyInput(DIK_L) && mmmm % 3 == 0)
 	{
@@ -251,8 +260,9 @@ void BattleScene::OnUpdate()
 	}*/
 
 	//演出更新
-	m_playerAttackEffect->Update(stage);
+	m_playerAttackEffect->Update(stage, m_ultPtEmitter);
 	ParticleManager::Instance()->Update();
+	ScreenShakeManager::Instance()->Update();
 }
 
 void BattleScene::OnDraw()
@@ -266,6 +276,10 @@ void BattleScene::OnDraw()
 	// 背景色
 	DrawFunc2D::DrawBox2D(Vec2(0.0f, 0.0f)
 		, WinApp::Instance()->GetExpandWinSize(), Color(50, 49, 59, 255), true);
+
+	ParticleManager::Instance()->BackDraw();
+
+
 	// Vキーを押してる間だけ透かしを描画
 	/*if (UsersInput::Instance()->KeyInput(DIK_V)) {
 		DrawFunc2D::DrawExtendGraph2D(Vec2(0.0f, 0.0f), WinApp::Instance()->GetExpandWinSize(), m_SukasiTex);
@@ -326,9 +340,8 @@ void BattleScene::OnDraw()
 	}
 
 	//演出
-	ParticleManager::Instance()->Draw();
+	ParticleManager::Instance()->FrontDraw();
 	m_playerAttackEffect->Draw();
-
 
 	// ステージ終了(敗北)
 	if (Mgr.GetDefeat()) {
@@ -626,8 +639,9 @@ BattleScene::BattleScene()
 
 	m_playerAttackEffect = std::make_shared<SetPrismEffect>();
 
-	m_healPtEmitter = ParticleManager::Instance()->Register<HealParticle>(1000);
-	m_backPrismPtEmitter = ParticleManager::Instance()->Register<BackPrismParticle>(1000);
+	m_healPtEmitter = ParticleManager::Instance()->Register<HealParticle>(1000, false);
+	m_backPrismPtEmitter = ParticleManager::Instance()->Register<BackPrismParticle>(1000, true);
+	m_ultPtEmitter = ParticleManager::Instance()->Register<UltParticle>(1000, false);
 }
 
 void BattleScene::PlayerTurn()

@@ -25,10 +25,20 @@ void ParticleManager::Update()
 	}
 }
 
-void ParticleManager::Draw()
+void ParticleManager::FrontDraw()
 {
 	for (auto& ptArray : m_particles)
 	{
+		if (ptArray->GetIsBack())continue;
+		ptArray->Draw();
+	}
+}
+
+void ParticleManager::BackDraw()
+{
+	for (auto& ptArray : m_particles)
+	{
+		if (!ptArray->GetIsBack())continue;
 		ptArray->Draw();
 	}
 }
