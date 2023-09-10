@@ -2,6 +2,7 @@
 #include "UnitBase.h"
 #include <vector>
 #include <memory>
+#include <Windows.h>
 
 #include "DirectX12/D3D12App.h"
 #include "ForUser/DrawFunc/2D/DrawFunc2D.h"
@@ -50,11 +51,11 @@ class BattleTurnMgr
 	bool m_IsDefeat;
 
 	// ターンエンド時間
-	int m_AutoTurnEndTimer;
-	int m_AutoTurnEndTimer_Max;
+	SYSTEMTIME StartTime;
+	SYSTEMTIME NowTime;
+	__int64 m_ProgressTime;
 	std::shared_ptr<KuroEngine::TextureBuffer> m_Timer_Frame_Tex;
 	std::shared_ptr<KuroEngine::TextureBuffer> m_Timer_Gauge_Tex;
-	void AutoTurnEndTimerDraw();
 
 public:
 	std::vector<std::shared_ptr<UnitBase>> UnitList;
@@ -66,8 +67,7 @@ public:
 		NextGameTimer = 0;
 		NextGameTimeFinish = int(float(NextGameTimeFinish_Default) * RefreshRate::RefreshRate_Mag);
 		m_IsDefeat = false;
-		m_AutoTurnEndTimer = 0;
-		m_AutoTurnEndTimer_Max = int(13100.0f * (1.0f / RefreshRate::RefreshRate_Mag));
+		m_ProgressTime = 0;
 	}
 
 	void OnInitialize(std::shared_ptr<UnitBase> Player, std::vector<std::shared_ptr<UnitBase>> Enemys);
@@ -99,5 +99,8 @@ public:
 
 	// ターンエンドボタン選択中か
 	bool GetSelectedTurnEnd() { return m_Selected_TurnEnd; }
+
+	// 時間ゲージ描画
+	void AutoTurnEndTimerDraw();
 };
 

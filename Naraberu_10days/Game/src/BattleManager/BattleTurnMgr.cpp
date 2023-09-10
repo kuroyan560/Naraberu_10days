@@ -19,8 +19,21 @@ void BattleTurnMgr::TurnEndButtonUpdate()
 	// プレイヤーターンのみ
 	if (TurnNum == 0 && UnitList[0]->IsAlive() && AliveEnemys()) {
 		// 自動ターンエンド
-		m_AutoTurnEndTimer < m_AutoTurnEndTimer_Max ? m_AutoTurnEndTimer++ : m_AutoTurnEndTimer = m_AutoTurnEndTimer_Max;
-		if (m_AutoTurnEndTimer == m_AutoTurnEndTimer_Max && !m_Checked_TurnEnd) {
+		// 現在時刻
+		GetLocalTime(&NowTime);
+		// 変換
+		FILETIME ftime1;
+		FILETIME ftime2;
+		SystemTimeToFileTime(&StartTime, &ftime1);
+		SystemTimeToFileTime(&NowTime, &ftime2);
+		// int64にキャスト
+		__int64* nTime1 = (__int64*)&ftime1;
+		__int64* nTime2 = (__int64*)&ftime2;
+		// 経過秒
+		//m_ProgressTime = (*nTime2 - *nTime1) / 10000 / 1000;
+		m_ProgressTime = (*nTime2 - *nTime1);
+
+		if (m_ProgressTime >= __int64(600000000) && !m_Checked_TurnEnd) {
 			m_Checked_TurnEnd = true;
 			m_Moving_Flag = true;
 			GetUnitPtr<Player>(UnitList[0])->TurnEndTrigger();
@@ -155,7 +168,7 @@ void BattleTurnMgr::AutoTurnEndTimerDraw()
 	Vec2 LT_Gauge = Vec2(386.0f, 578.0f);
 	Vec2 RB_Gauge = Vec2(894.0f, 587.0f);
 	// 現在の割合
-	float Now_Rate = float(m_AutoTurnEndTimer) / float(m_AutoTurnEndTimer_Max);
+	float Now_Rate = float(m_ProgressTime) / 600000000.0f;
 	// ゲージの長さ
 	float Gauge_Max_Width = RB_Gauge.x - LT_Gauge.x;
 	// 現在のゲージの長さ
@@ -195,7 +208,7 @@ void BattleTurnMgr::OnInitialize(std::shared_ptr<UnitBase> Player, std::vector<s
 	m_Moving_Timer_Max = 80.0f * RefreshRate::RefreshRate_Mag;
 
 	// 自動ターンエンド
-	m_AutoTurnEndTimer = 0;
+	GetLocalTime(&StartTime);
 	m_Timer_Frame_Tex = D3D12App::Instance()->GenerateTextureBuffer(TexDir + "timer_gauge_frame.png");
 	m_Timer_Gauge_Tex = D3D12App::Instance()->GenerateTextureBuffer(TexDir + "timer_gauge.png");
 
@@ -305,8 +318,6 @@ void BattleTurnMgr::OnDraw()
 
 	// ターンエンドボタン
 	TurnEndButtonDraw();
-	//
-	AutoTurnEndTimerDraw();
 
 	using namespace KuroEngine;
 	// カットイン中であれば
@@ -362,7 +373,8 @@ void BattleTurnMgr::Update_Battle()
 				UnitList[TurnNum]->StartTurn();
 				if (TurnNum == 0) {
 					m_Moving_Flag = false;
-					m_AutoTurnEndTimer = 0;
+					//m_AutoTurnEndTimer = 0;
+					GetLocalTime(&StartTime);
 				}
 				m_Checked_TurnEnd = false;
 				m_Selected_TurnEnd = false;

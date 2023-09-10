@@ -277,6 +277,8 @@ void BattleScene::OnDraw()
 	// プレイヤーはバトル中以外でも描画する為こっち
 	Pl->OnDraw();
 
+	Mgr.AutoTurnEndTimerDraw();
+
 	stage->Draw();
 	block->Draw();
 

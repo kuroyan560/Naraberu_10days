@@ -415,9 +415,6 @@
     <ClCompile Include="src\Titel\TitleUi.cpp">
       <Filter>src\user\Title</Filter>
     </ClCompile>
-    <ClCompile Include="src\Effect\PlayerAttackEffect.cpp">
-      <Filter>src\user\Effect</Filter>
-    </ClCompile>
     <ClCompile Include="src\UI\SkillResultUI.cpp">
       <Filter>src\user\UI</Filter>
     </ClCompile>
@@ -429,6 +426,9 @@
     </ClCompile>
     <ClCompile Include="src\BattleManager\ExistUnits.cpp">
       <Filter>src\user\BattleManager</Filter>
+    </ClCompile>
+    <ClCompile Include="src\Effect\SetPrismEffect.cpp">
+      <Filter>src</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
@@ -774,9 +774,6 @@
     <ClInclude Include="src\Panel\PanelManager.h">
       <Filter>src\user\Panel</Filter>
     </ClInclude>
-    <ClInclude Include="src\Scene\BattleScene.h">
-      <Filter>src\user\Scene</Filter>
-    </ClInclude>
     <ClInclude Include="src\Scene\GameScene.h">
       <Filter>src\user\Scene</Filter>
     </ClInclude>
@@ -801,9 +798,6 @@
     <ClInclude Include="src\Titel\TitleUi.h">
       <Filter>src\user\Title</Filter>
     </ClInclude>
-    <ClInclude Include="src\Effect\PlayerAttackEffect.h">
-      <Filter>src\user\Effect</Filter>
-    </ClInclude>
     <ClInclude Include="src\UI\SkillResultUI.h">
       <Filter>src\user\UI</Filter>
     </ClInclude>
@@ -812,6 +806,10 @@
     </ClInclude>
     <ClInclude Include="src\SoundConfig.h">
       <Filter>src\user</Filter>
+    </ClInclude>
+    <ClInclude Include="src\Effect\SetPrismEffect.h" />
+    <ClInclude Include="src\Scene\BattleScene.h">
+      <Filter>src\user\Panel</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>
