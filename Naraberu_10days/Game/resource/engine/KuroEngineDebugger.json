@@ -236,6 +236,16 @@
         "bgm_sub": 1.0
       },
       "se": {
+        "attack_count_0": 1.0,
+        "attack_count_1": 1.0,
+        "attack_count_2": 1.0,
+        "attack_count_3": 1.0,
+        "attack_count_4": 1.0,
+        "attack_count_5": 1.0,
+        "attack_count_6": 1.0,
+        "attack_count_7": 1.0,
+        "attack_count_8": 1.0,
+        "attack_count_9": 1.0,
         "cancel": 1.0,
         "done": 1.0,
         "select": 1.0

@@ -89,7 +89,7 @@ void PanelManager::Draw()
 				KuroEngine::Vec2<float> pos = {
 				itr.x * blockSize + difference.x + blockSize / 2.0f ,itr.y * blockSize + difference.y + blockSize / 2.0f };
 
-				KuroEngine::DrawFunc2D::DrawRotaGraph2D(pos, { 1.0f,1.0f }, 0.0f,// bonusAngle * (3.14f / 180.0f),
+				KuroEngine::DrawFunc2D::DrawRotaGraph2D(pos, { 1.0f,1.0f },bonusAngle * (3.14f / 180.0f),
 					blockTex[int(bonusData[i].color)], bonusAlpha,{0.5f,0.5f}, KuroEngine::AlphaBlendMode::AlphaBlendMode_Add);
 			}
 		}
@@ -324,6 +324,14 @@ void PanelManager::BonusCount()
 void PanelManager::BonusDirection()
 {
 	float maxTimer = 10.0f * RefreshRate::RefreshRate_Mag;
+
+	if (bonusTimer == 0) {
+		int soundNum = int(SoundConfig::SE_ATTACK_COUNT_0) + nowBonusNum;
+		if (soundNum > 14) {
+			soundNum = 14;
+		}
+		SoundConfig::Instance()->Play(SoundConfig::SE(soundNum));
+	}
 
 	bonusEaseScale = KuroEngine::Math::Ease(KuroEngine::EASE_CHANGE_TYPE::Out, KuroEngine::EASING_TYPE::Quart,
 		bonusTimer, maxTimer, 1.0f, 1.5f);

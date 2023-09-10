@@ -35,6 +35,17 @@ SoundConfig::SoundConfig() : Debugger("SoundConfig", false)
 
 		"select",
 		"cancel",
+
+		"attack_count_0",
+		"attack_count_1",
+		"attack_count_2",
+		"attack_count_3",
+		"attack_count_4",
+		"attack_count_5",
+		"attack_count_6",
+		"attack_count_7",
+		"attack_count_8",
+		"attack_count_9",
 	};
 	//BGMのファイル名指定
 	std::array<std::string, BGM_NUM>bgmFileName =
@@ -52,6 +63,10 @@ SoundConfig::SoundConfig() : Debugger("SoundConfig", false)
 	m_seTable[SE_CANCEL].Load(audioApp->LoadAudio(seDir + seFileName[SE_CANCEL] + ".wav"));
 	m_seTable[SE_MOVE_PRISM].Load(audioApp->LoadAudio(seDir + seFileName[SE_MOVE_PRISM] + ".wav"));
 	m_seTable[SE_SELECT_PRISM].Load(audioApp->LoadAudio(seDir + seFileName[SE_SELECT_PRISM] + ".wav"));
+
+	for (int i = SE_ATTACK_COUNT_0; i <= SE_ATTACK_COUNT_9; i++) {
+		m_seTable[i].Load(audioApp->LoadAudio(seDir + "attack_count/" + seFileName[i] + ".wav"));
+	}
 
 	//m_seTable[SE_SURFACE_JUMP].Load(LoadSoundArray(seDir, seFileName[SE_SURFACE_JUMP]), SoundSE::ORDER_TYPE::RANDOM);
 	//m_seTable[SE_LEVER_ON].Load(LoadSoundArray(seDir, seFileName[SE_LEVER_ON]), SoundSE::ORDER_TYPE::IN_ORDER);
