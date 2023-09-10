@@ -131,7 +131,13 @@ public:
 	void SetBouns() { isBonusDirection = Bonas::count; }
 
 private:
-
+	
+	//ボーナス文字画像
+	std::shared_ptr<KuroEngine::TextureBuffer> bonusTex;
+	//ボーナス!!!画像
+	std::shared_ptr<KuroEngine::TextureBuffer>bonusMarkTex;
+	//ボーナス数字画像
+	std::array<std::shared_ptr<KuroEngine::TextureBuffer>,10> bonusNumberTex;
 	//ステージの最大値
 	static KuroEngine::Vec2<int> mapMax;
 	//mapchip
@@ -154,4 +160,6 @@ private:
 	float bonusEaseScale;
 	//ボーナス変更アルファ
 	float bonusAlpha;
+	//ボーナス加算時の動き
+	std::vector<KuroEngine::Vec2<int>> bonusPos;
 };
