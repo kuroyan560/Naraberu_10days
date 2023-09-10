@@ -2,7 +2,7 @@
 #include"../Block/BaseInformation.h"
 #include"Common/Vec.h"
 #include<vector>
-#include"../UI/EnemyDamageUI.h"
+#include"../UI/SkillResultUI.h"
 #include<array>
 #include"ForUser/Timer.h"
 #include<memory>
@@ -25,7 +25,7 @@ class PlayerAttackEffect
 
 	//敵に対する与ダメージUI
 	static const int ENEMY_COUNT_MAX = 3;
-	std::array<EnemyDamageUI, ENEMY_COUNT_MAX>m_enemyDamageUI;
+	std::array<SkillResultUI, ENEMY_COUNT_MAX>m_enemyDamageUI;
 
 	//ターゲットの敵
 	static const int ALL_ENEMY_ATTACK = -1;

@@ -1,9 +1,9 @@
-#include "EnemyDamageUI.h"
+#include "SkillResultUI.h"
 #include"DirectX12/D3D12App.h"
 #include"ForUser/DrawFunc/2D/DrawFunc2D.h"
 #include"KuroEngine.h"
 
-EnemyDamageUI::EnemyDamageUI()
+SkillResultUI::SkillResultUI()
 {
 	using namespace KuroEngine;
 
@@ -18,13 +18,13 @@ EnemyDamageUI::EnemyDamageUI()
 		m_damageHisNumTex.data(), dir + "damage_rireki_number.png", 11, Vec2(11, 1));
 }
 
-void EnemyDamageUI::Init()
+void SkillResultUI::Init()
 {
 	m_isActive = false;
 	m_impactShake.Init();
 }
 
-void EnemyDamageUI::Update()
+void SkillResultUI::Update()
 {
 	using namespace KuroEngine;
 
@@ -60,7 +60,7 @@ void EnemyDamageUI::Update()
 	}
 }
 
-void EnemyDamageUI::Draw()
+void SkillResultUI::Draw()
 {
 	using namespace KuroEngine;
 
@@ -93,7 +93,7 @@ void EnemyDamageUI::Draw()
 	}
 }
 
-void EnemyDamageUI::Add(int arg_damage, bool arg_drawHistory)
+void SkillResultUI::Add(int arg_damage, bool arg_drawHistory)
 {
 	//êUìÆÉpÉâÉÅÅ[É^
 	const float SHAKE_TIME = 15.0f;

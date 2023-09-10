@@ -12,7 +12,7 @@ namespace KuroEngine
 	class TextureBuffer;
 };
 
-class EnemyDamageUI
+class SkillResultUI
 {
 	//uDamagev‰æ‘œ
 	std::shared_ptr<KuroEngine::TextureBuffer>m_damageTex;
@@ -43,7 +43,7 @@ class EnemyDamageUI
 	std::list<std::pair<int, float>>m_history;
 
 public:
-	EnemyDamageUI();
+	SkillResultUI();
 	void Init();
 	void Update();
 	void Draw();
