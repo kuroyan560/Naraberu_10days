@@ -78,6 +78,9 @@ public:
 
 	void SetIsEnemyAttack(bool _isEnemyAttack = true) { isEnemyAttack = _isEnemyAttack; }
 
+	// ƒpƒX‰ñ•œ
+	void ResetPass() { passNum = passMaxNum; }
+
 private:
 
 	//–îˆó‰æ‘œ

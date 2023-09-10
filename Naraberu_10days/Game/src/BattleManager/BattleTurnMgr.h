@@ -102,5 +102,8 @@ public:
 
 	// 時間ゲージ描画
 	void AutoTurnEndTimerDraw();
+
+	// 現在ターン取得
+	int GetNowTurn() { return TurnNum; }
 };
 

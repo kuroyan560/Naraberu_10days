@@ -221,6 +221,10 @@ void BattleScene::OnUpdate()
 		block->Update();
 	}
 
+	if (Mgr.GetNowTurn() == 1) {
+		block->ResetPass();
+	}
+
 	//ゲームオーバーもしくはクリアをしたらシーンを切り替えられるようにする
 	/*if (OperationConfig::Instance()->DebugKeyInputOnTrigger(DIK_RETURN)) {
 		KuroEngine::KuroEngineDevice::Instance()->ChangeScene("title");
@@ -385,6 +389,8 @@ void BattleScene::NextWave()
 		GetUnitPtr<Enemy>(En.back())->SetEnemyData(data);
 	}
 	Mgr.SetUnits(Pl, En);
+	// パスのリセット
+	block->ResetPass();
 	if (En.size() == 1) {
 		ExistUnits::Instance()->Set(Pl.get(), En[0].get());
 	}
