@@ -692,10 +692,35 @@ void BattleScene::TutorialUpdate()
 		if (OperationConfig::Instance()->GetOperationInput(OperationConfig::OPERATION_TYPE::DONE, OperationConfig::INPUT_PATTERN::ON_TRIGGER)) {
 			m_NowTutorial_Step++;
 
-			if (m_NowTutorial_Step == 1) {
-				m_Tutorial_Pause[m_NowTutorial_Step] = true;
+			if (m_NowTutorial_Step == 7) {
+				// ŽÀ‘H
+				m_Tutorial_Pause[m_NowTutorial_Step] = false;
 			}
-			else if (m_NowTutorial_Step == 1) {
+			else if (m_NowTutorial_Step == 11) {
+				// ŽÀ‘H
+				m_Tutorial_Pause[m_NowTutorial_Step] = false;
+			}
+			else if (m_NowTutorial_Step == 15) {
+				// ŽÀ‘H
+				m_Tutorial_Pause[m_NowTutorial_Step] = false;
+			}
+			else if (m_NowTutorial_Step == 19) {
+				// ŽÀ‘H
+				m_Tutorial_Pause[m_NowTutorial_Step] = false;
+			}
+			else if (m_NowTutorial_Step == 25) {
+				// ŽÀ‘H
+				m_Tutorial_Pause[m_NowTutorial_Step] = false;
+			}
+			else if (m_NowTutorial_Step == 27) {
+				// ŽÀ‘H
+				m_Tutorial_Pause[m_NowTutorial_Step] = false;
+			}
+			else if (m_NowTutorial_Step == 33) {
+				// ŽÀ‘H
+				m_Tutorial_Pause[m_NowTutorial_Step] = false;
+			}
+			else {
 				m_Tutorial_Pause[m_NowTutorial_Step] = true;
 			}
 		}
