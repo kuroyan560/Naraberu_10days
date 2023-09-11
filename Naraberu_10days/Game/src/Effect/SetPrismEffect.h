@@ -25,12 +25,11 @@ class SetPrismEffect
 	//ブロックの色
 	BlockColor m_color;
 
-	//敵に対する与ダメージUI
-	static const int ENEMY_COUNT_MAX = 3;
-	std::array<SkillResultUI, ENEMY_COUNT_MAX>m_enemyDamageUI;
-
 	//プレイヤーに対する回復UI
 	SkillResultUI m_playerHealUI;
+
+	//敵に対するダメージのUIポインタ配列
+	std::vector<std::weak_ptr<SkillResultUI>>m_enemyDamageUI;
 
 	//起動中のUI
 	std::vector<SkillResultUI*>m_activeUIArray;
@@ -57,7 +56,7 @@ class SetPrismEffect
 	void CommonInitOnStart(std::vector<KuroEngine::Vec2<int>>arg_setChipIdxArray, BlockColor arg_color, int arg_amountPerOneBlock, std::string arg_skillName);
 
 public:
-	SetPrismEffect();
+	SetPrismEffect(std::vector<std::weak_ptr<SkillResultUI>>arg_enemyDamageUI);
 	void Init();
 	void Update(std::weak_ptr<PanelManager>arg_panelManager, std::weak_ptr<ParticleEmitter>arg_ultParticleEmitter);
 	void Draw();

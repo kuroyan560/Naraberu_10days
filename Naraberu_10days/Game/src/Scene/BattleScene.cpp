@@ -86,7 +86,17 @@ void BattleScene::OnInitialize()
 	ExistUnits::Instance()->SetStageManagerPtr(stage.get());
 
 	//演出初期化
-	m_playerAttackEffect->Init();
+	m_setPrismEffect->Init();
+	for (int enemyIdx = 0; enemyIdx < ENEMY_COUNT_MAX; ++enemyIdx)
+		m_enemyDamageUI[enemyIdx]->Init();
+	ScreenShakeManager::Instance()->Init();
+
+	dame.reset(new PlayerDamageUi());
+	dame->Initialize();
+
+	ultAttackEffect.reset(new UltAttackEffect());
+	ultAttackEffect->Initialize();
+
 
 	SoundConfig::Instance()->SwitchBGM(SoundConfig::BGM_MAIN);
 
@@ -95,15 +105,6 @@ void BattleScene::OnInitialize()
 		});
 
 	ParticleManager::Instance()->Init();
-
-
-	dame.reset(new PlayerDamageUi());
-	dame->Initialize();
-
-	ultAttackEffect.reset(new UltAttackEffect());
-	ultAttackEffect->Initialize();
-
-	ScreenShakeManager::Instance()->Init();
 }
 
 void BattleScene::OnUpdate()
@@ -295,7 +296,8 @@ void BattleScene::OnUpdate()
 	}*/
 
 	//演出更新
-	m_playerAttackEffect->Update(stage, m_ultPtEmitter);
+	m_setPrismEffect->Update(stage, m_ultPtEmitter);
+	for (auto& ui : m_enemyDamageUI)ui->Update(m_ultPtEmitter);
 	ParticleManager::Instance()->Update();
 	ScreenShakeManager::Instance()->Update();
 }
@@ -376,7 +378,8 @@ void BattleScene::OnDraw()
 
 	//演出
 	ParticleManager::Instance()->FrontDraw();
-	m_playerAttackEffect->Draw();
+	m_setPrismEffect->Draw();
+	for (auto& ui : m_enemyDamageUI)ui->Draw();
 
 	// ステージ終了(敗北)
 	if (Mgr.GetDefeat()) {
@@ -677,8 +680,25 @@ BattleScene::BattleScene()
 		m_Operation_Ult[i] = D3D12App::Instance()->GenerateTextureBuffer(TexDir_Opr + "ult.png");
 	}
 
+	//敵のダメージUIの位置
+	const std::array<Vec2<float>, ENEMY_COUNT_MAX>ENEMY_DAMAGE_UI_POS =
+	{
+		Vec2<float>(949.0f,204.0f),
+		Vec2<float>(949.0f,374.0f),
+		Vec2<float>(949.0f,544.0f),
+	};
 
-	m_playerAttackEffect = std::make_shared<SetPrismEffect>();
+	//敵のダメージUIの位置設定
+	std::vector<std::weak_ptr<SkillResultUI>>enemyDamageUiWeakPtr(ENEMY_COUNT_MAX);
+	m_enemyDamageUI.resize(ENEMY_COUNT_MAX);
+	for (int enemyIdx = 0; enemyIdx < ENEMY_COUNT_MAX; ++enemyIdx)
+	{
+		m_enemyDamageUI[enemyIdx] = std::make_shared<SkillResultUI>();
+		m_enemyDamageUI[enemyIdx]->Set(SkillResultUI::SKILL_ENEMY_DAMAGE, ENEMY_DAMAGE_UI_POS[enemyIdx], 1500.0f);
+		enemyDamageUiWeakPtr[enemyIdx] = m_enemyDamageUI[enemyIdx];
+	}
+
+	m_setPrismEffect = std::make_shared<SetPrismEffect>(enemyDamageUiWeakPtr);
 
 	m_healPtEmitter = ParticleManager::Instance()->Register<HealParticle>(1000, false);
 	m_backPrismPtEmitter = ParticleManager::Instance()->Register<BackPrismParticle>(1000, true);
@@ -698,7 +718,7 @@ void BattleScene::PlayerTurn()
 		block->GetBlock(&nowMapchip, &shape, &attribute, &color);
 		//配置可能なら配置する
 		//if (!stage->JudgeSet(nowMapchip, shape, attribute, color)) { return; }
-		if (!stage->JudgeWithEffect(nowMapchip, shape, attribute, color, m_playerAttackEffect)) { return; }
+		if (!stage->JudgeWithEffect(nowMapchip, shape, attribute, color, m_setPrismEffect)) { return; }
 		//次の使用ブロックをセットする
 		block->ChangeBlock();
 	}

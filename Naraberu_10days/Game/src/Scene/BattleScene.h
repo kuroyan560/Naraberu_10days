@@ -132,8 +132,12 @@ class BattleScene :
 	std::array<std::shared_ptr<KuroEngine::TextureBuffer>, 2> m_Operation_TurnEnd;
 	std::array<std::shared_ptr<KuroEngine::TextureBuffer>, 2> m_Operation_Ult;
 
-	//プレイヤー攻撃演出
-	std::shared_ptr<SetPrismEffect>m_playerAttackEffect;
+	//プリズム設置演出
+	std::shared_ptr<SetPrismEffect>m_setPrismEffect;
+
+	//敵に対する与ダメージUI
+	static const int ENEMY_COUNT_MAX = 3;
+	std::vector<std::shared_ptr<SkillResultUI>>m_enemyDamageUI;
 
 public:
 	BattleScene();

@@ -31,21 +31,10 @@ void SetPrismEffect::CommonInitOnStart(std::vector<KuroEngine::Vec2<int>> arg_se
 		});
 }
 
-SetPrismEffect::SetPrismEffect()
+SetPrismEffect::SetPrismEffect(std::vector<std::weak_ptr<SkillResultUI>>arg_enemyDamageUI)
+	:m_enemyDamageUI(arg_enemyDamageUI)
 {
 	using namespace KuroEngine;
-
-	//敵のダメージUIの位置
-	const std::array<Vec2<float>, ENEMY_COUNT_MAX>ENEMY_DAMAGE_UI_POS =
-	{
-		Vec2<float>(949.0f,204.0f),
-		Vec2<float>(949.0f,374.0f),
-		Vec2<float>(949.0f,544.0f),
-	};
-
-	//敵のダメージUIの位置設定
-	for (int enemyIdx = 0; enemyIdx < ENEMY_COUNT_MAX; ++enemyIdx)
-		m_enemyDamageUI[enemyIdx].Set(SkillResultUI::SKILL_ENEMY_DAMAGE, ENEMY_DAMAGE_UI_POS[enemyIdx], 1500.0f);
 
 	//プレイヤーの回復UIの位置設定
 	m_playerHealUI.Set(SkillResultUI::SKILL_PLAYER_HEAL, { 88.0f,381.0f }, -200.0f);
@@ -63,20 +52,13 @@ void SetPrismEffect::Init()
 	using namespace KuroEngine;
 
 	m_isActive = false;
-
-	for (int enemyIdx = 0; enemyIdx < ENEMY_COUNT_MAX; ++enemyIdx)
-		m_enemyDamageUI[enemyIdx].Init();
-
 }
 
 void SetPrismEffect::Update(std::weak_ptr<PanelManager>arg_panelManager, std::weak_ptr<ParticleEmitter>arg_ultParticleEmitter)
 {
 	if (!m_isActive)return;
 
-	for (auto& ui : m_activeUIArray)
-	{
-		ui->Update(arg_ultParticleEmitter);
-	}
+	m_playerHealUI.Update(arg_ultParticleEmitter);
 
 	m_setPrismTimer.UpdateTimer();
 	if (m_setPrismTimer.IsTimeUpOnTrigger())
@@ -111,10 +93,7 @@ void SetPrismEffect::Draw()
 {
 	if (!m_isActive)return;
 
-	for (auto& ui : m_activeUIArray)
-	{
-		ui->Draw();
-	}
+	m_playerHealUI.Draw();
 }
 
 void SetPrismEffect::Start(std::vector<KuroEngine::Vec2<int>> arg_setChipIdxArray, BlockColor arg_color, int arg_damagePerOneBlock, std::string arg_skillName, std::vector<int>arg_targetEnemyIdxArray)
@@ -127,9 +106,9 @@ void SetPrismEffect::Start(std::vector<KuroEngine::Vec2<int>> arg_setChipIdxArra
 	for (auto& enemyIdx : m_targetEnemyIdxArray)
 	{
 		if (enemyIdx < 0)continue;
-		if (ENEMY_COUNT_MAX <= enemyIdx)continue;
+		if (static_cast<int>(m_enemyDamageUI.size()) <= enemyIdx)continue;
 
-		m_activeUIArray.emplace_back(&m_enemyDamageUI[enemyIdx]);
+		m_activeUIArray.emplace_back(m_enemyDamageUI[enemyIdx].lock().get());
 	}
 }
 
