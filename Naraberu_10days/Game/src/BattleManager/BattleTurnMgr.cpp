@@ -327,7 +327,7 @@ void BattleTurnMgr::OnUpdate()
 	if (!UnitList[0]->IsAlive()) {
 		if (!m_IsDefeat)
 		{
-			SoundConfig::Instance()->Play(SoundConfig::SE_GAME_OVER);
+			SoundConfig::Instance()->Play(SoundConfig::SE_GAME_OVER, 35);
 		}
 
 		// ƒoƒgƒ‹I—¹ˆ—(”s–k)

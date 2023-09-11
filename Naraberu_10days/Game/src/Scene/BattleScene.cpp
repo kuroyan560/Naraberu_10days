@@ -452,7 +452,7 @@ void BattleScene::NextWave()
 			// UŒ‚“™‚ðƒNƒŠƒA
 			PlayerSkills::PlayerSkillMgr::Instance()->AllClear();
 			EnemyActions::EnemyActionMgr::Instance()->AllClear();
-			SoundConfig::Instance()->Play(SoundConfig::SE_STAGE_CLEAR);
+			SoundConfig::Instance()->Play(SoundConfig::SE_STAGE_CLEAR, 35);
 		}
 		return;
 	}
