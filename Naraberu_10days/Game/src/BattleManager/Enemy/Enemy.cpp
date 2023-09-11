@@ -71,7 +71,7 @@ void Enemy::OnUpdate()
 	}
 	if (m_Already_Act == true) {
 		m_Timer++;
-		if (m_Timer >= 100) {
+		if (m_Timer >= int(70.0f * RefreshRate::RefreshRate_Mag)) {
 			EndTurn();
 			m_Already_Act = false;
 		}
