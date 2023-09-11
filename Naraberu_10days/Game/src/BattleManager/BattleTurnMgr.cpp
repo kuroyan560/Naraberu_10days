@@ -194,19 +194,21 @@ float BattleTurnMgr::ResultEasing(float time)
 
 void BattleTurnMgr::AutoTurnEndTimerDraw()
 {
-	// 自動ターンエンド
-		// 現在時刻
-	GetLocalTime(&NowTime);
-	// 変換
-	FILETIME ftime1;
-	FILETIME ftime2;
-	SystemTimeToFileTime(&StartTime, &ftime1);
-	SystemTimeToFileTime(&NowTime, &ftime2);
-	// int64にキャスト
-	__int64* nTime1 = (__int64*)&ftime1;
-	__int64* nTime2 = (__int64*)&ftime2;
-	// 経過秒
-	m_ProgressTime = (*nTime2 - *nTime1);
+	if (TurnNum == 0) {
+		// 自動ターンエンド
+			// 現在時刻
+		GetLocalTime(&NowTime);
+		// 変換
+		FILETIME ftime1;
+		FILETIME ftime2;
+		SystemTimeToFileTime(&StartTime, &ftime1);
+		SystemTimeToFileTime(&NowTime, &ftime2);
+		// int64にキャスト
+		__int64* nTime1 = (__int64*)&ftime1;
+		__int64* nTime2 = (__int64*)&ftime2;
+		// 経過秒
+		m_ProgressTime = (*nTime2 - *nTime1);
+	}
 
 	using namespace KuroEngine;
 	Vec2 LT = Vec2(384.0f, 576.0f);
