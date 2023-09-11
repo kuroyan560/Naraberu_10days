@@ -11,6 +11,8 @@
 #include "../../../RefreshRate.h"
 
 #include"../../../SoundConfig.h"
+#include "../../../BattleManager/ExistUnits.h"
+#include "../../../Panel/PanelManager.h"
 
 void Player_Ultimate_01::Param_Set(int Damage, int Duration)
 {
@@ -40,13 +42,15 @@ void Player_Ultimate_01::Action_Update()
 	// 攻撃は一回のみ
 	if (m_Timer == 1) {
 		// 
-		if (m_Targets.size() < 1 || m_Targets[0] == nullptr) {
-			return;
-		}
-		// 全てのターゲットに攻撃する
-		for (auto& tgt : m_Targets) {
-			tgt->Damage(m_Damage);
-		}
+		//if (m_Targets.size() < 1 || m_Targets[0] == nullptr) {
+		//	return;
+		//}
+		//// 全てのターゲットに攻撃する
+		//for (auto& tgt : m_Targets) {
+		//	tgt->Damage(m_Damage);
+		//}
+
+		ExistUnits::Instance()->m_StageManager->SetGold();
 
 		SoundConfig::Instance()->Play(SoundConfig::SE_DAMAGE);
 		// アルティメットポイントを加算
@@ -66,11 +70,11 @@ void Player_Ultimate_01::Action_Draw()
 
 	using namespace KuroEngine;
 	// 仮で箱を描画
-	if (int(float(m_Timer) / (20.0f * RefreshRate::RefreshRate_Mag)) % 2 == 0) {
-		for (auto& tgt : m_Targets) {
-			GetUnitPtr_nama<Enemy*>(tgt)->Draw_Damage();
-		}
-	}
+	//if (int(float(m_Timer) / (20.0f * RefreshRate::RefreshRate_Mag)) % 2 == 0) {
+	//	for (auto& tgt : m_Targets) {
+	//		GetUnitPtr_nama<Enemy*>(tgt)->Draw_Damage();
+	//	}
+	//}
 	/*for (auto& tgt : m_Targets) {
 		KuroEngine::Vec2 LT = GetUnitPtr_nama<Enemy*>(tgt)->Get_Left_Top();
 		KuroEngine::Vec2 RB = GetUnitPtr_nama<Enemy*>(tgt)->Get_Right_Bottom();
