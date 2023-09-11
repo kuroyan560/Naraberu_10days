@@ -185,18 +185,18 @@ void BlockManager::ChangeBlock()
 		else {
 			block[int(ObjectType::nextChoice1)].attribute = BlockAttribute(rand() % int(BlockAttribute::size));
 			block[int(ObjectType::nextChoice1)].blockNum = rand() % shapeNum;
-			block[int(ObjectType::nextChoice1)].color = BlockColor(rand() % (int(BlockColor::size) - 3));
+			block[int(ObjectType::nextChoice1)].color = BlockColor(rand() % (int(BlockColor::size) - 4));
 			block[int(ObjectType::nextChoice2)].attribute = BlockAttribute(rand() % int(BlockAttribute::size));
 			block[int(ObjectType::nextChoice2)].blockNum = rand() % shapeNum;
-			block[int(ObjectType::nextChoice2)].color = BlockColor(rand() % (int(BlockColor::size) - 3));
+			block[int(ObjectType::nextChoice2)].color = BlockColor(rand() % (int(BlockColor::size) - 4));
 		}
 	} else {
 		block[int(ObjectType::nextChoice1)].attribute = BlockAttribute(rand() % int(BlockAttribute::size));
 		block[int(ObjectType::nextChoice1)].blockNum = rand() % shapeNum;
-		block[int(ObjectType::nextChoice1)].color = BlockColor(rand() % (int(BlockColor::size) - 3));
+		block[int(ObjectType::nextChoice1)].color = BlockColor(rand() % (int(BlockColor::size) - 4));
 		block[int(ObjectType::nextChoice2)].attribute = BlockAttribute(rand() % int(BlockAttribute::size));
 		block[int(ObjectType::nextChoice2)].blockNum = rand() % shapeNum;
-		block[int(ObjectType::nextChoice2)].color = BlockColor(rand() % (int(BlockColor::size) - 3));
+		block[int(ObjectType::nextChoice2)].color = BlockColor(rand() % (int(BlockColor::size) - 4));
 	}
 	//使用ブロックをセット
 	SetOneChangeBlock(int(ObjectType::use), int(ObjectType::choice1));

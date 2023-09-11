@@ -110,29 +110,6 @@ class BattleScene :
 	float ResultTimer_Max;
 	float ResultEasing(float time);
 
-	// チュートリアル用
-	enum Tutorial_Steps {
-		AISATU = 0,
-		
-		GAMEN_0,
-		GAMEN_1,
-		GAMEN_2,
-		GAMEN_3,
-		GAMEN_4,
-
-		TANTAI_0,
-		TANTAI_1,
-		TANTAI_2,
-		TANTAI_3,
-		TANTAI_JISSEN,
-
-		ZENTAI_0,
-		ZENTAI_1,
-		ZENTAI_JISSEN,
-
-		TURN_END_0,
-		TURN_END_JISSEN,
-	};
 	int m_NowTutorial_Step;
 	static const int m_Tutorial_Step_Max = 10;
 	std::array<bool, m_Tutorial_Step_Max> m_Tutorial_Pause;

@@ -46,6 +46,7 @@ void PanelManager::Initialize()
 	blockTex[int(BlockColor::yuka)] = KuroEngine::D3D12App::Instance()->GenerateTextureBuffer(TexDir + "yuka.png");
 	blockTex[int(BlockColor::obstacle)] = KuroEngine::D3D12App::Instance()->GenerateTextureBuffer(TexDir + "oja.png");
 	blockTex[int(BlockColor::eizoku_obstacle)] = KuroEngine::D3D12App::Instance()->GenerateTextureBuffer(TexDir + "eizoku_oja.png");
+	blockTex[int(BlockColor::gold)] = KuroEngine::D3D12App::Instance()->GenerateTextureBuffer(TexDir + "block_gold.png");
 
 	//配置場所の範囲決定
 	mapchip.resize(10);
@@ -104,21 +105,10 @@ void PanelManager::Draw()
 				KuroEngine::DrawFunc2D::DrawExtendGraph2D(pos, pos1, blockTex[int(BlockColor::obstacle)]);
 			} else if (mapchip[y][x] == int(BlockColor::eizoku_obstacle)) {
 				KuroEngine::DrawFunc2D::DrawExtendGraph2D(pos, pos1, blockTex[int(BlockColor::eizoku_obstacle)]);
+			} else if (mapchip[y][x] == int(BlockColor::gold)) {
+				KuroEngine::DrawFunc2D::DrawExtendGraph2D(pos, pos1, blockTex[int(BlockColor::gold)]);
 			}
 		}
-	}
-
-	for (auto& i : onePos) {
-		KuroEngine::Vec2<float> pos = { i.x * blockSize + difference.x ,i.y * blockSize + difference.y };
-
-		KuroEngine::Vec2<float> pos1 = pos;
-		pos1.x += blockSize;
-		pos1.y += blockSize;
-
-		pos += ScreenShakeManager::Instance()->GetOffset();
-		pos1 += ScreenShakeManager::Instance()->GetOffset();
-
-		KuroEngine::DrawFunc2D::DrawExtendGraph2D(pos, pos1, blockTex[int(BlockColor::blue)]);
 	}
 
 	//ボーナスパネル
@@ -381,6 +371,27 @@ bool PanelManager::LineBlock(int _number, const KuroEngine::Vec2<int> _lineMap, 
 	return true;
 }
 
+int PanelManager::GoldProcess()
+{
+	int num = 0;
+	//塊箇所確認
+	for (int y = 0; y < mapMax.y; y++) {
+		for (int x = 0; x < mapMax.x; x++) {
+			if (mapchip[y][x] != int(BlockColor::gold)) { continue; }
+			//ボーナス加算
+			num += 1;
+			BonusData add;
+			add.pos.emplace_back(KuroEngine::Vec2<int>(x, y));
+			add.color = BlockColor(mapchip[y][x]);
+			add.mass = false;
+			bonusData.emplace_back(add);
+			bonusPos.emplace_back(KuroEngine::Vec2<int>(x, y));
+		}
+	}
+
+	return num;
+}
+
 void PanelManager::BonusCount()
 {
 	bonusData.clear();
@@ -390,8 +401,10 @@ void PanelManager::BonusCount()
 	MassProcess();
 	//ライン判定
 	LineProcess();
+	//金判定
+	int gold = GoldProcess();
 
-	ExistUnits::Instance()->SetBonusCount(int(bonusData.size()));
+	ExistUnits::Instance()->SetBonusCount(int(bonusData.size()) + gold);
 
 	nowBonusNum = 0;
 	bonusTimer = 0;
@@ -506,5 +519,12 @@ void PanelManager::OneBlock(int* _massNum, KuroEngine::Vec2<int> _mapchip)
 			oneMapchip[_mapchip.y][_mapchip.x - 1] != 1) {
 			OneBlock(_massNum, { _mapchip.x - 1,_mapchip.y });
 		}
+	}
+}
+
+void PanelManager::SetGold()
+{
+	for (auto& i : onePos) {
+		mapchip[i.y][i.x] = int(BlockColor::gold);
 	}
 }
