@@ -66,6 +66,7 @@ enum class BlockColor {
 	yuka,
 	obstacle,
 	eizoku_obstacle,
+	gold,
 	size,
 };
 

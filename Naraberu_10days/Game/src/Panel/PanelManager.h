@@ -104,6 +104,11 @@ public:
 	bool LineBlock(int _number, const KuroEngine::Vec2<int> _lineMap, const bool _direction);
 
 	/// <summary>
+	/// 金判定
+	/// </summary>
+	int GoldProcess();
+
+	/// <summary>
 	/// ボーナスの算出
 	/// </summary>
 	void BonusCount();
@@ -126,12 +131,25 @@ public:
 	void OneBlock(int* _massNum, const KuroEngine::Vec2<int> _mapchip);
 
 	/// <summary>
+	/// ブロックセット
+	/// </summary>
+	/// <param name="_mapchip">セットするマップチップ番号</param>
+	void SetBlock(const KuroEngine::Vec2<int> _mapchip,int _color) {
+		mapchip[_mapchip.y][_mapchip.x] = _color;
+	}
+
+	/// <summary>
 	/// お邪魔セット
 	/// </summary>
 	/// <param name="_mapchip">セットするマップチップ番号</param>
 	void SetObstacle(const KuroEngine::Vec2<int> _mapchip) {
 		mapchip[_mapchip.y][_mapchip.x] = 4;
 	}
+
+	/// <summary>
+	/// 金セット
+	/// </summary>
+	void SetGold();
 
 	/// <summary>
 	/// 中央出力
