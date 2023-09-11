@@ -42,7 +42,10 @@ void BattleScene::OnInitialize()
 	m_Already_Selected_Pause = false;
 	// チュートリアル
 	m_NowTutorial_Step = 0;
-	m_Tutoroal_Trigger_Timer = 0;
+	m_Tutorial_Trigger_Timer = 0;
+	m_Tutorial_None_Ctrl_Timer = 0;
+	m_Tutorial_Jissen_Text_Timer = 0;
+	m_Tutorial_Step_Complete_Flag = false;
 
 	m_Already_Selected = false;
 
@@ -684,8 +687,6 @@ void BattleScene::TutorialUpdate()
 		return;
 	}
 
-	// タイマー増加
-	m_Tutoroal_Trigger_Timer++;
 	// チュートリアル説明中
 	if (m_Tutorial_Pause[m_NowTutorial_Step] == true) {
 		// 決定
@@ -733,6 +734,92 @@ void BattleScene::TutorialUpdate()
 
 		return;
 	}
+	// チュートリアル(実践)
+	if (m_NowTutorial_Step == 7 || m_NowTutorial_Step == 11 || m_NowTutorial_Step == 15 ||
+		m_NowTutorial_Step == 19 || m_NowTutorial_Step == 25 || m_NowTutorial_Step == 27 || m_NowTutorial_Step == 33) {
+		// 無操作状態のタイマー
+		m_Tutorial_None_Ctrl_Timer++;
+		// 操作があった時に無操作タイマーを0にする
+		if (OperationConfig::Instance()->CheckAllOperationInputTrigger()) {
+			m_Tutorial_None_Ctrl_Timer = 0;
+		}
+
+		// 該当する操作入力があった時
+		if (m_NowTutorial_Step == 7 && OperationConfig::Instance()->GetOperationInput(OperationConfig::SET_PRISM, OperationConfig::ON_TRIGGER)
+			&& m_Tutorial_Trigger_Timer == 0) {
+			// タイマー増加
+			m_Tutorial_Trigger_Timer++;
+		}
+		else if (m_NowTutorial_Step == 11 && OperationConfig::Instance()->GetOperationInput(OperationConfig::SET_PRISM, OperationConfig::ON_TRIGGER)
+			&& m_Tutorial_Trigger_Timer == 0) {
+			// タイマー増加
+			m_Tutorial_Trigger_Timer++;
+		}
+		else if (m_NowTutorial_Step == 15) {
+			if (!m_Tutorial_Step_Complete_Flag &&
+				OperationConfig::Instance()->GetOperationInput(OperationConfig::END_TURN, OperationConfig::ON_TRIGGER)
+				&& m_Tutorial_Trigger_Timer == 0) {
+				// 一度目の操作をしたフラグを上げる
+				m_Tutorial_Step_Complete_Flag = true;
+			}
+			else {
+				// 別の操作を挟んだ場合はフラグを下げる
+				if (OperationConfig::Instance()->GetOperationInput(OperationConfig::END_TURN, OperationConfig::ON_TRIGGER)) {
+					// タイマー増加
+					m_Tutorial_Trigger_Timer++;
+				}
+				else if (OperationConfig::Instance()->CheckAllOperationInputTrigger()) {
+					m_Tutorial_Step_Complete_Flag = false;
+				}
+			}
+		}
+		else if (m_NowTutorial_Step == 19 && OperationConfig::Instance()->GetOperationInput(OperationConfig::SET_PRISM, OperationConfig::ON_TRIGGER)
+			&& m_Tutorial_Trigger_Timer == 0) {
+			// タイマー増加
+			m_Tutorial_Trigger_Timer++;
+		}
+		else if (m_NowTutorial_Step == 25 && OperationConfig::Instance()->GetOperationInput(OperationConfig::EXECUTE_ULT, OperationConfig::ON_TRIGGER)
+			&& m_Tutorial_Trigger_Timer == 0) {
+			// タイマー増加
+			m_Tutorial_Trigger_Timer++;
+		}
+		else if (m_NowTutorial_Step == 25 && m_Tutorial_Trigger_Timer == 0) {
+			// 敵が全滅した
+			//if()
+		}
+
+
+		// 操作完了後
+		if (m_Tutorial_Trigger_Timer > 0) {
+			m_Tutorial_Trigger_Timer++;
+			if (m_NowTutorial_Step == 7) {
+				if (m_Tutorial_Trigger_Timer == int(300.0f * RefreshRate::RefreshRate_Mag)) {
+					m_NowTutorial_Step++;
+				}
+			}
+			else if (m_NowTutorial_Step == 11) {
+				if (m_Tutorial_Trigger_Timer == int(300.0f * RefreshRate::RefreshRate_Mag)) {
+					m_NowTutorial_Step++;
+				}
+			}
+			else if (m_NowTutorial_Step == 15) {
+				if (m_Tutorial_Trigger_Timer == int(1000.0f * RefreshRate::RefreshRate_Mag)) {
+					m_NowTutorial_Step++;
+				}
+			}
+			else if (m_NowTutorial_Step == 19) {
+				if (m_Tutorial_Trigger_Timer == int(300.0f * RefreshRate::RefreshRate_Mag)) {
+					m_NowTutorial_Step++;
+				}
+			}
+			else if (m_NowTutorial_Step == 25) {
+				if (m_Tutorial_Trigger_Timer == int(300.0f * RefreshRate::RefreshRate_Mag)) {
+					m_NowTutorial_Step++;
+				}
+			}
+		}
+	}
+
 
 	// ウェーブ終了・次ウェーブスタート
 	if (Mgr.ChangeNextWave()) {
@@ -831,6 +918,18 @@ void BattleScene::TutorialUpdate()
 	ScreenShakeManager::Instance()->Update();
 }
 
+void BattleScene::TutorialDraw()
+{
+	if (m_NowTutorial_Step == 7 || m_NowTutorial_Step == 11 || m_NowTutorial_Step == 15 ||
+		m_NowTutorial_Step == 19 || m_NowTutorial_Step == 25 || m_NowTutorial_Step == 27 || m_NowTutorial_Step == 33) {
+		// 実践
+		m_Tutorial_Pause[m_NowTutorial_Step] = false;
+	}
+	else {
+		m_Tutorial_Pause[m_NowTutorial_Step] = true;
+	}
+}
+
 BattleScene::BattleScene()
 {
 	// ---- 背景
@@ -885,6 +984,12 @@ BattleScene::BattleScene()
 		m_Operation_Set[i] = D3D12App::Instance()->GenerateTextureBuffer(TexDir_Opr + "set_prism.png");
 		m_Operation_TurnEnd[i] = D3D12App::Instance()->GenerateTextureBuffer(TexDir_Opr + "turn_end.png");
 		m_Operation_Ult[i] = D3D12App::Instance()->GenerateTextureBuffer(TexDir_Opr + "ult.png");
+	}
+
+	// チュートリアル
+	for (int i = 0; i < 35; i++) {
+		std::string TexDir_Tutorial = "resource/user/tex/tutorial/";
+		Tutorial_Tex[i] = D3D12App::Instance()->GenerateTextureBuffer(TexDir_Tutorial + "/text_back.png");
 	}
 
 	//敵のダメージUIの位置

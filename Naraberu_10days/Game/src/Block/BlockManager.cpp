@@ -3,7 +3,7 @@
 #include "ForUser/DrawFunc/2D/DrawFunc2D.h"
 #include"../OperationConfig.h"
 #include"../SoundConfig.h"
-
+#include "../BattleManager/ExistUnits.h"
 #include "../Effect/ScreenShakeManager.h"
 
 const std::array<std::array<BlockManager::TutorialBlock, 10>, 1>BlockManager::tutorialBlock =
@@ -52,7 +52,8 @@ void BlockManager::Initialize()
 void BlockManager::Update()
 {
 	//ƒpƒX
-	if (passNum > 0 && OperationConfig::Instance()->GetOperationInput(OperationConfig::PASS_PAIR_PRISM,OperationConfig::ON_TRIGGER)) {
+	if (passNum > 0 && OperationConfig::Instance()->GetOperationInput(OperationConfig::PASS_PAIR_PRISM,OperationConfig::ON_TRIGGER)
+		&& ExistUnits::Instance()->m_NowTurn == 0) {
 		ChangeBlock();
 		passNum--;
 	}
