@@ -61,6 +61,7 @@ void PanelManager::Initialize()
 			x = 0;
 		}
 	}
+	oneMapchip = massMapchip;
 
 	mapMax = { int(mapchip.size()), int(mapchip[0].size()) };
 }
@@ -73,6 +74,8 @@ void PanelManager::Update(std::vector<std::weak_ptr<SkillResultUI>>arg_enemyDama
 	else if (isBonusDirection == Bonus::add) {
 		BonusDirection(arg_enemyDamageUI);
 	}
+
+	OneProcess();
 }
 
 void PanelManager::Draw()
@@ -105,6 +108,19 @@ void PanelManager::Draw()
 		}
 	}
 
+	for (auto& i : onePos) {
+		KuroEngine::Vec2<float> pos = { i.x * blockSize + difference.x ,i.y * blockSize + difference.y };
+
+		KuroEngine::Vec2<float> pos1 = pos;
+		pos1.x += blockSize;
+		pos1.y += blockSize;
+
+		pos += ScreenShakeManager::Instance()->GetOffset();
+		pos1 += ScreenShakeManager::Instance()->GetOffset();
+
+		KuroEngine::DrawFunc2D::DrawExtendGraph2D(pos, pos1, blockTex[int(BlockColor::blue)]);
+	}
+
 	//ボーナスパネル
 	if (isBonusDirection == Bonus::add) {
 		//ボーナス数表示
@@ -135,7 +151,6 @@ void PanelManager::Draw()
 			}
 		}
 	}
-
 }
 
 void PanelManager::Reset()
@@ -278,24 +293,32 @@ void PanelManager::MassBlock(const int _number, int* _massNum, const KuroEngine:
 	massMapchip[_massMap.y][_massMap.x] = 1;
 
 	//下
-	if (_massMap.y + 1 < mapMax.y && mapchip[_massMap.y][_massMap.x] == mapchip[_massMap.y + 1][_massMap.x] &&
-		massMapchip[_massMap.y + 1][_massMap.x] != 1) {
-		MassBlock(_number, _massNum, { _massMap.x,_massMap.y + 1 });
+	if (_massMap.y + 1 < mapMax.y) {
+		if (mapchip[_massMap.y][_massMap.x] == mapchip[_massMap.y + 1][_massMap.x] &&
+			massMapchip[_massMap.y + 1][_massMap.x] != 1) {
+			MassBlock(_number, _massNum, { _massMap.x,_massMap.y + 1 });
+		}
 	}
 	//上
-	if (_massMap.y - 1 >= 0 && mapchip[_massMap.y][_massMap.x] == mapchip[_massMap.y - 1][_massMap.x] &&
-		massMapchip[_massMap.y - 1][_massMap.x] != 1) {
-		MassBlock(_number, _massNum, { _massMap.x,_massMap.y - 1 });
+	if (_massMap.y - 1 >= 0) {
+		if (mapchip[_massMap.y][_massMap.x] == mapchip[_massMap.y - 1][_massMap.x] &&
+			massMapchip[_massMap.y - 1][_massMap.x] != 1) {
+			MassBlock(_number, _massNum, { _massMap.x,_massMap.y - 1 });
+		}
 	}
 	//右
-	if (_massMap.x + 1 < mapMax.x && mapchip[_massMap.y][_massMap.x] == mapchip[_massMap.y][_massMap.x + 1] &&
-		massMapchip[_massMap.y][_massMap.x + 1] != 1) {
-		MassBlock(_number, _massNum, { _massMap.x + 1,_massMap.y });
+	if (_massMap.x + 1 < mapMax.x) {
+		if (mapchip[_massMap.y][_massMap.x] == mapchip[_massMap.y][_massMap.x + 1] &&
+			massMapchip[_massMap.y][_massMap.x + 1] != 1) {
+			MassBlock(_number, _massNum, { _massMap.x + 1,_massMap.y });
+		}
 	}
 	//左
-	if (_massMap.x - 1 >= 0 && mapchip[_massMap.y][_massMap.x] == mapchip[_massMap.y][_massMap.x - 1] &&
-		massMapchip[_massMap.y][_massMap.x - 1] != 1) {
-		MassBlock(_number, _massNum, { _massMap.x - 1,_massMap.y });
+	if (_massMap.x - 1 >= 0) {
+		if (mapchip[_massMap.y][_massMap.x] == mapchip[_massMap.y][_massMap.x - 1] &&
+			massMapchip[_massMap.y][_massMap.x - 1] != 1) {
+			MassBlock(_number, _massNum, { _massMap.x - 1,_massMap.y });
+		}
 	}
 
 	//削除場所記録
@@ -303,8 +326,6 @@ void PanelManager::MassBlock(const int _number, int* _massNum, const KuroEngine:
 		KuroEngine::Vec2<int> data = { _massMap.x,_massMap.y };
 		bonusData[_number].pos.emplace_back(data);
 	}
-
-	return;
 }
 
 void PanelManager::LineProcess()
@@ -422,6 +443,68 @@ void PanelManager::BonusDirection(std::vector<std::weak_ptr<SkillResultUI>>arg_e
 		{
 			nowBonusNum++;
 			bonusTimer = 0;
+		}
+	}
+}
+
+void PanelManager::OneProcess()
+{
+	//削除管理用マップ初期化
+	for (int y = 0; y < mapMax.y; y++) {
+		for (int x = 0; x < mapMax.x; x++) {
+			oneMapchip[y][x] = 0;
+		}
+	}
+
+	onePos.clear();
+
+	for (int y = 0; y < mapMax.y; y++) {
+		for (int x = 0; x < mapMax.x; x++) {
+			//確認済みなら次に行く
+			if (oneMapchip[y][x] != 0 || mapchip[y][x] != int(BlockColor::yuka)) { continue; }
+			//塊確認
+			int massNum = 0;
+			OneBlock(&massNum, { x,y });
+			//塊個数0個以外なら次に行く
+			if (massNum != 1) { continue; }
+			KuroEngine::Vec2<int> inPos = { x,y };
+			onePos.emplace_back(inPos);
+		}
+	}
+}
+
+void PanelManager::OneBlock(int* _massNum, KuroEngine::Vec2<int> _mapchip)
+{
+	//削除個数カウント
+	*_massNum += 1;
+	oneMapchip[_mapchip.y][_mapchip.x] = 1;
+
+	//下
+	if (_mapchip.y + 1 < mapMax.y) {
+		if (mapchip[_mapchip.y][_mapchip.x] == mapchip[_mapchip.y + 1][_mapchip.x] &&
+			oneMapchip[_mapchip.y + 1][_mapchip.x] != 1) {
+			OneBlock(_massNum, { _mapchip.x,_mapchip.y + 1 });
+		}
+	}
+	//上
+	if (_mapchip.y - 1 >= 0) {
+		if (mapchip[_mapchip.y][_mapchip.x] == mapchip[_mapchip.y - 1][_mapchip.x] &&
+			oneMapchip[_mapchip.y - 1][_mapchip.x] != 1) {
+			OneBlock(_massNum, { _mapchip.x,_mapchip.y - 1 });
+		}
+	}
+	//右
+	if (_mapchip.x + 1 < mapMax.x) {
+		if (mapchip[_mapchip.y][_mapchip.x] == mapchip[_mapchip.y][_mapchip.x + 1] &&
+			oneMapchip[_mapchip.y][_mapchip.x + 1] != 1) {
+			OneBlock(_massNum, { _mapchip.x + 1 ,_mapchip.y });
+		}
+	}
+	//左
+	if (_mapchip.x - 1 >= 0) {
+		if (mapchip[_mapchip.y][_mapchip.x] == mapchip[_mapchip.y][_mapchip.x - 1] &&
+			oneMapchip[_mapchip.y][_mapchip.x - 1] != 1) {
+			OneBlock(_massNum, { _mapchip.x - 1,_mapchip.y });
 		}
 	}
 }
