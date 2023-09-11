@@ -67,10 +67,10 @@ void PanelManager::Initialize()
 
 void PanelManager::Update()
 {
-	if (isBonusDirection == Bonas::count) {
+	if (isBonusDirection == Bonus::count) {
 		BonusCount();
 	}
-	else if (isBonusDirection == Bonas::add) {
+	else if (isBonusDirection == Bonus::add) {
 		BonusDirection();
 	}
 }
@@ -106,7 +106,7 @@ void PanelManager::Draw()
 	}
 
 	//ボーナスパネル
-	if (isBonusDirection == Bonas::add) {
+	if (isBonusDirection == Bonus::add) {
 		//ボーナス数表示
 		for (int i = 0; i<int(bonusData.size()); i++) {
 			if (i > nowBonusNum) { continue; }
@@ -137,7 +137,6 @@ void PanelManager::Draw()
 	}
 
 }
-
 
 void PanelManager::Reset()
 {
@@ -238,7 +237,7 @@ void PanelManager::MassProcess()
 			massMapchip[y][x] = 0;
 		}
 	}
-
+	
 	//塊箇所確認
 	int count = 0;
 	for (int y = 0; y < mapMax.y; y++) {
@@ -259,6 +258,15 @@ void PanelManager::MassProcess()
 			bonusData[count].mass = true;
 			//座標記録
 			bonusPos.emplace_back(center(bonusData[count].pos));
+			//追加のボーナス
+			if (massNum > 8) {
+				bonusData.emplace_back(bonusData[count]);
+				bonusPos.emplace_back(center(bonusData[count].pos));
+			}
+			if (massNum > 10) {
+				bonusData.emplace_back(bonusData[count]);
+				bonusPos.emplace_back(center(bonusData[count].pos));
+			}
 
 			//次
 			count++;
@@ -369,7 +377,7 @@ void PanelManager::BonusCount()
 
 	nowBonusNum = 0;
 	bonusTimer = 0;
-	isBonusDirection=Bonas::add;
+	isBonusDirection=Bonus::add;
 }
 
 void PanelManager::BonusDirection()
@@ -391,7 +399,7 @@ void PanelManager::BonusDirection()
 	bonusTimer++;
 	if (bonusTimer > maxTimer) {
 		if (int(bonusData.size()) == nowBonusNum) {
-			isBonusDirection = Bonas::non;
+			isBonusDirection = Bonus::non;
 			ExistUnits::Instance()->m_IsEndBonusCount = true;
 			Reset();
 			return;

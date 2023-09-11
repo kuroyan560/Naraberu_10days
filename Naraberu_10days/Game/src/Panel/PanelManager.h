@@ -14,7 +14,7 @@ public:
 		bool mass;
 	};
 
-	enum class Bonas {
+	enum class Bonus {
 		non,
 		count,
 		add,
@@ -128,7 +128,7 @@ public:
 
 	std::vector<std::vector<int>>* GetMapChipPtr() { return &mapchip; }
 
-	void SetBouns() { isBonusDirection = Bonas::count; }
+	void SetBouns() { isBonusDirection = Bonus::count; }
 
 private:
 	
@@ -149,7 +149,7 @@ private:
 	//ブロック画像
 	std::array<std::shared_ptr<KuroEngine::TextureBuffer>, int(BlockColor::size)> blockTex;
 	//ボーナスフラグ
-	Bonas isBonusDirection;
+	Bonus isBonusDirection;
 	//ボーナス処理タイマー
 	float bonusTimer;
 	//現在のボーナス処理を行っている番号
