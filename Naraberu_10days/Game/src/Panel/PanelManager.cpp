@@ -379,6 +379,15 @@ void PanelManager::BonusCount()
 
 void PanelManager::BonusDirection(std::vector<std::weak_ptr<SkillResultUI>>arg_enemyDamageUI)
 {
+	if (bonusData.empty())
+	{
+		isBonusDirection = Bonus::non;
+		ExistUnits::Instance()->m_IsEndBonusCount = true;
+		Reset();
+		PlayerSkills::PlayerSkillMgr::Instance()->StartAction("Bonus_01", 0, ExistUnits::Instance()->m_pPlayer, ExistUnits::Instance()->m_Enemys[0]);
+		return;
+	}
+
 	float maxTimer = 10.0f * RefreshRate::RefreshRate_Mag;
 
 	if (bonusTimer == 0) {
