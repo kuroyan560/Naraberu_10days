@@ -82,7 +82,7 @@ void BattleScene::OnInitialize()
 	//’†‰›w’è
 	block->SetCenter(stage->GetCenter());
 	block->Initialize();
-
+	block->SetTutorial();
 
 	ExistUnits::Instance()->SetMapChipPtr(stage->GetMapChipPtr());
 	ExistUnits::Instance()->SetStageManagerPtr(stage.get());

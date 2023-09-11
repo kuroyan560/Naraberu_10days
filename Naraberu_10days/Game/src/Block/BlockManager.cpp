@@ -6,6 +6,18 @@
 
 #include "../Effect/ScreenShakeManager.h"
 
+const std::array<std::array<BlockManager::TutorialBlock, 10>, 1>BlockManager::tutorialBlock =
+{
+	{
+		{BlockManager::TutorialBlock(1, BlockColor::red,BlockAttribute::attack1),
+		{1, BlockColor::red,BlockAttribute::attack1},{1, BlockColor::red,BlockAttribute::attack1},
+		{1, BlockColor::red,BlockAttribute::attack1},{1, BlockColor::red,BlockAttribute::attack1},
+		{1, BlockColor::red,BlockAttribute::attack1},{1, BlockColor::red,BlockAttribute::attack1},
+		{1, BlockColor::red,BlockAttribute::attack1},{1, BlockColor::red,BlockAttribute::attack1},
+		{1, BlockColor::red,BlockAttribute::attack1}}
+	}
+};
+
 void BlockManager::Initialize()
 {
 	//画像
@@ -17,10 +29,11 @@ void BlockManager::Initialize()
 
 	for (int i = 1; i< int(ObjectType::size); i++) {
 		block[i].block.reset(new Block());
-		block[i].attribute = BlockAttribute(rand() % int(BlockAttribute::size));
-		block[i].blockNum = rand() % shapeNum;
-		block[i].color = BlockColor(rand() % (int(BlockColor::size) - 3));
+		block[i].attribute = tutorialBlock[tutorialNum][i].attribute;
+		block[i].blockNum = tutorialBlock[tutorialNum][i].blockNum;
+		block[i].color = tutorialBlock[tutorialNum][i].color;
 	}
+	tutorialBlockNum += 4;
 
 	//使用ブロックをセット
 	block[int(ObjectType::use)].block.reset(new Block(true));
@@ -29,25 +42,25 @@ void BlockManager::Initialize()
 	block[int(ObjectType::use)].block->ChangeBlock(center, shape[block[int(ObjectType::use)].blockNum]);
 
 	nowChoice = 0;
-	isEnemyAttack=false;
 
 	passNum = passMaxNum;
+
+	tutorialNum = 0;
+	tutorialBlockNum = 0;
 }
 
 void BlockManager::Update()
 {
-	if (!isEnemyAttack) {
-		//パス
-		if (passNum > 0 && OperationConfig::Instance()->GetOperationInput(OperationConfig::PASS_PAIR_PRISM,OperationConfig::ON_TRIGGER)) {
-			ChangeBlock();
-			passNum--;
-		}
-
-		//ブロック配置後に次ブロックの移動を行う
-		block[int(ObjectType::use)].block->Move();
-		//選択ブロック変更
-		ChoiceBlock();
+	//パス
+	if (passNum > 0 && OperationConfig::Instance()->GetOperationInput(OperationConfig::PASS_PAIR_PRISM,OperationConfig::ON_TRIGGER)) {
+		ChangeBlock();
+		passNum--;
 	}
+
+	//ブロック配置後に次ブロックの移動を行う
+	block[int(ObjectType::use)].block->Move();
+	//選択ブロック変更
+	ChoiceBlock();
 
 	for (auto& i : block) {
 		i.block->Update();
@@ -158,13 +171,33 @@ void BlockManager::ChangeBlock()
 	SetOneChangeBlock(int(ObjectType::choice1), int(ObjectType::nextChoice1));
 	SetOneChangeBlock(int(ObjectType::choice2), int(ObjectType::nextChoice2));
 
-	block[int(ObjectType::nextChoice1)].attribute = BlockAttribute(rand() % int(BlockAttribute::size));
-	block[int(ObjectType::nextChoice1)].blockNum = rand() % shapeNum;
-	block[int(ObjectType::nextChoice1)].color = BlockColor(rand() % (int(BlockColor::size) - 3));
-	block[int(ObjectType::nextChoice2)].attribute = BlockAttribute(rand() % int(BlockAttribute::size));
-	block[int(ObjectType::nextChoice2)].blockNum = rand() % shapeNum;
-	block[int(ObjectType::nextChoice2)].color = BlockColor(rand() % (int(BlockColor::size) - 3));
-
+	if (isTutorial) {
+		if (tutorialBlockNum < 10) {
+			block[int(ObjectType::nextChoice1)].attribute = tutorialBlock[tutorialNum][tutorialBlockNum].attribute;
+			block[int(ObjectType::nextChoice1)].blockNum = tutorialBlock[tutorialNum][tutorialBlockNum].blockNum;
+			block[int(ObjectType::nextChoice1)].color = tutorialBlock[tutorialNum][tutorialBlockNum].color;
+			block[int(ObjectType::nextChoice2)].attribute = tutorialBlock[tutorialNum][tutorialBlockNum + 1].attribute;
+			block[int(ObjectType::nextChoice2)].blockNum = tutorialBlock[tutorialNum][tutorialBlockNum + 1].blockNum;
+			block[int(ObjectType::nextChoice2)].color = tutorialBlock[tutorialNum][tutorialBlockNum + 1].color;
+			tutorialBlockNum += 2;
+		}
+		//セーフティ―
+		else {
+			block[int(ObjectType::nextChoice1)].attribute = BlockAttribute(rand() % int(BlockAttribute::size));
+			block[int(ObjectType::nextChoice1)].blockNum = rand() % shapeNum;
+			block[int(ObjectType::nextChoice1)].color = BlockColor(rand() % (int(BlockColor::size) - 3));
+			block[int(ObjectType::nextChoice2)].attribute = BlockAttribute(rand() % int(BlockAttribute::size));
+			block[int(ObjectType::nextChoice2)].blockNum = rand() % shapeNum;
+			block[int(ObjectType::nextChoice2)].color = BlockColor(rand() % (int(BlockColor::size) - 3));
+		}
+	} else {
+		block[int(ObjectType::nextChoice1)].attribute = BlockAttribute(rand() % int(BlockAttribute::size));
+		block[int(ObjectType::nextChoice1)].blockNum = rand() % shapeNum;
+		block[int(ObjectType::nextChoice1)].color = BlockColor(rand() % (int(BlockColor::size) - 3));
+		block[int(ObjectType::nextChoice2)].attribute = BlockAttribute(rand() % int(BlockAttribute::size));
+		block[int(ObjectType::nextChoice2)].blockNum = rand() % shapeNum;
+		block[int(ObjectType::nextChoice2)].color = BlockColor(rand() % (int(BlockColor::size) - 3));
+	}
 	//使用ブロックをセット
 	SetOneChangeBlock(int(ObjectType::use), int(ObjectType::choice1));
 	//使用ブロック変更処理

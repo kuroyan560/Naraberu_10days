@@ -16,13 +16,19 @@ private:
 		nextChoice2,//次の選択ブロック2
 		size,
 	};
-
+public:
 	//実際に使っているブロックの情報
 	struct UseBlockType {
 		int blockNum;
 		BlockColor color;
 		BlockAttribute attribute;
 		std::shared_ptr<Block> block;
+	};
+
+	struct TutorialBlock {
+		int blockNum;
+		BlockColor color;
+		BlockAttribute attribute;
 	};
 
 public:
@@ -76,13 +82,20 @@ public:
 	/// <param name="a2">ブロック２</param>
 	void SetOneChangeBlock(const int a1, const int a2);
 
-	void SetIsEnemyAttack(bool _isEnemyAttack = true) { isEnemyAttack = _isEnemyAttack; }
-
 	// パス回復
 	void ResetPass() { passNum = passMaxNum; }
 
+	//チュートリアル
+	void SetTutorial() { isTutorial = true; }
+
 private:
 
+	static const int tutorialMaxNum = 1;
+	static const std::array<std::array<TutorialBlock, 10>, tutorialMaxNum>tutorialBlock;
+	int tutorialNum;
+	int tutorialBlockNum;
+	//チュートリアル
+	bool isTutorial;
 	//矢印画像
 	std::shared_ptr<KuroEngine::TextureBuffer> arrowTex;
 	//パス画像
@@ -93,8 +106,6 @@ private:
 	KuroEngine::Vec2<int> center;
 	//使うブロック情報
 	std::array<UseBlockType, int(ObjectType::size)> block;
-	//敵行動中か
-	bool isEnemyAttack;
 	//選択中のブロック
 	int nowChoice;
 	//パス回数
