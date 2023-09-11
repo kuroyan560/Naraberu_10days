@@ -114,6 +114,18 @@ public:
 	void BonusDirection(std::vector<std::weak_ptr<SkillResultUI>>arg_enemyDamageUI);
 
 	/// <summary>
+	/// 一つのみの空きを判定
+	/// </summary>
+	void OneProcess();
+
+	/// <summary>
+	/// 探索
+	/// </summary>
+	/// <param name="_massNum">個数</param>
+	/// <param name="_mapchip">番号</param>
+	void OneBlock(int* _massNum, const KuroEngine::Vec2<int> _mapchip);
+
+	/// <summary>
 	/// お邪魔セット
 	/// </summary>
 	/// <param name="_mapchip">セットするマップチップ番号</param>
@@ -147,6 +159,8 @@ private:
 	std::vector<std::vector<int>> mapchip;
 	//塊用mapchip変数
 	std::vector<std::vector<int>> massMapchip;
+	//一つのみの判定用
+	std::vector<std::vector<int>> oneMapchip;
 	//塊用mapchip変数
 	std::vector<BonusData> bonusData;
 	//ブロック画像
@@ -165,4 +179,6 @@ private:
 	float bonusAlpha;
 	//ボーナス加算時の動き
 	std::vector<KuroEngine::Vec2<int>> bonusPos;
+	//一つだけの空き格納
+	std::vector<KuroEngine::Vec2<int>> onePos;
 };
