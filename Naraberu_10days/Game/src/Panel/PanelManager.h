@@ -126,6 +126,14 @@ public:
 	void OneBlock(int* _massNum, const KuroEngine::Vec2<int> _mapchip);
 
 	/// <summary>
+	/// ブロックセット
+	/// </summary>
+	/// <param name="_mapchip">セットするマップチップ番号</param>
+	void SetBlock(const KuroEngine::Vec2<int> _mapchip,int _color) {
+		mapchip[_mapchip.y][_mapchip.x] = _color;
+	}
+
+	/// <summary>
 	/// お邪魔セット
 	/// </summary>
 	/// <param name="_mapchip">セットするマップチップ番号</param>
