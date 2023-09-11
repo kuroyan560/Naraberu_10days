@@ -40,6 +40,9 @@ public:
 	void OnImguiDebug()override;
 	void OnFinalize()override;
 
+	// ダメージを受ける
+	void Damage(int value)override;
+
 	// プレイヤーターン終了前処理
 	void TurnEnd_BeforeTurnChange();
 

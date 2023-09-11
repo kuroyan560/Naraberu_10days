@@ -195,6 +195,25 @@ void Player::OnFinalize()
 {
 }
 
+void Player::Damage(int value)
+{
+	// HPが削れていく演出用
+	m_Before_HP = m_HP;
+	m_HP_Break_Timer = 1;
+	// ダメージ
+	m_HP -= value;
+	if (m_HP < 0) {
+		m_HP = 0;
+	}
+
+	// チュートリアルなら死なない
+	if (ExistUnits::Instance()->m_StageName == "Tutorial") {
+		if (m_HP < 0) {
+			m_HP = 1;
+		}
+	}
+}
+
 void Player::TurnEnd_BeforeTurnChange()
 {
 	m_IsEndTurnFunc = true;

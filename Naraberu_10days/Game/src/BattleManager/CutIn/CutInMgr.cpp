@@ -58,6 +58,10 @@ void CutInMgr::OnDraw()
 	if (!NowCutIn()) {
 		return;
 	}
+	// 1ƒtƒŒ–Ú‚Í•`‰æ‚µ–³‚µ
+	if (CutInTimer == 1) {
+		return;
+	}
 
 	using namespace KuroEngine;
 

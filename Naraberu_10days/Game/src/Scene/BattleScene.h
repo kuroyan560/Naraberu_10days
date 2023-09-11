@@ -115,7 +115,7 @@ class BattleScene :
 	float ResultEasing(float time);
 
 	int m_NowTutorial_Step;
-	static const int m_Tutorial_Step_Max = 10;
+	static const int m_Tutorial_Step_Max = 35;
 	std::array<bool, m_Tutorial_Step_Max> m_Tutorial_Pause;
 	// 該当する操作入力をした時に何フレーム後に次に移るかのタイマー
 	int m_Tutorial_Trigger_Timer;
@@ -123,8 +123,12 @@ class BattleScene :
 	int m_Tutorial_None_Ctrl_Timer;
 	// 無操作状態時テキストタイマー
 	int m_Tutorial_Jissen_Text_Timer;
+	int m_Tutorial_Jissen_Text_Timer_Max;
 	// 2度操作がある場合のフラグ
 	bool m_Tutorial_Step_Complete_Flag;
+	float InQuart(float t) {
+		return t * t * t * t;
+	}
 	std::array<std::shared_ptr<KuroEngine::TextureBuffer>, 35> Tutorial_Tex;
 	void TutorialUpdate();
 	void TutorialDraw();
