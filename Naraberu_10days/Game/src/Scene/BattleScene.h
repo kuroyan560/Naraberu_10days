@@ -11,6 +11,7 @@
 #include"../Effect/SetPrismEffect.h"
 #include "../UI/PlayerDamageUi.h"
 #include "../Effect/UltAttackEffect.h"
+#include "../Effect/BackGroundEffect.h"
 
 class ParticleEmitter;
 
@@ -64,6 +65,9 @@ class BattleScene :
 	std::shared_ptr<ParticleEmitter>m_healPtEmitter;
 	std::shared_ptr<ParticleEmitter>m_backPrismPtEmitter;
 	std::shared_ptr<ParticleEmitter>m_ultPtEmitter;
+
+	//背景
+	std::shared_ptr<BackGroundEffect> backGroundEffect;
 
 	//（移動する）
 	//プレイヤーのダメージ

@@ -119,6 +119,10 @@ void BattleScene::OnInitialize()
 		m_NowTutorial_Step = 0;
 		m_Tutorial_Pause[m_NowTutorial_Step] = true;
 	}
+
+	//”wŒi
+	backGroundEffect.reset(new BackGroundEffect());
+	backGroundEffect->Initialize();
 }
 
 void BattleScene::OnUpdate()
@@ -335,6 +339,8 @@ void BattleScene::OnDraw()
 	DrawFunc2D::DrawBox2D(Vec2(0.0f, 0.0f)
 		, WinApp::Instance()->GetExpandWinSize(), Color(50, 49, 59, 255), true);
 
+	backGroundEffect->Draw();
+	
 	ParticleManager::Instance()->BackDraw();
 
 

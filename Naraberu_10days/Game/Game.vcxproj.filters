@@ -448,6 +448,12 @@
     <ClCompile Include="src\Effect\Particle\UltParticle.cpp">
       <Filter>src\user\Effect\Particle</Filter>
     </ClCompile>
+    <ClCompile Include="src\Effect\BackGroundEffect.cpp">
+      <Filter>src\user\UI</Filter>
+    </ClCompile>
+    <ClCompile Include="src\Effect\UltAttackEffect.cpp">
+      <Filter>src\user\UI</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="..\..\src\engine\KuroEngineDevice.h">
@@ -848,6 +854,12 @@
     </ClInclude>
     <ClInclude Include="src\Effect\Particle\UltParticle.h">
       <Filter>src\user\Effect\Particle</Filter>
+    </ClInclude>
+    <ClInclude Include="src\Effect\UltAttackEffect.h">
+      <Filter>src\user\UI</Filter>
+    </ClInclude>
+    <ClInclude Include="src\Effect\BackGroundEffect.h">
+      <Filter>src\user\UI</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>
