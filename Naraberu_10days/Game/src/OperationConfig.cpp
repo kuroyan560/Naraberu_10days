@@ -281,6 +281,15 @@ bool OperationConfig::CheckAllOperationInput()
 			return true;
 		}
 	}
+
+	for (int i = 0; i < SELECT_VEC_NUM; ++i)
+	{
+		if (GetSelectVec((SELECT_VEC)i) || GetMoveVec((SELECT_VEC)i) || GetTargetChangeVec((SELECT_VEC)i))
+		{
+			return true;
+		}
+	}
+
 	return false;
 }
 

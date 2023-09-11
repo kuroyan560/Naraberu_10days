@@ -29,6 +29,10 @@ public:
 		SE_STAGE_CLEAR,
 		SE_GAME_OVER,
 
+		SE_CANNOT_SELECT,
+		SE_PAUSE_OPEN,
+		SE_PAUSE_CLOSE,
+
 		SE_NUM
 	};
 	//BGM（ループ再生あり）

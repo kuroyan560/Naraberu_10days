@@ -125,7 +125,7 @@ void PanelManager::Draw()
 			//KuroEngine::DrawFunc2D::DrawExtendGraph2D(pos, { pos.x + 20.0f,pos.y + 20.0f }, bonusMarkTex);
 
 			const KuroEngine::Vec2 numSize = { 18.0f,20.0f };
-			KuroEngine::DrawFunc2D::DrawNumber2D(i, { pos.x + numSize.x+20.0f ,pos.y + numSize.y }, bonusNumberTex.data());
+			KuroEngine::DrawFunc2D::DrawNumber2D(i+1, { pos.x + numSize.x+20.0f ,pos.y + numSize.y }, bonusNumberTex.data());
 		}
 
 		for (int i = 0; i<int(bonusData.size()); i++) {
@@ -404,7 +404,7 @@ void PanelManager::BonusCount()
 	//‹à”»’è
 	int gold = GoldProcess();
 
-	ExistUnits::Instance()->SetBonusCount(int(bonusData.size()) + gold);
+	ExistUnits::Instance()->SetBonusCount(int(bonusData.size()));
 
 	nowBonusNum = 0;
 	bonusTimer = 0;
@@ -427,10 +427,6 @@ void PanelManager::BonusDirection(std::vector<std::weak_ptr<SkillResultUI>>arg_e
 	if (bonusTimer == 0) {
 		SoundConfig::Instance()->Play(SoundConfig::SE_BONUS_ATTACK_COUNT, -1, -1, nowBonusNum == 0);
 
-		for (auto& ui : arg_enemyDamageUI)
-		{
-			ui.lock()->Add(1, true);
-		}
 	}
 
 	bonusEaseScale = KuroEngine::Math::Ease(KuroEngine::EASE_CHANGE_TYPE::Out, KuroEngine::EASING_TYPE::Quart,
@@ -456,6 +452,11 @@ void PanelManager::BonusDirection(std::vector<std::weak_ptr<SkillResultUI>>arg_e
 		{
 			nowBonusNum++;
 			bonusTimer = 0;
+
+			for (auto& ui : arg_enemyDamageUI)
+			{
+				ui.lock()->Add(1, true);
+			}
 		}
 	}
 }

@@ -153,6 +153,7 @@ void BattleScene::OnUpdate()
 		GetLocalTime(&Mgr.PauseStartTime);
 		// ポーズ時間の計算
 		Mgr.m_PauseTimeContainer.emplace_back(Mgr.m_PauseTime);
+		SoundConfig::Instance()->Play(SoundConfig::SE_PAUSE_OPEN);
 	}
 
 	if (m_IsPause) {
@@ -175,6 +176,7 @@ void BattleScene::OnUpdate()
 				m_PauseMenu--;
 				SoundConfig::Instance()->Play(SoundConfig::SE_SELECT);
 			}
+			else SoundConfig::Instance()->Play(SoundConfig::SE_CANNOT_SELECT);
 		}
 		if (OperationConfig::Instance()->GetSelectVec(OperationConfig::SELECT_VEC::SELECT_VEC_DOWN) ||
 			OperationConfig::Instance()->GetTargetChangeVec(OperationConfig::SELECT_VEC_DOWN)) {
@@ -182,7 +184,9 @@ void BattleScene::OnUpdate()
 				m_PauseMenu++;
 				SoundConfig::Instance()->Play(SoundConfig::SE_SELECT);
 			}
+			else SoundConfig::Instance()->Play(SoundConfig::SE_CANNOT_SELECT);
 		}
+
 		// 決定
 		if (OperationConfig::Instance()->GetOperationInput(OperationConfig::OPERATION_TYPE::DONE, OperationConfig::INPUT_PATTERN::ON_TRIGGER)) {
 			m_Already_Selected_Pause = true;
@@ -232,6 +236,7 @@ void BattleScene::OnUpdate()
 					m_GameOverSelectIndex--;
 					SoundConfig::Instance()->Play(SoundConfig::SE_SELECT);
 				}
+				else SoundConfig::Instance()->Play(SoundConfig::SE_CANNOT_SELECT);
 			}
 			if (OperationConfig::Instance()->GetSelectVec(OperationConfig::SELECT_VEC::SELECT_VEC_DOWN) || 
 				OperationConfig::Instance()->GetTargetChangeVec(OperationConfig::SELECT_VEC_DOWN)) {
@@ -239,6 +244,7 @@ void BattleScene::OnUpdate()
 					m_GameOverSelectIndex++;
 					SoundConfig::Instance()->Play(SoundConfig::SE_SELECT);
 				}
+				else SoundConfig::Instance()->Play(SoundConfig::SE_CANNOT_SELECT);
 			}
 			// 決定
 			if (OperationConfig::Instance()->GetOperationInput(OperationConfig::OPERATION_TYPE::DONE, OperationConfig::INPUT_PATTERN::ON_TRIGGER)
@@ -635,6 +641,7 @@ void BattleScene::TutorialUpdate()
 		GetLocalTime(&Mgr.PauseStartTime);
 		// ポーズ時間の計算
 		Mgr.m_PauseTimeContainer.emplace_back(Mgr.m_PauseTime);
+		SoundConfig::Instance()->Play(SoundConfig::SE_PAUSE_OPEN);
 	}
 
 	if (m_IsPause) {
@@ -657,6 +664,7 @@ void BattleScene::TutorialUpdate()
 				m_PauseMenu--;
 				SoundConfig::Instance()->Play(SoundConfig::SE_SELECT);
 			}
+			else SoundConfig::Instance()->Play(SoundConfig::SE_CANNOT_SELECT);
 		}
 		if (OperationConfig::Instance()->GetSelectVec(OperationConfig::SELECT_VEC::SELECT_VEC_DOWN) ||
 			OperationConfig::Instance()->GetTargetChangeVec(OperationConfig::SELECT_VEC_DOWN)) {
@@ -664,6 +672,7 @@ void BattleScene::TutorialUpdate()
 				m_PauseMenu++;
 				SoundConfig::Instance()->Play(SoundConfig::SE_SELECT);
 			}
+			else SoundConfig::Instance()->Play(SoundConfig::SE_CANNOT_SELECT);
 		}
 		// 決定
 		if (OperationConfig::Instance()->GetOperationInput(OperationConfig::OPERATION_TYPE::DONE, OperationConfig::INPUT_PATTERN::ON_TRIGGER)) {
@@ -848,6 +857,7 @@ void BattleScene::TutorialUpdate()
 					m_GameOverSelectIndex--;
 					SoundConfig::Instance()->Play(SoundConfig::SE_SELECT);
 				}
+				else SoundConfig::Instance()->Play(SoundConfig::SE_CANNOT_SELECT);
 			}
 			if (OperationConfig::Instance()->GetSelectVec(OperationConfig::SELECT_VEC::SELECT_VEC_DOWN) ||
 				OperationConfig::Instance()->GetTargetChangeVec(OperationConfig::SELECT_VEC_DOWN)) {
@@ -855,6 +865,7 @@ void BattleScene::TutorialUpdate()
 					m_GameOverSelectIndex++;
 					SoundConfig::Instance()->Play(SoundConfig::SE_SELECT);
 				}
+				else SoundConfig::Instance()->Play(SoundConfig::SE_CANNOT_SELECT);
 			}
 			// 決定
 			if (OperationConfig::Instance()->GetOperationInput(OperationConfig::OPERATION_TYPE::DONE, OperationConfig::INPUT_PATTERN::ON_TRIGGER)
