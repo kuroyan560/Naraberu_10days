@@ -3,7 +3,7 @@
 #include "../UnitBase.h"
 #include "../Enemy/Enemy.h"
 #include "../../src/engine/DirectX12/D3D12App.h"
-
+#include "FrameWork/UsersInput.h"
 #include "../../Effect/ScreenShakeManager.h"
 
 Reticle::Reticle()
@@ -22,10 +22,31 @@ void Reticle::SetBattleTurnManager(BattleTurnMgr* ptr)
 
 void Reticle::Update()
 {
+	using namespace KuroEngine;
 	// タイマー加算
 	m_Reticle_Timer += 1.0f / RefreshRate::RefreshRate_Mag;
 
 	if (Reticle::Instance()->m_CanMove) {
+
+		if (UsersInput::Instance()->KeyOnTrigger(DIK_1)) {
+			if (m_pBTM->UnitList[1]->IsAlive()) {
+				ExistUnits::Instance()->m_NowTarget = 0;
+				m_Reticle_Timer = 0.0f;
+			}
+		}
+		else if (m_pBTM->UnitList.size() > 2 && UsersInput::Instance()->KeyOnTrigger(DIK_2)) {
+			if (m_pBTM->UnitList[2]->IsAlive()) {
+				ExistUnits::Instance()->m_NowTarget = 1;
+				m_Reticle_Timer = 0.0f;
+			}
+		}
+		else if (m_pBTM->UnitList.size() > 3 && UsersInput::Instance()->KeyOnTrigger(DIK_3)) {
+			if (m_pBTM->UnitList[3]->IsAlive()) {
+				ExistUnits::Instance()->m_NowTarget = 2;
+				m_Reticle_Timer = 0.0f;
+			}
+		}
+
 		// ロックオン
 		if (OperationConfig::Instance()->GetTargetChangeVec(OperationConfig::SELECT_VEC_UP)) {
 			// 生きているユニットまで

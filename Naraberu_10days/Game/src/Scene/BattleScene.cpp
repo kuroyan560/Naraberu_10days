@@ -40,7 +40,9 @@ void BattleScene::OnInitialize()
 	m_IsPause = false;
 	m_PauseMenu = 0;
 	m_Already_Selected_Pause = false;
-
+	// チュートリアル
+	m_NowTutorial_Step = 0;
+	m_Tutoroal_Trigger_Timer = 0;
 
 	m_Already_Selected = false;
 
@@ -289,11 +291,6 @@ void BattleScene::OnUpdate()
 	if (Mgr.GetNowTurn() == 1) {
 		block->ResetPass();
 	}
-
-	//ゲームオーバーもしくはクリアをしたらシーンを切り替えられるようにする
-	/*if (OperationConfig::Instance()->DebugKeyInputOnTrigger(DIK_RETURN)) {
-		KuroEngine::KuroEngineDevice::Instance()->ChangeScene("title");
-	}*/
 
 	//演出更新
 	m_setPrismEffect->Update(stage, m_ultPtEmitter);
@@ -622,6 +619,191 @@ float BattleScene::ResultEasing(float time)
 		? (powf(2.0f * t, 2.0f) * ((c2 + 1.0f) * 2.0f * t - c2)) / 2.0f
 		: (powf(2.0f * t - 2.0f, 2.0f) * ((c2 + 1.0f) * (t * 2.0f - 2.0f) + c2) + 2.0f) / 2.0f;
 	return 1.0f - Ret;
+}
+
+void BattleScene::TutorialUpdate()
+{
+	KuroEngine::UsersInput* input = KuroEngine::UsersInput::Instance();
+
+	if (OperationConfig::Instance()->GetOperationInput(OperationConfig::MENU_IN_GAME, OperationConfig::ON_TRIGGER)) {
+		m_IsPause = true;
+		m_PauseMenu = 0;
+		// 現在時刻
+		GetLocalTime(&Mgr.PauseStartTime);
+		// ポーズ時間の計算
+		Mgr.m_PauseTimeContainer.emplace_back(Mgr.m_PauseTime);
+	}
+
+	if (m_IsPause) {
+		// 現在時刻
+		GetLocalTime(&Mgr.PauseEndTime);
+		// 変換
+		FILETIME ftime1;
+		FILETIME ftime2;
+		SystemTimeToFileTime(&Mgr.PauseStartTime, &ftime1);
+		SystemTimeToFileTime(&Mgr.PauseEndTime, &ftime2);
+		// int64にキャスト
+		__int64* nTime1 = (__int64*)&ftime1;
+		__int64* nTime2 = (__int64*)&ftime2;
+		// 経過秒
+		Mgr.m_PauseTime = (*nTime2 - *nTime1);
+
+		if (OperationConfig::Instance()->GetSelectVec(OperationConfig::SELECT_VEC::SELECT_VEC_UP) ||
+			OperationConfig::Instance()->GetTargetChangeVec(OperationConfig::SELECT_VEC_UP)) {
+			if (m_PauseMenu > 0) {
+				m_PauseMenu--;
+				SoundConfig::Instance()->Play(SoundConfig::SE_SELECT);
+			}
+		}
+		if (OperationConfig::Instance()->GetSelectVec(OperationConfig::SELECT_VEC::SELECT_VEC_DOWN) ||
+			OperationConfig::Instance()->GetTargetChangeVec(OperationConfig::SELECT_VEC_DOWN)) {
+			if (m_PauseMenu < 2) {
+				m_PauseMenu++;
+				SoundConfig::Instance()->Play(SoundConfig::SE_SELECT);
+			}
+		}
+		// 決定
+		if (OperationConfig::Instance()->GetOperationInput(OperationConfig::OPERATION_TYPE::DONE, OperationConfig::INPUT_PATTERN::ON_TRIGGER)) {
+			m_Already_Selected_Pause = true;
+			SoundConfig::Instance()->Play(SoundConfig::SE_DONE);
+			// 戻る
+			if (m_PauseMenu == 0) {
+				m_Already_Selected_Pause = false;
+				m_IsPause = false;
+			}
+			// タイトル
+			else if (m_PauseMenu == 1) {
+				KuroEngine::KuroEngineDevice::Instance()->ChangeScene("Battle", &m_Fade);
+			}
+			// リトライ
+			else if (m_PauseMenu == 2) {
+				ExistUnits::Instance()->m_ChangeStageSelect = true;
+				KuroEngine::KuroEngineDevice::Instance()->ChangeScene("title", &m_Fade);
+			}
+		}
+		return;
+	}
+
+	// タイマー増加
+	m_Tutoroal_Trigger_Timer++;
+	// チュートリアル説明中
+	if (m_Tutorial_Pause[m_NowTutorial_Step] == true) {
+		// 決定
+		if (OperationConfig::Instance()->GetOperationInput(OperationConfig::OPERATION_TYPE::DONE, OperationConfig::INPUT_PATTERN::ON_TRIGGER)) {
+			m_NowTutorial_Step++;
+
+			if (m_NowTutorial_Step == 1) {
+				m_Tutorial_Pause[m_NowTutorial_Step] = true;
+			}
+			else if (m_NowTutorial_Step == 1) {
+				m_Tutorial_Pause[m_NowTutorial_Step] = true;
+			}
+		}
+
+		//演出更新
+		m_setPrismEffect->Update(stage, m_ultPtEmitter);
+		for (auto& ui : m_enemyDamageUI)ui->Update(m_ultPtEmitter);
+		ParticleManager::Instance()->Update();
+		ScreenShakeManager::Instance()->Update();
+
+		return;
+	}
+
+	// ウェーブ終了・次ウェーブスタート
+	if (Mgr.ChangeNextWave()) {
+		// カットイン
+		// 現在が最後のウェーブではなかった場合
+		if (!(m_NowWave + 1 > m_NowStage.m_Stage_Wave_Count)) {
+			CutInMgr::Instance()->StartCutIn(CutInType::NEXT_BATTLE);
+		}
+		NextWave();
+	}
+
+	// ステージ終了(敗北)
+	if (Mgr.GetDefeat()) {
+		ResultTimer += 1.0f;
+		if (m_End_Timer < m_End_Timer_Finish) {
+			m_End_Timer++;
+		}
+		// レティクルを動かないように
+		Reticle::Instance()->m_CanMove = false;
+
+		// 選択肢
+		if (!m_Already_Selected) {
+			if (OperationConfig::Instance()->GetSelectVec(OperationConfig::SELECT_VEC::SELECT_VEC_UP) ||
+				OperationConfig::Instance()->GetTargetChangeVec(OperationConfig::SELECT_VEC_UP)) {
+				if (m_GameOverSelectIndex > 0) {
+					m_GameOverSelectIndex--;
+					SoundConfig::Instance()->Play(SoundConfig::SE_SELECT);
+				}
+			}
+			if (OperationConfig::Instance()->GetSelectVec(OperationConfig::SELECT_VEC::SELECT_VEC_DOWN) ||
+				OperationConfig::Instance()->GetTargetChangeVec(OperationConfig::SELECT_VEC_DOWN)) {
+				if (m_GameOverSelectIndex < 1) {
+					m_GameOverSelectIndex++;
+					SoundConfig::Instance()->Play(SoundConfig::SE_SELECT);
+				}
+			}
+			// 決定
+			if (OperationConfig::Instance()->GetOperationInput(OperationConfig::OPERATION_TYPE::DONE, OperationConfig::INPUT_PATTERN::ON_TRIGGER)
+				&& m_End_Timer > 1 && m_End_Timer >= int(float(m_End_Timer_Finish) / 2.0f)) {
+				m_Already_Selected = true;
+				SoundConfig::Instance()->Play(SoundConfig::SE_DONE);
+				// タイトルへ
+				if (m_GameOverSelectIndex == 1) {
+					ExistUnits::Instance()->m_ChangeStageSelect = true;
+					KuroEngine::KuroEngineDevice::Instance()->ChangeScene("title", &m_Fade);
+				}
+				// リトライ
+				else if (m_GameOverSelectIndex == 0) {
+					KuroEngine::KuroEngineDevice::Instance()->ChangeScene("Battle", &m_Fade);
+				}
+			}
+		}
+	}
+	// ステージ終了(敵全滅)
+	else if (m_Stage_End) {
+		ResultTimer += 1.0f;
+		if (m_End_Timer < m_End_Timer_Finish) {
+			m_End_Timer++;
+		}
+		// レティクルを動かないように
+		Reticle::Instance()->m_CanMove = false;
+
+		if (OperationConfig::Instance()->GetOperationInput(OperationConfig::OPERATION_TYPE::DONE, OperationConfig::INPUT_PATTERN::ON_TRIGGER)
+			&& m_End_Timer > 1 && m_End_Timer >= int(float(m_End_Timer_Finish) / 2.0f)) {
+			ExistUnits::Instance()->m_ChangeStageSelect = true;
+			KuroEngine::KuroEngineDevice::Instance()->ChangeScene("title", &m_Fade);
+			SoundConfig::Instance()->Play(SoundConfig::SE_DONE);
+		}
+	}
+
+	//セット可能ならセットする
+	if (ExistUnits::Instance()->m_NowTurn == 0 && m_Impossible_Put_Block_Timer == 0 && Mgr.AliveEnemys() && !ExistUnits::Instance()->m_pPlayer->m_IsEndTurnFunc
+		&& !Mgr.GetSelectedTurnEnd()) {
+		PlayerTurn();
+	}
+
+	// 設置不可時間の更新
+	if (m_Impossible_Put_Block_Timer > 0) {
+		m_Impossible_Put_Block_Timer--;
+	}
+
+	Mgr.OnUpdate();
+	stage->Update(KuroEngine::GetWeakPtrArray(m_enemyDamageUI));
+	if (!Mgr.GetDefeat() && !m_Stage_End) {
+		block->Update();
+	}
+
+	if (Mgr.GetNowTurn() == 1) {
+		block->ResetPass();
+	}
+
+	//演出更新
+	m_setPrismEffect->Update(stage, m_ultPtEmitter);
+	for (auto& ui : m_enemyDamageUI)ui->Update(m_ultPtEmitter);
+	ParticleManager::Instance()->Update();
+	ScreenShakeManager::Instance()->Update();
 }
 
 BattleScene::BattleScene()
