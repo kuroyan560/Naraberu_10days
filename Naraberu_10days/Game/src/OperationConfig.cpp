@@ -25,7 +25,7 @@ OperationConfig::OperationConfig()
 		DIK_SPACE,	//プリズムをパネルに設置
 		DIK_Q,	//左のプリズムを選択
 		DIK_E,	//右のプリズムを選択
-		DIK_RETURN,	//ターンを終える
+		DIK_TAB,	//ターンを終える
 		DIK_X,	//ULT発動
 		DIK_C,	//プリズムをパス
 		DIK_ESCAPE,	//メニュー
