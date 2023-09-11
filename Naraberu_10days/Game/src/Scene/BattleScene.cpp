@@ -119,7 +119,6 @@ void BattleScene::OnInitialize()
 		m_NowTutorial_Step = 0;
 		m_Tutorial_Pause[m_NowTutorial_Step] = true;
 	}
-}
 
 	//îwåi
 	backGroundEffect.reset(new BackGroundEffect());
