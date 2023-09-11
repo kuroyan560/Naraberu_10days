@@ -121,15 +121,17 @@ void TitleScene::Title()
 		selectNum = Select(int(selectNum) + 1);
 		if (selectNum >= Select::size) {
 			selectNum = Select(int(Select::size) - 1);
+			SoundConfig::Instance()->Play(SoundConfig::SE_CANNOT_SELECT);
 		}
-		SoundConfig::Instance()->Play(SoundConfig::SE_SELECT);
+		else SoundConfig::Instance()->Play(SoundConfig::SE_SELECT);
 	}
 	if (OperationConfig::Instance()->GetSelectVec(OperationConfig::SELECT_VEC::SELECT_VEC_UP)) {
 		selectNum = Select(int(selectNum) - 1);
 		if (selectNum < Select::stageSelect) {
 			selectNum = Select::stageSelect;
+			SoundConfig::Instance()->Play(SoundConfig::SE_CANNOT_SELECT);
 		}
-		SoundConfig::Instance()->Play(SoundConfig::SE_SELECT);
+		else SoundConfig::Instance()->Play(SoundConfig::SE_SELECT);
 	}
 
 	//ステージセレクトへ
@@ -175,14 +177,15 @@ void TitleScene::StageSelect()
 	//移動
 	if (OperationConfig::Instance()->GetSelectVec(OperationConfig::SELECT_VEC::SELECT_VEC_DOWN)) {
 		if (!title->GetIsStageMove()) {
-			title->SetStageSelectMove(true);
+			if(title->SetStageSelectMove(true))SoundConfig::Instance()->Play(SoundConfig::SE_SELECT);
+			else SoundConfig::Instance()->Play(SoundConfig::SE_CANNOT_SELECT);
 		}
-		SoundConfig::Instance()->Play(SoundConfig::SE_SELECT);
 	}
 	if (OperationConfig::Instance()->GetSelectVec(OperationConfig::SELECT_VEC::SELECT_VEC_UP)) {
 		if (!title->GetIsStageMove()) {
-			title->SetStageSelectMove(false);
+			if (title->SetStageSelectMove(false))SoundConfig::Instance()->Play(SoundConfig::SE_SELECT);
+			else SoundConfig::Instance()->Play(SoundConfig::SE_CANNOT_SELECT);
+
 		}
-		SoundConfig::Instance()->Play(SoundConfig::SE_SELECT);
 	}
 }

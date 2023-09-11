@@ -44,12 +44,13 @@ public:
 	/// </summary>
 	/// <param name="_number"></param>
 	void StageSelectMove(int _number);
-
+	
 	/// <summary>
 	/// ステージセレクト移動入れ
 	/// </summary>
 	/// <param name="_upDown">false->低い番号に行く(down) true->高い番号に行く(up)</param>
-	void SetStageSelectMove(int _upDown);
+	/// <returns>選択が変化したか</returns>
+	bool SetStageSelectMove(int _upDown);
 
 	void SetIsStageSelectInMove(bool _isStageSelectInMove = true) { isStageSelectInMove = _isStageSelectInMove; }
 	void SetIsStageSelectOutMove(bool _isStageSelectOutMove = true) { isStageSelectOutMove = _isStageSelectOutMove; }

@@ -44,7 +44,11 @@ SoundConfig::SoundConfig() : Debugger("SoundConfig", false)
 		"put_ojama",
 
 		"clear",
-		"game_over"
+		"game_over",
+
+		"cannot_select",
+		"pause_open",
+		"pause_close",
 	};
 	//BGMのファイル名指定
 	std::array<std::string, BGM_NUM>bgmFileName =
@@ -73,6 +77,10 @@ SoundConfig::SoundConfig() : Debugger("SoundConfig", false)
 
 	m_seTable[SE_STAGE_CLEAR].Load(audioApp->LoadAudio(seDir + seFileName[SE_STAGE_CLEAR] + ".wav"));
 	m_seTable[SE_GAME_OVER].Load(audioApp->LoadAudio(seDir + seFileName[SE_GAME_OVER] + ".wav"));
+
+	m_seTable[SE_CANNOT_SELECT].Load(audioApp->LoadAudio(seDir + seFileName[SE_CANNOT_SELECT] + ".wav"));
+	m_seTable[SE_PAUSE_OPEN].Load(audioApp->LoadAudio(seDir + seFileName[SE_PAUSE_OPEN] + ".wav"));
+	m_seTable[SE_PAUSE_CLOSE].Load(audioApp->LoadAudio(seDir + seFileName[SE_PAUSE_CLOSE] + ".wav"));
 	
 	//BGM読み込み
 	std::string bgmDir = "resource/user/sound/";

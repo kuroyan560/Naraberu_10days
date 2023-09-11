@@ -215,12 +215,12 @@ void TitleUi::StageSelectMove(int _number)
 	}
 }
 
-void TitleUi::SetStageSelectMove(int _upDown)
+bool TitleUi::SetStageSelectMove(int _upDown)
 {
 	stageUpDown = _upDown;
 	//‚‚¢”Ô†‚És‚­(up)
 	if (_upDown) {
-		if (nowStageNum == stage - 1) { return; }
+		if (nowStageNum == stage - 1) { return false; }
 		if (nowStageNum - 1 >= 0) {
 			stageTexInfo[nowStageNum - 1].nextPos = POS::non;
 		}
@@ -234,7 +234,7 @@ void TitleUi::SetStageSelectMove(int _upDown)
 	}
 	//’á‚¢”Ô†‚És‚­(down)
 	else {
-		if (nowStageNum == 0) { return; }
+		if (nowStageNum == 0) { return false; }
 		if (nowStageNum - 2 >= 0) {
 			stageTexInfo[nowStageNum - 2].nextPos = POS::up;
 		}
@@ -248,4 +248,5 @@ void TitleUi::SetStageSelectMove(int _upDown)
 	}
 	isStageMove = true;
 	selectTimer = 0;
+	return true;
 }
