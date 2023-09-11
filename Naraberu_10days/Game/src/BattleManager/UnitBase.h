@@ -58,7 +58,7 @@ public:
 	bool IsNextTurn() { return m_NextTurn; }
 
 	// ダメージを受ける
-	void Damage(int value) {
+	virtual void Damage(int value) {
 		// HPが削れていく演出用
 		m_Before_HP = m_HP;
 		m_HP_Break_Timer = 1;

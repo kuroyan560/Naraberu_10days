@@ -64,8 +64,7 @@ void BattleTurnMgr::TurnEndButtonUpdate()
 			//}
 		}
 
-
-		if (m_ProgressTime >= (__int64(600000000) + m_PauseTime + TotalPuaseTime) && !m_Checked_TurnEnd) {
+		if (m_ProgressTime >= (__int64(600000000) + m_PauseTime + TotalPuaseTime) && !m_Checked_TurnEnd && ExistUnits::Instance()->m_StageName != "Tutorial") {
 			m_Checked_TurnEnd = true;
 			m_Moving_Flag = true;
 			GetUnitPtr<Player>(UnitList[0])->TurnEndTrigger();
@@ -74,9 +73,17 @@ void BattleTurnMgr::TurnEndButtonUpdate()
 
 		// ターンエンドボタンが押された(一回目)
 		if (!m_Selected_TurnEnd && !m_Checked_TurnEnd ) {
-			if (OperationConfig::Instance()->GetOperationInput(OperationConfig::END_TURN, OperationConfig::ON_TRIGGER)) {
-				m_Selected_TurnEnd = true;
-				m_Selected_TurnEnd_Timer = 0;
+			if (ExistUnits::Instance()->m_StageName == "Tutorial" && ExistUnits::Instance()->m_CanTurnEnd == true) {
+				if (OperationConfig::Instance()->GetOperationInput(OperationConfig::END_TURN, OperationConfig::ON_TRIGGER)) {
+					m_Selected_TurnEnd = true;
+					m_Selected_TurnEnd_Timer = 0;
+				}
+			}
+			if (ExistUnits::Instance()->m_StageName != "Tutorial") {
+				if (OperationConfig::Instance()->GetOperationInput(OperationConfig::END_TURN, OperationConfig::ON_TRIGGER)) {
+					m_Selected_TurnEnd = true;
+						m_Selected_TurnEnd_Timer = 0;
+				}
 			}
 		}
 		// 2回目以降
@@ -194,7 +201,7 @@ float BattleTurnMgr::ResultEasing(float time)
 
 void BattleTurnMgr::AutoTurnEndTimerDraw()
 {
-	if (TurnNum == 0) {
+	if (TurnNum == 0 && ExistUnits::Instance()->m_StageName != "Tutorial") {
 		// 自動ターンエンド
 			// 現在時刻
 		GetLocalTime(&NowTime);
@@ -233,8 +240,13 @@ void BattleTurnMgr::AutoTurnEndTimerDraw()
 	// 現在のゲージの長さ
 	float Gauge_Width = Gauge_Max_Width * Now_Rate;
 
-	DrawFunc2D_Mask::DrawExtendGraph2D(LT_Gauge + ScreenShakeManager::Instance()->GetOffset(), RB_Gauge + ScreenShakeManager::Instance()->GetOffset(), m_Timer_Gauge_Tex,
-		LT_Gauge + ScreenShakeManager::Instance()->GetOffset(), RB_Gauge - Vec2(Gauge_Width, 0.0f) + ScreenShakeManager::Instance()->GetOffset());
+	if (ExistUnits::Instance()->m_StageName != "Tutorial") {
+		DrawFunc2D_Mask::DrawExtendGraph2D(LT_Gauge + ScreenShakeManager::Instance()->GetOffset(), RB_Gauge + ScreenShakeManager::Instance()->GetOffset(), m_Timer_Gauge_Tex,
+			LT_Gauge + ScreenShakeManager::Instance()->GetOffset(), RB_Gauge - Vec2(Gauge_Width, 0.0f) + ScreenShakeManager::Instance()->GetOffset());
+	}
+	else {
+		DrawFunc2D::DrawExtendGraph2D(LT_Gauge + ScreenShakeManager::Instance()->GetOffset(), RB_Gauge + ScreenShakeManager::Instance()->GetOffset(), m_Timer_Gauge_Tex);
+	}
 }
 
 void BattleTurnMgr::OnInitialize(std::shared_ptr<UnitBase> Player, std::vector<std::shared_ptr<UnitBase>> Enemys)

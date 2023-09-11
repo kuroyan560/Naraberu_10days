@@ -28,6 +28,8 @@ public:
 
 	// ロードするステージ名(現在のステージ名)
 	std::string m_StageName;
+	// チュートリアル用
+	bool m_CanTurnEnd;
 
 	ExistUnits() {
 	}
