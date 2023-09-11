@@ -194,19 +194,21 @@ float BattleTurnMgr::ResultEasing(float time)
 
 void BattleTurnMgr::AutoTurnEndTimerDraw()
 {
-	// 自動ターンエンド
-		// 現在時刻
-	GetLocalTime(&NowTime);
-	// 変換
-	FILETIME ftime1;
-	FILETIME ftime2;
-	SystemTimeToFileTime(&StartTime, &ftime1);
-	SystemTimeToFileTime(&NowTime, &ftime2);
-	// int64にキャスト
-	__int64* nTime1 = (__int64*)&ftime1;
-	__int64* nTime2 = (__int64*)&ftime2;
-	// 経過秒
-	m_ProgressTime = (*nTime2 - *nTime1);
+	if (TurnNum == 0) {
+		// 自動ターンエンド
+			// 現在時刻
+		GetLocalTime(&NowTime);
+		// 変換
+		FILETIME ftime1;
+		FILETIME ftime2;
+		SystemTimeToFileTime(&StartTime, &ftime1);
+		SystemTimeToFileTime(&NowTime, &ftime2);
+		// int64にキャスト
+		__int64* nTime1 = (__int64*)&ftime1;
+		__int64* nTime2 = (__int64*)&ftime2;
+		// 経過秒
+		m_ProgressTime = (*nTime2 - *nTime1);
+	}
 
 	using namespace KuroEngine;
 	Vec2 LT = Vec2(384.0f, 576.0f);
@@ -441,6 +443,10 @@ void BattleTurnMgr::Update_Battle()
 				// ターン切り替え・全体ターン数加算
 				// 生きてるユニットまで飛ばす
 				while (1) {
+					// 生きてる敵が居るなら
+					if (AliveEnemys() && TurnNum == 0) {
+						CutInMgr::Instance()->StartCutIn(CutInType::ENEMY_TURN);
+					}
 					TurnNum < UnitList.size() - 1 ? TurnNum++ : TurnNum = 0, m_Whole_Turn_Count++;
 					// 生きてるユニットのターン
 					if (UnitList[TurnNum]->IsAlive()) {
@@ -466,9 +472,9 @@ void BattleTurnMgr::Update_Battle()
 					GetUnitPtr<Player>(UnitList[TurnNum])->m_DoBonus = false;
 					GetUnitPtr<Player>(UnitList[TurnNum])->TurnChangeTimer = 0;
 				}
-				else if (TurnNum == 1) {
+				/*else if (TurnNum == 1) {
 					CutInMgr::Instance()->StartCutIn(CutInType::ENEMY_TURN);
-				}
+				}*/
 			}
 		}
 		else {
@@ -478,6 +484,10 @@ void BattleTurnMgr::Update_Battle()
 			// ターン切り替え・全体ターン数加算
 			// 生きてるユニットまで飛ばす
 			while (1) {
+				// 生きてる敵が居るなら
+				if (AliveEnemys() && TurnNum == 0) {
+					CutInMgr::Instance()->StartCutIn(CutInType::ENEMY_TURN);
+				}
 				TurnNum < UnitList.size() - 1 ? TurnNum++ : TurnNum = 0, m_Whole_Turn_Count++;
 				// 生きてるユニットのターン
 				if (UnitList[TurnNum]->IsAlive()) {
@@ -503,9 +513,9 @@ void BattleTurnMgr::Update_Battle()
 				GetUnitPtr<Player>(UnitList[TurnNum])->m_DoBonus = false;
 				GetUnitPtr<Player>(UnitList[TurnNum])->TurnChangeTimer = 0;
 			}
-			else if (TurnNum == 1) {
+			/*else if (TurnNum == 1) {
 				CutInMgr::Instance()->StartCutIn(CutInType::ENEMY_TURN);
-			}
+			}*/
 		}
 	}
 	// カットイン中であれば
