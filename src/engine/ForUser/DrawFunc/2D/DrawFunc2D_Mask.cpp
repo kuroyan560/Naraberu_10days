@@ -13,12 +13,12 @@ static std::vector<KuroEngine::RootParam>ROOT_PARAMETER =
 	{D3D12_DESCRIPTOR_RANGE_TYPE_SRV, "テクスチャリソース"},
 };
 
-void KuroEngine::DrawFunc2D_Mask::DrawGraph(const Vec2<float>& LeftUpPos, const std::shared_ptr<TextureBuffer>& Tex, const Vec2<float>& MaskLeftUpPos, const Vec2<float>& MaskRightBottomPos, const Vec2<bool>& Miror, const float& MaskAlpha)
+void KuroEngine::DrawFunc2D_Mask::DrawGraph(const Vec2<float>& LeftUpPos, const std::shared_ptr<TextureBuffer>& Tex, const Vec2<float>& MaskLeftUpPos, const Vec2<float>& MaskRightBottomPos, const bool& ReverseMask, const Vec2<bool>& Miror, const float& MaskAlpha)
 {
-	DrawExtendGraph2D(LeftUpPos, LeftUpPos + Tex->GetGraphSize().Float(), Tex, MaskLeftUpPos, MaskRightBottomPos, Miror, MaskAlpha);
+	DrawExtendGraph2D(LeftUpPos, LeftUpPos + Tex->GetGraphSize().Float(), Tex, MaskLeftUpPos, MaskRightBottomPos, ReverseMask, Miror, MaskAlpha);
 }
 
-void KuroEngine::DrawFunc2D_Mask::DrawExtendGraph2D(const Vec2<float>& LeftUpPos, const Vec2<float>& RightBottomPos, const std::shared_ptr<TextureBuffer>& Tex, const Vec2<float>& MaskLeftUpPos, const Vec2<float>& MaskRightBottomPos, const Vec2<bool>& Miror, const float& MaskAlpha)
+void KuroEngine::DrawFunc2D_Mask::DrawExtendGraph2D(const Vec2<float>& LeftUpPos, const Vec2<float>& RightBottomPos, const std::shared_ptr<TextureBuffer>& Tex, const Vec2<float>& MaskLeftUpPos, const Vec2<float>& MaskRightBottomPos, const bool& ReverseMask, const Vec2<bool>& Miror, const float& MaskAlpha)
 {
 	class ExtendGraphVertex
 	{
@@ -27,10 +27,11 @@ void KuroEngine::DrawFunc2D_Mask::DrawExtendGraph2D(const Vec2<float>& LeftUpPos
 		Vec2<float>rightBottomPos;
 		Vec2<float>maskLeftUpPos;
 		Vec2<float>maskRightBottomPos;
+		int reverseMask;
 		Vec2<int> miror;
 		float maskAlpha;	//範囲外の描画アルファ値
-		ExtendGraphVertex(const Vec2<float>& LeftUpPos, const Vec2<float>& RightBottomPos, const Vec2<float>& MaskLeftUpPos, const Vec2<float>& MaskRightBottomPos, const Vec2<bool>& Miror, const float& MaskAlpha)
-			:leftUpPos(LeftUpPos), rightBottomPos(RightBottomPos), maskLeftUpPos(MaskLeftUpPos), maskRightBottomPos(MaskRightBottomPos), miror({ Miror.x ? 1 : 0 ,Miror.y ? 1 : 0 }), maskAlpha(MaskAlpha) {}
+		ExtendGraphVertex(const Vec2<float>& LeftUpPos, const Vec2<float>& RightBottomPos, const Vec2<float>& MaskLeftUpPos, const Vec2<float>& MaskRightBottomPos, const bool& ReverseMask, const Vec2<bool>& Miror, const float& MaskAlpha)
+			:leftUpPos(LeftUpPos), rightBottomPos(RightBottomPos), maskLeftUpPos(MaskLeftUpPos), maskRightBottomPos(MaskRightBottomPos), reverseMask(ReverseMask ? 1 : 0), miror({ Miror.x ? 1 : 0 ,Miror.y ? 1 : 0 }), maskAlpha(MaskAlpha) {}
 	};
 
 	static std::shared_ptr<GraphicsPipeline>EXTEND_GRAPH_PIPELINE;
@@ -56,6 +57,7 @@ void KuroEngine::DrawFunc2D_Mask::DrawExtendGraph2D(const Vec2<float>& LeftUpPos
 			InputLayoutParam("POSITION_R_B",DXGI_FORMAT_R32G32_FLOAT),
 			InputLayoutParam("MASK_POS_LU",DXGI_FORMAT_R32G32_FLOAT),
 			InputLayoutParam("MASK_POS_RB",DXGI_FORMAT_R32G32_FLOAT),
+			InputLayoutParam("REVERSE_MASK",DXGI_FORMAT_R32_SINT),
 			InputLayoutParam("MIROR",DXGI_FORMAT_R32G32_SINT),
 			InputLayoutParam("MASK_ALPHA",DXGI_FORMAT_R32_FLOAT),
 		};
@@ -73,7 +75,7 @@ void KuroEngine::DrawFunc2D_Mask::DrawExtendGraph2D(const Vec2<float>& LeftUpPos
 		EXTEND_GRAPH_VERTEX_BUFF.emplace_back(D3D12App::Instance()->GenerateVertexBuffer(sizeof(ExtendGraphVertex), 1, nullptr, ("DrawExtendGraph_Mask -" + std::to_string(s_DrawExtendGraphCount)).c_str()));
 	}
 
-	ExtendGraphVertex vertex(LeftUpPos, RightBottomPos, MaskLeftUpPos, MaskRightBottomPos, Miror, MaskAlpha);
+	ExtendGraphVertex vertex(LeftUpPos, RightBottomPos, MaskLeftUpPos, MaskRightBottomPos, ReverseMask, Miror, MaskAlpha);
 	EXTEND_GRAPH_VERTEX_BUFF[s_DrawExtendGraphCount]->Mapping(&vertex);
 
 	KuroEngine::KuroEngineDevice::Instance()->Graphics().ObjectRender(EXTEND_GRAPH_VERTEX_BUFF[s_DrawExtendGraphCount],
@@ -85,7 +87,7 @@ void KuroEngine::DrawFunc2D_Mask::DrawExtendGraph2D(const Vec2<float>& LeftUpPos
 	s_DrawExtendGraphCount++;
 }
 
-void KuroEngine::DrawFunc2D_Mask::DrawRotaGraph2D(const Vec2<float>& Center, const Vec2<float>& ExtRate, const float& Radian, const std::shared_ptr<TextureBuffer>& Tex, const Vec2<float>& MaskCenterPos, const Vec2<float>& MaskSize, const Vec2<float>& RotaCenterUV, const Vec2<bool>& Miror, const float& MaskAlpha)
+void KuroEngine::DrawFunc2D_Mask::DrawRotaGraph2D(const Vec2<float>& Center, const Vec2<float>& ExtRate, const float& Radian, const std::shared_ptr<TextureBuffer>& Tex, const Vec2<float>& MaskCenterPos, const Vec2<float>& MaskSize, const bool& ReverseMask, const Vec2<float>& RotaCenterUV, const Vec2<bool>& Miror, const float& MaskAlpha)
 {
 	//DrawRotaGraph専用頂点
 	class RotaGraphVertex
@@ -96,14 +98,15 @@ void KuroEngine::DrawFunc2D_Mask::DrawRotaGraph2D(const Vec2<float>& Center, con
 		float radian;
 		Vec2<float>maskCenterPos;
 		Vec2<float>maskSize;
+		int reverseMask;
 		Vec2<float>rotaCenterUV;
 		Vec2<int> miror;
 		float maskAlpha;	//範囲外の描画アルファ値
 		RotaGraphVertex(const Vec2<float>& Center, const Vec2<float>& ExtRate, const float& Radian,
-			const Vec2<float>& MaskCenterPos, const Vec2<float>& MaskSize,
+			const Vec2<float>& MaskCenterPos, const Vec2<float>& MaskSize, const bool& ReverseMask,
 			const Vec2<float>& RotaCenterUV, const Vec2<bool>& Miror, const float& MaskAlpha)
 			:center(Center), extRate(ExtRate), radian(Radian),
-			maskCenterPos(MaskCenterPos), maskSize(MaskSize),
+			maskCenterPos(MaskCenterPos), maskSize(MaskSize), reverseMask(ReverseMask ? 1 : 0),
 			rotaCenterUV(RotaCenterUV), miror({ Miror.x ? 1 : 0,Miror.y ? 1 : 0 }), maskAlpha(MaskAlpha) {}
 	};
 
@@ -131,6 +134,7 @@ void KuroEngine::DrawFunc2D_Mask::DrawRotaGraph2D(const Vec2<float>& Center, con
 			InputLayoutParam("RADIAN",DXGI_FORMAT_R32_FLOAT),
 			InputLayoutParam("MASK_CENTER",DXGI_FORMAT_R32G32_FLOAT),
 			InputLayoutParam("MASK_SIZE",DXGI_FORMAT_R32G32_FLOAT),
+			InputLayoutParam("REVERSE_MASK",DXGI_FORMAT_R32_SINT),
 			InputLayoutParam("ROTA_CENTER_UV",DXGI_FORMAT_R32G32_FLOAT),
 			InputLayoutParam("MIROR",DXGI_FORMAT_R32G32_SINT),
 			InputLayoutParam("MASK_ALPHA",DXGI_FORMAT_R32_FLOAT),
@@ -149,7 +153,7 @@ void KuroEngine::DrawFunc2D_Mask::DrawRotaGraph2D(const Vec2<float>& Center, con
 		ROTA_GRAPH_VERTEX_BUFF.emplace_back(D3D12App::Instance()->GenerateVertexBuffer(sizeof(RotaGraphVertex), 1, nullptr, ("DrawRotaGraph_Mask -" + std::to_string(s_DrawRotaGraphCount)).c_str()));
 	}
 
-	RotaGraphVertex vertex(Center, ExtRate, Radian, MaskCenterPos, MaskSize, RotaCenterUV, Miror, MaskAlpha);
+	RotaGraphVertex vertex(Center, ExtRate, Radian, MaskCenterPos, MaskSize,ReverseMask, RotaCenterUV, Miror, MaskAlpha);
 	ROTA_GRAPH_VERTEX_BUFF[s_DrawRotaGraphCount]->Mapping(&vertex);
 
 	KuroEngine::KuroEngineDevice::Instance()->Graphics().ObjectRender(ROTA_GRAPH_VERTEX_BUFF[s_DrawRotaGraphCount],
@@ -173,5 +177,5 @@ void KuroEngine::DrawFunc2D_Mask::DrawLine2DGraph(const Vec2<float>& FromPos, co
 	Vec2<float>maskSize = MaskRightBottomPos - MaskLeftUpPos;
 	Vec2<float>maskCenterPos = KuroEngine::Math::Lerp(MaskLeftUpPos, MaskRightBottomPos, 0.5f);
 
-	DrawRotaGraph2D(centerPos, expRate, KuroEngine::Math::GetAngle(vec), Tex, maskCenterPos,maskSize, { 0.5f,0.5f }, Mirror);
+	DrawRotaGraph2D(centerPos, expRate, KuroEngine::Math::GetAngle(vec), Tex, maskCenterPos, maskSize, false, { 0.5f,0.5f }, Mirror);
 }

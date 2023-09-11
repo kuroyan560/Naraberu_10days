@@ -9,6 +9,7 @@ struct VSOutput
     float4 rightBottomPos : POSITION_R_B;
     float4 maskLeftUpPos : MASK_POS_LU;
     float4 maskRightBottomPos : MASK_POS_RB;
+    int reverseMask : REVERSE_MASK;
     int2 miror : MIROR;
     float maskAlpha : MASK_ALPHA;
 };
@@ -24,6 +25,7 @@ struct GSOutput
     float2 uv : TEXCOORD;
     float4 maskLeftUpPos : MASK_POS_LU;
     float4 maskRightBottomPos : MASK_POS_RB;
+    int reverseMask : REVERSE_MASK;
     float maskAlpha : MASK_ALPHA;
 };
 
@@ -40,6 +42,7 @@ void GSmain(
     element.maskLeftUpPos = input[0].maskLeftUpPos;
     element.maskRightBottomPos = input[0].maskRightBottomPos;
     element.maskAlpha = input[0].maskAlpha;
+    element.reverseMask = input[0].reverseMask;
     
     //ç∂â∫
     element.pos = input[0].rightBottomPos;
@@ -79,6 +82,9 @@ float4 PSmain(GSOutput input) : SV_TARGET
     mask *= step(input.maskLeftUpPos.y, input.pos.y);
     mask *= step(input.pos.y, input.maskRightBottomPos.y);
 
+    if (input.reverseMask)
+        mask = 1.0f - mask;
+    
     float4 result = tex.Sample(smp, input.uv);
     if (mask)
     {

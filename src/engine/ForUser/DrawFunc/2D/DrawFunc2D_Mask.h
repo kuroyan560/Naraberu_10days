@@ -30,10 +30,11 @@ namespace KuroEngine
 		/// <param name="Tex">テクスチャ</param>
 		/// <param name="MaskLeftUpPos">マスク範囲の左上座標</param>
 		/// <param name="MaskRightBottomPos">マスク範囲の右下座標</param>
-		/// <param name="Miror">反転フラグ</param>
+		/// <param name="ReverseMask">マスクの反転</param>
+		/// <param name="Miror">画像の反転</param>
 		/// <param name="MaskAlpha">マスク範囲外のアルファ値</param>
 		static void DrawGraph(const Vec2<float>& LeftUpPos, const std::shared_ptr<TextureBuffer>& Tex,
-			const Vec2<float>& MaskLeftUpPos, const Vec2<float>& MaskRightBottomPos,
+			const Vec2<float>& MaskLeftUpPos, const Vec2<float>& MaskRightBottomPos, const bool& ReverseMask = false,
 			const Vec2<bool>& Miror = { false,false }, const float& MaskAlpha = 0.0f);
 
 		/// <summary>
@@ -44,10 +45,11 @@ namespace KuroEngine
 		/// <param name="Tex">テクスチャ</param>
 		/// <param name="MaskLeftUpPos">マスク範囲の左上座標</param>
 		/// <param name="MaskRightBottomPos">マスク範囲の右下座標</param>
-		/// <param name="Miror">反転フラグ</param>
+		/// <param name="ReverseMask">マスクの反転</param>
+		/// <param name="Miror">画像の反転</param>
 		/// <param name="MaskAlpha">マスク範囲外のアルファ値</param>
 		static void DrawExtendGraph2D(const Vec2<float>& LeftUpPos, const Vec2<float>& RightBottomPos, const std::shared_ptr<TextureBuffer>& Tex,
-			const Vec2<float>& MaskLeftUpPos, const Vec2<float>& MaskRightBottomPos,
+			const Vec2<float>& MaskLeftUpPos, const Vec2<float>& MaskRightBottomPos, const bool& ReverseMask = false,
 			const Vec2<bool>& Miror = { false,false }, const float& MaskAlpha = 0.0f);
 
 		/// <summary>
@@ -59,11 +61,12 @@ namespace KuroEngine
 		/// <param name="Tex">テクスチャ</param>
 		/// <param name="MaskCenterPos">マスク範囲中心座標</param>
 		/// <param name="MaskSize">マスク範囲サイズ</param>
+		/// <param name="ReverseMask">マスクの反転</param>
 		/// <param name="RotaCenterUV">回転の中心UV</param>
-		/// <param name="Miror">反転フラグ</param>
+		/// <param name="Miror">画像の反転</param>
 		/// <param name="MaskAlpha">マスク範囲外のアルファ値</param>
 		static void DrawRotaGraph2D(const Vec2<float>& Center, const Vec2<float>& ExtRate, const float& Radian, const std::shared_ptr<TextureBuffer>& Tex,
-			const Vec2<float>& MaskCenterPos, const Vec2<float>& MaskSize,
+			const Vec2<float>& MaskCenterPos, const Vec2<float>& MaskSize, const bool& ReverseMask = false,
 			const Vec2<float>& RotaCenterUV = { 0.5f,0.5f }, const Vec2<bool>& Miror = { false,false }, const float& MaskAlpha = 0.0f);
 
 		/// <summary>
