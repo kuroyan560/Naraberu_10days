@@ -458,7 +458,7 @@ void BattleScene::NextWave()
 	}
 
 	// パネルを掃除
-	ExistUnits::Instance()->m_StageManager->Reset();
+	//ExistUnits::Instance()->m_StageManager->Reset();
 
 	// 次ウェーブの敵を取得
 	En.clear();
