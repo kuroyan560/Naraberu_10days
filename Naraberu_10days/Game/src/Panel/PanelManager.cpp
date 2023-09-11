@@ -377,11 +377,7 @@ void PanelManager::BonusDirection()
 	float maxTimer = 10.0f * RefreshRate::RefreshRate_Mag;
 
 	if (bonusTimer == 0) {
-		int soundNum = int(SoundConfig::SE_ATTACK_COUNT_0) + nowBonusNum;
-		if (soundNum > 14) {
-			soundNum = 14;
-		}
-		SoundConfig::Instance()->Play(SoundConfig::SE(soundNum));
+		SoundConfig::Instance()->Play(SoundConfig::SE_BONUS_ATTACK_COUNT, -1, -1, nowBonusNum == 0);
 	}
 
 	bonusEaseScale = KuroEngine::Math::Ease(KuroEngine::EASE_CHANGE_TYPE::Out, KuroEngine::EASING_TYPE::Quart,

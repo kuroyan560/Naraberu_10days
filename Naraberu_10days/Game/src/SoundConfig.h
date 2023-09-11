@@ -19,20 +19,10 @@ public:
 		SE_MOVE_PRISM,	//プリズム設置位置移動
 		SE_SELECT_PRISM,	//プリズム選択
 
-		SE_ATTACK_COUNT_0,
-		SE_ATTACK_COUNT_1,
-		SE_ATTACK_COUNT_2,
-		SE_ATTACK_COUNT_3,
-		SE_ATTACK_COUNT_4,
-		SE_ATTACK_COUNT_5,
-		SE_ATTACK_COUNT_6,
-		SE_ATTACK_COUNT_7,
-		SE_ATTACK_COUNT_8,
-		SE_ATTACK_COUNT_9,
-
 		SE_HEAL,
 		SE_DAMAGE,	//敵にダメージ
 		SE_CHARGE_ULT,	//ULTのチャージ
+		SE_BONUS_ATTACK_COUNT,
 
 		SE_PUT_OJAMA,
 
@@ -66,6 +56,8 @@ private:
 		int m_latestIdx = 0;
 		//複数ある場合の再生順
 		ORDER_TYPE m_order = IN_ORDER;
+		//順列だった場合ループさせるか
+		bool m_inOrderLoop = false;
 		
 		int GetPlaySoundHandle();
 
@@ -78,10 +70,11 @@ private:
 			m_sounds = { arg_sound };
 			m_invalid = false;
 		}
-		void Load(std::vector<int>arg_sounds, ORDER_TYPE arg_order)
+		void Load(std::vector<int>arg_sounds, ORDER_TYPE arg_order, bool arg_inOrderLoop = false)
 		{
 			m_sounds = arg_sounds;
 			m_order = arg_order;
+			m_inOrderLoop = arg_inOrderLoop;
 			m_invalid = false;
 		}
 
@@ -89,7 +82,7 @@ private:
 		{
 			m_latestIdx = 0;
 		}
-		void Play(int arg_delay = -1, int arg_soundIdx = -1);
+		void Play(int arg_delay = -1, int arg_soundIdx = -1,bool arg_resetLatestIdx = false);
 		void SetVolume(float arg_vol);
 	};
 
@@ -112,7 +105,7 @@ public:
 	void Init();
 	void Update();
 
-	void Play(SE arg_se, int arg_delay = -1, int arg_soundIdx = -1);
+	void Play(SE arg_se, int arg_delay = -1, int arg_soundIdx = -1, bool arg_resetOrderSound = false);
 	void SwitchBGM(BGM arg_bgm);
 
 	void UpdateIndividualVolume();

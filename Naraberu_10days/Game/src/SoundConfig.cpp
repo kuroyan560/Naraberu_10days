@@ -36,20 +36,10 @@ SoundConfig::SoundConfig() : Debugger("SoundConfig", false)
 		"select",
 		"cancel",
 
-		"attack_count_0",
-		"attack_count_1",
-		"attack_count_2",
-		"attack_count_3",
-		"attack_count_4",
-		"attack_count_5",
-		"attack_count_6",
-		"attack_count_7",
-		"attack_count_8",
-		"attack_count_9",
-
 		"heal",
 		"damage",
 		"ult_charge",
+		"attack_count",
 
 		"put_ojama",
 
@@ -73,13 +63,11 @@ SoundConfig::SoundConfig() : Debugger("SoundConfig", false)
 	m_seTable[SE_MOVE_PRISM].Load(audioApp->LoadAudio(seDir + seFileName[SE_MOVE_PRISM] + ".wav"));
 	m_seTable[SE_SELECT_PRISM].Load(audioApp->LoadAudio(seDir + seFileName[SE_SELECT_PRISM] + ".wav"));
 
-	for (int i = SE_ATTACK_COUNT_0; i <= SE_ATTACK_COUNT_9; i++) {
-		m_seTable[i].Load(audioApp->LoadAudio(seDir + "attack_count/" + seFileName[i] + ".wav"));
-	}
-
 	m_seTable[SE_HEAL].Load(audioApp->LoadAudio(seDir + seFileName[SE_HEAL] + ".wav"));
-	m_seTable[SE_CHARGE_ULT].Load(LoadSoundArray(seDir, seFileName[SE_CHARGE_ULT]), SoundSE::RANDOM);
 	m_seTable[SE_DAMAGE].Load(audioApp->LoadAudio(seDir + seFileName[SE_DAMAGE] + ".wav"));
+	m_seTable[SE_CHARGE_ULT].Load(LoadSoundArray(seDir, seFileName[SE_CHARGE_ULT]), SoundSE::RANDOM);
+
+	m_seTable[SE_BONUS_ATTACK_COUNT].Load(LoadSoundArray(seDir + "attack_count/", seFileName[SE_BONUS_ATTACK_COUNT]), SoundSE::IN_ORDER);
 
 	m_seTable[SE_PUT_OJAMA].Load(audioApp->LoadAudio(seDir + seFileName[SE_PUT_OJAMA] + ".wav"));
 
@@ -135,7 +123,10 @@ int SoundConfig::SoundSE::GetPlaySoundHandle()
 		{
 			//èáóÒ
 			case SoundConfig::SoundSE::IN_ORDER:
-				if (static_cast<int>(m_sounds.size()) <= ++m_latestIdx)m_latestIdx = 0;
+				if (static_cast<int>(m_sounds.size()) <= ++m_latestIdx)
+				{
+					m_latestIdx = m_inOrderLoop ? 0 : static_cast<int>(m_sounds.size() - 1);
+				}
 				break;
 			//ÉâÉìÉ_ÉÄ
 			case SoundConfig::SoundSE::RANDOM:
@@ -151,8 +142,9 @@ int SoundConfig::SoundSE::GetPlaySoundHandle()
 	return result;
 }
 
-void SoundConfig::SoundSE::Play(int arg_delay, int arg_soundIdx)
+void SoundConfig::SoundSE::Play(int arg_delay, int arg_soundIdx, bool arg_resetLatestIdx)
 {
+	if (arg_resetLatestIdx)m_latestIdx = 0;
 	int soundIdx = arg_soundIdx == -1 ? GetPlaySoundHandle() : m_sounds[arg_soundIdx];
 	arg_delay == -1 ? KuroEngine::AudioApp::Instance()->PlayWave(soundIdx) : KuroEngine::AudioApp::Instance()->PlayWaveDelay(soundIdx, arg_delay);
 }
@@ -215,9 +207,9 @@ void SoundConfig::Update()
 	}
 }
 
-void SoundConfig::Play(SE arg_se, int arg_delay, int arg_soundIdx)
+void SoundConfig::Play(SE arg_se, int arg_delay, int arg_soundIdx, bool arg_resetOrderSound)
 {
-	m_seTable[arg_se].Play(arg_delay, arg_soundIdx);
+	m_seTable[arg_se].Play(arg_delay, arg_soundIdx, arg_resetOrderSound);
 }
 
 void SoundConfig::SwitchBGM(BGM arg_bgm)
