@@ -22,10 +22,12 @@ Enemy::Enemy()
 	m_Now_Action = false;
 	m_Already_Act = false;
 	m_Timer = 0;
+	m_Tutorial_Act_Count = 0;
 }
 
 void Enemy::OnInitialize()
 {
+	m_Tutorial_Act_Count = 0;
 }
 
 void Enemy::OnUpdate()
@@ -44,8 +46,14 @@ void Enemy::OnUpdate()
 		m_Action_Num = 0;
 		// 必要な情報をセット(あとで分岐無しでいい設計にする)
 		//m_Actions[m_Action_Num]->Action_Start();
-		EnemyActions::EnemyActionMgr::Instance()->SetUnits(this, ExistUnits::Instance()->m_pPlayer);
-		EnemyActions::EnemyActionMgr::Instance()->StartAction(m_Data.ActionList[GetRand(0,3)]);
+		if (m_Data.m_AI_Type == EnemysData::AI_TYPE::DEFAULT) {
+			EnemyActions::EnemyActionMgr::Instance()->SetUnits(this, ExistUnits::Instance()->m_pPlayer);
+			EnemyActions::EnemyActionMgr::Instance()->StartAction(m_Data.ActionList[GetRand(0, int(m_Data.ActionList.size()))]);
+		}
+		if (m_Data.m_AI_Type == EnemysData::AI_TYPE::TUTORIAL) {
+			EnemyActions::EnemyActionMgr::Instance()->SetUnits(this, ExistUnits::Instance()->m_pPlayer);
+			EnemyActions::EnemyActionMgr::Instance()->StartAction(m_Data.ActionList[0]);
+		}
 
 		m_Now_Action = true;
 	}
