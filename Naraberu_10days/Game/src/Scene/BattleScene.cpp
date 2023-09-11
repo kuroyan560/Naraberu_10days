@@ -110,6 +110,10 @@ void BattleScene::OnInitialize()
 		});
 
 	ParticleManager::Instance()->Init();
+
+	//”wŒi
+	backGroundEffect.reset(new BackGroundEffect());
+	backGroundEffect->Initialize();
 }
 
 void BattleScene::OnUpdate()
@@ -320,6 +324,8 @@ void BattleScene::OnDraw()
 	DrawFunc2D::DrawBox2D(Vec2(0.0f, 0.0f)
 		, WinApp::Instance()->GetExpandWinSize(), Color(50, 49, 59, 255), true);
 
+	backGroundEffect->Draw();
+	
 	ParticleManager::Instance()->BackDraw();
 
 

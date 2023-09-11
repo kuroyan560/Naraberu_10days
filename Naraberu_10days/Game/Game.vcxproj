@@ -198,6 +198,7 @@ xcopy "$(SolutionDir)dxil.dll" $(TargetDir) /Y</Command>
     <ClCompile Include="src\BattleManager\UnitBase.cpp" />
     <ClCompile Include="src\Block\Block.cpp" />
     <ClCompile Include="src\Block\BlockManager.cpp" />
+    <ClCompile Include="src\Effect\BackGroundEffect.cpp" />
     <ClCompile Include="src\Effect\ParticleManager.cpp" />
     <ClCompile Include="src\Effect\Particle\BackPrismParticle.cpp" />
     <ClCompile Include="src\Effect\Particle\HealParticle.cpp" />
@@ -332,6 +333,7 @@ xcopy "$(SolutionDir)dxil.dll" $(TargetDir) /Y</Command>
     <ClInclude Include="src\Block\BaseInformation.h" />
     <ClInclude Include="src\Block\Block.h" />
     <ClInclude Include="src\Block\BlockManager.h" />
+    <ClInclude Include="src\Effect\BackGroundEffect.h" />
     <ClInclude Include="src\Effect\ParticleBase.h" />
     <ClInclude Include="src\Effect\ParticleManager.h" />
     <ClInclude Include="src\Effect\Particle\BackPrismParticle.h" />
