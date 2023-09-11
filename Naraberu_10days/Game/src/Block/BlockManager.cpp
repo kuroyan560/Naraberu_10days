@@ -38,7 +38,7 @@ void BlockManager::Update()
 {
 	if (!isEnemyAttack) {
 		//ƒpƒX
-		if (passNum > 0 && OperationConfig::Instance()->DebugKeyInputOnTrigger(DIK_P)) {
+		if (passNum > 0 && OperationConfig::Instance()->GetOperationInput(OperationConfig::PASS_PAIR_PRISM,OperationConfig::ON_TRIGGER)) {
 			ChangeBlock();
 			passNum--;
 		}
