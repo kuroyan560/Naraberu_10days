@@ -38,7 +38,12 @@ Player::Player()
 	//ƒEƒ‹ƒg‰‰oŒn
 	const KuroEngine::Vec2<float> size = { 57.5f ,57.5f };
 	for (int i = 0; i < 4; i++) {
-		ultSize[i] = { size.x / float(i), size.y / float(i) };
+		// •ª•ê0‚Í4‚ñ‚¶‚á‚¤GG
+		if (i == 0) {
+			ultSize[i] = KuroEngine::Vec2(0.0f, 0.0f);
+			continue;
+		}
+		ultSize[i] = KuroEngine::Vec2(size.x / float(i), size.y / float(i) );
 	}
 }
 

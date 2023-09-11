@@ -111,7 +111,7 @@ class BattleScene :
 	float ResultEasing(float time);
 
 	int m_NowTutorial_Step;
-	static const int m_Tutorial_Step_Max = 35;
+	static const int m_Tutorial_Step_Max = 36;
 	std::array<bool, m_Tutorial_Step_Max> m_Tutorial_Pause;
 	// 該当する操作入力をした時に何フレーム後に次に移るかのタイマー
 	int m_Tutorial_Trigger_Timer;
@@ -125,7 +125,9 @@ class BattleScene :
 	float InQuart(float t) {
 		return t * t * t * t;
 	}
-	std::array<std::shared_ptr<KuroEngine::TextureBuffer>, 35> Tutorial_Tex;
+	// メッセージ送りクールタイム
+	int m_Tutorial_Text_CoolTime;
+	std::array<std::shared_ptr<KuroEngine::TextureBuffer>, 36> Tutorial_Tex;
 	void TutorialUpdate();
 	void TutorialDraw();
 

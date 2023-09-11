@@ -716,11 +716,16 @@ void BattleScene::TutorialUpdate()
 		return;
 	}
 
+	if (m_Tutorial_Text_CoolTime > 0) {
+		m_Tutorial_Text_CoolTime--;
+	}
+
 	// チュートリアル説明中
 	if (m_Tutorial_Pause[m_NowTutorial_Step] == true) {
 		m_Tutorial_Trigger_Timer = 0;
 		// 決定
-		if (OperationConfig::Instance()->GetOperationInput(OperationConfig::OPERATION_TYPE::DONE, OperationConfig::INPUT_PATTERN::ON_TRIGGER)) {
+		if (OperationConfig::Instance()->GetOperationInput(OperationConfig::OPERATION_TYPE::DONE, OperationConfig::INPUT_PATTERN::ON_TRIGGER) &&
+			m_Tutorial_Jissen_Text_Timer == 0 && m_Tutorial_Text_CoolTime == 0) {
 			m_NowTutorial_Step++;
 
 			if (m_NowTutorial_Step == 7) {
@@ -762,9 +767,22 @@ void BattleScene::TutorialUpdate()
 				m_Tutorial_Pause[m_NowTutorial_Step] = false;
 				m_Tutorial_Jissen_Text_Timer = 0;
 			}
+			else if (m_NowTutorial_Step == 35) {
+				// 実践（チュートリアル終了）
+				m_Tutorial_Pause[m_NowTutorial_Step] = false;
+				m_Tutorial_Jissen_Text_Timer = 0;
+			}
 			else {
 				m_Tutorial_Pause[m_NowTutorial_Step] = true;
+				if (m_NowTutorial_Step == 24) {
+					// アルティメットを上げる
+					GetUnitPtr_nama<Player*>(ExistUnits::Instance()->m_pPlayer)->AddUltPoint(1000);
+					// パネルを整える
+				}
 			}
+
+			m_Tutorial_Text_CoolTime = 10;
+			m_Impossible_Put_Block_Timer = int(80.0f * RefreshRate::RefreshRate_Mag);
 		}
 
 		//演出更新
@@ -774,9 +792,8 @@ void BattleScene::TutorialUpdate()
 		ScreenShakeManager::Instance()->Update();
 
 		// 下から出てくる
-		if (m_Tutorial_None_Ctrl_Timer >= int(900.0f * RefreshRate::RefreshRate_Mag) ||
-			!(m_NowTutorial_Step == 7 || m_NowTutorial_Step == 11 || m_NowTutorial_Step == 15 ||
-				m_NowTutorial_Step == 19 || m_NowTutorial_Step == 25 || m_NowTutorial_Step == 27 || m_NowTutorial_Step == 33)) {
+		if (!(m_NowTutorial_Step == 7 || m_NowTutorial_Step == 11 || m_NowTutorial_Step == 15 ||
+				m_NowTutorial_Step == 19 || m_NowTutorial_Step == 25 || m_NowTutorial_Step == 27 || m_NowTutorial_Step == 33 || m_NowTutorial_Step == 35)) {
 			m_Tutorial_Jissen_Text_Timer > 0 ?
 				m_Tutorial_Jissen_Text_Timer-- : m_Tutorial_Jissen_Text_Timer = 0;
 		}
@@ -790,7 +807,7 @@ void BattleScene::TutorialUpdate()
 
 	// チュートリアル(実践)
 	if (m_NowTutorial_Step == 7 || m_NowTutorial_Step == 11 || m_NowTutorial_Step == 15 ||
-		m_NowTutorial_Step == 19 || m_NowTutorial_Step == 25 || m_NowTutorial_Step == 27 || m_NowTutorial_Step == 33) {
+		m_NowTutorial_Step == 19 || m_NowTutorial_Step == 25 || m_NowTutorial_Step == 27 || m_NowTutorial_Step == 33 || m_NowTutorial_Step == 35) {
 		// 無操作状態のタイマー
 		m_Tutorial_None_Ctrl_Timer++;
 		// 操作があった時に無操作タイマーを0にする
@@ -809,11 +826,13 @@ void BattleScene::TutorialUpdate()
 
 		// 該当する操作入力があった時
 		if (m_NowTutorial_Step == 7 && OperationConfig::Instance()->GetOperationInput(OperationConfig::SET_PRISM, OperationConfig::ON_TRIGGER)
+			&& m_Impossible_Put_Block_Timer == 0
 			&& m_Tutorial_Trigger_Timer == 0) {
 			// タイマー増加
 			m_Tutorial_Trigger_Timer++;
 		}
 		else if (m_NowTutorial_Step == 11 && OperationConfig::Instance()->GetOperationInput(OperationConfig::SET_PRISM, OperationConfig::ON_TRIGGER)
+			&& m_Impossible_Put_Block_Timer == 0
 			&& m_Tutorial_Trigger_Timer == 0) {
 			// タイマー増加
 			m_Tutorial_Trigger_Timer++;
@@ -821,6 +840,7 @@ void BattleScene::TutorialUpdate()
 		else if (m_NowTutorial_Step == 15) {
 			if (!m_Tutorial_Step_Complete_Flag &&
 				OperationConfig::Instance()->GetOperationInput(OperationConfig::END_TURN, OperationConfig::ON_TRIGGER)
+				&& m_Impossible_Put_Block_Timer == 0
 				&& m_Tutorial_Trigger_Timer == 0) {
 				// 一度目の操作をしたフラグを上げる
 				m_Tutorial_Step_Complete_Flag = true;
@@ -837,6 +857,7 @@ void BattleScene::TutorialUpdate()
 			}
 		}
 		else if (m_NowTutorial_Step == 19 && OperationConfig::Instance()->GetOperationInput(OperationConfig::SET_PRISM, OperationConfig::ON_TRIGGER)
+			&& m_Impossible_Put_Block_Timer == 0
 			&& m_Tutorial_Trigger_Timer == 0) {
 			// タイマー増加
 			m_Tutorial_Trigger_Timer++;
@@ -849,6 +870,7 @@ void BattleScene::TutorialUpdate()
 		else if (m_NowTutorial_Step == 27) {
 			if (!m_Tutorial_Step_Complete_Flag &&
 				OperationConfig::Instance()->GetOperationInput(OperationConfig::END_TURN, OperationConfig::ON_TRIGGER)
+				&& m_Impossible_Put_Block_Timer == 0
 				&& m_Tutorial_Trigger_Timer == 0) {
 				// 一度目の操作をしたフラグを上げる
 				m_Tutorial_Step_Complete_Flag = true;
@@ -867,7 +889,7 @@ void BattleScene::TutorialUpdate()
 		else if (m_NowTutorial_Step == 33 && m_Tutorial_Trigger_Timer == 0) {
 			ExistUnits::Instance()->m_CanTurnEnd = true;
 			// 敵が全滅した
-			if (Mgr.AliveEnemys()) {
+			if (!Mgr.AliveEnemys()) {
 				m_Tutorial_Trigger_Timer++;
 			}
 		}
@@ -932,21 +954,26 @@ void BattleScene::TutorialUpdate()
 			}
 			else if (m_NowTutorial_Step == 33) {
 				if (m_Tutorial_Trigger_Timer == int(300.0f * RefreshRate::RefreshRate_Mag)) {
-					//m_NowTutorial_Step++;
+					m_NowTutorial_Step++;
+					m_Tutorial_Trigger_Timer = 0;
+					m_Tutorial_Pause[m_NowTutorial_Step] = true;
 				}
 			}
 		}
 	}
 
 	// 終わり
-	if (m_NowTutorial_Step == 33 && m_NowTutorial_Step > 0) {
-		//演出更新
-		m_setPrismEffect->Update(stage, m_ultPtEmitter);
-		for (auto& ui : m_enemyDamageUI)ui->Update(m_ultPtEmitter);
-		ParticleManager::Instance()->Update();
-		ScreenShakeManager::Instance()->Update();
-		return;
+	if (m_NowTutorial_Step == 35) {
+		m_Tutorial_Trigger_Timer++;
 	}
+	//if (m_NowTutorial_Step == 33 && m_NowTutorial_Step > 0) {
+	//	//演出更新
+	//	m_setPrismEffect->Update(stage, m_ultPtEmitter);
+	//	for (auto& ui : m_enemyDamageUI)ui->Update(m_ultPtEmitter);
+	//	ParticleManager::Instance()->Update();
+	//	ScreenShakeManager::Instance()->Update();
+	//	return;
+	//}
 
 
 	// ウェーブ終了・次ウェーブスタート
@@ -1004,7 +1031,7 @@ void BattleScene::TutorialUpdate()
 		}
 	}
 	// ステージ終了(敵全滅)
-	else if (m_Stage_End) {
+	else if (m_Stage_End && m_NowTutorial_Step == 35 && m_Tutorial_Trigger_Timer >= int(30.0 * RefreshRate::RefreshRate_Mag)) {
 		ResultTimer += 1.0f;
 		if (m_End_Timer < m_End_Timer_Finish) {
 			m_End_Timer++;
@@ -1021,11 +1048,17 @@ void BattleScene::TutorialUpdate()
 	}
 
 	if (m_NowTutorial_Step == 7 || m_NowTutorial_Step == 11 ||
-		m_NowTutorial_Step == 19 || m_NowTutorial_Step == 33) {
-
+		m_NowTutorial_Step == 19) {
 		//セット可能ならセットする
 		if (ExistUnits::Instance()->m_NowTurn == 0 && m_Impossible_Put_Block_Timer == 0 && Mgr.AliveEnemys() && !ExistUnits::Instance()->m_pPlayer->m_IsEndTurnFunc
 			&& !Mgr.GetSelectedTurnEnd() && m_Tutorial_Trigger_Timer == 2) {
+			PlayerTurn();
+		}
+	}
+	else if (m_NowTutorial_Step == 33) {
+		//セット可能ならセットする
+		if (ExistUnits::Instance()->m_NowTurn == 0 && m_Impossible_Put_Block_Timer == 0 && Mgr.AliveEnemys() && !ExistUnits::Instance()->m_pPlayer->m_IsEndTurnFunc
+			&& !Mgr.GetSelectedTurnEnd()) {
 			PlayerTurn();
 		}
 	}
@@ -1060,7 +1093,7 @@ void BattleScene::TutorialDraw()
 	Vec2 WinSize = WinApp::Instance()->GetExpandWinSize();
 
 	if (m_NowTutorial_Step == 7 || m_NowTutorial_Step == 11 || m_NowTutorial_Step == 15 ||
-		m_NowTutorial_Step == 19 || m_NowTutorial_Step == 25 || m_NowTutorial_Step == 27 || m_NowTutorial_Step == 33) {
+		m_NowTutorial_Step == 19 || m_NowTutorial_Step == 25 || m_NowTutorial_Step == 27 || m_NowTutorial_Step == 33 || m_NowTutorial_Step == 35) {
 		float Move_Y = InQuart(float(m_Tutorial_Jissen_Text_Timer) / float(m_Tutorial_Jissen_Text_Timer_Max)) * 249.0f;
 		DrawFunc2D::DrawGraph(Vec2(0.0f, WinSize.y - 249.0f) + Vec2(0.0f, Move_Y), Tutorial_Tex[m_NowTutorial_Step]);
 	}
@@ -1128,7 +1161,7 @@ BattleScene::BattleScene()
 	}
 
 	// チュートリアル
-	for (int i = 0; i < 35; i++) {
+	for (int i = 0; i < 36; i++) {
 		std::string TexDir_Tutorial = "resource/user/tex/tutorial/";
 		Tutorial_Tex[i] = D3D12App::Instance()->GenerateTextureBuffer(TexDir_Tutorial + "/text_back.png");
 	}
