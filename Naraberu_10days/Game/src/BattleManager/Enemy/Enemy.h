@@ -17,8 +17,10 @@ private:
 	int m_Action_Num;
 	bool m_Now_Action;
 	bool m_Already_Act;
-
 	int m_Timer;
+
+	// チュートリアル用
+	int m_Tutorial_Act_Count;
 
 public:
 	Enemy();

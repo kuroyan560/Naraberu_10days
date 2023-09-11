@@ -35,7 +35,7 @@ namespace Moji_kugiri {
 namespace EnemysData {
 
 	enum class AI_TYPE {
-		DEFAULT, CUSTOM
+		DEFAULT, TUTORIAL, CUSTOM
 	};
 
 	enum class ENEMY_TAG {
@@ -148,6 +148,8 @@ namespace EnemysData {
 	};
 
 	// ‚±‚±‚É“G‚ð’Ç‰Á‚µ‚Ä‚¢‚­
+	static const EnemyData Inu_Tutorial_1 =		EnemyData("inu_blue", ENEMY_TAG::DEFAULT, 32, 5, AI_TYPE::TUTORIAL, "Attack_01", "Heal_01", "Jamming_01");
+
 	static const EnemyData Inu_Blue_1 =			EnemyData("inu_blue", ENEMY_TAG::DEFAULT, 48, 15, AI_TYPE::DEFAULT, "Attack_01", "Heal_01", "Heal_01");
 	static const EnemyData Inu_Yellow_1 =		EnemyData("inu_yellow", ENEMY_TAG::DEFAULT, 64, 15, AI_TYPE::DEFAULT, "Attack_01", "Heal_01", "Heal_01");
 	static const EnemyData Inu_Red_1 =			EnemyData("inu_red", ENEMY_TAG::DEFAULT, 96, 15, AI_TYPE::DEFAULT, "Attack_01", "Heal_01", "Heal_01");
