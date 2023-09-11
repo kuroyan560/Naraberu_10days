@@ -1,8 +1,11 @@
 #pragma once
 #include "../Block/BaseInformation.h"
 #include "KuroEngineDevice.h"
+#include<vector>
+#include<memory>
 
 class SetPrismEffect;
+class SkillResultUI;
 
 class PanelManager
 {
@@ -31,7 +34,7 @@ public:
 	/// <summary>
 	/// 更新
 	/// </summary>
-	void Update();
+	void Update(std::vector<std::weak_ptr<SkillResultUI>>arg_enemyDamageUI);
 
 	/// <summary>
 	/// 描画
@@ -108,7 +111,7 @@ public:
 	/// <summary>
 	/// ボーナス演出
 	/// </summary>
-	void BonusDirection();
+	void BonusDirection(std::vector<std::weak_ptr<SkillResultUI>>arg_enemyDamageUI);
 
 	/// <summary>
 	/// お邪魔セット

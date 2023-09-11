@@ -80,6 +80,15 @@ namespace KuroEngine
 	//ƒf[ƒ^•Û‘¶
 	void SaveData(FILE* Fp, std::string DataName, const void* Data, size_t Size, int ElementNum);
 
+    //shared_ptr‚Ìvector ‚ğ weak_ptr ‚Ìvector‚É•ÏŠ·
+    template<typename _T>
+    std::vector<std::weak_ptr<_T>>GetWeakPtrArray(std::vector<std::shared_ptr<_T>>SharedPtrArray)
+    {
+        std::vector<std::weak_ptr<_T>>result;
+        for (auto& ptr : SharedPtrArray)result.emplace_back(ptr);
+        return result;
+    }
+
     bool operator!=(const Matrix& lhs, const Matrix& rhs);
     bool operator==(const Matrix& lhs, const Matrix& rhs);
 

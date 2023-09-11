@@ -65,13 +65,13 @@ void PanelManager::Initialize()
 	mapMax = { int(mapchip.size()), int(mapchip[0].size()) };
 }
 
-void PanelManager::Update()
+void PanelManager::Update(std::vector<std::weak_ptr<SkillResultUI>>arg_enemyDamageUI)
 {
 	if (isBonusDirection == Bonus::count) {
 		BonusCount();
 	}
 	else if (isBonusDirection == Bonus::add) {
-		BonusDirection();
+		BonusDirection(arg_enemyDamageUI);
 	}
 }
 
@@ -146,9 +146,6 @@ void PanelManager::Reset()
 			x = int(BlockColor::yuka);
 		}
 	}
-
-	// ボーナスアタック
-	PlayerSkills::PlayerSkillMgr::Instance()->StartAction("Bonus_01", ExistUnits::Instance()->m_NowBonusCount, ExistUnits::Instance()->m_pPlayer, ExistUnits::Instance()->m_Enemys[0]);
 }
 
 #include "../BattleManager/Player_Act/Skills/PlayerSkills.h"
@@ -380,12 +377,17 @@ void PanelManager::BonusCount()
 	isBonusDirection=Bonus::add;
 }
 
-void PanelManager::BonusDirection()
+void PanelManager::BonusDirection(std::vector<std::weak_ptr<SkillResultUI>>arg_enemyDamageUI)
 {
 	float maxTimer = 10.0f * RefreshRate::RefreshRate_Mag;
 
 	if (bonusTimer == 0) {
 		SoundConfig::Instance()->Play(SoundConfig::SE_BONUS_ATTACK_COUNT, -1, -1, nowBonusNum == 0);
+
+		for (auto& ui : arg_enemyDamageUI)
+		{
+			ui.lock()->Add(1, true);
+		}
 	}
 
 	bonusEaseScale = KuroEngine::Math::Ease(KuroEngine::EASE_CHANGE_TYPE::Out, KuroEngine::EASING_TYPE::Quart,
@@ -398,13 +400,19 @@ void PanelManager::BonusDirection()
 	//時間になったら次に行く
 	bonusTimer++;
 	if (bonusTimer > maxTimer) {
-		if (int(bonusData.size()) == nowBonusNum) {
+		if (int(bonusData.size()) == nowBonusNum && !arg_enemyDamageUI[0].lock()->GetIsActive()) {
 			isBonusDirection = Bonus::non;
 			ExistUnits::Instance()->m_IsEndBonusCount = true;
 			Reset();
+
+			// ボーナスアタック
+			PlayerSkills::PlayerSkillMgr::Instance()->StartAction("Bonus_01", ExistUnits::Instance()->m_NowBonusCount, ExistUnits::Instance()->m_pPlayer, ExistUnits::Instance()->m_Enemys[0]);
 			return;
 		}
-		nowBonusNum++;
-		bonusTimer = 0;
+		else if (nowBonusNum < int(bonusData.size()))
+		{
+			nowBonusNum++;
+			bonusTimer = 0;
+		}
 	}
 }

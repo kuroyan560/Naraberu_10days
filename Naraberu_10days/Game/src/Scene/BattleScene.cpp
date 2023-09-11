@@ -281,7 +281,7 @@ void BattleScene::OnUpdate()
 	}
 
 	Mgr.OnUpdate();
-	stage->Update();
+	stage->Update(KuroEngine::GetWeakPtrArray(m_enemyDamageUI));
 	if (!Mgr.GetDefeat() && !m_Stage_End) {
 		block->Update();
 	}
