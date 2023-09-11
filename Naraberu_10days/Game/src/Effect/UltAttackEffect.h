@@ -7,8 +7,9 @@ class UltAttackEffect
 private:
 
 	struct Particle {
+		KuroEngine::Vec2<float> a_pos;
 		KuroEngine::Vec2<float> pos;
-		int isAlive;
+		bool isAlive;
 		float alpha;
 		float timer;
 	};

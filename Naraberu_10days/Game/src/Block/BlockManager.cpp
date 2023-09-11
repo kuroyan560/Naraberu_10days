@@ -126,22 +126,30 @@ void BlockManager::ChoiceBlock()
 {
 	KuroEngine::UsersInput* input = KuroEngine::UsersInput::Instance();
 
+	bool onKey = false;
 	//選択移動
 	if (OperationConfig::Instance()->GetOperationInput(OperationConfig::SELECT_RIGHT_PRISM, OperationConfig::ON_TRIGGER)) {
-		nowChoice = 0;
-		SetOneChangeBlock(int(ObjectType::use), int(ObjectType::choice1));
-		//使用ブロック変更処理
-		block[int(ObjectType::use)].block->ChangeBlock({ -1,-1 }, shape[block[int(ObjectType::use)].blockNum]);
-		SoundConfig::Instance()->Play(SoundConfig::SE_SELECT_PRISM);
+		if (nowChoice == 0) {
+			nowChoice = 1;
+		} else {
+			nowChoice = 0;
+		}
+		onKey = true;
 	} else if (OperationConfig::Instance()->GetOperationInput(OperationConfig::SELECT_LEFT_PRISM, OperationConfig::ON_TRIGGER)) {
-		nowChoice = 1;
-		SetOneChangeBlock(int(ObjectType::use), int(ObjectType::choice2));
+		if (nowChoice == 1) {
+			nowChoice = 0;
+		} else {
+			nowChoice = 1;
+		}
+		onKey = true;
+	}
+
+	if (onKey) {
+		SetOneChangeBlock(int(ObjectType::use), int(ObjectType::choice1) + nowChoice);
 		//使用ブロック変更処理
 		block[int(ObjectType::use)].block->ChangeBlock({ -1,-1 }, shape[block[int(ObjectType::use)].blockNum]);
 		SoundConfig::Instance()->Play(SoundConfig::SE_SELECT_PRISM);
 	}
-
-	input = nullptr;
 }
 
 void BlockManager::ChangeBlock()

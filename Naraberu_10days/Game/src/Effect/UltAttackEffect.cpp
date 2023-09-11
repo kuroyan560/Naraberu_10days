@@ -10,9 +10,10 @@ void UltAttackEffect::Initialize()
 
 	const KuroEngine::Vec2<float> pos = KuroEngine::WinApp::Instance()->GetExpandWinSize();
 	for (auto& i : particle) {
-		i.pos = { float(rand() % int(pos.x)),float(rand() % int(pos.y)) };
+		i.a_pos = { float(rand() % int(pos.x)) - float(pos.x / 2.0f),float(rand() % int(pos.y)) - float(pos.y / 2.0f) };
+		i.pos = i.a_pos;
 		i.isAlive = 0;
-		i.alpha = 0.0f;
+		i.alpha = 1.0f;
 		i.timer = 0.0f;
 	}
 
@@ -30,29 +31,23 @@ void UltAttackEffect::Update()
 			while (count < 20) {
 				int i = rand() % particleNum;
 				//既に描画しているならスキップ
-				if (particle[i].isAlive > 0) { continue; }
-				particle[i].isAlive = 1;
-				particle[i].alpha = true;
+				if (particle[i].isAlive) { continue; }
+				particle[i].isAlive = true;
 				count++;
 			}
 		}
-		const float maxTimer = 5.0f * RefreshRate::RefreshRate_Mag;
+		const float maxTimer = 10.0f * RefreshRate::RefreshRate_Mag;
 		for (auto& i : particle) {
 			if (i.isAlive == 1) {
-				dist = KuroEngine::Math::Ease(KuroEngine::EASE_CHANGE_TYPE::In, KuroEngine::EASING_TYPE::Sine,
-					timer, maxTimer, 0.0f, 0.5f);
+				i.alpha = KuroEngine::Math::Ease(KuroEngine::EASE_CHANGE_TYPE::In, KuroEngine::EASING_TYPE::Sine,
+					timer, maxTimer, 1.0f, 0.0f);
+				i.pos = KuroEngine::Math::Ease(KuroEngine::EASE_CHANGE_TYPE::In, KuroEngine::EASING_TYPE::Sine,
+					timer, maxTimer, i.a_pos, { 306.0f,70.0f });
+
 				i.timer++;
 				if (i.timer > maxTimer) {
 					i.timer = 0;
-					i.isAlive = 2;
-				}
-			}else if (i.isAlive == 2) {
-				dist = KuroEngine::Math::Ease(KuroEngine::EASE_CHANGE_TYPE::Out, KuroEngine::EASING_TYPE::Sine,
-					timer, maxTimer, 0.5f, 0.0f);
-				i.timer++;
-				if (i.timer > maxTimer) {
-					i.timer = 0;
-					i.isAlive = 0;
+					i.isAlive = false;
 				}
 			}
 		}
