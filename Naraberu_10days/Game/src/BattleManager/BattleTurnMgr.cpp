@@ -22,6 +22,17 @@ BattleTurnMgr::BattleTurnMgr() {
 	m_IsDefeat = false;
 	m_ProgressTime = 0;
 	m_FirstTurn = true;
+	m_TimeUp_Eff_Timer = 0;
+	m_TimeUp_Eff_Timer_Max = int(150.0f * RefreshRate::RefreshRate_Mag);
+	T_C_Points.clear();
+	T_C_Points.emplace_back(0.0f);
+	T_C_Points.emplace_back(0.95f);
+	T_C_Points.emplace_back(1.0f);
+	T_C_Points.emplace_back(1.0f);
+	T_C_Points.emplace_back(1.0f);
+	T_C_Points.emplace_back(1.0f);
+	T_C_Points.emplace_back(0.95f);
+	T_C_Points.emplace_back(0.0f);
 
 	using namespace KuroEngine;
 	std::string TexDir = "resource/user/tex/battle_scene/";
@@ -33,6 +44,9 @@ BattleTurnMgr::BattleTurnMgr() {
 	m_TurnEnd_EnterTex = D3D12App::Instance()->GenerateTextureBuffer(TexDir + "/operation/key/turn_end.png");
 	m_TurnEnd_Crtl_EnterTex = D3D12App::Instance()->GenerateTextureBuffer(TexDir + "/operation/controller/turn_end.png");
 	m_TurnEnd_SelectedTex = D3D12App::Instance()->GenerateTextureBuffer(TexDir + "turn_end_sure.png");
+
+	m_TimeUp_Eff_Timer_CutIn = D3D12App::Instance()->GenerateTextureBuffer(TexDir + "time_up.png");
+	m_TimeUp_Eff_Timer_CutIn_Back = D3D12App::Instance()->GenerateTextureBuffer(Color(29, 29, 35, 255));
 
 	gageBG = false;
 	gageBGTimer = 0.0f;
@@ -67,9 +81,23 @@ void BattleTurnMgr::TurnEndButtonUpdate()
 			//}
 		}
 
-		if (m_ProgressTime >= (__int64(600000000) + m_PauseTime + TotalPuaseTime) && !m_Checked_TurnEnd && ExistUnits::Instance()->m_StageName != "Tutorial") {
+		if (m_ProgressTime >= (__int64(600000000) + m_PauseTime + TotalPuaseTime) && !m_Checked_TurnEnd && ExistUnits::Instance()->m_StageName != "Tutorial" &&
+			m_TimeUp_Eff_Timer == 0) {
+			/*m_Checked_TurnEnd = true;
+			m_Moving_Flag = true;
+			GetUnitPtr<Player>(UnitList[0])->TurnEndTrigger();
+			m_FirstTurn = false;*/
+			m_TimeUp_Eff_Timer = 1;
+		}
+
+		if (m_TimeUp_Eff_Timer > 0) {
+			m_TimeUp_Eff_Timer < m_TimeUp_Eff_Timer_Max ? m_TimeUp_Eff_Timer++ : m_TimeUp_Eff_Timer = m_TimeUp_Eff_Timer_Max;
+		}
+
+		if (m_TimeUp_Eff_Timer >= m_TimeUp_Eff_Timer_Max) {
 			m_Checked_TurnEnd = true;
 			m_Moving_Flag = true;
+			m_TimeUp_Eff_Timer = 0;
 			GetUnitPtr<Player>(UnitList[0])->TurnEndTrigger();
 			m_FirstTurn = false;
 		}
@@ -85,7 +113,7 @@ void BattleTurnMgr::TurnEndButtonUpdate()
 			if (ExistUnits::Instance()->m_StageName != "Tutorial") {
 				if (OperationConfig::Instance()->GetOperationInput(OperationConfig::END_TURN, OperationConfig::ON_TRIGGER)) {
 					m_Selected_TurnEnd = true;
-						m_Selected_TurnEnd_Timer = 0;
+					m_Selected_TurnEnd_Timer = 0;
 				}
 			}
 		}
@@ -97,6 +125,7 @@ void BattleTurnMgr::TurnEndButtonUpdate()
 				m_Moving_Flag = true;
 				GetUnitPtr<Player>(UnitList[0])->TurnEndTrigger();
 				m_FirstTurn = false;
+				m_TimeUp_Eff_Timer = 0;
 			}
 			// それ以外のボタンが押された
 			else if (OperationConfig::Instance()->CheckAllOperationInputTrigger()) {
@@ -255,10 +284,47 @@ void BattleTurnMgr::AutoTurnEndTimerDraw()
 	}
 }
 
-void BattleTurnMgr::JustInTime(const float _Now_Rate, const KuroEngine::Vec2<float> _pos1, const KuroEngine::Vec2<float> _pos2)
+void BattleTurnMgr::DrawTimerCutIn()
 {
 	using namespace KuroEngine;
-	if (_Now_Rate < 0.5f || _Now_Rate >= 1.0f) { return; }
+	// カットイン
+	/*float CutIn_Size = KuroEngine::Math::GetSpline((float(m_TimeUp_Eff_Timer) / float(m_TimeUp_Eff_Timer_Max)) * 5.0f,
+		0, T_C_Points);*/
+
+	float CutIn_Size = 0.0f;
+	if (float(m_TimeUp_Eff_Timer) < float(m_TimeUp_Eff_Timer_Max) / 2.0f) {
+		CutIn_Size = OutQuint(float(m_TimeUp_Eff_Timer) / float(float(m_TimeUp_Eff_Timer_Max) / 2.0f));
+	}
+	else {
+		CutIn_Size = 1.0f - InQuint((float(m_TimeUp_Eff_Timer) - (float(m_TimeUp_Eff_Timer_Max) / 2.0f)) / (float(m_TimeUp_Eff_Timer_Max) / 2.0f));
+	}
+
+	float CutIn_Size_Text = CutIn_Size * 36.0f;
+	float CutIn_Size_Box = CutIn_Size * 48.0f;
+
+	Vec2 WinSize = WinApp::Instance()->GetExpandWinSize();
+
+	Vec2 Panel_LT = Vec2(391.0f, 67.0f);
+	Vec2 Panel_RB = Vec2(893.0f, 564.0f);
+
+	float Center = WinSize.x / 2.0f;
+
+	Center = WinSize.x - OutInQuart(float(m_TimeUp_Eff_Timer), 0.0f, 1.0f, float(m_TimeUp_Eff_Timer_Max)) * WinSize.x;
+
+	DrawFunc2D_Mask::DrawExtendGraph2D(Vec2(0.0f, 320.0f - CutIn_Size_Box / 2.0f) + ScreenShakeManager::Instance()->GetOffset()
+		, Vec2(WinSize.x, 320.0f + CutIn_Size_Box / 2.0f) + ScreenShakeManager::Instance()->GetOffset(), m_TimeUp_Eff_Timer_CutIn_Back
+		, Panel_LT, Panel_RB);
+
+	DrawFunc2D_Mask::DrawExtendGraph2D(Vec2(Center - 99.0f, 320.0f - CutIn_Size_Text / 2.0f) + ScreenShakeManager::Instance()->GetOffset()
+		, Vec2(Center + 99.0f, 320.0f + CutIn_Size_Text / 2.0f) + ScreenShakeManager::Instance()->GetOffset(), m_TimeUp_Eff_Timer_CutIn
+		, Panel_LT, Panel_RB);
+}
+
+void BattleTurnMgr::JustInTime(const float _Now_Rate, const KuroEngine::Vec2<float> _pos1, const KuroEngine::Vec2<float> _pos2)
+{
+	
+	using namespace KuroEngine;
+	if (_Now_Rate < 0.5f || _Now_Rate >= 1.0f || ExistUnits::Instance()->m_NowTurn != 0) { return; }
 
 	float maxTimerRate = Math::Ease(EASE_CHANGE_TYPE::In, EASING_TYPE::Sine,
 		_Now_Rate - 0.5f, 0.4f, 70.0f, 40.0f);

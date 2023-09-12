@@ -33,12 +33,12 @@ void Block::Update()
 {
 }
 
-void Block::Draw(const std::vector<KuroEngine::Vec2<int>> _shape, BlockAttribute _attribute, const BlockColor _color)
+void Block::Draw(const std::vector<KuroEngine::Vec2<int>> _shape, BlockAttribute _attribute, const BlockColor _color, const float _rota)
 {
 	for (auto& i : _shape) {
 		KuroEngine::Vec2<float> inpos = { (pos.x + i.x) * blockSize + difference.x , (pos.y + i.y) * blockSize + difference.y };
 		inpos += ScreenShakeManager::Instance()->GetOffset();
-		BlockOneDraw(inpos, _color);
+		BlockOneDraw(inpos, _color, _rota);
 	}
 
 	ActionDraw({ (pos.x + shapeMax.x) * blockSize + difference.x, (pos.y + shapeMin.y) * blockSize + difference.y }, _attribute);
@@ -118,22 +118,27 @@ void Block::ChangeBlock(const KuroEngine::Vec2<int> _mapchipNum, const std::vect
 	pos.y -= int(shapeMax.y + pos.y >= max.y) * (shapeMax.y + pos.y - max.y + 1);
 }
 
-void Block::BlockOneDraw(const KuroEngine::Vec2<float> _pos, BlockColor _color)
+void Block::BlockOneDraw(const KuroEngine::Vec2<float> _pos, BlockColor _color, const float _rota)
 {
 	using namespace KuroEngine;
 
 	Vec2<float> pos1 = _pos;
-	pos1.x += blockSize;
-	pos1.y += blockSize;
+	pos1.x += blockSize / 2.0f;
+	pos1.y += blockSize / 2.0f;
 
 	pos1 += ScreenShakeManager::Instance()->GetOffset();
 
+	float rota = _rota * (3.14f / 180.0f);
+
 	if (_color == BlockColor::red) {
-		DrawFunc2D::DrawExtendGraph2D(_pos + ScreenShakeManager::Instance()->GetOffset(), pos1, lineTex[int(BlockColor::red)]);
+		//DrawFunc2D::DrawExtendGraph2D(_pos + ScreenShakeManager::Instance()->GetOffset(), pos1, lineTex[int(BlockColor::red)]);
+		DrawFunc2D::DrawRotaGraph2D(pos1, { 0.75f,0.75f }, rota, lineTex[int(BlockColor::red)]);
 	} else if (_color == BlockColor::blue) {
-		DrawFunc2D::DrawExtendGraph2D(_pos + ScreenShakeManager::Instance()->GetOffset(), pos1, lineTex[int(BlockColor::blue)]);
+		//DrawFunc2D::DrawExtendGraph2D(_pos + ScreenShakeManager::Instance()->GetOffset(), pos1, lineTex[int(BlockColor::blue)]);
+		DrawFunc2D::DrawRotaGraph2D(pos1, { 0.75f,0.75f }, rota, lineTex[int(BlockColor::blue)]);
 	} else if (_color == BlockColor::yellow) {
-		DrawFunc2D::DrawExtendGraph2D(_pos + ScreenShakeManager::Instance()->GetOffset(), pos1, lineTex[int(BlockColor::yellow)]);
+		//DrawFunc2D::DrawExtendGraph2D(_pos + ScreenShakeManager::Instance()->GetOffset(), pos1, lineTex[int(BlockColor::yellow)]);
+		DrawFunc2D::DrawRotaGraph2D(pos1, { 0.75f,0.75f }, rota, lineTex[int(BlockColor::yellow)]);
 	}
 
 }

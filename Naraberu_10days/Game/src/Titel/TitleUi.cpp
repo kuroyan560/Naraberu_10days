@@ -55,6 +55,7 @@ void TitleUi::Initialize()
 	}
 
 	selectTimer = 0;
+	isStageMove = false;
 }
 
 void TitleUi::Update()

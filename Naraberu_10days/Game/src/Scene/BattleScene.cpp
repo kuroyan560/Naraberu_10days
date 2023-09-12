@@ -308,7 +308,7 @@ void BattleScene::OnUpdate()
 
 	//セット可能ならセットする
 	if (ExistUnits::Instance()->m_NowTurn == 0 && m_Impossible_Put_Block_Timer == 0 && Mgr.AliveEnemys() && !ExistUnits::Instance()->m_pPlayer->m_IsEndTurnFunc
-		&& !Mgr.GetSelectedTurnEnd()) {
+		&& !Mgr.GetSelectedTurnEnd() && Mgr.m_TimeUp_Eff_Timer == 0) {
 		PlayerTurn();
 	}
 
@@ -392,6 +392,7 @@ void BattleScene::OnDraw()
 	block->Draw();
 
 	Mgr.OnDraw();
+	Mgr.DrawTimerCutIn();
 
 	// キー描画
 	if (OperationConfig::Instance()->GetLatestDevice() == OperationConfig::Instance()->KEY_BOARD_MOUSE) {
@@ -423,17 +424,16 @@ void BattleScene::OnDraw()
 		GameClearDraw();
 	}
 
-	// Pause
-	if (m_IsPause) {
-		PauseDraw();
-	}
-
 	dame->Draw();
 	ultAttackEffect->Draw();
 
 	// チュートリアル
 	if (ExistUnits::Instance()->m_StageName == "Tutorial") {
 		TutorialDraw();
+	}
+	// Pause
+	if (m_IsPause) {
+		PauseDraw();
 	}
 }
 
@@ -534,7 +534,7 @@ void BattleScene::GameClearDraw()
 	Vec2 Panel_RB = Vec2(899.0f, 557.0f);
 
 	// 後ろを暗く
-	float alpha = 0.4f * (ResultTimer / ResultTimer_Max);
+	float alpha = 0.6f * (ResultTimer / ResultTimer_Max);
 	DrawFunc2D::DrawBox2D(Panel_LT, Panel_RB, Color(0.1f, 0.1f, 0.1f, alpha > 0.4f ? 0.4f : alpha), true);
 
 	// リザルト描画
@@ -573,7 +573,7 @@ void BattleScene::GameOverDraw()
 	Vec2 Panel_RB = Vec2(899.0f, 557.0f);
 
 	// 後ろを暗く
-	float alpha = 0.4f * (ResultTimer / ResultTimer_Max);
+	float alpha = 0.6f * (ResultTimer / ResultTimer_Max);
 	DrawFunc2D::DrawBox2D(Panel_LT, Panel_RB, Color(0.1f, 0.1f, 0.1f, alpha > 0.4f ? 0.4f : alpha), true);
 
 	// リザルト描画
@@ -606,13 +606,13 @@ void BattleScene::PauseDraw()
 	using namespace KuroEngine;
 	// 後ろを暗く
 	DrawFunc2D::DrawBox2D(Vec2(0.0f, 0.0f)
-		, WinApp::Instance()->GetExpandWinSize(), Color(0.1f, 0.1f, 0.1f, 0.4f), true);
+		, WinApp::Instance()->GetExpandWinSize(), Color(0.1f, 0.1f, 0.1f, 0.6f), true);
 
 	Vec2 Value = Vec2(0.0f, ResultEasing(ResultTimer_Max / ResultTimer_Max)) * 450.0f;
 	float SubFrame = 0.0f * RefreshRate::RefreshRate_Mag;
 
 	Vec2 Panel_LT = Vec2(391.0f, 67.0f);
-	Vec2 Panel_RB = Vec2(899.0f, 564.0f);
+	Vec2 Panel_RB = Vec2(899.0f, 557.0f);
 
 	// 後ろを暗く
 	//float alpha = 0.4f * (ResultTimer / ResultTimer_Max);

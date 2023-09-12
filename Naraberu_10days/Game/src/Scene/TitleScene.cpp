@@ -178,6 +178,7 @@ void TitleScene::StageSelect()
 		}
 	}
 
+	if (title->GetIsStageSelectInMove()) { return; }
 	//ˆÚ“®
 	if (OperationConfig::Instance()->GetSelectVec(OperationConfig::SELECT_VEC::SELECT_VEC_DOWN)) {
 		if (!title->GetIsStageMove()) {

@@ -27,13 +27,23 @@ void BlockManager::Initialize()
 	passTex[1] = KuroEngine::D3D12App::Instance()->GenerateTextureBuffer(TexDir + "pass_slash.png");
 	KuroEngine::D3D12App::Instance()->GenerateTextureBuffer(numTex.data(), TexDir + "pass_number.png", 3, { 3, 1 });
 
-	for (int i = 1; i< int(ObjectType::size); i++) {
-		block[i].block.reset(new Block());
-		block[i].attribute = tutorialBlock[tutorialNum][i - 1].attribute;
-		block[i].blockNum = tutorialBlock[tutorialNum][i - 1].blockNum;
-		block[i].color = tutorialBlock[tutorialNum][i - 1].color;
+	tutorialBlockNum = 0;
+	if (ExistUnits::Instance()->m_StageName == "Tutorial") {
+		for (int i = 1; i< int(ObjectType::size); i++) {
+			block[i].block.reset(new Block());
+			block[i].attribute = tutorialBlock[tutorialNum][i - 1].attribute;
+			block[i].blockNum = tutorialBlock[tutorialNum][i - 1].blockNum;
+			block[i].color = tutorialBlock[tutorialNum][i - 1].color;
+		}
+		tutorialBlockNum += 4;
+	} else {
+		for (int i = 1; i< int(ObjectType::size); i++) {
+			block[i].block.reset(new Block());
+			block[i].attribute = BlockAttribute(rand() % int(BlockAttribute::size));
+			block[i].blockNum = rand() % shapeNum;
+			block[i].color = BlockColor(rand() % (int(BlockColor::size) - 4));
+		}
 	}
-	tutorialBlockNum += 4;
 
 	//使用ブロックをセット
 	block[int(ObjectType::use)].block.reset(new Block(true));
@@ -51,10 +61,14 @@ void BlockManager::Initialize()
 void BlockManager::Update()
 {
 	//パス
-	if (passNum > 0 && OperationConfig::Instance()->GetOperationInput(OperationConfig::PASS_PAIR_PRISM,OperationConfig::ON_TRIGGER)
-		&& ExistUnits::Instance()->m_NowTurn == 0) {
+	if (passNum > 0 && OperationConfig::Instance()->GetOperationInput(OperationConfig::PASS_PAIR_PRISM, OperationConfig::ON_TRIGGER)
+		&& ExistUnits::Instance()->m_NowTurn == 0 && recharge == 0) {
 		ChangeBlock();
 		passNum--;
+	}
+
+	if (recharge!=0) {
+		PassRecharge();
 	}
 
 	//ブロック配置後に次ブロックの移動を行う
@@ -72,7 +86,7 @@ void BlockManager::Draw()
 	float y = 633.0f;
 	//移動処理を行っているブロック
 	block[int(ObjectType::use)].block->Draw(shape[block[int(ObjectType::use)].blockNum],
-		block[int(ObjectType::use)].attribute, block[int(ObjectType::use)].color);
+		block[int(ObjectType::use)].attribute, block[int(ObjectType::use)].color, passEffectRota);
 	//choice1表示のブロック
 	block[int(ObjectType::choice1)].block->Draw(shape[block[int(ObjectType::choice1)].blockNum],
 		shape_dist[block[int(ObjectType::choice1)].blockNum],
@@ -107,10 +121,10 @@ void BlockManager::Draw()
 	}
 
 	//パスの大本の座標
+	const KuroEngine::Vec2<float> passSize = { 107.0f,27.0f };
 	const KuroEngine::Vec2<float> passFoundationPos={ 287.0f,668.0f };
 
 	//パス画像
-	const KuroEngine::Vec2<float> passSize = { 107.0f,27.0f };
 	KuroEngine::DrawFunc2D::DrawExtendGraph2D(KuroEngine::Vec2(passFoundationPos.x - passSize.x, passFoundationPos.y - passSize.y) + ScreenShakeManager::Instance()->GetOffset(), passFoundationPos, passTex[0]);
 	const KuroEngine::Vec2<float> passSlashSize = { 18.0f,27.0f };
 	KuroEngine::Vec2<float> passSlashPos = { 54.0f,0.0f };
@@ -121,6 +135,7 @@ void BlockManager::Draw()
 
 	//パス数字画像
 	//最大
+
 	KuroEngine::Vec2<float> passMaxNumPos = { 55.0f,-27.0f };
 	passMaxNumPos += ScreenShakeManager::Instance()->GetOffset();
 	KuroEngine::DrawFunc2D::DrawNumber2D(passMaxNum, { passFoundationPos.x + passMaxNumPos.x ,passFoundationPos.y + passMaxNumPos.y }, numTex.data(), {1,1});
@@ -128,7 +143,6 @@ void BlockManager::Draw()
 	KuroEngine::Vec2<float> passNumPos = { 8.0f,-27.0f };
 	passNumPos += ScreenShakeManager::Instance()->GetOffset();
 	KuroEngine::DrawFunc2D::DrawNumber2D(passNum, { passFoundationPos.x + passNumPos.x ,passFoundationPos.y + passNumPos.y }, numTex.data(), { 1,1 });
-
 }
 
 void BlockManager::Reset()
@@ -162,6 +176,7 @@ void BlockManager::ChoiceBlock()
 		//使用ブロック変更処理
 		block[int(ObjectType::use)].block->ChangeBlock({ -1,-1 }, shape[block[int(ObjectType::use)].blockNum]);
 		SoundConfig::Instance()->Play(SoundConfig::SE_SELECT_PRISM);
+		recharge = 25.0f;
 	}
 }
 
@@ -204,6 +219,8 @@ void BlockManager::ChangeBlock()
 	block[int(ObjectType::use)].block->ChangeBlock(center, shape[block[int(ObjectType::use)].blockNum]);
 	//choice変更
 	nowChoice = 0;
+
+	recharge = 25.0f;
 }
 
 void BlockManager::SetOneChangeBlock(const int a1, const int a2)
@@ -211,4 +228,11 @@ void BlockManager::SetOneChangeBlock(const int a1, const int a2)
 	block[a1].attribute = block[a2].attribute;
 	block[a1].blockNum = block[a2].blockNum;
 	block[a1].color = block[a2].color;
+}
+
+void BlockManager::PassRecharge()
+{
+	passEffectRota = KuroEngine::Math::Ease(KuroEngine::EASE_CHANGE_TYPE::Out, KuroEngine::EASING_TYPE::Exp,
+		25.0f - recharge, 25.0f, 0.0f, 180.0f);
+	recharge--;
 }

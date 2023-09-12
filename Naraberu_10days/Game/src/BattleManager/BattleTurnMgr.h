@@ -56,12 +56,49 @@ private:
 	// 敗北フラグ
 	bool m_IsDefeat;
 
+
 	// ターンエンド時間
 	SYSTEMTIME StartTime;
 	SYSTEMTIME NowTime;
 	__int64 m_ProgressTime;
 	std::shared_ptr<KuroEngine::TextureBuffer> m_Timer_Frame_Tex;
 	std::shared_ptr<KuroEngine::TextureBuffer> m_Timer_Gauge_Tex;
+public:
+	int m_TimeUp_Eff_Timer;
+	void DrawTimerCutIn();
+private:
+	int m_TimeUp_Eff_Timer_Max;
+	std::shared_ptr<KuroEngine::TextureBuffer> m_TimeUp_Eff_Timer_CutIn;
+	std::shared_ptr<KuroEngine::TextureBuffer> m_TimeUp_Eff_Timer_CutIn_Back;
+	std::vector<float> T_C_Points;
+	float OutQuint(float t) {
+		return 1.0f - powf(1.0f - t, 5.0f);
+	}
+	float InQuint(float t) {
+		return t * t * t * t * t;
+	}
+	float EaseFunc(float start, float end, float Now, float Max) {
+		float t = Now / Max;
+		float result = start + static_cast<float>(OutQuint(t) * static_cast<float>(end - start));
+		return result;
+	}
+	float EaseFunc2(float start, float end, float Now, float Max) {
+		float t = Now / Max;
+		float result = start + static_cast<float>(InQuint(t) * static_cast<float>(end - start));
+		return result;
+	}
+	float inQuart(float time, float begin, float change, float duration) {
+		return change * powf((time / duration), 4) + begin;
+	}
+	float outQuart(float time, float begin, float change, float duration) {
+		return -change * (powf((time / duration - 1), 4) - 1) + begin;
+	}
+	float OutInQuart(float time, float begin, float change, float duration) {
+		if (time / duration < 0.5f) {
+			return outQuart(time * 2, begin, change / 2, duration);
+		}
+		return inQuart((time * 2) - duration, begin + change / 2, change / 2, duration);
+	}
 
 	// そのバトルの最初のターンか
 	bool m_FirstTurn;

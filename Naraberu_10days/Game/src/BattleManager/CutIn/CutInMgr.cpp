@@ -110,4 +110,19 @@ void CutInMgr::OnDraw()
 		DrawFunc2D::DrawBox2D(Vec2(0.0f, Box_Center - Height_Scale_Box), Vec2(Window_Width, Box_Center + Height_Scale_Box), Color(29, 29, 35, 255), true);
 		DrawFunc2D::DrawExtendGraph2D(Vec2(Pos - Tex_Width / 2.0f, Moji_Center - Height_Scale_Moji), Vec2(Pos + Tex_Width / 2.0f, Moji_Center + Height_Scale_Moji), NowCutInPtr->m_Tex[0]);
 	}
+	//else if (m_NowCutInType == CutInType::TIME_UP) {
+	//	float Window_Width = WinApp::Instance()->GetExpandWinSize().x;
+	//	float Tex_Width = 198.0f;
+	//	float ease_value = OutInQuart(float(CutInTimer), 0.0f, 1.0f, float(NowCutInPtr->m_CutInEndTime));
+	//	float Pos = (Window_Width + Tex_Width * 2) - (Window_Width + Tex_Width * 4) * ease_value;
+	//	// èc
+	//	float Height_Box = 413.0f - 307.0f;
+	//	float Box_Center = 307.0f + Height_Box / 2.0f;
+	//	float Height_Scale_Box = Height_Box * (ease_value < 0.5f ? ease_value : 1.0f - ease_value);
+	//	float Height_Moji = 400.0f - 319.0f;
+	//	float Moji_Center = 319.0f + Height_Moji / 2.0f;
+	//	float Height_Scale_Moji = Height_Moji * (ease_value < 0.5f ? ease_value : 1.0f - ease_value);
+	//	DrawFunc2D::DrawBox2D(Vec2(0.0f, Box_Center - Height_Scale_Box), Vec2(Window_Width, Box_Center + Height_Scale_Box), Color(29, 29, 35, 255), true);
+	//	DrawFunc2D::DrawExtendGraph2D(Vec2(Pos - Tex_Width / 2.0f, Moji_Center - Height_Scale_Moji), Vec2(Pos + Tex_Width / 2.0f, Moji_Center + Height_Scale_Moji), NowCutInPtr->m_Tex[0]);
+	//}
 }
