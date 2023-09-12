@@ -127,7 +127,7 @@ int WINAPI WinMain(HINSTANCE, HINSTANCE, LPSTR, int)
 			__int64* nTime2 = (__int64*)&ftime2;
 			// Œo‰ß•b
 			m_ProgressTime = (*nTime2 - *nTime1);
-			if (m_ProgressTime >= __int64(160000)) {
+			if (m_ProgressTime >= __int64(100000)) {
 				break;
 			}
 		}
