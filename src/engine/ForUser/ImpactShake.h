@@ -38,5 +38,10 @@ namespace KuroEngine
 
 		//アクティブフラグゲッタ
 		const bool& IsActive()const { return m_active; }
+
+		float GetTimeActiveRate()const
+		{
+			return m_activeTimer.GetTimeRate();
+		}
 	};
 }
