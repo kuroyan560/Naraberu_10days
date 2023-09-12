@@ -321,8 +321,9 @@ void BattleTurnMgr::DrawTimerCutIn()
 
 void BattleTurnMgr::JustInTime(const float _Now_Rate, const KuroEngine::Vec2<float> _pos1, const KuroEngine::Vec2<float> _pos2)
 {
+	
 	using namespace KuroEngine;
-	if (_Now_Rate < 0.5f || _Now_Rate >= 1.0f) { return; }
+	if (_Now_Rate < 0.5f || _Now_Rate >= 1.0f || ExistUnits::Instance()->m_NowTurn != 0) { return; }
 
 	float maxTimerRate = Math::Ease(EASE_CHANGE_TYPE::In, EASING_TYPE::Sine,
 		_Now_Rate - 0.5f, 0.4f, 70.0f, 40.0f);

@@ -27,13 +27,23 @@ void BlockManager::Initialize()
 	passTex[1] = KuroEngine::D3D12App::Instance()->GenerateTextureBuffer(TexDir + "pass_slash.png");
 	KuroEngine::D3D12App::Instance()->GenerateTextureBuffer(numTex.data(), TexDir + "pass_number.png", 3, { 3, 1 });
 
-	for (int i = 1; i< int(ObjectType::size); i++) {
-		block[i].block.reset(new Block());
-		block[i].attribute = tutorialBlock[tutorialNum][i - 1].attribute;
-		block[i].blockNum = tutorialBlock[tutorialNum][i - 1].blockNum;
-		block[i].color = tutorialBlock[tutorialNum][i - 1].color;
+	tutorialBlockNum = 0;
+	if (ExistUnits::Instance()->m_StageName == "Tutorial") {
+		for (int i = 1; i< int(ObjectType::size); i++) {
+			block[i].block.reset(new Block());
+			block[i].attribute = tutorialBlock[tutorialNum][i - 1].attribute;
+			block[i].blockNum = tutorialBlock[tutorialNum][i - 1].blockNum;
+			block[i].color = tutorialBlock[tutorialNum][i - 1].color;
+		}
+		tutorialBlockNum += 4;
+	} else {
+		for (int i = 1; i< int(ObjectType::size); i++) {
+			block[i].block.reset(new Block());
+			block[i].attribute = BlockAttribute(rand() % int(BlockAttribute::size));
+			block[i].blockNum = rand() % shapeNum;
+			block[i].color = BlockColor(rand() % (int(BlockColor::size) - 4));
+		}
 	}
-	tutorialBlockNum += 4;
 
 	//使用ブロックをセット
 	block[int(ObjectType::use)].block.reset(new Block(true));
