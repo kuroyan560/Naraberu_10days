@@ -82,6 +82,11 @@ public:
 	/// <param name="a2">ブロック２</param>
 	void SetOneChangeBlock(const int a1, const int a2);
 
+	/// <summary>
+	/// パスのクールタイム演出
+	/// </summary>
+	void PassRecharge();
+
 	// パス回復
 	void ResetPass() { passNum = passMaxNum; }
 
@@ -112,5 +117,10 @@ private:
 	const int passMaxNum=2;
 	//パス残り回数
 	int passNum;
+	//パスのクールタイム
+	float recharge;
+	//回転
+	float passEffectRota;
+
 };
 
