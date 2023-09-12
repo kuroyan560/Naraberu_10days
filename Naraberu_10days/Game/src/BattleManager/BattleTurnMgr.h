@@ -31,8 +31,10 @@ class BattleTurnMgr
 	// 画像
 	std::shared_ptr<KuroEngine::TextureBuffer> m_CutInTex;
 	// ターンエンド
+public:
 	bool m_Selected_TurnEnd;
 	bool m_Checked_TurnEnd;
+private:
 	int m_Selected_TurnEnd_Timer;
 	float m_Scaling_Timer;
 	float m_Scaling_Timer_Max;
