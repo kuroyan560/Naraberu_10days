@@ -18,6 +18,6 @@ void BackGroundEffect::Update()
 	if (m_timer.UpdateTimer(1.0f / RefreshRate::RefreshRate_Mag))
 	{
 		m_ptEmitter->Emit({0,0}, 1);
-		m_timer.Reset(15);
+		m_timer.Reset(30);
 	}
 }

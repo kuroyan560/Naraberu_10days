@@ -15,7 +15,6 @@ class BackPrismParticle : public ParticleBase
 	static const int TRIANGLE_PATTERN_NUM = 3;
 	static std::array<std::shared_ptr<KuroEngine::TextureBuffer>, TRIANGLE_PATTERN_NUM> s_triangleTex;
 	static const int COLOR_PATTERN_NUM = 3;
-	static std::array<KuroEngine::Color, COLOR_PATTERN_NUM> s_colorPattern;
 
 	KuroEngine::Timer m_timer;
 	KuroEngine::Vec2<float>m_pos;
@@ -25,7 +24,6 @@ class BackPrismParticle : public ParticleBase
 	int m_spinVec;
 	float m_alpha;
 	int m_texNum;
-	int m_colorIdx;
 
 	void OnInit()override;
 	void OnUpdate()override;

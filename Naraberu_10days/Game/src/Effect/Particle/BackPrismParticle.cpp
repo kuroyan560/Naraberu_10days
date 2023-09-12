@@ -6,12 +6,6 @@
 #include"../ScreenShakeManager.h"
 
 std::array<std::shared_ptr<KuroEngine::TextureBuffer>, BackPrismParticle::TRIANGLE_PATTERN_NUM>BackPrismParticle::s_triangleTex;
-std::array<KuroEngine::Color, BackPrismParticle::COLOR_PATTERN_NUM> BackPrismParticle::s_colorPattern =
-{
-	KuroEngine::Color(255,93,204,255),
-	KuroEngine::Color(94,253,247,255),
-	KuroEngine::Color(253,254,137,255),
-};
 
 BackPrismParticle::BackPrismParticle()
 {
@@ -56,12 +50,13 @@ void BackPrismParticle::OnUpdate()
 
 	const float SPIN_SPEED = Angle::ConvertToRadian(0.5f);
 	m_angle += SPIN_SPEED * static_cast<float>(m_spinVec);
+
+	m_scale += Vec2<float>(0.001f, 0.001f) * sin(m_angle);
 }
 
 void BackPrismParticle::OnDraw()
 {
-	KuroEngine::Color col = s_colorPattern[m_colorIdx];
-	col = KuroEngine::Color(76, 96, 170, 255);
+	KuroEngine::Color col = KuroEngine::Color(76, 96, 170, 255);
 	col.m_a *= m_alpha;
 	KuroEngine::DrawFunc2D_Color::DrawRotaGraph2D(m_pos, m_scale, m_angle, s_triangleTex[m_texNum], col);
 }
@@ -69,11 +64,10 @@ void BackPrismParticle::OnDraw()
 void BackPrismParticle::OnEmit(KuroEngine::Vec2<float> arg_pos)
 {
 	m_alpha = 0.0f;
-	m_scale = { KuroEngine::GetRand(0.1f, 0.6f),KuroEngine::GetRand(0.1f, 0.6f) };
+	m_scale = { KuroEngine::GetRand(0.1f, 0.5f),KuroEngine::GetRand(0.1f, 0.5f) };
 	m_angle = KuroEngine::Angle(KuroEngine::GetRand(360.0f));
-	m_texNum = KuroEngine::GetRand(TRIANGLE_PATTERN_NUM - 1);
+	m_texNum = std::min(TRIANGLE_PATTERN_NUM - 1, KuroEngine::GetRand(TRIANGLE_PATTERN_NUM));
 	m_timer.Reset(300);
-	m_colorIdx = KuroEngine::GetRand(COLOR_PATTERN_NUM - 1);
 
 	m_moveVec = { cos(m_angle),sin(m_angle) };
 	m_pos = KuroEngine::WinApp::Instance()->GetExpandWinCenter();
