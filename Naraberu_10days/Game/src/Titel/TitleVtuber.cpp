@@ -277,12 +277,12 @@ void TitleVtuber::BigPrismAnimation()
 
 void TitleVtuber::MoveStageSelect()
 {
-	const float maxTimer = 40.0f * RefreshRate::RefreshRate_Mag;
+	const float maxTimer = 50.0f * RefreshRate::RefreshRate_Mag;
 
 	isMove = true;
 
 	if (isLeftMove) {
-		move = KuroEngine::Math::Ease(KuroEngine::EASE_CHANGE_TYPE::Out, KuroEngine::EASING_TYPE::Back,
+		move = KuroEngine::Math::Ease(KuroEngine::EASE_CHANGE_TYPE::In, KuroEngine::EASING_TYPE::Circ,
 			moveTimer, maxTimer, 0.0f, -1500.0f);
 		if (moveTimer > maxTimer) {
 			isLeftMove = false;

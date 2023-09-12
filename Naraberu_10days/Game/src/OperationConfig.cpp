@@ -1,6 +1,7 @@
 #include "OperationConfig.h"
 #include"FrameWork/UsersInput.h"
 #include"FrameWork/WinApp.h"
+#include"RefreshRate.h"
 
 using namespace KuroEngine;
 
@@ -168,7 +169,8 @@ bool OperationConfig::GetMoveVec(SELECT_VEC arg_vec)
 	}
 
 	//’·‰Ÿ‚µ‚Å“ü—Í”»’è‚É‚·‚éƒtƒŒ[ƒ€
-	static const int INPUT_FRAME_MAX = 10;
+	static const int INPUT_FRAME_MAX = static_cast<int>(12.0f * RefreshRate::RefreshRate_Mag);
+	static const float STICK_DEAD_RANGE = 0.4f;
 
 	bool con = false;
 	bool key = false;
@@ -177,22 +179,22 @@ bool OperationConfig::GetMoveVec(SELECT_VEC arg_vec)
 	switch (arg_vec)
 	{
 		case SELECT_VEC_UP:
-			con = UsersInput::Instance()->ControllerInput(0, XBOX_STICK::L_UP)
+			con = UsersInput::Instance()->ControllerInput(0, XBOX_STICK::L_UP, STICK_DEAD_RANGE)
 				|| UsersInput::Instance()->ControllerInput(0, XBOX_BUTTON::DPAD_UP);
 			key = UsersInput::Instance()->KeyInput(DIK_W);
 			break;
 		case SELECT_VEC_DOWN:
-			con = UsersInput::Instance()->ControllerInput(0, XBOX_STICK::L_DOWN)
+			con = UsersInput::Instance()->ControllerInput(0, XBOX_STICK::L_DOWN, STICK_DEAD_RANGE)
 				|| UsersInput::Instance()->ControllerInput(0, XBOX_BUTTON::DPAD_DOWN);
 			key = UsersInput::Instance()->KeyInput(DIK_S);
 			break;
 		case SELECT_VEC_LEFT:
-			con = UsersInput::Instance()->ControllerInput(0, XBOX_STICK::L_LEFT)
+			con = UsersInput::Instance()->ControllerInput(0, XBOX_STICK::L_LEFT, STICK_DEAD_RANGE)
 				|| UsersInput::Instance()->ControllerInput(0, XBOX_BUTTON::DPAD_LEFT);
 			key = UsersInput::Instance()->KeyInput(DIK_A);
 			break;
 		case SELECT_VEC_RIGHT:
-			con = UsersInput::Instance()->ControllerInput(0, XBOX_STICK::L_RIGHT)
+			con = UsersInput::Instance()->ControllerInput(0, XBOX_STICK::L_RIGHT, STICK_DEAD_RANGE)
 				|| UsersInput::Instance()->ControllerInput(0, XBOX_BUTTON::DPAD_RIGHT);
 			key = UsersInput::Instance()->KeyInput(DIK_D);
 			break;

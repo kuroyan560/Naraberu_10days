@@ -129,7 +129,7 @@ void TitleUi::Draw()
 
 void TitleUi::StageSelectInMove()
 {
-	const float maxTimer = 20.0f * RefreshRate::RefreshRate_Mag;
+	const float maxTimer = 50.0f * RefreshRate::RefreshRate_Mag;
 
 	stageSelectInMoveTimer++;
 
@@ -152,7 +152,7 @@ void TitleUi::StageSelectInMove()
 
 void TitleUi::StageSelectOutMove()
 {
-	const float maxTimer = 20.0f * RefreshRate::RefreshRate_Mag;
+	const float maxTimer = 50.0f * RefreshRate::RefreshRate_Mag;
 
 	stageSelectOutMoveTimer++;
 
