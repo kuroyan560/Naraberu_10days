@@ -7,9 +7,7 @@ class ParticleEmitter;
 class BackGroundEffect
 {
 private:
-	static const int MAX_NUM = 576;
 	std::shared_ptr<ParticleEmitter>m_ptEmitter;
-	std::array<KuroEngine::Vec2<float>, MAX_NUM>m_emitPosArray;
 	KuroEngine::Timer m_timer;
 
 public:

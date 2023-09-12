@@ -3,6 +3,7 @@
 #include "DirectX12/D3D12App.h"
 #include"Common/Angle.h"
 #include"FrameWork/WinApp.h"
+#include"../ScreenShakeManager.h"
 
 std::array<std::shared_ptr<KuroEngine::TextureBuffer>, BackPrismParticle::TRIANGLE_PATTERN_NUM>BackPrismParticle::s_triangleTex;
 std::array<KuroEngine::Color, BackPrismParticle::COLOR_PATTERN_NUM> BackPrismParticle::s_colorPattern =
@@ -34,12 +35,24 @@ void BackPrismParticle::OnUpdate()
 {
 	using namespace KuroEngine;
 
-	if (m_timer.UpdateTimer())m_isAlive = false;
+	if (m_timer.UpdateTimer()
+		|| !InScreen(m_pos,s_triangleTex[m_texNum]->GetGraphSize().Float() * m_scale * 1.2f,WinApp::Instance()->GetExpandWinSize()))
+	{
+		m_isAlive = false;
+	}
+
+	float shakeEaseRate = Math::Ease(Out, Exp, ScreenShakeManager::Instance()->GetActiveRate(), 1.0f, 0.0f);
 
 	const float MAX_ALPHA = 0.6f;
-	m_alpha = sin(m_timer.GetTimeRate() * Angle::PI()) * MAX_ALPHA;
+	m_alpha = sin(m_timer.GetTimeRate() * Angle::PI()) * (MAX_ALPHA + Math::Ease(In, Circ, ScreenShakeManager::Instance()->GetActiveRate(), 1.0f - MAX_ALPHA, 0.0f));
+
 	const float MOVE_SPEED = 1.0f;
-	m_pos += m_moveVec * MOVE_SPEED;
+	Vec2<float>move = m_moveVec * MOVE_SPEED;
+
+	const float SHAKE_ACCEL = 32.0f;
+	move += m_moveVec * Math::Ease(Out, Exp, ScreenShakeManager::Instance()->GetActiveRate(), SHAKE_ACCEL, 0.0f);
+
+	m_pos += move;
 
 	const float SPIN_SPEED = Angle::ConvertToRadian(0.5f);
 	m_angle += SPIN_SPEED * static_cast<float>(m_spinVec);
@@ -55,8 +68,9 @@ void BackPrismParticle::OnDraw()
 
 void BackPrismParticle::OnEmit(KuroEngine::Vec2<float> arg_pos)
 {
-	m_scale = { KuroEngine::GetRand(0.2f, 0.4f),KuroEngine::GetRand(0.2f, 0.4f) };
-	m_angle = KuroEngine::Angle(KuroEngine::GetRand(360));
+	m_alpha = 0.0f;
+	m_scale = { KuroEngine::GetRand(0.1f, 0.6f),KuroEngine::GetRand(0.1f, 0.6f) };
+	m_angle = KuroEngine::Angle(KuroEngine::GetRand(360.0f));
 	m_texNum = KuroEngine::GetRand(TRIANGLE_PATTERN_NUM);
 	m_timer.Reset(300);
 	m_colorIdx = KuroEngine::GetRand(COLOR_PATTERN_NUM);

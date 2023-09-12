@@ -20,6 +20,10 @@ public:
 	{
 		return m_offset;
 	}
-	float GetActiveRate()const { return m_impactShake.GetTimeActiveRate(); }
+	float GetActiveRate()const 
+	{
+		if (!m_impactShake.IsActive())return 1.0f;
+		return m_impactShake.GetTimeActiveRate(); }
+
 };
 
