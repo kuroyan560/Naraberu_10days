@@ -3,6 +3,7 @@
 #include "DirectX12/D3D12App.h"
 #include "ForUser/DrawFunc/2D/DrawFunc2D.h"
 #include "ForUser/DrawFunc/2D/DrawFunc2D_Mask.h"
+#include"../../OperationConfig.h"
 
 void CutInMgr::OnInitialize()
 {
@@ -25,12 +26,14 @@ void CutInMgr::StartCutIn(CutInType Type)
 		//if (!(NowCutInPtr != nullptr && NowCutInPtr->m_Type == CutInType::NEXT_BATTLE)) {
 			NowCutInPtr = std::make_shared<CutInData>(Type, 130, TexDir + "player_turn.png");
 		//}
+		OperationConfig::Instance()->SetInGameOperationActive(true);
 		break;
 	case CutInType::ENEMY_TURN:
 		NowCutInPtr = std::make_shared<CutInData>(Type, 130, TexDir + "enemy_turn.png");
 		break;
 	case CutInType::NEXT_BATTLE:
 		NowCutInPtr = std::make_shared<CutInData>(Type, 130, TexDir + "next_battle.png");
+		OperationConfig::Instance()->SetInGameOperationActive(true);
 		break;
 	case CutInType::MAX:
 		break;

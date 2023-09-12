@@ -60,6 +60,8 @@ private:
 	//インゲーム操作入力の配列
 	const std::vector<OPERATION_TYPE>m_inGameOperationArray =
 	{
+		EXECUTE_ULT,	//ULT発動
+		PASS_PAIR_PRISM,	//プリズムをパス
 	};
 	//全ての入力を受けて受けているか
 	bool m_isAllInputActive = true;
