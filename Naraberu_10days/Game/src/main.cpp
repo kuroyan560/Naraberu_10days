@@ -67,9 +67,15 @@ int WINAPI WinMain(HINSTANCE, HINSTANCE, LPSTR, int)
 
 	bool winEnd = false;
 
+	SYSTEMTIME StartTime;
+	SYSTEMTIME NowTime;
+	__int64 m_ProgressTime;
+
 	//ループ
 	while (1)
 	{
+		GetLocalTime(&StartTime);
+
 		//メッセージがある？
 		MSG msg{};
 		while (PeekMessage(&msg, nullptr, 0, 0, PM_REMOVE))
@@ -107,6 +113,24 @@ int WINAPI WinMain(HINSTANCE, HINSTANCE, LPSTR, int)
 		KuroEngine::DrawFunc3D::CountReset();
 
 		KuroEngine::DrawFuncBillBoard::CountReset();
+
+		while (1) {
+			// 現在時刻
+			GetLocalTime(&NowTime);
+			// 変換
+			FILETIME ftime1;
+			FILETIME ftime2;
+			SystemTimeToFileTime(&StartTime, &ftime1);
+			SystemTimeToFileTime(&NowTime, &ftime2);
+			// int64にキャスト
+			__int64* nTime1 = (__int64*)&ftime1;
+			__int64* nTime2 = (__int64*)&ftime2;
+			// 経過秒
+			m_ProgressTime = (*nTime2 - *nTime1);
+			if (m_ProgressTime >= __int64(160000)) {
+				break;
+			}
+		}
 	}
 
 	KuroEngine::Debugger::ExportParameterLog();

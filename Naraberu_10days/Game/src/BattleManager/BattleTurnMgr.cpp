@@ -81,7 +81,7 @@ void BattleTurnMgr::TurnEndButtonUpdate()
 			//}
 		}
 
-		if (m_ProgressTime >= (__int64(60000000) + m_PauseTime + TotalPuaseTime) && !m_Checked_TurnEnd && ExistUnits::Instance()->m_StageName != "Tutorial" &&
+		if (m_ProgressTime >= (__int64(600000000) + m_PauseTime + TotalPuaseTime) && !m_Checked_TurnEnd && ExistUnits::Instance()->m_StageName != "Tutorial" &&
 			m_TimeUp_Eff_Timer == 0) {
 			/*m_Checked_TurnEnd = true;
 			m_Moving_Flag = true;
@@ -266,7 +266,7 @@ void BattleTurnMgr::AutoTurnEndTimerDraw()
 	}
 
 	// Œ»Ý‚ÌŠ„‡
-	float Now_Rate = float(m_ProgressTime - m_PauseTime - TotalPuaseTime) / (60000000.0f);
+	float Now_Rate = float(m_ProgressTime - m_PauseTime - TotalPuaseTime) / (600000000.0f);
 	// ƒQ[ƒW‚Ì’·‚³
 	float Gauge_Max_Width = RB_Gauge.x - LT_Gauge.x;
 	// Œ»Ý‚ÌƒQ[ƒW‚Ì’·‚³
@@ -308,6 +308,7 @@ void BattleTurnMgr::DrawTimerCutIn()
 	Vec2 Panel_RB = Vec2(893.0f, 564.0f);
 
 	float Center = WinSize.x / 2.0f;
+
 	Center = WinSize.x - OutInQuart(float(m_TimeUp_Eff_Timer), 0.0f, 1.0f, float(m_TimeUp_Eff_Timer_Max)) * WinSize.x;
 
 	DrawFunc2D_Mask::DrawExtendGraph2D(Vec2(0.0f, 320.0f - CutIn_Size_Box / 2.0f) + ScreenShakeManager::Instance()->GetOffset()
