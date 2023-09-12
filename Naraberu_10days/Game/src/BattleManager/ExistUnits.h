@@ -30,6 +30,9 @@ public:
 	std::string m_StageName;
 	// チュートリアル用
 	bool m_CanTurnEnd;
+	// クリア済みフラグ
+	int m_Now_Stage_Index = 0;
+	std::array<bool, 5> m_Stage_Already_Clear = { false,false,false,false,false };
 
 	ExistUnits() {
 	}

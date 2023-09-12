@@ -163,6 +163,7 @@ void TitleScene::StageSelect()
 			if (title->GetStageNum() == 1) {
 				ExistUnits::Instance()->m_StageName = "Tutorial";
 			}
+			ExistUnits::Instance()->m_Now_Stage_Index = title->GetStageNum() - 1;
 			KuroEngine::KuroEngineDevice::Instance()->ChangeScene("Battle", &m_Fade);
 			SoundConfig::Instance()->Play(SoundConfig::SE_DONE);
 		}

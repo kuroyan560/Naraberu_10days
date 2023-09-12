@@ -303,6 +303,8 @@ void BattleScene::OnUpdate()
 			ExistUnits::Instance()->m_ChangeStageSelect = true;
 			KuroEngine::KuroEngineDevice::Instance()->ChangeScene("title", &m_Fade);
 			SoundConfig::Instance()->Play(SoundConfig::SE_DONE);
+			// ステージクリアフラグを上げる
+			ExistUnits::Instance()->m_Stage_Already_Clear[ExistUnits::Instance()->m_Now_Stage_Index] = true;
 		}
 	}
 
