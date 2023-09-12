@@ -128,8 +128,14 @@ namespace EnemysData {
 			}
 
 			m_ReticleTex = D3D12App::Instance()->GenerateTextureBuffer(TexDir + "reticle.png");
-			if (m_Name != "Debug_1") {
+			if (m_Name == "Token") {
+
+			}
+			else if (m_Name != "Boss_1") {
 				m_UnitTex = D3D12App::Instance()->GenerateTextureBuffer(EnemyTexturesDir[m_Name]);
+			}
+			else {
+				m_UnitTex = D3D12App::Instance()->GenerateTextureBuffer(TexDir + "/character/boss_character_normal.png");
 			}
 			m_IndexTex_1 = D3D12App::Instance()->GenerateTextureBuffer(TexDir + "enemy_number_1.png");
 			m_IndexTex_2 = D3D12App::Instance()->GenerateTextureBuffer(TexDir + "enemy_number_2.png");
@@ -139,7 +145,7 @@ namespace EnemysData {
 			m_IndexTex_3_Target = D3D12App::Instance()->GenerateTextureBuffer(TexDir + "target_enemy_number_3.png");
 
 			// îÌÉ_ÉÅ
-			if (m_Name == "Debug_1") {
+			if (m_Name == "Boss_1" || m_Name == "Token") {
 				return;
 			}
 			auto First = Moji_kugiri::split(m_Name, '_');
@@ -148,6 +154,8 @@ namespace EnemysData {
 	};
 
 	// Ç±Ç±Ç…ìGÇí«â¡ÇµÇƒÇ¢Ç≠
+	static const EnemyData Token_0 =			EnemyData("Token", ENEMY_TAG::DEFAULT, 0, 0, AI_TYPE::TUTORIAL, "Heal_01");
+
 	static const EnemyData Inu_Tutorial_1 =		EnemyData("inu_blue", ENEMY_TAG::DEFAULT, 16, 5, AI_TYPE::TUTORIAL, "Attack_01", "Attack_01", "Attack_01");
 	static const EnemyData Inu_Tutorial_2 =		EnemyData("inu_blue", ENEMY_TAG::DEFAULT, 32, 5, AI_TYPE::TUTORIAL, "Attack_01", "Attack_01", "Attack_01");
 
@@ -163,5 +171,5 @@ namespace EnemysData {
 	static const EnemyData Zako_Yellow_1 =		EnemyData("zako_yellow", ENEMY_TAG::DEFAULT, 96, 20, AI_TYPE::DEFAULT, "Attack_01", "Jamming_01", "Jamming_01");
 	static const EnemyData Zako_Red_1 =			EnemyData("zako_red", ENEMY_TAG::DEFAULT, 128, 20, AI_TYPE::DEFAULT, "Attack_01", "Jamming_01", "Jamming_01");
 
-	static const EnemyData DebugEnemy_Boss_1 =	EnemyData("Debug_1", ENEMY_TAG::BOSS, 512, 80, AI_TYPE::DEFAULT, "Attack_01", "Attack_01", "Attack_01");
+	static const EnemyData DebugEnemy_Boss_1 =	EnemyData("Boss_1", ENEMY_TAG::BOSS, 512, 80, AI_TYPE::DEFAULT, "Attack_01", "Attack_01", "Attack_01");
 }

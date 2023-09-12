@@ -125,6 +125,9 @@ void Enemy::SetEnemyData(EnemysData::EnemyData Data)
 
 void Enemy::Draw(int Index, int NowTurn_Index, int Index_Max, bool Dark, int FrameTime, bool FirstTurn, int NowTarget)
 {
+	if (m_Data.m_Name == "Token") {
+		return;
+	}
 
 	if (m_Data.m_Tag == EnemysData::ENEMY_TAG::BOSS) {
 		Draw_Boss(Index, NowTurn_Index, Index_Max, Dark, FrameTime, FirstTurn);
@@ -269,6 +272,10 @@ void Enemy::Draw(int Index, int NowTurn_Index, int Index_Max, bool Dark, int Fra
 
 void Enemy::Draw_Boss(int Index, int NowTurn_Index, int Index_Max, bool Dark, int FrameTime, bool FirstTurn)
 {
+	if (m_Data.m_Name == "Token") {
+		return;
+	}
+
 	using namespace KuroEngine;
 
 	Color Mask = Color(255, 255, 255, 255);
@@ -288,6 +295,9 @@ void Enemy::Draw_Boss(int Index, int NowTurn_Index, int Index_Max, bool Dark, in
 
 	Vec2 Window_Size = WinApp::Instance()->GetExpandWinSize();
 	//DrawFunc2D::DrawExtendGraph2D(Vec2(0.0f, 0.0f), Vec2(Window_Size.x, Window_Size.y), m_Data.m_FrameTex);
+	DrawFunc2D_Color::DrawExtendGraph2D(Vec2(932.0f, 67.0f) + ScreenShakeManager::Instance()->GetOffset()
+		, Vec2(1240.0f, 603.0f) + ScreenShakeManager::Instance()->GetOffset(), m_Data.m_UnitTex, Mask,
+		{ false,false }, { 0.0f,0.0f }, { 1.0f,1.0f }, KuroEngine::DrawFunc2D_Color::FILL_MDOE::MUL);
 	DrawFunc2D_Color::DrawExtendGraph2D(Vec2(0.0f, 0.0f) + ScreenShakeManager::Instance()->GetOffset()
 		, Vec2(Window_Size.x, Window_Size.y) + ScreenShakeManager::Instance()->GetOffset(), m_Data.m_FrameTex, Mask,
 		{ false,false }, { 0.0f,0.0f }, { 1.0f,1.0f }, KuroEngine::DrawFunc2D_Color::FILL_MDOE::MUL);
@@ -347,6 +357,13 @@ void Enemy::Draw_Boss(int Index, int NowTurn_Index, int Index_Max, bool Dark, in
 
 void Enemy::Draw_Damage()
 {
+	if (m_Data.m_Name == "Token") {
+		return;
+	}
+	if (m_Data.m_Name == "Boss_1") {
+		return;
+	}
+
 	using namespace KuroEngine;
 	DrawFunc2D::DrawExtendGraph2D(Vec2(1009.0f - D_Move_Width, 115.0f + D_IndexDiff) + ScreenShakeManager::Instance()->GetOffset()
 		, Vec2(1254.0f - D_Move_Width, 215.0f + D_IndexDiff) + ScreenShakeManager::Instance()->GetOffset(), m_Data.m_UnitTex_Damage, 0.6f);
@@ -354,6 +371,12 @@ void Enemy::Draw_Damage()
 
 void Enemy::DrawHpGauge()
 {
+	if (m_Data.m_Name == "Token") {
+		return;
+	}
+	if (m_Data.m_Name == "Boss_1") {
+		return;
+	}
 	using namespace KuroEngine;
 
 	// HPゲージが削れる演出用

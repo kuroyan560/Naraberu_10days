@@ -158,9 +158,9 @@ void TitleScene::StageSelect()
 	//battleへ
 	if (OperationConfig::Instance()->GetOperationInput(OperationConfig::OPERATION_TYPE::DONE, OperationConfig::INPUT_PATTERN::ON_TRIGGER)) {
 		if (!title->GetIsStageMove()) {
-			ExistUnits::Instance()->m_StageName = "Stage" + std::to_string(title->GetStageNum());
+			ExistUnits::Instance()->m_StageName = "Stage" + std::to_string(title->GetStageNum() - 1);
 			// 仮で5を選ぶとチュートリアルになるように
-			if (title->GetStageNum() == 5) {
+			if (title->GetStageNum() == 1) {
 				ExistUnits::Instance()->m_StageName = "Tutorial";
 			}
 			KuroEngine::KuroEngineDevice::Instance()->ChangeScene("Battle", &m_Fade);

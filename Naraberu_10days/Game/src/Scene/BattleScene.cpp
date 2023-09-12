@@ -323,7 +323,7 @@ void BattleScene::OnUpdate()
 		block->Update();
 	}
 
-	if (Mgr.GetNowTurn() == 1) {
+	if (Mgr.GetNowTurn() == 1 || Mgr.GetNowTurn() == 2 || Mgr.GetNowTurn() == 3) {
 		block->ResetPass();
 	}
 
@@ -852,7 +852,7 @@ void BattleScene::TutorialUpdate()
 			}
 
 			m_Tutorial_Text_CoolTime = 10;
-			m_Impossible_Put_Block_Timer = int(160.0f * RefreshRate::RefreshRate_Mag);
+			m_Impossible_Put_Block_Timer = int(100.0f * RefreshRate::RefreshRate_Mag);
 			m_TaegetTimer = 0;
 			m_LastTarget_LT = m_NowTarget_LT;
 			m_LastTarget_RB = m_NowTarget_RB;
@@ -1001,6 +1001,7 @@ void BattleScene::TutorialUpdate()
 		// ‘€ìŠ®—¹Œã
 		if (m_Tutorial_Trigger_Timer > 0) {
 			m_Tutorial_Trigger_Timer++;
+			m_Tutorial_None_Ctrl_Timer = 0;
 			if (m_NowTutorial_Step == 7) {
 				if (m_Tutorial_Trigger_Timer == int(300.0f * RefreshRate::RefreshRate_Mag)) {
 					m_NowTutorial_Step++;
@@ -1221,7 +1222,7 @@ void BattleScene::TutorialDraw()
 			TextMoveY = Rate_2 * 50.0f;
 		}
 		if (m_NowTutorial_Step == 18) {
-			TextMoveY = 50 - Rate_2 * 80.0f;
+			TextMoveY = 50 - Rate_2 * 70.0f;
 		}
 
 
