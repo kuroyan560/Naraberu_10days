@@ -11,9 +11,9 @@ const std::array<std::array<BlockManager::TutorialBlock, 10>, 1>BlockManager::tu
 	{
 		{BlockManager::TutorialBlock(1, BlockColor::red,BlockAttribute::attack1),{1, BlockColor::red,BlockAttribute::attack1},
 		{1, BlockColor::red,BlockAttribute::attack2},{1, BlockColor::red,BlockAttribute::attack2},
-		{1, BlockColor::red,BlockAttribute::attack1},{1, BlockColor::red,BlockAttribute::recovery},
-		{1, BlockColor::red,BlockAttribute::attack1},{1, BlockColor::red,BlockAttribute::attack1},
-		{1, BlockColor::red,BlockAttribute::attack1},{1, BlockColor::red,BlockAttribute::attack1},
+		{1, BlockColor::red,BlockAttribute::recovery},{1, BlockColor::red,BlockAttribute::recovery},
+		{1, BlockColor::red,BlockAttribute::attack1},{1, BlockColor::red,BlockAttribute::attack2},
+		{1, BlockColor::red,BlockAttribute::attack2},{1, BlockColor::red,BlockAttribute::recovery},
 		}
 	}
 };
