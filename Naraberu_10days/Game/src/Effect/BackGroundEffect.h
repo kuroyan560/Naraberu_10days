@@ -24,8 +24,9 @@ public:
 private:
 
 	std::array<std::shared_ptr<KuroEngine::TextureBuffer>, 3> triangleTex;
-	static const int maxNum = 30;
+	static const int maxNum = 1200;
 	std::array<Info, maxNum> info;
 	int timer;
 
+	KuroEngine::Vec2<float> pos_a;
 };

@@ -12,14 +12,26 @@ void BackGroundEffect::Initialize()
 	}
 
 	const KuroEngine::Vec2<float> max = KuroEngine::WinApp::Instance()->GetExpandWinSize();
+	KuroEngine::Vec2<float> range = { -10.0f,-10.0f };
+	int count = 0;
+	const float addRange = 40.0f;
 	for (auto& i : info) {
 		i.isAlive = 0;
-		i.pos = { KuroEngine::GetRand(-20.0f, max.x + 20.0f),KuroEngine::GetRand(-20.0f, max.y + 20.0f) };
-		i.scale = { KuroEngine::GetRand(0.2f, 0.6f),KuroEngine::GetRand(0.2f, 0.6f) };
+		i.pos = { KuroEngine::GetRand(range.x,range.x + addRange),KuroEngine::GetRand(range.y, range.y + addRange) };
+		i.scale = { KuroEngine::GetRand(0.2f, 0.4f),KuroEngine::GetRand(0.2f, 0.4f) };
 		i.angle = KuroEngine::GetRand(0.0f, 360.0f);
 		i.angle = i.angle * (3.14f / 180.0f);
 		i.alpha = 0.0f;
 		i.texNum = KuroEngine::GetRand(3);
+		count++;
+		if (count % 2 == 0)
+		{
+			range.x += addRange;
+			if (range.x >= 1290.0f) {
+				range.x = -10.0f;
+				range.y += addRange;
+			}
+		}
 	}
 }
 
