@@ -2,6 +2,7 @@
 #include "../../src/engine/DirectX12/D3D12App.h"
 #include "ForUser/DrawFunc/2D/DrawFunc2D.h"
 #include "../RefreshRate.h"
+#include "../BattleManager/ExistUnits.h"
 
 const KuroEngine::Vec2<float> c_pos = { 700.0f,400.0f };
 const KuroEngine::Vec2<float> u_pos = { 950.0f,250.0f };
@@ -25,7 +26,8 @@ TitleUi::TitleUi()
 		TexDir + "select_stage_number.png", int(numTex.size()), { int(numTex.size()),1 });
 	//チュートリアル文字
 	tutorialTex = D3D12App::Instance()->GenerateTextureBuffer(TexDir + "tutorial.png");
-
+	//クリア
+	clearTex = D3D12App::Instance()->GenerateTextureBuffer(TexDir + "clear.png");
 	//現在のステージ番号
 	nowStageNum = 0;
 }
@@ -38,7 +40,6 @@ void TitleUi::Initialize()
 	isStageSelectInMove = false;
 	//ステージセレクトの移動を行う
 	isStageMove = false;
-
 
 	const float u_scale = 0.7f;
 	const float d_scale = 0.8f;
@@ -123,6 +124,17 @@ void TitleUi::Draw()
 			stageTexInfo[i].pos.y + number_dist.y * stageTexInfo[i].scale};
 			//ステージ番号
 			KuroEngine::DrawFunc2D::DrawNumber2D(i, inpos, numTex.data());
+
+			//クリア文字
+			if(!ExistUnits::Instance()->m_Stage_Already_Clear[i]){continue;}
+			const KuroEngine::Vec2<float> clear_moji_size = { 112.0f,22.0f };
+			inpos = {
+				stageTexInfo[i].pos.x + number_dist.x * stageTexInfo[i].scale - 350.0f * stageTexInfo[i].scale,
+				stageTexInfo[i].pos.y + number_dist.y * stageTexInfo[i].scale - 50.0f * stageTexInfo[i].scale };
+
+			KuroEngine::DrawFunc2D::DrawExtendGraph2D(inpos,
+				{ inpos.x + clear_moji_size.x * stageTexInfo[i].scale,inpos.y + clear_moji_size.y * stageTexInfo[i].scale },
+				clearTex);
 		} else {
 			KuroEngine::Vec2<float> inpos = {
 			stageTexInfo[i].pos.x + tutorial_moji_dist.x * stageTexInfo[i].scale + 100.0f * stageTexInfo[i].scale,

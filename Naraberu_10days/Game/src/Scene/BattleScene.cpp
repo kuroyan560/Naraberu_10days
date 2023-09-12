@@ -1,4 +1,4 @@
-#include "BattleScene.h"
+ï»¿#include "BattleScene.h"
 
 #include "../../src/engine/DirectX12/D3D12App.h"
 #include "../../src/engine/ForUser/DrawFunc/2D/DrawFunc2D.h"
@@ -26,7 +26,7 @@ void BattleScene::OnInitialize()
 {
 	using namespace KuroEngine;
 
-	// ƒŠƒUƒ‹ƒg•\¦—p
+	// ãƒªã‚¶ãƒ«ãƒˆè¡¨ç¤ºç”¨
 	ResultTimer = 0.0f;
 	ResultTimer_Max = 80.0f * RefreshRate::RefreshRate_Mag;
 
@@ -36,11 +36,11 @@ void BattleScene::OnInitialize()
 	m_End_Timer = 0;
 	m_End_Timer_Finish = int(500.0f * RefreshRate::RefreshRate_Mag);
 
-	// ƒ|[ƒY
+	// ãƒãƒ¼ã‚º
 	m_IsPause = false;
 	m_PauseMenu = 0;
 	m_Already_Selected_Pause = false;
-	// ƒ`ƒ…[ƒgƒŠƒAƒ‹
+	// ãƒãƒ¥ãƒ¼ãƒˆãƒªã‚¢ãƒ«
 	m_NowTutorial_Step = 0;
 	m_Tutorial_Trigger_Timer = 0;
 	m_Tutorial_None_Ctrl_Timer = 0;
@@ -64,20 +64,20 @@ void BattleScene::OnInitialize()
 	Pl->StartTurn();
 	UltParticle::SetPlayer(Pl);
 
-	// ƒŒƒeƒBƒNƒ‹‚ª“®‚­‚æ‚¤‚É
+	// ãƒ¬ãƒ†ã‚£ã‚¯ãƒ«ãŒå‹•ãã‚ˆã†ã«
 	Reticle::Instance()->m_CanMove = true;
 
-	// ƒXƒe[ƒW‚ğƒZƒbƒg
+	// ã‚¹ãƒ†ãƒ¼ã‚¸ã‚’ã‚»ãƒƒãƒˆ
 	SetStage(ExistUnits::Instance()->m_StageName);
-	// Å‰‚ÌƒEƒF[ƒu
+	// æœ€åˆã®ã‚¦ã‚§ãƒ¼ãƒ–
 	m_NowWave = 1;
-	// ƒEƒF[ƒu‚Ì“G‚ğæ“¾
+	// ã‚¦ã‚§ãƒ¼ãƒ–ã®æ•µã‚’å–å¾—
 	std::vector<EnemysData::EnemyData> EnemyData = m_NowStage.GetWaveEnemyIndex(m_NowWave);
 	for (auto& data : EnemyData) {
 		En.emplace_back(std::make_shared<Enemy>());
 		GetUnitPtr<Enemy>(En.back())->SetEnemyData(data);
 	}
-	// ƒf[ƒ^‚ğƒZƒbƒg
+	// ãƒ‡ãƒ¼ã‚¿ã‚’ã‚»ãƒƒãƒˆ
 	Mgr.OnInitialize(Pl, En);
 	if (En.size() == 1) {
 		ExistUnits::Instance()->Set(Pl.get(), En[0].get());
@@ -92,14 +92,14 @@ void BattleScene::OnInitialize()
 	stage.reset(new PanelManager());
 	stage->Initialize();
 	block.reset(new BlockManager());
-	//’†‰›w’è
+	//ä¸­å¤®æŒ‡å®š
 	block->SetCenter(stage->GetCenter());
 	block->Initialize();
 
 	ExistUnits::Instance()->SetMapChipPtr(stage->GetMapChipPtr());
 	ExistUnits::Instance()->SetStageManagerPtr(stage.get());
 
-	//‰‰o‰Šú‰»
+	//æ¼”å‡ºåˆæœŸåŒ–
 	m_setPrismEffect->Init();
 	for (int enemyIdx = 0; enemyIdx < ENEMY_COUNT_MAX; ++enemyIdx)
 		m_enemyDamageUI[enemyIdx]->Init();
@@ -120,14 +120,14 @@ void BattleScene::OnInitialize()
 
 	ParticleManager::Instance()->Init();
 
-	// ƒ`ƒ…[ƒgƒŠƒAƒ‹
+	// ãƒãƒ¥ãƒ¼ãƒˆãƒªã‚¢ãƒ«
 	if (ExistUnits::Instance()->m_StageName == "Tutorial") {
 		m_NowTutorial_Step = 0;
 		m_Tutorial_Pause[m_NowTutorial_Step] = true;
 		block->SetTutorial();
 	}
 
-	//”wŒi
+	//èƒŒæ™¯
 	backGroundEffect.reset(new BackGroundEffect());
 	backGroundEffect->Initialize();
 }
@@ -143,7 +143,7 @@ void BattleScene::OnUpdate()
 		ScreenShakeManager::Instance()->Shake();
 	}
 
-	//ƒ_ƒ[ƒW•\‹LiˆÚ“®‚·‚éj
+	//ãƒ€ãƒ¡ãƒ¼ã‚¸è¡¨è¨˜ï¼ˆç§»å‹•ã™ã‚‹ï¼‰
 	{
 		if (OperationConfig::Instance()->DebugKeyInput(DIK_H)) {
 			dame->SetDamage(123);
@@ -175,25 +175,25 @@ void BattleScene::OnUpdate()
 	if (OperationConfig::Instance()->GetOperationInput(OperationConfig::MENU_IN_GAME,OperationConfig::ON_TRIGGER) && ResultTimer < 1.0f) {
 		m_IsPause = true;
 		m_PauseMenu = 0;
-		// Œ»İ
+		// ç¾åœ¨æ™‚åˆ»
 		GetLocalTime(&Mgr.PauseStartTime);
-		// ƒ|[ƒYŠÔ‚ÌŒvZ
+		// ãƒãƒ¼ã‚ºæ™‚é–“ã®è¨ˆç®—
 		Mgr.m_PauseTimeContainer.emplace_back(Mgr.m_PauseTime);
 		SoundConfig::Instance()->Play(SoundConfig::SE_PAUSE_OPEN);
 	}
 
 	if (m_IsPause) {
-		// Œ»İ
+		// ç¾åœ¨æ™‚åˆ»
 		GetLocalTime(&Mgr.PauseEndTime);
-		// •ÏŠ·
+		// å¤‰æ›
 		FILETIME ftime1;
 		FILETIME ftime2;
 		SystemTimeToFileTime(&Mgr.PauseStartTime, &ftime1);
 		SystemTimeToFileTime(&Mgr.PauseEndTime, &ftime2);
-		// int64‚ÉƒLƒƒƒXƒg
+		// int64ã«ã‚­ãƒ£ã‚¹ãƒˆ
 		__int64* nTime1 = (__int64*)&ftime1;
 		__int64* nTime2 = (__int64*)&ftime2;
-		// Œo‰ß•b
+		// çµŒéç§’
 		Mgr.m_PauseTime = (*nTime2 - *nTime1);
 
 		if (OperationConfig::Instance()->GetSelectVec(OperationConfig::SELECT_VEC::SELECT_VEC_UP) ||
@@ -213,20 +213,20 @@ void BattleScene::OnUpdate()
 			else SoundConfig::Instance()->Play(SoundConfig::SE_CANNOT_SELECT);
 		}
 
-		// Œˆ’è
+		// æ±ºå®š
 		if (OperationConfig::Instance()->GetOperationInput(OperationConfig::OPERATION_TYPE::DONE, OperationConfig::INPUT_PATTERN::ON_TRIGGER)) {
 			m_Already_Selected_Pause = true;
 			SoundConfig::Instance()->Play(SoundConfig::SE_DONE);
-			// –ß‚é
+			// æˆ»ã‚‹
 			if (m_PauseMenu == 0) {
 				m_Already_Selected_Pause = false;
 				m_IsPause = false;
 			}
-			// ƒ^ƒCƒgƒ‹
+			// ã‚¿ã‚¤ãƒˆãƒ«
 			else if (m_PauseMenu == 1) {
 				KuroEngine::KuroEngineDevice::Instance()->ChangeScene("Battle", &m_Fade);
 			}
-			// ƒŠƒgƒ‰ƒC
+			// ãƒªãƒˆãƒ©ã‚¤
 			else if (m_PauseMenu == 2) {
 				ExistUnits::Instance()->m_ChangeStageSelect = true;
 				KuroEngine::KuroEngineDevice::Instance()->ChangeScene("title", &m_Fade);
@@ -235,26 +235,26 @@ void BattleScene::OnUpdate()
 		return;
 	}
 
-	// ƒEƒF[ƒuI—¹EŸƒEƒF[ƒuƒXƒ^[ƒg
+	// ã‚¦ã‚§ãƒ¼ãƒ–çµ‚äº†ãƒ»æ¬¡ã‚¦ã‚§ãƒ¼ãƒ–ã‚¹ã‚¿ãƒ¼ãƒˆ
 	if (Mgr.ChangeNextWave()) {
-		// ƒJƒbƒgƒCƒ“
-		// Œ»İ‚ªÅŒã‚ÌƒEƒF[ƒu‚Å‚Í‚È‚©‚Á‚½ê‡
+		// ã‚«ãƒƒãƒˆã‚¤ãƒ³
+		// ç¾åœ¨ãŒæœ€å¾Œã®ã‚¦ã‚§ãƒ¼ãƒ–ã§ã¯ãªã‹ã£ãŸå ´åˆ
 		if (!(m_NowWave + 1 > m_NowStage.m_Stage_Wave_Count)) {
 			CutInMgr::Instance()->StartCutIn(CutInType::NEXT_BATTLE);
 		}
 		NextWave();
 	}
 
-	// ƒXƒe[ƒWI—¹(”s–k)
+	// ã‚¹ãƒ†ãƒ¼ã‚¸çµ‚äº†(æ•—åŒ—)
 	if (Mgr.GetDefeat()) {
 		ResultTimer += 1.0f;
 		if (m_End_Timer < m_End_Timer_Finish) {
 			m_End_Timer++;
 		}
-		// ƒŒƒeƒBƒNƒ‹‚ğ“®‚©‚È‚¢‚æ‚¤‚É
+		// ãƒ¬ãƒ†ã‚£ã‚¯ãƒ«ã‚’å‹•ã‹ãªã„ã‚ˆã†ã«
 		Reticle::Instance()->m_CanMove = false;
 
-		// ‘I‘ğˆ
+		// é¸æŠè‚¢
 		if (!m_Already_Selected) {
 			if (OperationConfig::Instance()->GetSelectVec(OperationConfig::SELECT_VEC::SELECT_VEC_UP) || 
 				OperationConfig::Instance()->GetTargetChangeVec(OperationConfig::SELECT_VEC_UP)) {
@@ -272,30 +272,30 @@ void BattleScene::OnUpdate()
 				}
 				else SoundConfig::Instance()->Play(SoundConfig::SE_CANNOT_SELECT);
 			}
-			// Œˆ’è
+			// æ±ºå®š
 			if (OperationConfig::Instance()->GetOperationInput(OperationConfig::OPERATION_TYPE::DONE, OperationConfig::INPUT_PATTERN::ON_TRIGGER)
 				&& m_End_Timer > 1 && m_End_Timer >= int(float(m_End_Timer_Finish) / 2.0f)) {
 				m_Already_Selected = true;
 				SoundConfig::Instance()->Play(SoundConfig::SE_DONE);
-				// ƒ^ƒCƒgƒ‹‚Ö
+				// ã‚¿ã‚¤ãƒˆãƒ«ã¸
 				if (m_GameOverSelectIndex == 1) {
 					ExistUnits::Instance()->m_ChangeStageSelect = true;
 					KuroEngine::KuroEngineDevice::Instance()->ChangeScene("title", &m_Fade);
 				}
-				// ƒŠƒgƒ‰ƒC
+				// ãƒªãƒˆãƒ©ã‚¤
 				else if (m_GameOverSelectIndex == 0) {
 					KuroEngine::KuroEngineDevice::Instance()->ChangeScene("Battle", &m_Fade);
 				}
 			}
 		}
 	}
-	// ƒXƒe[ƒWI—¹(“G‘S–Å)
+	// ã‚¹ãƒ†ãƒ¼ã‚¸çµ‚äº†(æ•µå…¨æ»…)
 	else if (m_Stage_End) {
 		ResultTimer += 1.0f;
 		if (m_End_Timer < m_End_Timer_Finish) {
 			m_End_Timer++;
 		}
-		// ƒŒƒeƒBƒNƒ‹‚ğ“®‚©‚È‚¢‚æ‚¤‚É
+		// ãƒ¬ãƒ†ã‚£ã‚¯ãƒ«ã‚’å‹•ã‹ãªã„ã‚ˆã†ã«
 		Reticle::Instance()->m_CanMove = false;
 
 		if (OperationConfig::Instance()->GetOperationInput(OperationConfig::OPERATION_TYPE::DONE, OperationConfig::INPUT_PATTERN::ON_TRIGGER)
@@ -303,18 +303,18 @@ void BattleScene::OnUpdate()
 			ExistUnits::Instance()->m_ChangeStageSelect = true;
 			KuroEngine::KuroEngineDevice::Instance()->ChangeScene("title", &m_Fade);
 			SoundConfig::Instance()->Play(SoundConfig::SE_DONE);
-			// ƒXƒe[ƒWƒNƒŠƒAƒtƒ‰ƒO‚ğã‚°‚é
+			// ã‚¹ãƒ†ãƒ¼ã‚¸ã‚¯ãƒªã‚¢ãƒ•ãƒ©ã‚°ã‚’ä¸Šã’ã‚‹
 			ExistUnits::Instance()->m_Stage_Already_Clear[ExistUnits::Instance()->m_Now_Stage_Index] = true;
 		}
 	}
 
-	//ƒZƒbƒg‰Â”\‚È‚çƒZƒbƒg‚·‚é
+	//ã‚»ãƒƒãƒˆå¯èƒ½ãªã‚‰ã‚»ãƒƒãƒˆã™ã‚‹
 	if (ExistUnits::Instance()->m_NowTurn == 0 && m_Impossible_Put_Block_Timer == 0 && Mgr.AliveEnemys() && !ExistUnits::Instance()->m_pPlayer->m_IsEndTurnFunc
 		&& !Mgr.GetSelectedTurnEnd() && Mgr.m_TimeUp_Eff_Timer == 0) {
 		PlayerTurn();
 	}
 
-	// İ’u•s‰ÂŠÔ‚ÌXV
+	// è¨­ç½®ä¸å¯æ™‚é–“ã®æ›´æ–°
 	if (m_Impossible_Put_Block_Timer > 0) {
 		m_Impossible_Put_Block_Timer--;
 	}
@@ -329,7 +329,7 @@ void BattleScene::OnUpdate()
 		block->ResetPass();
 	}
 
-	//‰‰oXV
+	//æ¼”å‡ºæ›´æ–°
 	m_setPrismEffect->Update(stage, m_ultPtEmitter);
 	for (auto& ui : m_enemyDamageUI)ui->Update(m_ultPtEmitter);
 	ParticleManager::Instance()->Update();
@@ -345,24 +345,24 @@ void BattleScene::OnDraw()
 	D3D12App::Instance()->GetBackBuffRenderTarget()
 		});
 
-	// ”wŒiF
+	// èƒŒæ™¯è‰²
 	DrawFunc2D::DrawBox2D(Vec2(0.0f, 0.0f)
 		, WinApp::Instance()->GetExpandWinSize(), Color(50, 49, 59, 255), true);
 
 	ParticleManager::Instance()->BackDraw();
 
 
-	// VƒL[‚ğ‰Ÿ‚µ‚Ä‚éŠÔ‚¾‚¯“§‚©‚µ‚ğ•`‰æ
+	// Vã‚­ãƒ¼ã‚’æŠ¼ã—ã¦ã‚‹é–“ã ã‘é€ã‹ã—ã‚’æç”»
 	/*if (UsersInput::Instance()->KeyInput(DIK_V)) {
 		DrawFunc2D::DrawExtendGraph2D(Vec2(0.0f, 0.0f), WinApp::Instance()->GetExpandWinSize(), m_SukasiTex);
 	}*/
-	// ”wŒi•`‰æ
+	// èƒŒæ™¯æç”»
 	DrawFunc2D::DrawExtendGraph2D(Vec2(0.0f, 0.0f) + ScreenShakeManager::Instance()->GetOffset()
 		, WinApp::Instance()->GetExpandWinSize() + ScreenShakeManager::Instance()->GetOffset(), m_BackTex);
 	DrawFunc2D::DrawGraph(Vec2(881.0f, 19.0f) + ScreenShakeManager::Instance()->GetOffset(), m_StageTex);
 	DrawFunc2D::DrawGraph(Vec2(1064.0f, 13.0f) + ScreenShakeManager::Instance()->GetOffset(), m_BattleTex);
 
-	// ƒXƒe[ƒW–¼•`‰æ
+	// ã‚¹ãƒ†ãƒ¼ã‚¸åæç”»
 	if (ExistUnits::Instance()->m_StageName == "Stage1") {
 		DrawFunc2D::DrawNumber2D(1, Vec2(986.0f, 19.0f) + ScreenShakeManager::Instance()->GetOffset(), &m_NumberTex.front());
 		DrawFunc2D::DrawGraph(Vec2(1003.0f, 19.0f) + ScreenShakeManager::Instance()->GetOffset(), m_NumberTex[10]);
@@ -379,13 +379,13 @@ void BattleScene::OnDraw()
 		DrawFunc2D::DrawNumber2D(3, Vec2(1022.0f, 19.0f) + ScreenShakeManager::Instance()->GetOffset(), &m_NumberTex.front());
 	}
 
-	// ƒEƒF[ƒu”•`‰æ
+	// ã‚¦ã‚§ãƒ¼ãƒ–æ•°æç”»
 	DrawFunc2D::DrawNumber2D(m_NowWave > m_NowStage.m_Stage_Wave_Count ? m_NowStage.m_Stage_Wave_Count : m_NowWave,
 		Vec2(1201.0f, 13.0f) + ScreenShakeManager::Instance()->GetOffset(), &m_NumberTex_Battle.front());
 	DrawFunc2D::DrawGraph(Vec2(1221.0f, 13.0f) + ScreenShakeManager::Instance()->GetOffset(), m_NumberTex_Battle[10]);
 	DrawFunc2D::DrawNumber2D(m_NowStage.m_Stage_Wave_Count, Vec2(1246.0f, 13.0f) + ScreenShakeManager::Instance()->GetOffset(), &m_NumberTex_Battle.front());
 
-	// ƒvƒŒƒCƒ„[‚Íƒoƒgƒ‹’†ˆÈŠO‚Å‚à•`‰æ‚·‚éˆ×‚±‚Á‚¿
+	// ãƒ—ãƒ¬ã‚¤ãƒ¤ãƒ¼ã¯ãƒãƒˆãƒ«ä¸­ä»¥å¤–ã§ã‚‚æç”»ã™ã‚‹ç‚ºã“ã£ã¡
 	Pl->OnDraw();
 
 	Mgr.AutoTurnEndTimerDraw();
@@ -397,7 +397,7 @@ void BattleScene::OnDraw()
 	Mgr.OnDraw();
 	Mgr.DrawTimerCutIn();
 
-	// ƒL[•`‰æ
+	// ã‚­ãƒ¼æç”»
 	if (OperationConfig::Instance()->GetLatestDevice() == OperationConfig::Instance()->KEY_BOARD_MOUSE) {
 		DrawFunc2D::DrawGraph(Vec2(320.0f, 90.0f) + ScreenShakeManager::Instance()->GetOffset(), m_Operation_Ult[0]);
 		DrawFunc2D::DrawGraph(Vec2(718.0f, 0.0f) + ScreenShakeManager::Instance()->GetOffset(), m_Operation_Set[0]);
@@ -413,16 +413,16 @@ void BattleScene::OnDraw()
 		DrawFunc2D::DrawGraph(Vec2(578.0f, 670.0f) + ScreenShakeManager::Instance()->GetOffset(), m_Operation_Right[1]);
 	}
 
-	//‰‰o
+	//æ¼”å‡º
 	ParticleManager::Instance()->FrontDraw();
 	m_setPrismEffect->Draw();
 	for (auto& ui : m_enemyDamageUI)ui->Draw();
 
-	// ƒXƒe[ƒWI—¹(”s–k)
+	// ã‚¹ãƒ†ãƒ¼ã‚¸çµ‚äº†(æ•—åŒ—)
 	if (Mgr.GetDefeat()) {
 		GameOverDraw();
 	}
-	// ƒXƒe[ƒWI—¹(“G‘S–Å)
+	// ã‚¹ãƒ†ãƒ¼ã‚¸çµ‚äº†(æ•µå…¨æ»…)
 	else if (m_Stage_End) {
 		GameClearDraw();
 	}
@@ -430,7 +430,7 @@ void BattleScene::OnDraw()
 	dame->Draw();
 	ultAttackEffect->Draw();
 
-	// ƒ`ƒ…[ƒgƒŠƒAƒ‹
+	// ãƒãƒ¥ãƒ¼ãƒˆãƒªã‚¢ãƒ«
 	if (ExistUnits::Instance()->m_StageName == "Tutorial") {
 		TutorialDraw();
 	}
@@ -465,7 +465,7 @@ void BattleScene::OnImguiDebug()
 
 void BattleScene::OnFinalize()
 {
-	// ƒŠƒUƒ‹ƒg•\¦—p
+	// ãƒªã‚¶ãƒ«ãƒˆè¡¨ç¤ºç”¨
 	ResultTimer = 0.0f;
 
 	En.clear();
@@ -482,15 +482,15 @@ void BattleScene::SetStage(std::string StageName)
 
 void BattleScene::NextWave()
 {
-	// ŸƒEƒF[ƒu‚É•ÏX
+	// æ¬¡ã‚¦ã‚§ãƒ¼ãƒ–ã«å¤‰æ›´
 	m_NowWave++;
 	m_Impossible_Put_Block_Timer = m_Impossible_Put_Block_Effect_Time;
 
-	// Œ»İ‚ªÅŒã‚ÌƒEƒF[ƒu‚¾‚Á‚½ê‡
+	// ç¾åœ¨ãŒæœ€å¾Œã®ã‚¦ã‚§ãƒ¼ãƒ–ã ã£ãŸå ´åˆ
 	if (m_NowWave > m_NowStage.m_Stage_Wave_Count) {
 		if (!m_Stage_End) {
 			m_Stage_End = true;
-			// UŒ‚“™‚ğƒNƒŠƒA
+			// æ”»æ’ƒç­‰ã‚’ã‚¯ãƒªã‚¢
 			PlayerSkills::PlayerSkillMgr::Instance()->AllClear();
 			EnemyActions::EnemyActionMgr::Instance()->AllClear();
 			SoundConfig::Instance()->Play(SoundConfig::SE_STAGE_CLEAR, 35);
@@ -498,10 +498,10 @@ void BattleScene::NextWave()
 		return;
 	}
 
-	// ƒpƒlƒ‹‚ğ‘|œ
+	// ãƒ‘ãƒãƒ«ã‚’æƒé™¤
 	//ExistUnits::Instance()->m_StageManager->Reset();
 
-	// ŸƒEƒF[ƒu‚Ì“G‚ğæ“¾
+	// æ¬¡ã‚¦ã‚§ãƒ¼ãƒ–ã®æ•µã‚’å–å¾—
 	En.clear();
 	std::vector<EnemysData::EnemyData> EnemyData = m_NowStage.GetWaveEnemyIndex(m_NowWave);
 	for (auto& data : EnemyData) {
@@ -509,7 +509,7 @@ void BattleScene::NextWave()
 		GetUnitPtr<Enemy>(En.back())->SetEnemyData(data);
 	}
 	Mgr.SetUnits(Pl, En);
-	// ƒpƒX‚ÌƒŠƒZƒbƒg
+	// ãƒ‘ã‚¹ã®ãƒªã‚»ãƒƒãƒˆ
 	block->ResetPass();
 	if (En.size() == 1) {
 		ExistUnits::Instance()->Set(Pl.get(), En[0].get());
@@ -521,7 +521,7 @@ void BattleScene::NextWave()
 		ExistUnits::Instance()->Set(Pl.get(), En[0].get(), En[1].get(), En[2].get());
 	}
 
-	// UŒ‚“™‚ğƒNƒŠƒA
+	// æ”»æ’ƒç­‰ã‚’ã‚¯ãƒªã‚¢
 	PlayerSkills::PlayerSkillMgr::Instance()->AllClear();
 	EnemyActions::EnemyActionMgr::Instance()->AllClear();
 }
@@ -536,11 +536,11 @@ void BattleScene::GameClearDraw()
 	Vec2 Panel_LT = Vec2(391.0f, 67.0f);
 	Vec2 Panel_RB = Vec2(892.0f, 564.0f);
 
-	// Œã‚ë‚ğˆÃ‚­
+	// å¾Œã‚ã‚’æš—ã
 	float alpha = 0.6f * (ResultTimer / ResultTimer_Max);
 	DrawFunc2D::DrawBox2D(Panel_LT, Panel_RB, Color(0.1f, 0.1f, 0.1f, alpha > 0.4f ? 0.4f : alpha), true);
 
-	// ƒŠƒUƒ‹ƒg•`‰æ
+	// ãƒªã‚¶ãƒ«ãƒˆæç”»
 	DrawFunc2D_Mask::DrawGraph(Vec2(503.0f, 175.0f) + Value, m_ClearTex, Panel_LT, Panel_RB);
 	Value = Vec2(0.0f, ResultEasing(((ResultTimer - SubFrame) / ResultTimer_Max))) * 450.0f;
 
@@ -575,11 +575,11 @@ void BattleScene::GameOverDraw()
 	Vec2 Panel_LT = Vec2(391.0f, 67.0f);
 	Vec2 Panel_RB = Vec2(892.0f, 564.0f);
 
-	// Œã‚ë‚ğˆÃ‚­
+	// å¾Œã‚ã‚’æš—ã
 	float alpha = 0.6f * (ResultTimer / ResultTimer_Max);
 	DrawFunc2D::DrawBox2D(Panel_LT, Panel_RB, Color(0.1f, 0.1f, 0.1f, alpha > 0.4f ? 0.4f : alpha), true);
 
-	// ƒŠƒUƒ‹ƒg•`‰æ
+	// ãƒªã‚¶ãƒ«ãƒˆæç”»
 	DrawFunc2D_Mask::DrawGraph(Vec2(524.0f, 175.0f) + Value, m_GameoverTex, Panel_LT, Panel_RB);
 	Value = Vec2(0.0f, ResultEasing(((ResultTimer - SubFrame) / ResultTimer_Max))) * 450.0f;
 	DrawFunc2D_Mask::DrawGraph(Vec2(594.0f, 254.0f) + Value, m_RetryTex, Panel_LT, Panel_RB);
@@ -607,7 +607,7 @@ void BattleScene::GameOverDraw()
 void BattleScene::PauseDraw()
 {
 	using namespace KuroEngine;
-	// Œã‚ë‚ğˆÃ‚­
+	// å¾Œã‚ã‚’æš—ã
 	DrawFunc2D::DrawBox2D(Vec2(0.0f, 0.0f)
 		, WinApp::Instance()->GetExpandWinSize(), Color(0.1f, 0.1f, 0.1f, 0.6f), true);
 
@@ -617,11 +617,11 @@ void BattleScene::PauseDraw()
 	Vec2 Panel_LT = Vec2(391.0f, 67.0f);
 	Vec2 Panel_RB = Vec2(892.0f, 564.0f);
 
-	// Œã‚ë‚ğˆÃ‚­
+	// å¾Œã‚ã‚’æš—ã
 	//float alpha = 0.4f * (ResultTimer / ResultTimer_Max);
 	//DrawFunc2D::DrawBox2D(Panel_LT, Panel_RB, Color(0.1f, 0.1f, 0.1f, alpha > 0.4f ? 0.4f : alpha), true);
 
-	// ƒŠƒUƒ‹ƒg•`‰æ
+	// ãƒªã‚¶ãƒ«ãƒˆæç”»
 	DrawFunc2D_Mask::DrawGraph(Vec2(570.0f, 173.0f) + Value, m_PauseTex, Panel_LT, Panel_RB);
 	Value = Vec2(0.0f, ResultEasing(((ResultTimer_Max - SubFrame) / ResultTimer_Max))) * 450.0f;
 	DrawFunc2D_Mask::DrawGraph(Vec2(578.0f, 254.0f) + Value, m_ResumeTex_Pause, Panel_LT, Panel_RB);
@@ -673,25 +673,25 @@ void BattleScene::TutorialUpdate()
 	if (OperationConfig::Instance()->GetOperationInput(OperationConfig::MENU_IN_GAME, OperationConfig::ON_TRIGGER) && ResultTimer < 1.0f) {
 		m_IsPause = true;
 		m_PauseMenu = 0;
-		// Œ»İ
+		// ç¾åœ¨æ™‚åˆ»
 		GetLocalTime(&Mgr.PauseStartTime);
-		// ƒ|[ƒYŠÔ‚ÌŒvZ
+		// ãƒãƒ¼ã‚ºæ™‚é–“ã®è¨ˆç®—
 		Mgr.m_PauseTimeContainer.emplace_back(Mgr.m_PauseTime);
 		SoundConfig::Instance()->Play(SoundConfig::SE_PAUSE_OPEN);
 	}
 
 	if (m_IsPause) {
-		// Œ»İ
+		// ç¾åœ¨æ™‚åˆ»
 		GetLocalTime(&Mgr.PauseEndTime);
-		// •ÏŠ·
+		// å¤‰æ›
 		FILETIME ftime1;
 		FILETIME ftime2;
 		SystemTimeToFileTime(&Mgr.PauseStartTime, &ftime1);
 		SystemTimeToFileTime(&Mgr.PauseEndTime, &ftime2);
-		// int64‚ÉƒLƒƒƒXƒg
+		// int64ã«ã‚­ãƒ£ã‚¹ãƒˆ
 		__int64* nTime1 = (__int64*)&ftime1;
 		__int64* nTime2 = (__int64*)&ftime2;
-		// Œo‰ß•b
+		// çµŒéç§’
 		Mgr.m_PauseTime = (*nTime2 - *nTime1);
 
 		if (OperationConfig::Instance()->GetSelectVec(OperationConfig::SELECT_VEC::SELECT_VEC_UP) ||
@@ -710,20 +710,20 @@ void BattleScene::TutorialUpdate()
 			}
 			else SoundConfig::Instance()->Play(SoundConfig::SE_CANNOT_SELECT);
 		}
-		// Œˆ’è
+		// æ±ºå®š
 		if (OperationConfig::Instance()->GetOperationInput(OperationConfig::OPERATION_TYPE::DONE, OperationConfig::INPUT_PATTERN::ON_TRIGGER)) {
 			m_Already_Selected_Pause = true;
 			SoundConfig::Instance()->Play(SoundConfig::SE_DONE);
-			// –ß‚é
+			// æˆ»ã‚‹
 			if (m_PauseMenu == 0) {
 				m_Already_Selected_Pause = false;
 				m_IsPause = false;
 			}
-			// ƒ^ƒCƒgƒ‹
+			// ã‚¿ã‚¤ãƒˆãƒ«
 			else if (m_PauseMenu == 1) {
 				KuroEngine::KuroEngineDevice::Instance()->ChangeScene("Battle", &m_Fade);
 			}
-			// ƒŠƒgƒ‰ƒC
+			// ãƒªãƒˆãƒ©ã‚¤
 			else if (m_PauseMenu == 2) {
 				ExistUnits::Instance()->m_ChangeStageSelect = true;
 				KuroEngine::KuroEngineDevice::Instance()->ChangeScene("title", &m_Fade);
@@ -739,15 +739,15 @@ void BattleScene::TutorialUpdate()
 		m_PutTimer--;
 	}
 
-	// ’–Ú—p
+	// æ³¨ç›®ç”¨
 	{
 		using namespace KuroEngine;
 		Vec2 WinSize = WinApp::Instance()->GetExpandWinSize();
-		// ’–Ú‚·‚é” ‚Ì‘å‚«‚³
+		// æ³¨ç›®ã™ã‚‹ç®±ã®å¤§ãã•
 		Vec2 Size = Vec2(512.0f, 512.0f);
 		Vec2<float> LT_en = Vec2(0.0f, 0.0f);
 		Vec2<float> RB_en = WinSize;
-		// ’–Ú‚Ì”ÍˆÍ
+		// æ³¨ç›®ã®ç¯„å›²
 		if (m_NowTutorial_Step == 1) {
 			LT_en = Vec2(380.0f, 56.0f);
 			RB_en = Vec2(901.0f, 576.0f);
@@ -773,7 +773,7 @@ void BattleScene::TutorialUpdate()
 		m_NowTarget_RB = Vec2(TargetSize(m_LastTarget_RB, RB_en));
 	}
 	{
-		// ƒ^[ƒQƒbƒeƒBƒ“ƒOƒAƒ‹ƒtƒ@
+		// ã‚¿ãƒ¼ã‚²ãƒƒãƒ†ã‚£ãƒ³ã‚°ã‚¢ãƒ«ãƒ•ã‚¡
 		if (m_NowTargeting == true) {
 			m_Taeget_Alpha_Timer < m_TaegetTimer_Max ? m_Taeget_Alpha_Timer++ : m_Taeget_Alpha_Timer = m_TaegetTimer_Max;
 		}
@@ -782,64 +782,64 @@ void BattleScene::TutorialUpdate()
 		}
 	}
 
-	// ƒ`ƒ…[ƒgƒŠƒAƒ‹à–¾’†
+	// ãƒãƒ¥ãƒ¼ãƒˆãƒªã‚¢ãƒ«èª¬æ˜ä¸­
 	if (m_Tutorial_Pause[m_NowTutorial_Step] == true) {
 		m_Tutorial_Trigger_Timer = 0;
-		// ’–Úƒ^ƒCƒ}[‰ÁZ
+		// æ³¨ç›®ã‚¿ã‚¤ãƒãƒ¼åŠ ç®—
 		m_TaegetTimer < m_TaegetTimer_Max ? m_TaegetTimer++ : m_TaegetTimer = m_TaegetTimer_Max;
-		// Œˆ’è
+		// æ±ºå®š
 		if (OperationConfig::Instance()->GetOperationInput(OperationConfig::OPERATION_TYPE::DONE, OperationConfig::INPUT_PATTERN::ON_TRIGGER) &&
 			m_Tutorial_Jissen_Text_Timer == 0 && m_Tutorial_Text_CoolTime == 0) {
 			m_NowTutorial_Step++;
 
 			if (m_NowTutorial_Step == 7) {
-				// À‘H
+				// å®Ÿè·µ
 				m_Tutorial_Pause[m_NowTutorial_Step] = false;
 				m_Tutorial_Jissen_Text_Timer = 0;
 				m_Tutorial_None_Ctrl_Timer = int(900.0f * RefreshRate::RefreshRate_Mag);
 			}
 			else if (m_NowTutorial_Step == 11) {
-				// À‘H
+				// å®Ÿè·µ
 				m_Tutorial_Pause[m_NowTutorial_Step] = false;
 				m_Tutorial_Jissen_Text_Timer = 0;
 				m_Tutorial_None_Ctrl_Timer = int(900.0f * RefreshRate::RefreshRate_Mag);
 			}
 			else if (m_NowTutorial_Step == 15) {
-				// À‘H
-				// ƒ^[ƒ“ƒGƒ“ƒh‰Â”\‚É
+				// å®Ÿè·µ
+				// ã‚¿ãƒ¼ãƒ³ã‚¨ãƒ³ãƒ‰å¯èƒ½ã«
 				ExistUnits::Instance()->m_CanTurnEnd = true;
 				m_Tutorial_Pause[m_NowTutorial_Step] = false;
 				m_Tutorial_Jissen_Text_Timer = 0;
 				m_Tutorial_None_Ctrl_Timer = int(900.0f * RefreshRate::RefreshRate_Mag);
 			}
 			else if (m_NowTutorial_Step == 19) {
-				// À‘H
+				// å®Ÿè·µ
 				m_Tutorial_Pause[m_NowTutorial_Step] = false;
 				m_Tutorial_Jissen_Text_Timer = 0;
 				m_Tutorial_None_Ctrl_Timer = int(900.0f * RefreshRate::RefreshRate_Mag);
 			}
 			else if (m_NowTutorial_Step == 25) {
-				// À‘H
+				// å®Ÿè·µ
 				m_Tutorial_Pause[m_NowTutorial_Step] = false;
 				m_Tutorial_Jissen_Text_Timer = 0;
 				m_Tutorial_None_Ctrl_Timer = int(900.0f * RefreshRate::RefreshRate_Mag);
 			}
 			else if (m_NowTutorial_Step == 27) {
-				// À‘H
-				// ƒ^[ƒ“ƒGƒ“ƒh‰Â”\‚É
+				// å®Ÿè·µ
+				// ã‚¿ãƒ¼ãƒ³ã‚¨ãƒ³ãƒ‰å¯èƒ½ã«
 				ExistUnits::Instance()->m_CanTurnEnd = true;
 				m_Tutorial_Pause[m_NowTutorial_Step] = false;
 				m_Tutorial_Jissen_Text_Timer = 0;
 				m_Tutorial_None_Ctrl_Timer = int(900.0f * RefreshRate::RefreshRate_Mag);
 			}
 			else if (m_NowTutorial_Step == 33) {
-				// À‘H
+				// å®Ÿè·µ
 				m_Tutorial_Pause[m_NowTutorial_Step] = false;
 				m_Tutorial_Jissen_Text_Timer = 0;
 				m_Tutorial_None_Ctrl_Timer = int(900.0f * RefreshRate::RefreshRate_Mag);
 			}
 			else if (m_NowTutorial_Step == 35) {
-				// À‘Hiƒ`ƒ…[ƒgƒŠƒAƒ‹I—¹j
+				// å®Ÿè·µï¼ˆãƒãƒ¥ãƒ¼ãƒˆãƒªã‚¢ãƒ«çµ‚äº†ï¼‰
 				m_Tutorial_Pause[m_NowTutorial_Step] = false;
 				m_Tutorial_Jissen_Text_Timer = 0;
 				m_Tutorial_None_Ctrl_Timer = int(900.0f * RefreshRate::RefreshRate_Mag);
@@ -847,9 +847,9 @@ void BattleScene::TutorialUpdate()
 			else {
 				m_Tutorial_Pause[m_NowTutorial_Step] = true;
 				if (m_NowTutorial_Step == 24) {
-					// ƒAƒ‹ƒeƒBƒƒbƒg‚ğã‚°‚é
+					// ã‚¢ãƒ«ãƒ†ã‚£ãƒ¡ãƒƒãƒˆã‚’ä¸Šã’ã‚‹
 					GetUnitPtr_nama<Player*>(ExistUnits::Instance()->m_pPlayer)->AddUltPoint(1000);
-					// ƒpƒlƒ‹‚ğ®‚¦‚é
+					// ãƒ‘ãƒãƒ«ã‚’æ•´ãˆã‚‹
 					std::array<std::array<int,10>,10> _pos={ 
 						{{0,0,0,1,1,1,1,1,1,0},
 						{0,0,0,0,1,1,1,1,3,0},
@@ -876,21 +876,21 @@ void BattleScene::TutorialUpdate()
 			m_LastTarget_RB = m_NowTarget_RB;
 			m_NowTargeting = false;
 
-			// ƒ^[ƒQƒbƒg‚·‚éƒXƒeƒbƒv
+			// ã‚¿ãƒ¼ã‚²ãƒƒãƒˆã™ã‚‹ã‚¹ãƒ†ãƒƒãƒ—
 			if (m_NowTutorial_Step == 1 || m_NowTutorial_Step == 2 || m_NowTutorial_Step == 3 || m_NowTutorial_Step == 4 ||
 				m_NowTutorial_Step == 17) {
 				m_NowTargeting = true;
 			}
 		}
 
-		//‰‰oXV
+		//æ¼”å‡ºæ›´æ–°
 		m_setPrismEffect->Update(stage, m_ultPtEmitter);
 		for (auto& ui : m_enemyDamageUI)ui->Update(m_ultPtEmitter);
 		ParticleManager::Instance()->Update();
 		ScreenShakeManager::Instance()->Update();
 		backGroundEffect->Update();
 
-		// ‰º‚©‚ço‚Ä‚­‚é
+		// ä¸‹ã‹ã‚‰å‡ºã¦ãã‚‹
 		if (!(m_NowTutorial_Step == 7 || m_NowTutorial_Step == 11 || m_NowTutorial_Step == 15 ||
 				m_NowTutorial_Step == 19 || m_NowTutorial_Step == 25 || m_NowTutorial_Step == 27 || m_NowTutorial_Step == 33 || m_NowTutorial_Step == 35)) {
 			m_Tutorial_Jissen_Text_Timer > 0 ?
@@ -904,16 +904,16 @@ void BattleScene::TutorialUpdate()
 		return;
 	}
 
-	// ƒ`ƒ…[ƒgƒŠƒAƒ‹(À‘H)
+	// ãƒãƒ¥ãƒ¼ãƒˆãƒªã‚¢ãƒ«(å®Ÿè·µ)
 	if (m_NowTutorial_Step == 7 || m_NowTutorial_Step == 11 || m_NowTutorial_Step == 15 ||
 		m_NowTutorial_Step == 19 || m_NowTutorial_Step == 25 || m_NowTutorial_Step == 27 || m_NowTutorial_Step == 33 || m_NowTutorial_Step == 35) {
-		// –³‘€ìó‘Ô‚Ìƒ^ƒCƒ}[
+		// ç„¡æ“ä½œçŠ¶æ…‹ã®ã‚¿ã‚¤ãƒãƒ¼
 		m_Tutorial_None_Ctrl_Timer++;
-		// ‘€ì‚ª‚ ‚Á‚½‚É–³‘€ìƒ^ƒCƒ}[‚ğ0‚É‚·‚é
+		// æ“ä½œãŒã‚ã£ãŸæ™‚ã«ç„¡æ“ä½œã‚¿ã‚¤ãƒãƒ¼ã‚’0ã«ã™ã‚‹
 		if (OperationConfig::Instance()->CheckAllOperationInputTrigger() && !OperationConfig::Instance()->GetOperationInput(OperationConfig::SET_PRISM, OperationConfig::ON_TRIGGER)) {
 			m_Tutorial_None_Ctrl_Timer = 0;
 		}
-		// ‰º‚©‚ço‚Ä‚­‚é
+		// ä¸‹ã‹ã‚‰å‡ºã¦ãã‚‹
 		if (m_Tutorial_None_Ctrl_Timer >= int(900.0f * RefreshRate::RefreshRate_Mag)) {
 			m_Tutorial_Jissen_Text_Timer > 0 ?
 				m_Tutorial_Jissen_Text_Timer-- : m_Tutorial_Jissen_Text_Timer = 0;
@@ -923,17 +923,17 @@ void BattleScene::TutorialUpdate()
 				m_Tutorial_Jissen_Text_Timer++ : m_Tutorial_Jissen_Text_Timer = m_Tutorial_Jissen_Text_Timer_Max;
 		}
 
-		// ŠY“–‚·‚é‘€ì“ü—Í‚ª‚ ‚Á‚½
+		// è©²å½“ã™ã‚‹æ“ä½œå…¥åŠ›ãŒã‚ã£ãŸæ™‚
 		if (m_NowTutorial_Step == 7 && OperationConfig::Instance()->GetOperationInput(OperationConfig::SET_PRISM, OperationConfig::ON_TRIGGER)
 			&& m_Impossible_Put_Block_Timer == 0
 			&& m_Tutorial_Trigger_Timer == 0) {
-			// ƒ^ƒCƒ}[‘‰Á
+			// ã‚¿ã‚¤ãƒãƒ¼å¢—åŠ 
 			m_Tutorial_Trigger_Timer++;
 		}
 		else if (m_NowTutorial_Step == 11 && OperationConfig::Instance()->GetOperationInput(OperationConfig::SET_PRISM, OperationConfig::ON_TRIGGER)
 			&& m_Impossible_Put_Block_Timer == 0
 			&& m_Tutorial_Trigger_Timer == 0) {
-			// ƒ^ƒCƒ}[‘‰Á
+			// ã‚¿ã‚¤ãƒãƒ¼å¢—åŠ 
 			m_Tutorial_Trigger_Timer++;
 		}
 		else if (m_NowTutorial_Step == 15) {
@@ -941,13 +941,13 @@ void BattleScene::TutorialUpdate()
 				m_Impossible_Put_Block_Timer == 0
 				&& m_Tutorial_Trigger_Timer == 0 
 				&& Mgr.m_Selected_TurnEnd) {
-				// ˆê“x–Ú‚Ì‘€ì‚ğ‚µ‚½ƒtƒ‰ƒO‚ğã‚°‚é
+				// ä¸€åº¦ç›®ã®æ“ä½œã‚’ã—ãŸãƒ•ãƒ©ã‚°ã‚’ä¸Šã’ã‚‹
 				m_Tutorial_Step_Complete_Flag = true;
 			}
 			else {
-				// •Ê‚Ì‘€ì‚ğ‹²‚ñ‚¾ê‡‚Íƒtƒ‰ƒO‚ğ‰º‚°‚é
+				// åˆ¥ã®æ“ä½œã‚’æŒŸã‚“ã å ´åˆã¯ãƒ•ãƒ©ã‚°ã‚’ä¸‹ã’ã‚‹
 				if (Mgr.m_Checked_TurnEnd && m_Tutorial_Trigger_Timer == 0) {
-					// ƒ^ƒCƒ}[‘‰Á
+					// ã‚¿ã‚¤ãƒãƒ¼å¢—åŠ 
 					m_Tutorial_Trigger_Timer++;
 				}
 				if (!Mgr.m_Selected_TurnEnd) {
@@ -958,12 +958,12 @@ void BattleScene::TutorialUpdate()
 		else if (m_NowTutorial_Step == 19 && OperationConfig::Instance()->GetOperationInput(OperationConfig::SET_PRISM, OperationConfig::ON_TRIGGER)
 			&& m_Impossible_Put_Block_Timer == 0
 			&& m_Tutorial_Trigger_Timer == 0) {
-			// ƒ^ƒCƒ}[‘‰Á
+			// ã‚¿ã‚¤ãƒãƒ¼å¢—åŠ 
 			m_Tutorial_Trigger_Timer++;
 		}
 		else if (m_NowTutorial_Step == 25 && OperationConfig::Instance()->GetOperationInput(OperationConfig::EXECUTE_ULT, OperationConfig::ON_TRIGGER)
 			&& m_Tutorial_Trigger_Timer == 0) {
-			// ƒ^ƒCƒ}[‘‰Á
+			// ã‚¿ã‚¤ãƒãƒ¼å¢—åŠ 
 			m_Tutorial_Trigger_Timer++;
 		}
 		else if (m_NowTutorial_Step == 27) {
@@ -971,13 +971,13 @@ void BattleScene::TutorialUpdate()
 				m_Impossible_Put_Block_Timer == 0
 				&& m_Tutorial_Trigger_Timer == 0
 				&& Mgr.m_Selected_TurnEnd) {
-				// ˆê“x–Ú‚Ì‘€ì‚ğ‚µ‚½ƒtƒ‰ƒO‚ğã‚°‚é
+				// ä¸€åº¦ç›®ã®æ“ä½œã‚’ã—ãŸãƒ•ãƒ©ã‚°ã‚’ä¸Šã’ã‚‹
 				m_Tutorial_Step_Complete_Flag = true;
 			}
 			else {
-				// •Ê‚Ì‘€ì‚ğ‹²‚ñ‚¾ê‡‚Íƒtƒ‰ƒO‚ğ‰º‚°‚é
+				// åˆ¥ã®æ“ä½œã‚’æŒŸã‚“ã å ´åˆã¯ãƒ•ãƒ©ã‚°ã‚’ä¸‹ã’ã‚‹
 				if (Mgr.m_Checked_TurnEnd && m_Tutorial_Trigger_Timer == 0) {
-					// ƒ^ƒCƒ}[‘‰Á
+					// ã‚¿ã‚¤ãƒãƒ¼å¢—åŠ 
 					m_Tutorial_Trigger_Timer++;
 				}
 				if (!Mgr.m_Selected_TurnEnd) {
@@ -987,7 +987,7 @@ void BattleScene::TutorialUpdate()
 		}
 		else if (m_NowTutorial_Step == 33 && m_Tutorial_Trigger_Timer == 0) {
 			ExistUnits::Instance()->m_CanTurnEnd = true;
-			// “G‚ª‘S–Å‚µ‚½
+			// æ•µãŒå…¨æ»…ã—ãŸ
 			if (!Mgr.AliveEnemys()) {
 				m_Tutorial_Trigger_Timer++;
 			}
@@ -995,21 +995,21 @@ void BattleScene::TutorialUpdate()
 
 		if (m_NowTutorial_Step == 7 || m_NowTutorial_Step == 11 ||
 			m_NowTutorial_Step == 19) {
-			//ƒZƒbƒg‰Â”\‚È‚çƒZƒbƒg‚·‚é
+			//ã‚»ãƒƒãƒˆå¯èƒ½ãªã‚‰ã‚»ãƒƒãƒˆã™ã‚‹
 			if (ExistUnits::Instance()->m_NowTurn == 0 && m_Impossible_Put_Block_Timer == 0 && Mgr.AliveEnemys() && !ExistUnits::Instance()->m_pPlayer->m_IsEndTurnFunc
 				&& !Mgr.GetSelectedTurnEnd() && m_Tutorial_Trigger_Timer == 1) {
 				PlayerTurn();
 			}
 		}
 		else if (m_NowTutorial_Step == 33) {
-			//ƒZƒbƒg‰Â”\‚È‚çƒZƒbƒg‚·‚é
+			//ã‚»ãƒƒãƒˆå¯èƒ½ãªã‚‰ã‚»ãƒƒãƒˆã™ã‚‹
 			if (ExistUnits::Instance()->m_NowTurn == 0 && m_Impossible_Put_Block_Timer == 0 && Mgr.AliveEnemys() && !ExistUnits::Instance()->m_pPlayer->m_IsEndTurnFunc
 				&& !Mgr.GetSelectedTurnEnd()) {
 				PlayerTurn();
 			}
 		}
 
-		// ’u‚­Œn‚Ìƒ`ƒ…[ƒgƒŠƒAƒ‹
+		// ç½®ãç³»ã®ãƒãƒ¥ãƒ¼ãƒˆãƒªã‚¢ãƒ«
 		if (m_NowTutorial_Step == 7 || m_NowTutorial_Step == 11 || m_NowTutorial_Step == 19) {
 			if (m_PutTimer == 0 && m_Tutorial_Trigger_Timer == 1) {
 				m_Tutorial_Trigger_Timer--;
@@ -1017,7 +1017,7 @@ void BattleScene::TutorialUpdate()
 		}
 
 
-		// ‘€ìŠ®—¹Œã
+		// æ“ä½œå®Œäº†å¾Œ
 		if (m_Tutorial_Trigger_Timer > 0) {
 			m_Tutorial_Trigger_Timer++;
 			m_Tutorial_None_Ctrl_Timer = 0;
@@ -1042,7 +1042,7 @@ void BattleScene::TutorialUpdate()
 				if (m_Tutorial_Trigger_Timer == int(1000.0f * RefreshRate::RefreshRate_Mag)) {
 					m_NowTutorial_Step++;
 					m_Tutorial_Step_Complete_Flag = false;
-					// ƒ^[ƒ“ƒGƒ“ƒh•s‰Â‚É
+					// ã‚¿ãƒ¼ãƒ³ã‚¨ãƒ³ãƒ‰ä¸å¯ã«
 					ExistUnits::Instance()->m_CanTurnEnd = false;
 					m_Tutorial_Pause[m_NowTutorial_Step] = true;
 					m_Tutorial_Trigger_Timer = 0;
@@ -1069,7 +1069,7 @@ void BattleScene::TutorialUpdate()
 				if (m_Tutorial_Trigger_Timer == int(1000.0f * RefreshRate::RefreshRate_Mag)) {
 					m_NowTutorial_Step++;
 					m_Tutorial_Step_Complete_Flag = false;
-					// ƒ^[ƒ“ƒGƒ“ƒh•s‰Â‚É
+					// ã‚¿ãƒ¼ãƒ³ã‚¨ãƒ³ãƒ‰ä¸å¯ã«
 					ExistUnits::Instance()->m_CanTurnEnd = false;
 					m_Tutorial_Pause[m_NowTutorial_Step] = true;
 					m_Tutorial_Trigger_Timer = 0;
@@ -1085,12 +1085,12 @@ void BattleScene::TutorialUpdate()
 		}
 	}
 
-	// I‚í‚è
+	// çµ‚ã‚ã‚Š
 	if (m_NowTutorial_Step == 35) {
 		m_Tutorial_Trigger_Timer++;
 	}
 	//if (m_NowTutorial_Step == 33 && m_NowTutorial_Step > 0) {
-	//	//‰‰oXV
+	//	//æ¼”å‡ºæ›´æ–°
 	//	m_setPrismEffect->Update(stage, m_ultPtEmitter);
 	//	for (auto& ui : m_enemyDamageUI)ui->Update(m_ultPtEmitter);
 	//	ParticleManager::Instance()->Update();
@@ -1099,26 +1099,26 @@ void BattleScene::TutorialUpdate()
 	//}
 
 
-	// ƒEƒF[ƒuI—¹EŸƒEƒF[ƒuƒXƒ^[ƒg
+	// ã‚¦ã‚§ãƒ¼ãƒ–çµ‚äº†ãƒ»æ¬¡ã‚¦ã‚§ãƒ¼ãƒ–ã‚¹ã‚¿ãƒ¼ãƒˆ
 	if (Mgr.ChangeNextWave()) {
-		// ƒJƒbƒgƒCƒ“
-		// Œ»İ‚ªÅŒã‚ÌƒEƒF[ƒu‚Å‚Í‚È‚©‚Á‚½ê‡
+		// ã‚«ãƒƒãƒˆã‚¤ãƒ³
+		// ç¾åœ¨ãŒæœ€å¾Œã®ã‚¦ã‚§ãƒ¼ãƒ–ã§ã¯ãªã‹ã£ãŸå ´åˆ
 		if (!(m_NowWave + 1 > m_NowStage.m_Stage_Wave_Count)) {
 			CutInMgr::Instance()->StartCutIn(CutInType::NEXT_BATTLE);
 		}
 		NextWave();
 	}
 
-	// ƒXƒe[ƒWI—¹(”s–k)
+	// ã‚¹ãƒ†ãƒ¼ã‚¸çµ‚äº†(æ•—åŒ—)
 	if (Mgr.GetDefeat()) {
 		ResultTimer += 1.0f;
 		if (m_End_Timer < m_End_Timer_Finish) {
 			m_End_Timer++;
 		}
-		// ƒŒƒeƒBƒNƒ‹‚ğ“®‚©‚È‚¢‚æ‚¤‚É
+		// ãƒ¬ãƒ†ã‚£ã‚¯ãƒ«ã‚’å‹•ã‹ãªã„ã‚ˆã†ã«
 		Reticle::Instance()->m_CanMove = false;
 
-		// ‘I‘ğˆ
+		// é¸æŠè‚¢
 		if (!m_Already_Selected) {
 			if (OperationConfig::Instance()->GetSelectVec(OperationConfig::SELECT_VEC::SELECT_VEC_UP) ||
 				OperationConfig::Instance()->GetTargetChangeVec(OperationConfig::SELECT_VEC_UP)) {
@@ -1136,30 +1136,30 @@ void BattleScene::TutorialUpdate()
 				}
 				else SoundConfig::Instance()->Play(SoundConfig::SE_CANNOT_SELECT);
 			}
-			// Œˆ’è
+			// æ±ºå®š
 			if (OperationConfig::Instance()->GetOperationInput(OperationConfig::OPERATION_TYPE::DONE, OperationConfig::INPUT_PATTERN::ON_TRIGGER)
 				&& m_End_Timer > 1 && m_End_Timer >= int(float(m_End_Timer_Finish) / 2.0f)) {
 				m_Already_Selected = true;
 				SoundConfig::Instance()->Play(SoundConfig::SE_DONE);
-				// ƒ^ƒCƒgƒ‹‚Ö
+				// ã‚¿ã‚¤ãƒˆãƒ«ã¸
 				if (m_GameOverSelectIndex == 1) {
 					ExistUnits::Instance()->m_ChangeStageSelect = true;
 					KuroEngine::KuroEngineDevice::Instance()->ChangeScene("title", &m_Fade);
 				}
-				// ƒŠƒgƒ‰ƒC
+				// ãƒªãƒˆãƒ©ã‚¤
 				else if (m_GameOverSelectIndex == 0) {
 					KuroEngine::KuroEngineDevice::Instance()->ChangeScene("Battle", &m_Fade);
 				}
 			}
 		}
 	}
-	// ƒXƒe[ƒWI—¹(“G‘S–Å)
+	// ã‚¹ãƒ†ãƒ¼ã‚¸çµ‚äº†(æ•µå…¨æ»…)
 	else if (m_Stage_End && m_NowTutorial_Step == 35 && m_Tutorial_Trigger_Timer >= int(30.0 * RefreshRate::RefreshRate_Mag)) {
 		ResultTimer += 1.0f;
 		if (m_End_Timer < m_End_Timer_Finish) {
 			m_End_Timer++;
 		}
-		// ƒŒƒeƒBƒNƒ‹‚ğ“®‚©‚È‚¢‚æ‚¤‚É
+		// ãƒ¬ãƒ†ã‚£ã‚¯ãƒ«ã‚’å‹•ã‹ãªã„ã‚ˆã†ã«
 		Reticle::Instance()->m_CanMove = false;
 
 		if (OperationConfig::Instance()->GetOperationInput(OperationConfig::OPERATION_TYPE::DONE, OperationConfig::INPUT_PATTERN::ON_TRIGGER)
@@ -1172,7 +1172,7 @@ void BattleScene::TutorialUpdate()
 
 	
 
-	// İ’u•s‰ÂŠÔ‚ÌXV
+	// è¨­ç½®ä¸å¯æ™‚é–“ã®æ›´æ–°
 	if (m_Impossible_Put_Block_Timer > 0) {
 		m_Impossible_Put_Block_Timer--;
 	}
@@ -1189,7 +1189,7 @@ void BattleScene::TutorialUpdate()
 	}
 
 
-	//‰‰oXV
+	//æ¼”å‡ºæ›´æ–°
 	m_setPrismEffect->Update(stage, m_ultPtEmitter);
 	for (auto& ui : m_enemyDamageUI)ui->Update(m_ultPtEmitter);
 	ParticleManager::Instance()->Update();
@@ -1211,12 +1211,12 @@ void BattleScene::TutorialDraw()
 	else {
 		float Rate = InQuart(float(m_Tutorial_Jissen_Text_Timer) / float(m_Tutorial_Jissen_Text_Timer_Max));
 		float Rate_2 = OutQuint(float(m_TaegetTimer) / float(m_TaegetTimer_Max));
-		// ƒAƒ‹ƒtƒ@
+		// ã‚¢ãƒ«ãƒ•ã‚¡
 		float alpha = 1.0f - InQuart(float(m_Taeget_Alpha_Timer) / float(m_TaegetTimer_Max));
 		float Move_Y = Rate * 249.0f;
 		//float Move_Y_2 = Rate_2 * 249.0f;
 
-		// ƒpƒlƒ‹’–Ú
+		// ãƒ‘ãƒãƒ«æ³¨ç›®
 		DrawFunc2D_Mask::DrawExtendGraph2D(Vec2(0.0f, 0.0f), Vec2(WinSize.x, WinSize.y), Tutorial_Back_Tex,
 			m_NowTarget_LT, m_NowTarget_RB, true);
 		DrawFunc2D::DrawExtendGraph2D(Vec2(0.0f, WinSize.y - 249.0f) + Vec2(0.0f, Move_Y), Vec2(WinSize.x, WinSize.y) + Vec2(0.0f, Move_Y), Tutorial_Back_Tex,
@@ -1278,7 +1278,7 @@ std::vector<std::weak_ptr<SkillResultUI>> BattleScene::GetAliveEnemyDamageUIArra
 
 BattleScene::BattleScene()
 {
-	// ---- ”wŒi
+	// ---- èƒŒæ™¯
 	using namespace KuroEngine;
 	std::string TexDir = "resource/user/tex/battle_scene/";
 	m_SukasiTex = D3D12App::Instance()->GenerateTextureBuffer(TexDir + "Sukasi.png");
@@ -1288,7 +1288,7 @@ BattleScene::BattleScene()
 	D3D12App::Instance()->GenerateTextureBuffer(&m_NumberTex.front(), TexDir + "/info/stage_number.png", 12, Vec2(12, 1));
 	D3D12App::Instance()->GenerateTextureBuffer(&m_NumberTex_Battle.front(), TexDir + "/info/battle_number.png", 11, Vec2(11, 1));
 
-	// ƒXƒe[ƒWƒNƒŠƒA
+	// ã‚¹ãƒ†ãƒ¼ã‚¸ã‚¯ãƒªã‚¢
 	m_ClearTex = D3D12App::Instance()->GenerateTextureBuffer(TexDir + "/clear/stage_clear.png");
 	m_MaxComboTex = D3D12App::Instance()->GenerateTextureBuffer(TexDir + "/clear/max_combo.png");
 	m_TotalTurnTex = D3D12App::Instance()->GenerateTextureBuffer(TexDir + "/clear/total_turn.png");
@@ -1297,7 +1297,7 @@ BattleScene::BattleScene()
 	m_DoneTex_Clear = D3D12App::Instance()->GenerateTextureBuffer(TexDir + "/clear/done.png");
 	D3D12App::Instance()->GenerateTextureBuffer(&m_ClearNumberTex.front(), TexDir + "/clear/clear_number.png", 10, Vec2(10, 1));
 
-	// ƒQ[ƒ€ƒI[ƒo[
+	// ã‚²ãƒ¼ãƒ ã‚ªãƒ¼ãƒãƒ¼
 	m_GameOverSelectIndex = 0;
 	m_Already_Selected = false;
 	m_GameoverTex = D3D12App::Instance()->GenerateTextureBuffer(TexDir + "/gameover/game_over.png");
@@ -1308,7 +1308,7 @@ BattleScene::BattleScene()
 	m_Done_ControllerTex_GameOver = D3D12App::Instance()->GenerateTextureBuffer(TexDir + "/gameover/done_controller.png");
 	m_DoneTex_GameOver = D3D12App::Instance()->GenerateTextureBuffer(TexDir + "/gameover/done.png");
 
-	// ƒ|[ƒY
+	// ãƒãƒ¼ã‚º
 	m_PauseTex = D3D12App::Instance()->GenerateTextureBuffer(TexDir + "/pause/pause.png");
 	m_ResumeTex_Pause = D3D12App::Instance()->GenerateTextureBuffer(TexDir + "/pause/resume.png");
 	m_RetryTex_Pause = D3D12App::Instance()->GenerateTextureBuffer(TexDir + "/pause/retry.png");
@@ -1318,7 +1318,7 @@ BattleScene::BattleScene()
 	m_Done_ControllerTex_Pause = D3D12App::Instance()->GenerateTextureBuffer(TexDir + "/pause/done_controller.png");
 	m_DoneTex_Pause = D3D12App::Instance()->GenerateTextureBuffer(TexDir + "/pause/done.png");
 
-	// ‘€ìƒL[
+	// æ“ä½œã‚­ãƒ¼
 	for (int i = 0; i < 2; i++) {
 		std::string TexDir_Opr;
 		if (i == 0) TexDir_Opr = "resource/user/tex/battle_scene/operation/key/";
@@ -1332,14 +1332,14 @@ BattleScene::BattleScene()
 		m_Operation_Ult[i] = D3D12App::Instance()->GenerateTextureBuffer(TexDir_Opr + "ult.png");
 	}
 
-	// ƒ`ƒ…[ƒgƒŠƒAƒ‹
+	// ãƒãƒ¥ãƒ¼ãƒˆãƒªã‚¢ãƒ«
 	Tutorial_Back_Tex = D3D12App::Instance()->GenerateTextureBuffer("resource/user/tex/tutorial//text_back.png");
 	for (int i = 0; i < 36; i++) {
 		std::string TexDir_Tutorial = "resource/user/tex/tutorial/";
 		Tutorial_Tex[i] = D3D12App::Instance()->GenerateTextureBuffer(TexDir_Tutorial + "/text_" + std::to_string(i) + ".png");
 	}
 
-	//“G‚Ìƒ_ƒ[ƒWUI‚ÌˆÊ’u
+	//æ•µã®ãƒ€ãƒ¡ãƒ¼ã‚¸UIã®ä½ç½®
 	const std::array<Vec2<float>, ENEMY_COUNT_MAX>ENEMY_DAMAGE_UI_POS =
 	{
 		Vec2<float>(949.0f,204.0f),
@@ -1347,7 +1347,7 @@ BattleScene::BattleScene()
 		Vec2<float>(949.0f,544.0f),
 	};
 
-	//“G‚Ìƒ_ƒ[ƒWUI‚ÌˆÊ’uİ’è
+	//æ•µã®ãƒ€ãƒ¡ãƒ¼ã‚¸UIã®ä½ç½®è¨­å®š
 	std::vector<std::weak_ptr<SkillResultUI>>enemyDamageUiWeakPtr(ENEMY_COUNT_MAX);
 	m_enemyDamageUI.resize(ENEMY_COUNT_MAX);
 	for (int enemyIdx = 0; enemyIdx < ENEMY_COUNT_MAX; ++enemyIdx)
@@ -1373,12 +1373,12 @@ void BattleScene::PlayerTurn()
 		std::vector<KuroEngine::Vec2<int>> shape;
 		BlockColor color;
 
-		//ƒuƒƒbƒNî•ñæ“¾
+		//ãƒ–ãƒ­ãƒƒã‚¯æƒ…å ±å–å¾—
 		block->GetBlock(&nowMapchip, &shape, &attribute, &color);
-		//”z’u‰Â”\‚È‚ç”z’u‚·‚é
+		//é…ç½®å¯èƒ½ãªã‚‰é…ç½®ã™ã‚‹
 		//if (!stage->JudgeSet(nowMapchip, shape, attribute, color)) { return; }
 		if (!stage->JudgeWithEffect(nowMapchip, shape, attribute, color, m_setPrismEffect)) { return; }
-		//Ÿ‚Ìg—pƒuƒƒbƒN‚ğƒZƒbƒg‚·‚é
+		//æ¬¡ã®ä½¿ç”¨ãƒ–ãƒ­ãƒƒã‚¯ã‚’ã‚»ãƒƒãƒˆã™ã‚‹
 		block->ChangeBlock();
 		m_PutTimer = 5;
 	}

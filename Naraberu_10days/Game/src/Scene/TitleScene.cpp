@@ -9,12 +9,6 @@
 
 void TitleScene::OnInitialize()
 {
-	title.reset(new TitleUi());
-	title->Initialize();
-
-	character.reset(new TitleVtuber());
-	character->Initialize();
-
 	std::string TexDir_select = "resource/user/tex/select_scene/";
 	stageSelectBarTex = KuroEngine::D3D12App::Instance()->GenerateTextureBuffer(TexDir_select + "stage_name_plate.png");
 
@@ -112,6 +106,11 @@ void TitleScene::OnFinalize()
 
 TitleScene::TitleScene()
 {
+	title.reset(new TitleUi());
+	title->Initialize();
+
+	character.reset(new TitleVtuber());
+	character->Initialize();
 }
 
 void TitleScene::Title()
