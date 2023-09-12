@@ -40,6 +40,10 @@ void SkillResultUI::Init()
 	m_impactShake.Init();
 }
 
+#include "../BattleManager/ExistUnits.h"
+#include "../BattleManager/Enemy/Enemy.h"
+
+
 void SkillResultUI::Update(std::weak_ptr<ParticleEmitter>arg_ultParticleEmitter)
 {
 	using namespace KuroEngine;
@@ -65,7 +69,11 @@ void SkillResultUI::Update(std::weak_ptr<ParticleEmitter>arg_ultParticleEmitter)
 			//ULTのパーティクルを出す
 			if (m_skillType == SKILL_ENEMY_DAMAGE)
 			{
-				arg_ultParticleEmitter.lock()->Emit({ m_disappearPosX,m_appearPos.y }, m_amount);
+				bool isBoss = false;
+				for (auto& data : ExistUnits::Instance()->m_Enemys) {
+					if (GetUnitPtr_nama<Enemy*>(data)->m_Data.m_Tag == EnemysData::ENEMY_TAG::BOSS) isBoss = true;
+				}
+				arg_ultParticleEmitter.lock()->Emit({ m_disappearPosX,m_appearPos.y }, isBoss ? m_amount * 3 : m_amount);
 				//画面揺らし
 				ScreenShakeManager::Instance()->Shake();
 

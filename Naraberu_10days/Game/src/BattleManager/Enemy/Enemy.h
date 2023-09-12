@@ -11,8 +11,9 @@
 class Enemy :
     public UnitBase
 {
-private:
+public:
 	EnemysData::EnemyData m_Data;
+private:
 	//std::vector<std::shared_ptr<E_Ac_Base>> m_Actions;
 	int m_Action_Num;
 	bool m_Now_Action;
