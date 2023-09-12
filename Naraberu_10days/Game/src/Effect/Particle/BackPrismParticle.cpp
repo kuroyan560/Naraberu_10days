@@ -71,9 +71,9 @@ void BackPrismParticle::OnEmit(KuroEngine::Vec2<float> arg_pos)
 	m_alpha = 0.0f;
 	m_scale = { KuroEngine::GetRand(0.1f, 0.6f),KuroEngine::GetRand(0.1f, 0.6f) };
 	m_angle = KuroEngine::Angle(KuroEngine::GetRand(360.0f));
-	m_texNum = KuroEngine::GetRand(TRIANGLE_PATTERN_NUM);
+	m_texNum = KuroEngine::GetRand(TRIANGLE_PATTERN_NUM - 1);
 	m_timer.Reset(300);
-	m_colorIdx = KuroEngine::GetRand(COLOR_PATTERN_NUM);
+	m_colorIdx = KuroEngine::GetRand(COLOR_PATTERN_NUM - 1);
 
 	m_moveVec = { cos(m_angle),sin(m_angle) };
 	m_pos = KuroEngine::WinApp::Instance()->GetExpandWinCenter();
