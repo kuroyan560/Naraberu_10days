@@ -308,11 +308,30 @@ bool OperationConfig::CheckAllOperationInputTrigger()
 
 	for (int i = 0; i < SELECT_VEC_NUM; ++i)
 	{
-		if (GetSelectVec((SELECT_VEC)i) || GetMoveVec((SELECT_VEC)i) || GetTargetChangeVec((SELECT_VEC)i))
+		if (GetSelectVec((SELECT_VEC)i) || GetTargetChangeVec((SELECT_VEC)i))
 		{
 			return true;
 		}
 	}
+
+	static const float STICK_DEAD_RANGE = 0.4f;
+
+	if (UsersInput::Instance()->ControllerOnTrigger(0, XBOX_STICK::L_UP, STICK_DEAD_RANGE))return true;
+	if (UsersInput::Instance()->ControllerOnTrigger(0, XBOX_BUTTON::DPAD_UP))return true;
+	if (UsersInput::Instance()->KeyOnTrigger(DIK_W))return true;
+
+	if (UsersInput::Instance()->ControllerOnTrigger(0, XBOX_STICK::L_DOWN, STICK_DEAD_RANGE))return true;
+	if (UsersInput::Instance()->ControllerOnTrigger(0, XBOX_BUTTON::DPAD_DOWN))return true;
+	if (UsersInput::Instance()->KeyOnTrigger(DIK_S))return true;
+
+	if (UsersInput::Instance()->ControllerOnTrigger(0, XBOX_STICK::L_LEFT, STICK_DEAD_RANGE))return true;
+	if (UsersInput::Instance()->ControllerOnTrigger(0, XBOX_BUTTON::DPAD_LEFT))return true;
+	if (UsersInput::Instance()->KeyOnTrigger(DIK_A))return true;
+
+	if (UsersInput::Instance()->ControllerOnTrigger(0, XBOX_STICK::L_RIGHT, STICK_DEAD_RANGE))return true;
+	if (UsersInput::Instance()->ControllerOnTrigger(0, XBOX_BUTTON::DPAD_RIGHT))return true;
+	if (UsersInput::Instance()->KeyOnTrigger(DIK_D))return true;
+
 	return false;
 }
 
