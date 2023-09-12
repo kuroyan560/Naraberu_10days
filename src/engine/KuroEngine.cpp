@@ -239,7 +239,7 @@ float KuroEngine::GetBezierFromControlPoint(float t, int ControlPointNum, float*
 
 int KuroEngine::GetRand(int Min, int Max)
 {
-	int result = (Max - Min) * rand() / RAND_MAX + Min;
+	int result = static_cast<int>(std::floor((Max - Min) * rand() / RAND_MAX)) + Min;
 	return result;
 }
 
@@ -250,7 +250,7 @@ int KuroEngine::GetRand(int Max)
 
 float KuroEngine::GetRand(float Min, float Max)
 {
-	double result = (Max - Min) * ((double)rand() / RAND_MAX) + Min;
+	double result = std::floor((Max - Min) * ((double)rand() / RAND_MAX)) + Min;
 	return static_cast<float>(result);
 }
 
