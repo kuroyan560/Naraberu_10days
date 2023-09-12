@@ -532,7 +532,7 @@ void BattleScene::GameClearDraw()
 	float SubFrame = 6.6f * RefreshRate::RefreshRate_Mag;
 
 	Vec2 Panel_LT = Vec2(391.0f, 67.0f);
-	Vec2 Panel_RB = Vec2(899.0f, 557.0f);
+	Vec2 Panel_RB = Vec2(892.0f, 564.0f);
 
 	// Œã‚ë‚ðˆÃ‚­
 	float alpha = 0.6f * (ResultTimer / ResultTimer_Max);
@@ -571,7 +571,7 @@ void BattleScene::GameOverDraw()
 	float SubFrame = 6.6f * RefreshRate::RefreshRate_Mag;
 
 	Vec2 Panel_LT = Vec2(391.0f, 67.0f);
-	Vec2 Panel_RB = Vec2(899.0f, 557.0f);
+	Vec2 Panel_RB = Vec2(892.0f, 564.0f);
 
 	// Œã‚ë‚ðˆÃ‚­
 	float alpha = 0.6f * (ResultTimer / ResultTimer_Max);
@@ -613,7 +613,7 @@ void BattleScene::PauseDraw()
 	float SubFrame = 0.0f * RefreshRate::RefreshRate_Mag;
 
 	Vec2 Panel_LT = Vec2(391.0f, 67.0f);
-	Vec2 Panel_RB = Vec2(899.0f, 557.0f);
+	Vec2 Panel_RB = Vec2(892.0f, 564.0f);
 
 	// Œã‚ë‚ðˆÃ‚­
 	//float alpha = 0.4f * (ResultTimer / ResultTimer_Max);

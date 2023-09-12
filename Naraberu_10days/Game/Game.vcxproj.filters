@@ -101,9 +101,6 @@
     <Filter Include="src\user\Panel">
       <UniqueIdentifier>{4b6c4ee8-e3cd-49a7-8db3-a4f7470ca1a1}</UniqueIdentifier>
     </Filter>
-    <Filter Include="src\user\Scene">
-      <UniqueIdentifier>{34a65443-b5c4-43aa-98ff-6a43958e39fc}</UniqueIdentifier>
-    </Filter>
     <Filter Include="src\user\Stage">
       <UniqueIdentifier>{4c64b86b-a20c-452c-a5ef-bd30ec6003da}</UniqueIdentifier>
     </Filter>
@@ -124,6 +121,9 @@
     </Filter>
     <Filter Include="src\user\Effect\Particle">
       <UniqueIdentifier>{fe29ccad-8ba5-4e41-8b7e-35e59ecae967}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="src\user\Scene">
+      <UniqueIdentifier>{34a65443-b5c4-43aa-98ff-6a43958e39fc}</UniqueIdentifier>
     </Filter>
   </ItemGroup>
   <ItemGroup>

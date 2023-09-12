@@ -171,5 +171,5 @@ namespace EnemysData {
 	static const EnemyData Zako_Yellow_1 =		EnemyData("zako_yellow", ENEMY_TAG::DEFAULT, 96, 20, AI_TYPE::DEFAULT, "Attack_01", "Jamming_01", "Jamming_01");
 	static const EnemyData Zako_Red_1 =			EnemyData("zako_red", ENEMY_TAG::DEFAULT, 128, 20, AI_TYPE::DEFAULT, "Attack_01", "Jamming_01", "Jamming_01");
 
-	static const EnemyData DebugEnemy_Boss_1 =	EnemyData("Boss_1", ENEMY_TAG::BOSS, 512, 80, AI_TYPE::DEFAULT, "Attack_01", "Attack_01", "Attack_01");
+	static const EnemyData DebugEnemy_Boss_1 =	EnemyData("Boss_1", ENEMY_TAG::BOSS, 512, 70, AI_TYPE::DEFAULT, "Attack_01", "Attack_01", "Attack_01");
 }
