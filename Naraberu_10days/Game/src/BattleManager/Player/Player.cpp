@@ -29,7 +29,7 @@ Player::Player()
 	m_HpTex_break = D3D12App::Instance()->GenerateTextureBuffer(TexDir + "player_hp_gauge_break.png");
 	m_Ult_Gauge = D3D12App::Instance()->GenerateTextureBuffer(TexDir + "ult_gauge.png");
 
-	m_CharacterTex = D3D12App::Instance()->GenerateTextureBuffer(TexDir + "player/player_character_normal.png");
+	m_CharacterTex = D3D12App::Instance()->GenerateTextureBuffer(TexDir + "character/player_character_normal.png");
 	D3D12App::Instance()->GenerateTextureBuffer(&m_NumberTex.front(), TexDir + "player_hp_number.png", 11, Vec2(11, 1));
 
 	TurnChangeTimer = 0;

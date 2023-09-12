@@ -126,11 +126,35 @@ class BattleScene :
 	int m_Tutorial_Jissen_Text_Timer_Max;
 	// 2度操作がある場合のフラグ
 	bool m_Tutorial_Step_Complete_Flag;
+	// 置いたタイマー
+	int m_PutTimer;
+	// 注目タイマー
+	int m_TaegetTimer;
+	int m_TaegetTimer_Max;
+	KuroEngine::Vec2<float> m_LastTarget_LT;
+	KuroEngine::Vec2<float> m_LastTarget_RB;
+	KuroEngine::Vec2<float> m_NowTarget_LT;
+	KuroEngine::Vec2<float> m_NowTarget_RB;
+	bool m_NowTargeting;
+	int m_Taeget_Alpha_Timer;
 	float InQuart(float t) {
 		return t * t * t * t;
 	}
+	float OutQuart(float t) {
+		return 1.0f - powf(1.0f - t, 4.0f);
+	}
+	float OutQuint(float t) {
+		return 1.0f - powf(1.0f - t, 5.0f);
+	}
+	float EaseFunc(float start, float end, float Now, float Max) {
+		float t = Now / Max;
+		float result = start + static_cast<float>(OutQuart(t) * static_cast<float>(end - start));
+		return result;
+	}
+	KuroEngine::Vec2<float> TargetSize(KuroEngine::Vec2<float> St, KuroEngine::Vec2<float> En);
 	// メッセージ送りクールタイム
 	int m_Tutorial_Text_CoolTime;
+	std::shared_ptr<KuroEngine::TextureBuffer> Tutorial_Back_Tex;
 	std::array<std::shared_ptr<KuroEngine::TextureBuffer>, 36> Tutorial_Tex;
 	void TutorialUpdate();
 	void TutorialDraw();

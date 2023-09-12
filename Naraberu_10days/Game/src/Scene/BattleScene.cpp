@@ -49,6 +49,13 @@ void BattleScene::OnInitialize()
 	m_Tutorial_Jissen_Text_Timer = m_Tutorial_Jissen_Text_Timer_Max;
 	m_Tutorial_Step_Complete_Flag = false;
 	ExistUnits::Instance()->m_CanTurnEnd = false;
+	m_PutTimer = 0;
+	m_TaegetTimer = 0;
+	m_TaegetTimer_Max = int(100.0f * RefreshRate::RefreshRate_Mag);
+	m_LastTarget_LT = Vec2(0.0f, 0.0f);
+	m_LastTarget_RB = WinApp::Instance()->GetExpandWinSize();
+	m_NowTargeting = false;
+	m_Taeget_Alpha_Timer = 0;
 
 	m_Already_Selected = false;
 
@@ -88,7 +95,6 @@ void BattleScene::OnInitialize()
 	//中央指定
 	block->SetCenter(stage->GetCenter());
 	block->Initialize();
-	block->SetTutorial();
 
 	ExistUnits::Instance()->SetMapChipPtr(stage->GetMapChipPtr());
 	ExistUnits::Instance()->SetStageManagerPtr(stage.get());
@@ -118,6 +124,7 @@ void BattleScene::OnInitialize()
 	if (ExistUnits::Instance()->m_StageName == "Tutorial") {
 		m_NowTutorial_Step = 0;
 		m_Tutorial_Pause[m_NowTutorial_Step] = true;
+		block->SetTutorial();
 	}
 
 	//背景
@@ -525,7 +532,7 @@ void BattleScene::GameClearDraw()
 	float SubFrame = 6.6f * RefreshRate::RefreshRate_Mag;
 
 	Vec2 Panel_LT = Vec2(391.0f, 67.0f);
-	Vec2 Panel_RB = Vec2(899.0f, 564.0f);
+	Vec2 Panel_RB = Vec2(899.0f, 557.0f);
 
 	// 後ろを暗く
 	float alpha = 0.4f * (ResultTimer / ResultTimer_Max);
@@ -564,7 +571,7 @@ void BattleScene::GameOverDraw()
 	float SubFrame = 6.6f * RefreshRate::RefreshRate_Mag;
 
 	Vec2 Panel_LT = Vec2(391.0f, 67.0f);
-	Vec2 Panel_RB = Vec2(899.0f, 564.0f);
+	Vec2 Panel_RB = Vec2(899.0f, 557.0f);
 
 	// 後ろを暗く
 	float alpha = 0.4f * (ResultTimer / ResultTimer_Max);
@@ -656,6 +663,7 @@ float BattleScene::ResultEasing(float time)
 	return 1.0f - Ret;
 }
 
+
 void BattleScene::TutorialUpdate()
 {
 	KuroEngine::UsersInput* input = KuroEngine::UsersInput::Instance();
@@ -725,10 +733,58 @@ void BattleScene::TutorialUpdate()
 	if (m_Tutorial_Text_CoolTime > 0) {
 		m_Tutorial_Text_CoolTime--;
 	}
+	if (m_PutTimer > 0) {
+		m_PutTimer--;
+	}
+
+	// 注目用
+	{
+		using namespace KuroEngine;
+		Vec2 WinSize = WinApp::Instance()->GetExpandWinSize();
+		// 注目する箱の大きさ
+		Vec2 Size = Vec2(512.0f, 512.0f);
+		Vec2<float> LT_en = Vec2(0.0f, 0.0f);
+		Vec2<float> RB_en = WinSize;
+		// 注目の範囲
+		if (m_NowTutorial_Step == 1) {
+			LT_en = Vec2(380.0f, 56.0f);
+			RB_en = Vec2(901.0f, 576.0f);
+		}
+		else if (m_NowTutorial_Step == 2) {
+			LT_en = Vec2(384.0f, 582.0f);
+			RB_en = Vec2(894.0f, 700.0f);
+		}
+		else if (m_NowTutorial_Step == 3) {
+			LT_en = Vec2(998.0f, 104.0f);
+			RB_en = Vec2(1265.0f, 396.0f);
+		}
+		else if (m_NowTutorial_Step == 4) {
+			LT_en = Vec2(14.0f, 42.0f);
+			RB_en = Vec2(372.0f, 628.0f);
+		}
+		else if (m_NowTutorial_Step == 17) {
+			LT_en = Vec2(380.0f, 572.0f);
+			RB_en = Vec2(900.0f, 593.0f);
+		}
+
+		m_NowTarget_LT = Vec2(TargetSize(m_LastTarget_LT, LT_en));
+		m_NowTarget_RB = Vec2(TargetSize(m_LastTarget_RB, RB_en));
+	}
+	{
+		// ターゲッティングアルファ
+		if (m_NowTargeting == true) {
+			m_Taeget_Alpha_Timer < m_TaegetTimer_Max ? m_Taeget_Alpha_Timer++ : m_Taeget_Alpha_Timer = m_TaegetTimer_Max;
+		}
+		else {
+			m_Taeget_Alpha_Timer > 0 ? m_Taeget_Alpha_Timer-- : m_Taeget_Alpha_Timer = 0;
+		}
+	}
 
 	// チュートリアル説明中
 	if (m_Tutorial_Pause[m_NowTutorial_Step] == true) {
 		m_Tutorial_Trigger_Timer = 0;
+		// 注目タイマー加算
+		m_TaegetTimer < m_TaegetTimer_Max ? m_TaegetTimer++ : m_TaegetTimer = m_TaegetTimer_Max;
 		// 決定
 		if (OperationConfig::Instance()->GetOperationInput(OperationConfig::OPERATION_TYPE::DONE, OperationConfig::INPUT_PATTERN::ON_TRIGGER) &&
 			m_Tutorial_Jissen_Text_Timer == 0 && m_Tutorial_Text_CoolTime == 0) {
@@ -738,11 +794,13 @@ void BattleScene::TutorialUpdate()
 				// 実践
 				m_Tutorial_Pause[m_NowTutorial_Step] = false;
 				m_Tutorial_Jissen_Text_Timer = 0;
+				m_Tutorial_None_Ctrl_Timer = int(900.0f * RefreshRate::RefreshRate_Mag);
 			}
 			else if (m_NowTutorial_Step == 11) {
 				// 実践
 				m_Tutorial_Pause[m_NowTutorial_Step] = false;
 				m_Tutorial_Jissen_Text_Timer = 0;
+				m_Tutorial_None_Ctrl_Timer = int(900.0f * RefreshRate::RefreshRate_Mag);
 			}
 			else if (m_NowTutorial_Step == 15) {
 				// 実践
@@ -750,16 +808,19 @@ void BattleScene::TutorialUpdate()
 				ExistUnits::Instance()->m_CanTurnEnd = true;
 				m_Tutorial_Pause[m_NowTutorial_Step] = false;
 				m_Tutorial_Jissen_Text_Timer = 0;
+				m_Tutorial_None_Ctrl_Timer = int(900.0f * RefreshRate::RefreshRate_Mag);
 			}
 			else if (m_NowTutorial_Step == 19) {
 				// 実践
 				m_Tutorial_Pause[m_NowTutorial_Step] = false;
 				m_Tutorial_Jissen_Text_Timer = 0;
+				m_Tutorial_None_Ctrl_Timer = int(900.0f * RefreshRate::RefreshRate_Mag);
 			}
 			else if (m_NowTutorial_Step == 25) {
 				// 実践
 				m_Tutorial_Pause[m_NowTutorial_Step] = false;
 				m_Tutorial_Jissen_Text_Timer = 0;
+				m_Tutorial_None_Ctrl_Timer = int(900.0f * RefreshRate::RefreshRate_Mag);
 			}
 			else if (m_NowTutorial_Step == 27) {
 				// 実践
@@ -767,16 +828,19 @@ void BattleScene::TutorialUpdate()
 				ExistUnits::Instance()->m_CanTurnEnd = true;
 				m_Tutorial_Pause[m_NowTutorial_Step] = false;
 				m_Tutorial_Jissen_Text_Timer = 0;
+				m_Tutorial_None_Ctrl_Timer = int(900.0f * RefreshRate::RefreshRate_Mag);
 			}
 			else if (m_NowTutorial_Step == 33) {
 				// 実践
 				m_Tutorial_Pause[m_NowTutorial_Step] = false;
 				m_Tutorial_Jissen_Text_Timer = 0;
+				m_Tutorial_None_Ctrl_Timer = int(900.0f * RefreshRate::RefreshRate_Mag);
 			}
 			else if (m_NowTutorial_Step == 35) {
 				// 実践（チュートリアル終了）
 				m_Tutorial_Pause[m_NowTutorial_Step] = false;
 				m_Tutorial_Jissen_Text_Timer = 0;
+				m_Tutorial_None_Ctrl_Timer = int(900.0f * RefreshRate::RefreshRate_Mag);
 			}
 			else {
 				m_Tutorial_Pause[m_NowTutorial_Step] = true;
@@ -788,7 +852,17 @@ void BattleScene::TutorialUpdate()
 			}
 
 			m_Tutorial_Text_CoolTime = 10;
-			m_Impossible_Put_Block_Timer = int(80.0f * RefreshRate::RefreshRate_Mag);
+			m_Impossible_Put_Block_Timer = int(160.0f * RefreshRate::RefreshRate_Mag);
+			m_TaegetTimer = 0;
+			m_LastTarget_LT = m_NowTarget_LT;
+			m_LastTarget_RB = m_NowTarget_RB;
+			m_NowTargeting = false;
+
+			// ターゲットするステップ
+			if (m_NowTutorial_Step == 1 || m_NowTutorial_Step == 2 || m_NowTutorial_Step == 3 || m_NowTutorial_Step == 4 ||
+				m_NowTutorial_Step == 17) {
+				m_NowTargeting = true;
+			}
 		}
 
 		//演出更新
@@ -817,7 +891,7 @@ void BattleScene::TutorialUpdate()
 		// 無操作状態のタイマー
 		m_Tutorial_None_Ctrl_Timer++;
 		// 操作があった時に無操作タイマーを0にする
-		if (OperationConfig::Instance()->CheckAllOperationInputTrigger()) {
+		if (OperationConfig::Instance()->CheckAllOperationInputTrigger() && !OperationConfig::Instance()->GetOperationInput(OperationConfig::SET_PRISM, OperationConfig::ON_TRIGGER)) {
 			m_Tutorial_None_Ctrl_Timer = 0;
 		}
 		// 下から出てくる
@@ -845,19 +919,19 @@ void BattleScene::TutorialUpdate()
 		}
 		else if (m_NowTutorial_Step == 15) {
 			if (!m_Tutorial_Step_Complete_Flag &&
-				OperationConfig::Instance()->GetOperationInput(OperationConfig::END_TURN, OperationConfig::ON_TRIGGER)
-				&& m_Impossible_Put_Block_Timer == 0
-				&& m_Tutorial_Trigger_Timer == 0) {
+				m_Impossible_Put_Block_Timer == 0
+				&& m_Tutorial_Trigger_Timer == 0 
+				&& Mgr.m_Selected_TurnEnd) {
 				// 一度目の操作をしたフラグを上げる
 				m_Tutorial_Step_Complete_Flag = true;
 			}
 			else {
 				// 別の操作を挟んだ場合はフラグを下げる
-				if (OperationConfig::Instance()->GetOperationInput(OperationConfig::END_TURN, OperationConfig::ON_TRIGGER)) {
+				if (Mgr.m_Checked_TurnEnd && m_Tutorial_Trigger_Timer == 0) {
 					// タイマー増加
 					m_Tutorial_Trigger_Timer++;
 				}
-				else if (OperationConfig::Instance()->CheckAllOperationInputTrigger()) {
+				if (!Mgr.m_Selected_TurnEnd) {
 					m_Tutorial_Step_Complete_Flag = false;
 				}
 			}
@@ -875,19 +949,19 @@ void BattleScene::TutorialUpdate()
 		}
 		else if (m_NowTutorial_Step == 27) {
 			if (!m_Tutorial_Step_Complete_Flag &&
-				OperationConfig::Instance()->GetOperationInput(OperationConfig::END_TURN, OperationConfig::ON_TRIGGER)
-				&& m_Impossible_Put_Block_Timer == 0
-				&& m_Tutorial_Trigger_Timer == 0) {
+				m_Impossible_Put_Block_Timer == 0
+				&& m_Tutorial_Trigger_Timer == 0
+				&& Mgr.m_Selected_TurnEnd) {
 				// 一度目の操作をしたフラグを上げる
 				m_Tutorial_Step_Complete_Flag = true;
 			}
 			else {
 				// 別の操作を挟んだ場合はフラグを下げる
-				if (OperationConfig::Instance()->GetOperationInput(OperationConfig::END_TURN, OperationConfig::ON_TRIGGER)) {
+				if (Mgr.m_Checked_TurnEnd && m_Tutorial_Trigger_Timer == 0) {
 					// タイマー増加
 					m_Tutorial_Trigger_Timer++;
 				}
-				else if (OperationConfig::Instance()->CheckAllOperationInputTrigger()) {
+				if (!Mgr.m_Selected_TurnEnd) {
 					m_Tutorial_Step_Complete_Flag = false;
 				}
 			}
@@ -897,6 +971,29 @@ void BattleScene::TutorialUpdate()
 			// 敵が全滅した
 			if (!Mgr.AliveEnemys()) {
 				m_Tutorial_Trigger_Timer++;
+			}
+		}
+
+		if (m_NowTutorial_Step == 7 || m_NowTutorial_Step == 11 ||
+			m_NowTutorial_Step == 19) {
+			//セット可能ならセットする
+			if (ExistUnits::Instance()->m_NowTurn == 0 && m_Impossible_Put_Block_Timer == 0 && Mgr.AliveEnemys() && !ExistUnits::Instance()->m_pPlayer->m_IsEndTurnFunc
+				&& !Mgr.GetSelectedTurnEnd() && m_Tutorial_Trigger_Timer == 1) {
+				PlayerTurn();
+			}
+		}
+		else if (m_NowTutorial_Step == 33) {
+			//セット可能ならセットする
+			if (ExistUnits::Instance()->m_NowTurn == 0 && m_Impossible_Put_Block_Timer == 0 && Mgr.AliveEnemys() && !ExistUnits::Instance()->m_pPlayer->m_IsEndTurnFunc
+				&& !Mgr.GetSelectedTurnEnd()) {
+				PlayerTurn();
+			}
+		}
+
+		// 置く系のチュートリアル
+		if (m_NowTutorial_Step == 7 || m_NowTutorial_Step == 11 || m_NowTutorial_Step == 19) {
+			if (m_PutTimer == 0 && m_Tutorial_Trigger_Timer == 1) {
+				m_Tutorial_Trigger_Timer--;
 			}
 		}
 
@@ -1053,21 +1150,7 @@ void BattleScene::TutorialUpdate()
 		}
 	}
 
-	if (m_NowTutorial_Step == 7 || m_NowTutorial_Step == 11 ||
-		m_NowTutorial_Step == 19) {
-		//セット可能ならセットする
-		if (ExistUnits::Instance()->m_NowTurn == 0 && m_Impossible_Put_Block_Timer == 0 && Mgr.AliveEnemys() && !ExistUnits::Instance()->m_pPlayer->m_IsEndTurnFunc
-			&& !Mgr.GetSelectedTurnEnd() && m_Tutorial_Trigger_Timer == 2) {
-			PlayerTurn();
-		}
-	}
-	else if (m_NowTutorial_Step == 33) {
-		//セット可能ならセットする
-		if (ExistUnits::Instance()->m_NowTurn == 0 && m_Impossible_Put_Block_Timer == 0 && Mgr.AliveEnemys() && !ExistUnits::Instance()->m_pPlayer->m_IsEndTurnFunc
-			&& !Mgr.GetSelectedTurnEnd()) {
-			PlayerTurn();
-		}
-	}
+	
 
 	// 設置不可時間の更新
 	if (m_Impossible_Put_Block_Timer > 0) {
@@ -1102,13 +1185,68 @@ void BattleScene::TutorialDraw()
 	if (m_NowTutorial_Step == 7 || m_NowTutorial_Step == 11 || m_NowTutorial_Step == 15 ||
 		m_NowTutorial_Step == 19 || m_NowTutorial_Step == 25 || m_NowTutorial_Step == 27 || m_NowTutorial_Step == 33 || m_NowTutorial_Step == 35) {
 		float Move_Y = InQuart(float(m_Tutorial_Jissen_Text_Timer) / float(m_Tutorial_Jissen_Text_Timer_Max)) * 249.0f;
+		DrawFunc2D::DrawExtendGraph2D(Vec2(0.0f, WinSize.y - 249.0f) + Vec2(0.0f, Move_Y), Vec2(WinSize.x, WinSize.y) + Vec2(0.0f, Move_Y), Tutorial_Back_Tex);
 		DrawFunc2D::DrawGraph(Vec2(0.0f, WinSize.y - 249.0f) + Vec2(0.0f, Move_Y), Tutorial_Tex[m_NowTutorial_Step]);
 	}
 	else {
-		float Move_Y = InQuart(float(m_Tutorial_Jissen_Text_Timer) / float(m_Tutorial_Jissen_Text_Timer_Max)) * 249.0f;
-		DrawFunc2D::DrawGraph(Vec2(0.0f, WinSize.y - 249.0f) + Vec2(0.0f, Move_Y), Tutorial_Tex[m_NowTutorial_Step]);
+		float Rate = InQuart(float(m_Tutorial_Jissen_Text_Timer) / float(m_Tutorial_Jissen_Text_Timer_Max));
+		float Rate_2 = OutQuint(float(m_TaegetTimer) / float(m_TaegetTimer_Max));
+		// アルファ
+		float alpha = 1.0f - InQuart(float(m_Taeget_Alpha_Timer) / float(m_TaegetTimer_Max));
+		float Move_Y = Rate * 249.0f;
+		//float Move_Y_2 = Rate_2 * 249.0f;
+
+		// パネル注目
+		DrawFunc2D_Mask::DrawExtendGraph2D(Vec2(0.0f, 0.0f), Vec2(WinSize.x, WinSize.y), Tutorial_Back_Tex,
+			m_NowTarget_LT, m_NowTarget_RB, true);
+		DrawFunc2D::DrawExtendGraph2D(Vec2(0.0f, WinSize.y - 249.0f) + Vec2(0.0f, Move_Y), Vec2(WinSize.x, WinSize.y) + Vec2(0.0f, Move_Y), Tutorial_Back_Tex,
+			 alpha);
+		float TextMoveY = 0.0f;
+		if (m_NowTutorial_Step == 1) {
+			TextMoveY = Rate_2 * 50.0f;
+		}
+		if (m_NowTutorial_Step == 2) {
+			TextMoveY = 50.0f - Rate_2 * 100.0f;
+		}
+		if (m_NowTutorial_Step == 3) {
+			TextMoveY = -50.0f + Rate_2 * 50.0f;
+		}
+		if (m_NowTutorial_Step == 4) {
+			TextMoveY = Rate_2 * 50.0f;
+		}
+		if (m_NowTutorial_Step == 5) {
+			TextMoveY = 50.0f - Rate_2 * 50.0f;
+		}
+		if (m_NowTutorial_Step == 17) {
+			TextMoveY = Rate_2 * 50.0f;
+		}
+		if (m_NowTutorial_Step == 18) {
+			TextMoveY = 50 - Rate_2 * 80.0f;
+		}
+
+
+		if ((m_NowTutorial_Step == 7 || m_NowTutorial_Step == 11 || m_NowTutorial_Step == 15 ||
+			m_NowTutorial_Step == 19 || m_NowTutorial_Step == 25 || m_NowTutorial_Step == 27 || m_NowTutorial_Step == 33)
+			&& Rate > 0.95f) {
+			DrawFunc2D::DrawGraph(Vec2(0.0f, WinSize.y - 249.0f) + Vec2(0.0f, Move_Y + TextMoveY), Tutorial_Tex[m_NowTutorial_Step + 1]);
+		}
+		else {
+			DrawFunc2D::DrawGraph(Vec2(0.0f, WinSize.y - 249.0f) + Vec2(0.0f, Move_Y + TextMoveY), Tutorial_Tex[m_NowTutorial_Step]);
+		}
+		//else {
+		//	DrawFunc2D::DrawExtendGraph2D(Vec2(0.0f, WinSize.y - 249.0f) + Vec2(0.0f, Move_Y), Vec2(WinSize.x, WinSize.y) + Vec2(0.0f, Move_Y), Tutorial_Back_Tex);
+		//	DrawFunc2D::DrawGraph(Vec2(0.0f, WinSize.y - 249.0f) + Vec2(0.0f, Move_Y), Tutorial_Tex[m_NowTutorial_Step]);
+		//}
 	}
-	DrawFunc2D::DrawNumber2D(m_NowTutorial_Step, Vec2(30.0f, WinSize.y - 200.0f) + ScreenShakeManager::Instance()->GetOffset(), &m_NumberTex.front());
+	//DrawFunc2D::DrawNumber2D(m_NowTutorial_Step, Vec2(30.0f, WinSize.y - 200.0f) + ScreenShakeManager::Instance()->GetOffset(), &m_NumberTex.front());
+}
+
+KuroEngine::Vec2<float> BattleScene::TargetSize(KuroEngine::Vec2<float> St, KuroEngine::Vec2<float> En)
+{
+	KuroEngine::Vec2<float> Result;
+	Result.x = EaseFunc(St.x, En.x, float(m_TaegetTimer), float(m_TaegetTimer_Max));
+	Result.y = EaseFunc(St.y, En.y, float(m_TaegetTimer), float(m_TaegetTimer_Max));
+	return Result;
 }
 
 std::vector<std::weak_ptr<SkillResultUI>> BattleScene::GetAliveEnemyDamageUIArray()
@@ -1175,9 +1313,10 @@ BattleScene::BattleScene()
 	}
 
 	// チュートリアル
+	Tutorial_Back_Tex = D3D12App::Instance()->GenerateTextureBuffer("resource/user/tex/tutorial//text_back.png");
 	for (int i = 0; i < 36; i++) {
 		std::string TexDir_Tutorial = "resource/user/tex/tutorial/";
-		Tutorial_Tex[i] = D3D12App::Instance()->GenerateTextureBuffer(TexDir_Tutorial + "/text_back.png");
+		Tutorial_Tex[i] = D3D12App::Instance()->GenerateTextureBuffer(TexDir_Tutorial + "/text_" + std::to_string(i) + ".png");
 	}
 
 	//敵のダメージUIの位置
@@ -1221,5 +1360,6 @@ void BattleScene::PlayerTurn()
 		if (!stage->JudgeWithEffect(nowMapchip, shape, attribute, color, m_setPrismEffect)) { return; }
 		//次の使用ブロックをセットする
 		block->ChangeBlock();
+		m_PutTimer = 5;
 	}
 }
