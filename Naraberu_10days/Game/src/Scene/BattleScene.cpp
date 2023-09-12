@@ -848,6 +848,22 @@ void BattleScene::TutorialUpdate()
 					// アルティメットを上げる
 					GetUnitPtr_nama<Player*>(ExistUnits::Instance()->m_pPlayer)->AddUltPoint(1000);
 					// パネルを整える
+					std::array<std::array<int,10>,10> _pos={ 
+						{{0,0,0,1,1,1,1,1,1,0},
+						{0,0,0,0,1,1,1,1,3,0},
+						{0,0,0,0,0,1,3,1,1,0},
+						{3,0,2,0,0,0,1,3,1,0},
+						{0,0,2,2,0,3,1,1,1,1},
+						{0,0,3,3,0,0,3,2,3,1},
+						{0,2,2,2,3,0,2,2,3,0},
+						{0,2,2,3,3,1,1,2,1,0},
+						{0,0,0,0,1,1,1,1,1,0},
+						{0,0,0,0,1,2,2,2,2,0}}};
+					for (int y = 0; y < 10; y++) {
+						for (int x = 0; x < 10; x++) {
+							stage->SetBlock({ x,y }, _pos[y][x]);
+						}
+					}
 				}
 			}
 
@@ -1163,7 +1179,7 @@ void BattleScene::TutorialUpdate()
 
 	stage->Update(GetAliveEnemyDamageUIArray());
 	if (!Mgr.GetDefeat() && !m_Stage_End) {
-		block->Update();
+		block->Update(m_NowTutorial_Step);
 	}
 
 	if (Mgr.GetNowTurn() == 1) {

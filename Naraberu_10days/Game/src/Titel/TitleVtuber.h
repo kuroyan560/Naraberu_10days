@@ -54,10 +54,12 @@ public:
 	void SetMoveStageSelect(bool _mouzureteru = false) {
 		if (_mouzureteru) {
 			move = -1500.0f;
+			playerMove=-500.0f;
 			isRightMove = false;
 		} else {
 			isLeftMove = true;
 			moveTimer = 0;
+			playerMove = 0;
 		}
 	}
 
@@ -104,5 +106,7 @@ private:
 	float moveTimer;
 	//移動を行っているか
 	bool isMove;
+	//プレイヤー移動
+	float playerMove;
 };
 
