@@ -5,6 +5,7 @@
 #include"../Effect/ParticleManager.h"
 #include"../Effect/ScreenShakeManager.h"
 #include"../SoundConfig.h"
+#include"../RefreshRate.h"
 
 SkillResultUI::SkillResultUI()
 {
@@ -48,10 +49,10 @@ void SkillResultUI::Update(std::weak_ptr<ParticleEmitter>arg_ultParticleEmitter)
 	m_impactShake.Update(1.0f);
 
 	//‘ŞêŠJn‚Ü‚Å‚ÌŠÔ
-	if (m_appearTimer.UpdateTimer())
+	if (m_appearTimer.UpdateTimer(1.0f / RefreshRate::RefreshRate_Mag))
 	{
 		//‘Şê’†
-		m_disappearTimer.UpdateTimer();
+		m_disappearTimer.UpdateTimer(1.0f / RefreshRate::RefreshRate_Mag);
 		m_nowPos.x = Math::Ease(In, Back, m_disappearTimer.GetTimeRate(), m_appearPos.x, m_disappearPosX);
 
 		//‘ŞêŠ®—¹
@@ -124,7 +125,7 @@ void SkillResultUI::Add(int arg_damage, bool arg_drawHistory)
 	const float SHAKE_POWER_MAX = 18.0f;
 
 	//•\¦ŠÔ
-	const float APPEAR_TIME = 40.0f;
+	const float APPEAR_TIME = 45.0f;
 	m_appearTimer.Reset(APPEAR_TIME);
 
 	//‘ŞêŠÔ
