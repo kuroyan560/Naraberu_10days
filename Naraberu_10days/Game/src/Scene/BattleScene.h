@@ -163,6 +163,7 @@ class BattleScene :
 	//“G‚É‘Î‚·‚é—^ƒ_ƒ[ƒWUI
 	static const int ENEMY_COUNT_MAX = 3;
 	std::vector<std::shared_ptr<SkillResultUI>>m_enemyDamageUI;
+	std::vector<std::weak_ptr<SkillResultUI>>GetAliveEnemyDamageUIArray();
 
 public:
 	BattleScene();
