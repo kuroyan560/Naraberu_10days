@@ -257,14 +257,21 @@ void BattleTurnMgr::AutoTurnEndTimerDraw()
 
 void BattleTurnMgr::JustInTime(const float _Now_Rate, const KuroEngine::Vec2<float> _pos1, const KuroEngine::Vec2<float> _pos2)
 {
-	if (_Now_Rate < 0.7f) { return; }
+	using namespace KuroEngine;
+	if (_Now_Rate < 0.5f || _Now_Rate >= 1.0f) { return; }
 
-	const float maxTimer = 40.0f * RefreshRate::RefreshRate_Mag;
-	KuroEngine::Vec2<float> scale = { 0.0f,0.0f };
+	float maxTimerRate = Math::Ease(EASE_CHANGE_TYPE::In, EASING_TYPE::Sine,
+		_Now_Rate - 0.5f, 0.4f, 70.0f, 40.0f);
+
+	float alphaRate = Math::Ease(EASE_CHANGE_TYPE::In, EASING_TYPE::Sine,
+		_Now_Rate - 0.5f, 0.4f, 0.5f, 1.0f);
+
+	const float maxTimer = maxTimerRate * RefreshRate::RefreshRate_Mag;
+	Vec2<float> scale = { 0.0f,0.0f };
 	float alpha = 0.0f;
 	const KuroEngine::Vec2<float> maxScale = { 8.0f,8.0f };
 	gageBGTimer++;
-		//’âŽ~
+	//’âŽ~
 	if (gageBG) {
 		if (gageBGTimer > maxTimer) {
 			gageBG = true;
@@ -274,11 +281,11 @@ void BattleTurnMgr::JustInTime(const float _Now_Rate, const KuroEngine::Vec2<flo
 	}
 	//Šg‘å
 	else {
-		scale = KuroEngine::Math::Ease(KuroEngine::EASE_CHANGE_TYPE::Out, KuroEngine::EASING_TYPE::Sine,
+		scale = Math::Ease(EASE_CHANGE_TYPE::Out, EASING_TYPE::Sine,
 			gageBGTimer, maxTimer, { 0.0f,0.0f }, maxScale);
 
-		alpha = KuroEngine::Math::Ease(KuroEngine::EASE_CHANGE_TYPE::In, KuroEngine::EASING_TYPE::Sine,
-			gageBGTimer, maxTimer, 1.0f, 0.0f);
+		alpha = Math::Ease(EASE_CHANGE_TYPE::In, EASING_TYPE::Sine,
+			gageBGTimer, maxTimer, 1.0f, 0.0f) * alphaRate;
 
 		if (gageBGTimer > maxTimer) {
 			gageBG=0;
@@ -286,9 +293,15 @@ void BattleTurnMgr::JustInTime(const float _Now_Rate, const KuroEngine::Vec2<flo
 		}
 	}
 
-	KuroEngine::DrawFunc2D::DrawExtendGraph2D(_pos1 - scale + ScreenShakeManager::Instance()->GetOffset(), _pos2 + scale + ScreenShakeManager::Instance()->GetOffset(),
+	//ŽžŠÔƒo[
+	DrawFunc2D::DrawExtendGraph2D(_pos1 - scale + ScreenShakeManager::Instance()->GetOffset(), _pos2 + scale + ScreenShakeManager::Instance()->GetOffset(),
 		m_Timer_Gauge_Tex, alpha);
 
+	Color color = { 0.498f,0.576f,0.866f,alpha };
+	DrawFunc2D::DrawBox2D(Vec2<float>(385.0f, 60.0f) - scale, Vec2<float>(391.0f, 572.0f) + scale, color, true);
+	DrawFunc2D::DrawBox2D(Vec2<float>(385.0f, 566.0f) - scale, Vec2<float>(899.0f, 572.0f) + scale, color, true);
+	DrawFunc2D::DrawBox2D(Vec2<float>(892.0f, 60.0f) - scale, Vec2<float>(899.0f, 572.0f) + scale, color, true);
+	DrawFunc2D::DrawBox2D(Vec2<float>(385.0f, 60.0f) - scale, Vec2<float>(899.0f, 66.0f) + scale, color, true);
 }
 
 void BattleTurnMgr::OnInitialize(std::shared_ptr<UnitBase> Player, std::vector<std::shared_ptr<UnitBase>> Enemys)
