@@ -154,6 +154,11 @@ bool KuroEngine::InScreen(Vec2<float> ScreenPos, Vec2<float> WinSize)
 	return true;
 }
 
+bool KuroEngine::InScreen(Vec2<float> ScreenPos, Vec2<float> ObjSize, Vec2<float> WinSize)
+{
+	return InScreen(ScreenPos - ObjSize / 2.0f, WinSize) || InScreen(ScreenPos + ObjSize / 2.0f, WinSize);
+}
+
 bool KuroEngine::InScreen(Vec3<float> WorldPos, const Matrix& ViewMat, const Matrix& ProjMat, Vec2<float> WinSize)
 {
 	Vec2<float> screenPos = KuroEngine::ConvertWorldToScreen(WorldPos, ViewMat, ProjMat, WinSize);

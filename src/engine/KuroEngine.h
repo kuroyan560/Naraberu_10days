@@ -34,6 +34,7 @@ namespace KuroEngine
 
 	//’†SÀ•W‚ª‰æ–Ê“à‚É‰f‚Á‚Ä‚¢‚é‚©
 	bool InScreen(Vec2<float>ScreenPos, Vec2<float> WinSize);
+    bool InScreen(Vec2<float>ScreenPos, Vec2<float>ObjSize, Vec2<float> WinSize);
 	bool InScreen(Vec3<float> WorldPos, const Matrix& ViewMat, const Matrix& ProjMat, Vec2<float> WinSize);
 
 	bool ExistFile(const std::string FilePass);
