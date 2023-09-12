@@ -1,32 +1,24 @@
 #include "KuroEngineDevice.h"
-#include <array>
+#include"ForUser/Timer.h"
+#include<memory>
+
+class ParticleEmitter;
 
 class BackGroundEffect
 {
 private:
-
-	struct Info {
-		int isAlive;
-		KuroEngine::Vec2<float> pos;
-		KuroEngine::Vec2<float> scale;
-		float angle;
-		float alpha;
-		int texNum;
-	};
+	static const int MAX_NUM = 576;
+	std::shared_ptr<ParticleEmitter>m_ptEmitter;
+	std::array<KuroEngine::Vec2<float>, MAX_NUM>m_emitPosArray;
+	KuroEngine::Timer m_timer;
 
 public:
-	void Initialize();
+	BackGroundEffect();
+
+	void Initialize()
+	{
+		m_timer.Reset(30.0f);
+	}
 
 	void Update();
-
-	void Draw();
-
-private:
-
-	std::array<std::shared_ptr<KuroEngine::TextureBuffer>, 3> triangleTex;
-	static const int maxNum = 1200;
-	std::array<Info, maxNum> info;
-	int timer;
-
-	KuroEngine::Vec2<float> pos_a;
 };

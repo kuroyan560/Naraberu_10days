@@ -332,6 +332,7 @@ void BattleScene::OnUpdate()
 	for (auto& ui : m_enemyDamageUI)ui->Update(m_ultPtEmitter);
 	ParticleManager::Instance()->Update();
 	ScreenShakeManager::Instance()->Update();
+	backGroundEffect->Update();
 }
 
 void BattleScene::OnDraw()
@@ -346,8 +347,6 @@ void BattleScene::OnDraw()
 	DrawFunc2D::DrawBox2D(Vec2(0.0f, 0.0f)
 		, WinApp::Instance()->GetExpandWinSize(), Color(50, 49, 59, 255), true);
 
-	backGroundEffect->Draw();
-	
 	ParticleManager::Instance()->BackDraw();
 
 
@@ -870,6 +869,7 @@ void BattleScene::TutorialUpdate()
 		for (auto& ui : m_enemyDamageUI)ui->Update(m_ultPtEmitter);
 		ParticleManager::Instance()->Update();
 		ScreenShakeManager::Instance()->Update();
+		backGroundEffect->Update();
 
 		// ‰º‚©‚ço‚Ä‚­‚é
 		if (!(m_NowTutorial_Step == 7 || m_NowTutorial_Step == 11 || m_NowTutorial_Step == 15 ||
