@@ -47,6 +47,10 @@ class BattleTurnMgr
 	void TurnEndButtonDraw();
 	float ResultEasing(float time);
 
+	//ŠÔƒMƒŠƒMƒŠ‚Ì‚Ì‰‰o—p
+	bool gageBG;
+	float gageBGTimer;
+
 	// ”s–kƒtƒ‰ƒO
 	bool m_IsDefeat;
 
@@ -105,5 +109,8 @@ public:
 
 	// Œ»İƒ^[ƒ“æ“¾
 	int GetNowTurn() { return TurnNum; }
+
+	//ŠÔƒMƒŠƒMƒŠ‚É‚È‚Á‚½‚Ìˆ—
+	void JustInTime(const float _Now_Rate, const KuroEngine::Vec2<float> _pos1, const KuroEngine::Vec2<float> _pos2);
 };
 

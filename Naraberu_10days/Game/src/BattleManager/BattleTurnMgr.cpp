@@ -33,6 +33,9 @@ BattleTurnMgr::BattleTurnMgr() {
 	m_TurnEnd_EnterTex = D3D12App::Instance()->GenerateTextureBuffer(TexDir + "/operation/key/turn_end.png");
 	m_TurnEnd_Crtl_EnterTex = D3D12App::Instance()->GenerateTextureBuffer(TexDir + "/operation/controller/turn_end.png");
 	m_TurnEnd_SelectedTex = D3D12App::Instance()->GenerateTextureBuffer(TexDir + "turn_end_sure.png");
+
+	gageBG = false;
+	gageBGTimer = 0.0f;
 }
 
 void BattleTurnMgr::TurnEndButtonUpdate()
@@ -240,6 +243,9 @@ void BattleTurnMgr::AutoTurnEndTimerDraw()
 	// Œ»Ý‚ÌƒQ[ƒW‚Ì’·‚³
 	float Gauge_Width = Gauge_Max_Width * Now_Rate;
 
+	//ƒhƒNƒ“ƒhƒNƒ“
+	JustInTime(Now_Rate, LT_Gauge, RB_Gauge - Vec2(Gauge_Width, 0.0f));
+
 	if (ExistUnits::Instance()->m_StageName != "Tutorial") {
 		DrawFunc2D_Mask::DrawExtendGraph2D(LT_Gauge + ScreenShakeManager::Instance()->GetOffset(), RB_Gauge + ScreenShakeManager::Instance()->GetOffset(), m_Timer_Gauge_Tex,
 			LT_Gauge + ScreenShakeManager::Instance()->GetOffset(), RB_Gauge - Vec2(Gauge_Width, 0.0f) + ScreenShakeManager::Instance()->GetOffset());
@@ -247,6 +253,42 @@ void BattleTurnMgr::AutoTurnEndTimerDraw()
 	else {
 		DrawFunc2D::DrawExtendGraph2D(LT_Gauge + ScreenShakeManager::Instance()->GetOffset(), RB_Gauge + ScreenShakeManager::Instance()->GetOffset(), m_Timer_Gauge_Tex);
 	}
+}
+
+void BattleTurnMgr::JustInTime(const float _Now_Rate, const KuroEngine::Vec2<float> _pos1, const KuroEngine::Vec2<float> _pos2)
+{
+	if (_Now_Rate < 0.7f) { return; }
+
+	const float maxTimer = 40.0f * RefreshRate::RefreshRate_Mag;
+	KuroEngine::Vec2<float> scale = { 0.0f,0.0f };
+	float alpha = 0.0f;
+	const KuroEngine::Vec2<float> maxScale = { 8.0f,8.0f };
+	gageBGTimer++;
+		//’âŽ~
+	if (gageBG) {
+		if (gageBGTimer > maxTimer) {
+			gageBG = true;
+			gageBGTimer = 0.0f;
+		}
+		return;
+	}
+	//Šg‘å
+	else {
+		scale = KuroEngine::Math::Ease(KuroEngine::EASE_CHANGE_TYPE::Out, KuroEngine::EASING_TYPE::Sine,
+			gageBGTimer, maxTimer, { 0.0f,0.0f }, maxScale);
+
+		alpha = KuroEngine::Math::Ease(KuroEngine::EASE_CHANGE_TYPE::In, KuroEngine::EASING_TYPE::Sine,
+			gageBGTimer, maxTimer, 1.0f, 0.0f);
+
+		if (gageBGTimer > maxTimer) {
+			gageBG=0;
+			gageBGTimer = 0.0f;
+		}
+	}
+
+	KuroEngine::DrawFunc2D::DrawExtendGraph2D(_pos1 - scale + ScreenShakeManager::Instance()->GetOffset(), _pos2 + scale + ScreenShakeManager::Instance()->GetOffset(),
+		m_Timer_Gauge_Tex, alpha);
+
 }
 
 void BattleTurnMgr::OnInitialize(std::shared_ptr<UnitBase> Player, std::vector<std::shared_ptr<UnitBase>> Enemys)
