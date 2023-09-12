@@ -9,12 +9,12 @@
 const std::array<std::array<BlockManager::TutorialBlock, 10>, 1>BlockManager::tutorialBlock =
 {
 	{
-		{BlockManager::TutorialBlock(1, BlockColor::red,BlockAttribute::attack1),
+		{BlockManager::TutorialBlock(1, BlockColor::red,BlockAttribute::attack1),{1, BlockColor::red,BlockAttribute::attack1},
+		{1, BlockColor::red,BlockAttribute::attack2},{1, BlockColor::red,BlockAttribute::attack2},
+		{1, BlockColor::red,BlockAttribute::attack1},{1, BlockColor::red,BlockAttribute::recovery},
 		{1, BlockColor::red,BlockAttribute::attack1},{1, BlockColor::red,BlockAttribute::attack1},
 		{1, BlockColor::red,BlockAttribute::attack1},{1, BlockColor::red,BlockAttribute::attack1},
-		{1, BlockColor::red,BlockAttribute::attack1},{1, BlockColor::red,BlockAttribute::attack1},
-		{1, BlockColor::red,BlockAttribute::attack1},{1, BlockColor::red,BlockAttribute::attack1},
-		{1, BlockColor::red,BlockAttribute::attack1}}
+		}
 	}
 };
 
@@ -29,9 +29,9 @@ void BlockManager::Initialize()
 
 	for (int i = 1; i< int(ObjectType::size); i++) {
 		block[i].block.reset(new Block());
-		block[i].attribute = tutorialBlock[tutorialNum][i].attribute;
-		block[i].blockNum = tutorialBlock[tutorialNum][i].blockNum;
-		block[i].color = tutorialBlock[tutorialNum][i].color;
+		block[i].attribute = tutorialBlock[tutorialNum][i - 1].attribute;
+		block[i].blockNum = tutorialBlock[tutorialNum][i - 1].blockNum;
+		block[i].color = tutorialBlock[tutorialNum][i - 1].color;
 	}
 	tutorialBlockNum += 4;
 
@@ -46,7 +46,6 @@ void BlockManager::Initialize()
 	passNum = passMaxNum;
 
 	tutorialNum = 0;
-	tutorialBlockNum = 0;
 }
 
 void BlockManager::Update()
