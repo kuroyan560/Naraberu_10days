@@ -18,7 +18,7 @@ Player::Player()
 	m_DoBonus = false;
 	m_UltimatePoint = 0;
 	m_BeforeUltimatePoint = 0;
-	Max_UltimatePoint = 20;
+	Max_UltimatePoint = 400;
 
 	using namespace KuroEngine;
 	std::string TexDir = "resource/user/tex/battle_scene/";
@@ -227,6 +227,7 @@ void Player::TurnEnd_BeforeTurnChange()
 	m_DoBonus = true;
 	ExistUnits::Instance()->m_IsEndBonusCount = false;
 	ExistUnits::Instance()->m_StageManager->SetBouns();
+	OperationConfig::Instance()->SetInGameOperationActive(false);
 	// ボーナス
 	m_IsEndBonus = false;
 }
