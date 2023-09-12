@@ -38,7 +38,7 @@ public:
 
 	void Initialize();
 
-	void Update();
+	void Update(int Step = 33);
 
 	void Draw();
 

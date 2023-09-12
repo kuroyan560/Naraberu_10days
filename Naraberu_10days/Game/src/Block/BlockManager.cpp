@@ -58,11 +58,11 @@ void BlockManager::Initialize()
 	tutorialNum = 0;
 }
 
-void BlockManager::Update()
+void BlockManager::Update(int Step)
 {
 	//ƒpƒX
 	if (passNum > 0 && OperationConfig::Instance()->GetOperationInput(OperationConfig::PASS_PAIR_PRISM, OperationConfig::ON_TRIGGER)
-		&& ExistUnits::Instance()->m_NowTurn == 0 && recharge == 0) {
+		&& ExistUnits::Instance()->m_NowTurn == 0 && recharge == 0 && Step == 33) {
 		ChangeBlock();
 		passNum--;
 	}
