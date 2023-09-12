@@ -7,7 +7,7 @@ const KuroEngine::Vec2<float> c_pos = { 700.0f,400.0f };
 const KuroEngine::Vec2<float> u_pos = { 950.0f,250.0f };
 const KuroEngine::Vec2<float> d_pos = { 850.0f,600.0f };
 
-void TitleUi::Initialize()
+TitleUi::TitleUi()
 {
 	using namespace KuroEngine;
 	std::string TexDir = "resource/user/tex/select_scene/";
@@ -26,12 +26,18 @@ void TitleUi::Initialize()
 	//チュートリアル文字
 	tutorialTex = D3D12App::Instance()->GenerateTextureBuffer(TexDir + "tutorial.png");
 
+	//現在のステージ番号
+	nowStageNum = 0;
+}
+
+void TitleUi::Initialize()
+{
+	using namespace KuroEngine;
+
 	//タイトルからステージセレクトへ移動する
 	isStageSelectInMove = false;
 	//ステージセレクトの移動を行う
 	isStageMove = false;
-	//現在のステージ番号
-	nowStageNum = 0;
 
 
 	const float u_scale = 0.7f;

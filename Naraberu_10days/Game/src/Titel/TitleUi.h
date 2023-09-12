@@ -22,6 +22,7 @@ private:
 	};
 
 public:
+	TitleUi();
 
 	void Initialize();
 
