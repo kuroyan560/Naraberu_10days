@@ -30,9 +30,12 @@ BattleTurnMgr::BattleTurnMgr() {
 	m_Timer_Frame_Tex = D3D12App::Instance()->GenerateTextureBuffer(TexDir + "timer_gauge_frame.png");
 	m_Timer_Gauge_Tex = D3D12App::Instance()->GenerateTextureBuffer(TexDir + "timer_gauge.png");
 	m_TurnEndTex = D3D12App::Instance()->GenerateTextureBuffer(TexDir + "turn_end.png");
-	m_TurnEnd_EnterTex = D3D12App::Instance()->GenerateTextureBuffer(TexDir + "/operation/key/done.png");
+	m_TurnEnd_EnterTex = D3D12App::Instance()->GenerateTextureBuffer(TexDir + "/operation/key/turn_end.png");
 	m_TurnEnd_Crtl_EnterTex = D3D12App::Instance()->GenerateTextureBuffer(TexDir + "/operation/controller/turn_end.png");
 	m_TurnEnd_SelectedTex = D3D12App::Instance()->GenerateTextureBuffer(TexDir + "turn_end_sure.png");
+
+	gageBG = false;
+	gageBGTimer = 0.0f;
 }
 
 void BattleTurnMgr::TurnEndButtonUpdate()
@@ -240,6 +243,9 @@ void BattleTurnMgr::AutoTurnEndTimerDraw()
 	// 現在のゲージの長さ
 	float Gauge_Width = Gauge_Max_Width * Now_Rate;
 
+	//ドクンドクン
+	JustInTime(Now_Rate, LT_Gauge, RB_Gauge - Vec2(Gauge_Width, 0.0f));
+
 	if (ExistUnits::Instance()->m_StageName != "Tutorial") {
 		DrawFunc2D_Mask::DrawExtendGraph2D(LT_Gauge + ScreenShakeManager::Instance()->GetOffset(), RB_Gauge + ScreenShakeManager::Instance()->GetOffset(), m_Timer_Gauge_Tex,
 			LT_Gauge + ScreenShakeManager::Instance()->GetOffset(), RB_Gauge - Vec2(Gauge_Width, 0.0f) + ScreenShakeManager::Instance()->GetOffset());
@@ -247,6 +253,55 @@ void BattleTurnMgr::AutoTurnEndTimerDraw()
 	else {
 		DrawFunc2D::DrawExtendGraph2D(LT_Gauge + ScreenShakeManager::Instance()->GetOffset(), RB_Gauge + ScreenShakeManager::Instance()->GetOffset(), m_Timer_Gauge_Tex);
 	}
+}
+
+void BattleTurnMgr::JustInTime(const float _Now_Rate, const KuroEngine::Vec2<float> _pos1, const KuroEngine::Vec2<float> _pos2)
+{
+	using namespace KuroEngine;
+	if (_Now_Rate < 0.5f || _Now_Rate >= 1.0f) { return; }
+
+	float maxTimerRate = Math::Ease(EASE_CHANGE_TYPE::In, EASING_TYPE::Sine,
+		_Now_Rate - 0.5f, 0.4f, 70.0f, 40.0f);
+
+	float alphaRate = Math::Ease(EASE_CHANGE_TYPE::In, EASING_TYPE::Sine,
+		_Now_Rate - 0.5f, 0.4f, 0.5f, 1.0f);
+
+	const float maxTimer = maxTimerRate * RefreshRate::RefreshRate_Mag;
+	Vec2<float> scale = { 0.0f,0.0f };
+	float alpha = 0.0f;
+	const KuroEngine::Vec2<float> maxScale = { 8.0f,8.0f };
+	gageBGTimer++;
+	//停止
+	if (gageBG) {
+		if (gageBGTimer > maxTimer) {
+			gageBG = true;
+			gageBGTimer = 0.0f;
+		}
+		return;
+	}
+	//拡大
+	else {
+		scale = Math::Ease(EASE_CHANGE_TYPE::Out, EASING_TYPE::Sine,
+			gageBGTimer, maxTimer, { 0.0f,0.0f }, maxScale);
+
+		alpha = Math::Ease(EASE_CHANGE_TYPE::In, EASING_TYPE::Sine,
+			gageBGTimer, maxTimer, 1.0f, 0.0f) * alphaRate;
+
+		if (gageBGTimer > maxTimer) {
+			gageBG=0;
+			gageBGTimer = 0.0f;
+		}
+	}
+
+	//時間バー
+	DrawFunc2D::DrawExtendGraph2D(_pos1 - scale + ScreenShakeManager::Instance()->GetOffset(), _pos2 + scale + ScreenShakeManager::Instance()->GetOffset(),
+		m_Timer_Gauge_Tex, alpha);
+
+	Color color = { 0.498f,0.576f,0.866f,alpha };
+	DrawFunc2D::DrawBox2D(Vec2<float>(385.0f, 60.0f) - scale, Vec2<float>(391.0f, 572.0f) + scale, color, true);
+	DrawFunc2D::DrawBox2D(Vec2<float>(385.0f, 566.0f) - scale, Vec2<float>(899.0f, 572.0f) + scale, color, true);
+	DrawFunc2D::DrawBox2D(Vec2<float>(892.0f, 60.0f) - scale, Vec2<float>(899.0f, 572.0f) + scale, color, true);
+	DrawFunc2D::DrawBox2D(Vec2<float>(385.0f, 60.0f) - scale, Vec2<float>(899.0f, 66.0f) + scale, color, true);
 }
 
 void BattleTurnMgr::OnInitialize(std::shared_ptr<UnitBase> Player, std::vector<std::shared_ptr<UnitBase>> Enemys)

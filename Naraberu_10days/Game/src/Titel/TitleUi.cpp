@@ -23,6 +23,8 @@ void TitleUi::Initialize()
 	//数字
 	KuroEngine::D3D12App::Instance()->GenerateTextureBuffer(numTex.data(),
 		TexDir + "select_stage_number.png", int(numTex.size()), { int(numTex.size()),1 });
+	//チュートリアル文字
+	tutorialTex = D3D12App::Instance()->GenerateTextureBuffer(TexDir + "tutorial.png");
 
 	//タイトルからステージセレクトへ移動する
 	isStageSelectInMove = false;
@@ -86,19 +88,42 @@ void TitleUi::Draw()
 {
 	const KuroEngine::Vec2<float> sitaji_size = { 638.0f,160.0f };
 	const KuroEngine::Vec2<float> stage_moji_size = { 257.0f,73.0f };
-	const KuroEngine::Vec2<float> stage_moji_dist = { 100.0f,50.0f };
-	const KuroEngine::Vec2<float> number_dist = { 400.0f,50.0f };
+	const KuroEngine::Vec2<float> stage_moji_dist = { 90.0f,50.0f };
+	const KuroEngine::Vec2<float> number_dist = { 390.0f,50.0f };
+	const KuroEngine::Vec2<float> tutorial_moji_size = { 361.0f,57.0f };
+	const KuroEngine::Vec2<float> tutorial_moji_dist= { 50.0f,100.0f };
 
 	for (int i=0;i< stage;i++) {
 		//下地
 		KuroEngine::DrawFunc2D::DrawExtendGraph2D({ stageTexInfo[i].pos.x,stageTexInfo[i].pos.y },
 			{ stageTexInfo[i].pos.x + sitaji_size.x * stageTexInfo[i].scale,stageTexInfo[i].pos.y + sitaji_size.y * stageTexInfo[i].scale }, stageSelectBarTex);
-		//「stage」
-		KuroEngine::DrawFunc2D::DrawExtendGraph2D({ stageTexInfo[i].pos.x + stage_moji_dist.x,stageTexInfo[i].pos.y + stage_moji_dist.y },
-			{ stageTexInfo[i].pos.x + stage_moji_dist.x * stageTexInfo[i].scale + stage_moji_size.x * stageTexInfo[i].scale,
-			stageTexInfo[i].pos.y + stage_moji_dist.y * stageTexInfo[i].scale + stage_moji_size.y * stageTexInfo[i].scale }, stageTex);
 		//数字
-		KuroEngine::DrawFunc2D::DrawNumber2D(i + 1, { stageTexInfo[i].pos.x + number_dist.x * stageTexInfo[i].scale,stageTexInfo[i].pos.y + number_dist.y * stageTexInfo[i].scale }, numTex.data());
+		if (i > 0) {
+			//「stage」
+			KuroEngine::DrawFunc2D::DrawExtendGraph2D({ stageTexInfo[i].pos.x + stage_moji_dist.x,stageTexInfo[i].pos.y + stage_moji_dist.y },
+				{ stageTexInfo[i].pos.x + stage_moji_dist.x * stageTexInfo[i].scale + stage_moji_size.x * stageTexInfo[i].scale,
+				stageTexInfo[i].pos.y + stage_moji_dist.y * stageTexInfo[i].scale + stage_moji_size.y * stageTexInfo[i].scale }, stageTex);
+
+			KuroEngine::Vec2<float> inpos = {
+			stageTexInfo[i].pos.x + number_dist.x * stageTexInfo[i].scale,
+			stageTexInfo[i].pos.y + number_dist.y * stageTexInfo[i].scale};
+			//1-
+			KuroEngine::DrawFunc2D::DrawNumber2D(1, inpos, numTex.data(), { 1.0f,1.0f },
+				1.0f, 0.0f, KuroEngine::HORIZONTAL_ALIGN::LEFT, KuroEngine::VERTICAL_ALIGN::TOP, 0, -1, 10);
+
+			inpos = {
+			stageTexInfo[i].pos.x + number_dist.x * stageTexInfo[i].scale + 120.0f * stageTexInfo[i].scale,
+			stageTexInfo[i].pos.y + number_dist.y * stageTexInfo[i].scale};
+			//ステージ番号
+			KuroEngine::DrawFunc2D::DrawNumber2D(i, inpos, numTex.data());
+		} else {
+			KuroEngine::Vec2<float> inpos = {
+			stageTexInfo[i].pos.x + tutorial_moji_dist.x * stageTexInfo[i].scale + 100.0f * stageTexInfo[i].scale,
+			stageTexInfo[i].pos.y + tutorial_moji_dist.x * stageTexInfo[i].scale };
+			//チュートリアル文字
+			KuroEngine::DrawFunc2D::DrawExtendGraph2D(inpos,
+				{ inpos.x + tutorial_moji_size.x * stageTexInfo[i].scale,inpos.y + tutorial_moji_size.y * stageTexInfo[i].scale }, tutorialTex);
+		}
 	}
 }
 

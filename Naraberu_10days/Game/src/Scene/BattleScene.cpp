@@ -318,7 +318,7 @@ void BattleScene::OnUpdate()
 	}
 
 	Mgr.OnUpdate();
-	stage->Update(KuroEngine::GetWeakPtrArray(m_enemyDamageUI));
+	stage->Update(GetAliveEnemyDamageUIArray());
 	if (!Mgr.GetDefeat() && !m_Stage_End) {
 		block->Update();
 	}
@@ -1158,7 +1158,8 @@ void BattleScene::TutorialUpdate()
 	}
 
 	Mgr.OnUpdate();
-	stage->Update(KuroEngine::GetWeakPtrArray(m_enemyDamageUI));
+
+	stage->Update(GetAliveEnemyDamageUIArray());
 	if (!Mgr.GetDefeat() && !m_Stage_End) {
 		block->Update();
 	}
@@ -1246,6 +1247,13 @@ KuroEngine::Vec2<float> BattleScene::TargetSize(KuroEngine::Vec2<float> St, Kuro
 	Result.x = EaseFunc(St.x, En.x, float(m_TaegetTimer), float(m_TaegetTimer_Max));
 	Result.y = EaseFunc(St.y, En.y, float(m_TaegetTimer), float(m_TaegetTimer_Max));
 	return Result;
+}
+
+std::vector<std::weak_ptr<SkillResultUI>> BattleScene::GetAliveEnemyDamageUIArray()
+{
+	std::vector<std::weak_ptr<SkillResultUI>>aliveEnemyDamageUIArray;
+	for (auto& aliveEnemyIdx : ExistUnits::Instance()->GetAliveEnemyIndex())aliveEnemyDamageUIArray.emplace_back(m_enemyDamageUI[aliveEnemyIdx]);
+	return aliveEnemyDamageUIArray;
 }
 
 BattleScene::BattleScene()
