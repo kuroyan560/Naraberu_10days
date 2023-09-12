@@ -40,6 +40,8 @@ public:
 	/// •`‰æ
 	/// </summary>
 	void Draw();
+
+	void BonusDraw();
 	
 	/// <summary>
 	/// 

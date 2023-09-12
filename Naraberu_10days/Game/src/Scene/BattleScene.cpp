@@ -390,6 +390,7 @@ void BattleScene::OnDraw()
 
 	stage->Draw();
 	block->Draw();
+	stage->BonusDraw();
 
 	Mgr.OnDraw();
 	Mgr.DrawTimerCutIn();
