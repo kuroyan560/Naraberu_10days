@@ -228,8 +228,8 @@ void SoundConfig::Play(SE arg_se, int arg_delay, int arg_soundIdx, bool arg_rese
 
 void SoundConfig::SwitchBGM(BGM arg_bgm)
 {
-	if (m_nowBgm == arg_bgm)return;
-	if (m_nextBgm != BGM_NONE)return;
+	//if (m_nowBgm == arg_bgm)return;
+	//if (m_nextBgm != BGM_NONE)return;
 	
 	m_nextBgm = arg_bgm;
 	m_bgmSwitchTimer.Reset();

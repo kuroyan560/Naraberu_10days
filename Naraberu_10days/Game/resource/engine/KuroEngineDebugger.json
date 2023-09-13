@@ -220,7 +220,7 @@
   },
   "SoundConfig": {
     "debuggerSetting": {
-      "active": false,
+      "active": true,
       "customParamActive": true,
       "imageColor": [
         0.800000011920929,
@@ -246,12 +246,11 @@
         "heal": 1.0,
         "pause_close": 1.0,
         "pause_open": 1.0,
-        "perfect_bonus_damage": 1.0,
-        "put_gold": 1.0,
+        "put_gold": 0.4000000059604645,
         "put_ojama": 1.0,
         "select": 1.0,
-        "ult": 1.0,
-        "ult_charge": 1.0
+        "ult": 0.30000001192092896,
+        "ult_charge": 0.6000000238418579
       }
     }
   },

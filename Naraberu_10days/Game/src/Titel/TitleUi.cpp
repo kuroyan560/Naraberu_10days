@@ -26,6 +26,8 @@ TitleUi::TitleUi()
 		TexDir + "select_stage_number.png", int(numTex.size()), { int(numTex.size()),1 });
 	//チュートリアル文字
 	tutorialTex = D3D12App::Instance()->GenerateTextureBuffer(TexDir + "tutorial.png");
+	//チャレンジ文字
+	challengeTex = D3D12App::Instance()->GenerateTextureBuffer(TexDir + "challenge.png");
 	//クリア
 	clearTex = D3D12App::Instance()->GenerateTextureBuffer(TexDir + "clear.png");
 	//現在のステージ番号
@@ -100,13 +102,14 @@ void TitleUi::Draw()
 	const KuroEngine::Vec2<float> number_dist = { 390.0f,50.0f };
 	const KuroEngine::Vec2<float> tutorial_moji_size = { 361.0f,57.0f };
 	const KuroEngine::Vec2<float> tutorial_moji_dist= { 50.0f,100.0f };
+	const KuroEngine::Vec2<float> challenge_moji_size = { 432.0f,73.0f };
 
 	for (int i=0;i< stage;i++) {
 		//下地
 		KuroEngine::DrawFunc2D::DrawExtendGraph2D({ stageTexInfo[i].pos.x,stageTexInfo[i].pos.y },
 			{ stageTexInfo[i].pos.x + sitaji_size.x * stageTexInfo[i].scale,stageTexInfo[i].pos.y + sitaji_size.y * stageTexInfo[i].scale }, stageSelectBarTex);
 		//数字
-		if (i > 0) {
+		if (i > 0 && i < 5) {
 			//「stage」
 			KuroEngine::DrawFunc2D::DrawExtendGraph2D({ stageTexInfo[i].pos.x + stage_moji_dist.x,stageTexInfo[i].pos.y + stage_moji_dist.y },
 				{ stageTexInfo[i].pos.x + stage_moji_dist.x * stageTexInfo[i].scale + stage_moji_size.x * stageTexInfo[i].scale,
@@ -135,13 +138,20 @@ void TitleUi::Draw()
 			KuroEngine::DrawFunc2D::DrawExtendGraph2D(inpos,
 				{ inpos.x + clear_moji_size.x * stageTexInfo[i].scale,inpos.y + clear_moji_size.y * stageTexInfo[i].scale },
 				clearTex);
-		} else {
+		}
+		//チュートリアル文字
+		else if (i == 0) {
 			KuroEngine::Vec2<float> inpos = {
 			stageTexInfo[i].pos.x + tutorial_moji_dist.x * stageTexInfo[i].scale + 100.0f * stageTexInfo[i].scale,
 			stageTexInfo[i].pos.y + tutorial_moji_dist.x * stageTexInfo[i].scale };
-			//チュートリアル文字
 			KuroEngine::DrawFunc2D::DrawExtendGraph2D(inpos,
 				{ inpos.x + tutorial_moji_size.x * stageTexInfo[i].scale,inpos.y + tutorial_moji_size.y * stageTexInfo[i].scale }, tutorialTex);
+		} else if (i == 5) {
+			KuroEngine::Vec2<float> inpos = {
+			stageTexInfo[i].pos.x + tutorial_moji_dist.x * stageTexInfo[i].scale + 50.0f * stageTexInfo[i].scale,
+			stageTexInfo[i].pos.y + tutorial_moji_dist.x * stageTexInfo[i].scale };
+			KuroEngine::DrawFunc2D::DrawExtendGraph2D(inpos,
+				{ inpos.x + challenge_moji_size.x * stageTexInfo[i].scale,inpos.y + challenge_moji_size.y * stageTexInfo[i].scale }, challengeTex);
 		}
 	}
 }

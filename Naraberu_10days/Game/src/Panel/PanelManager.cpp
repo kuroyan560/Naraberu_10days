@@ -267,12 +267,20 @@ void PanelManager::MassProcess()
 			bonusData[count].mass = true;
 			//座標記録
 			bonusPos.emplace_back(center(bonusData[count].pos));
-			//追加のボーナス
+			//追加のボーナス+2まで
 			if (massNum > 8) {
 				bonusData.emplace_back(bonusData[count]);
 				bonusPos.emplace_back(center(bonusData[count].pos));
 			}
 			if (massNum > 10) {
+				bonusData.emplace_back(bonusData[count]);
+				bonusPos.emplace_back(center(bonusData[count].pos));
+			}
+			if (massNum > 12) {
+				bonusData.emplace_back(bonusData[count]);
+				bonusPos.emplace_back(center(bonusData[count].pos));
+			}
+			if (massNum > 14) {
 				bonusData.emplace_back(bonusData[count]);
 				bonusPos.emplace_back(center(bonusData[count].pos));
 			}
