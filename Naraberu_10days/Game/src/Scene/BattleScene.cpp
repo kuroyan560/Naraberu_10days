@@ -366,7 +366,12 @@ void BattleScene::OnDraw()
 
 	// ウェーブ数描画
 	if (m_NowStage.m_Stage_Wave_Count > 9 && m_NowWave > 9) {
-		DrawFunc2D::DrawGraph(Vec2(829.0f, 19.0f) + ScreenShakeManager::Instance()->GetOffset(), m_StageTex);
+		if (ExistUnits::Instance()->m_StageName == "Challenge") {
+			DrawFunc2D::DrawGraph(Vec2(829.0f, 19.0f) + ScreenShakeManager::Instance()->GetOffset(), m_ChallengeTex);
+		}
+		else {
+			DrawFunc2D::DrawGraph(Vec2(829.0f, 19.0f) + ScreenShakeManager::Instance()->GetOffset(), m_StageTex);
+		}
 		DrawFunc2D::DrawGraph(Vec2(1010.0f, 13.0f) + ScreenShakeManager::Instance()->GetOffset(), m_BattleTex);
 
 		if (ExistUnits::Instance()->m_StageName == "Stage1") {
@@ -396,7 +401,12 @@ void BattleScene::OnDraw()
 		DrawFunc2D::DrawNumber2D(m_NowStage.m_Stage_Wave_Count, Vec2(1223.0f, 13.0f) + ScreenShakeManager::Instance()->GetOffset(), &m_NumberTex_Battle.front(), { 1.0f, 1.0f }, 1.0f, 2.0f);
 	}
 	else if (m_NowStage.m_Stage_Wave_Count > 9) {
-		DrawFunc2D::DrawGraph(Vec2(861.0f, 19.0f) + ScreenShakeManager::Instance()->GetOffset(), m_StageTex);
+		if (ExistUnits::Instance()->m_StageName == "Challenge") {
+			DrawFunc2D::DrawGraph(Vec2(861.0f, 19.0f) + ScreenShakeManager::Instance()->GetOffset(), m_ChallengeTex);
+		}
+		else {
+			DrawFunc2D::DrawGraph(Vec2(861.0f, 19.0f) + ScreenShakeManager::Instance()->GetOffset(), m_StageTex);
+		}
 		DrawFunc2D::DrawGraph(Vec2(1042.0f, 13.0f) + ScreenShakeManager::Instance()->GetOffset(), m_BattleTex);
 
 		if (ExistUnits::Instance()->m_StageName == "Stage1") {
@@ -426,7 +436,12 @@ void BattleScene::OnDraw()
 		DrawFunc2D::DrawNumber2D(m_NowStage.m_Stage_Wave_Count, Vec2(1223.0f, 13.0f) + ScreenShakeManager::Instance()->GetOffset(), &m_NumberTex_Battle.front(), {1.0f, 1.0f}, 1.0f, 2.0f);
 	}
 	else {
-		DrawFunc2D::DrawGraph(Vec2(893.0f, 19.0f) + ScreenShakeManager::Instance()->GetOffset(), m_StageTex);
+		if (ExistUnits::Instance()->m_StageName == "Challenge") {
+			DrawFunc2D::DrawGraph(Vec2(893.0f, 19.0f) + ScreenShakeManager::Instance()->GetOffset(), m_ChallengeTex);
+		}
+		else {
+			DrawFunc2D::DrawGraph(Vec2(893.0f, 19.0f) + ScreenShakeManager::Instance()->GetOffset(), m_StageTex);
+		}
 		DrawFunc2D::DrawGraph(Vec2(1074.0f, 13.0f) + ScreenShakeManager::Instance()->GetOffset(), m_BattleTex);
 
 		if (ExistUnits::Instance()->m_StageName == "Stage1") {
@@ -1424,6 +1439,7 @@ BattleScene::BattleScene()
 	m_SukasiTex = D3D12App::Instance()->GenerateTextureBuffer(TexDir + "Sukasi.png");
 	m_BackTex = D3D12App::Instance()->GenerateTextureBuffer(TexDir + "battle_scene_frame.png");
 	m_StageTex = D3D12App::Instance()->GenerateTextureBuffer(TexDir + "/info/stage.png");
+	m_ChallengeTex = D3D12App::Instance()->GenerateTextureBuffer(TexDir + "/info/challenge.png");
 	m_BattleTex = D3D12App::Instance()->GenerateTextureBuffer(TexDir + "/info/battle.png");
 	D3D12App::Instance()->GenerateTextureBuffer(&m_NumberTex.front(), TexDir + "/info/stage_number.png", 12, Vec2(12, 1));
 	D3D12App::Instance()->GenerateTextureBuffer(&m_NumberTex_Battle.front(), TexDir + "/info/battle_number.png", 11, Vec2(11, 1));
