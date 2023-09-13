@@ -104,78 +104,79 @@ namespace Stages {
 					Inu_Red_1, Lizard_Red_1, Zako_Red_1,
 					DebugEnemy_Boss_1
 				};
-				for (int i = 0; i < 40; i++) {
-					EnemyData data[3] = { Lizard_Blue_1 };
+				for (int i = 0; i < 8; i++) {
+					for (int i = 0; i < 5; i++) {
+						EnemyData data[3] = { Lizard_Blue_1 };
 
-					int EnemyCount = 1;
-					int type = 0;
+						int EnemyCount = 1;
+						int type = 0;
 
-					if (Level == 0) { // 0
-						EnemyCount = 2;
-						for (int cc = 0; cc < EnemyCount; cc++) {
-							type = GetRand_(0, 2);
-							data[cc] = ENdatas[type];
+						if (Level == 0) { // 0
+							EnemyCount = 2;
+							for (int cc = 0; cc < EnemyCount; cc++) {
+								type = GetRand_(0, 2);
+								data[cc] = ENdatas[type];
+							}
 						}
-					}
-					if (Level == 1) { // 5
-						EnemyCount = GetRand_(2, 3);
-						for (int cc = 0; cc < EnemyCount; cc++) {
-							type = GetRand_(0, 2);
-							data[cc] = ENdatas[type];
+						if (Level == 1) { // 5
+							EnemyCount = 3;
+							for (int cc = 0; cc < EnemyCount; cc++) {
+								type = GetRand_(0, 2);
+								data[cc] = ENdatas[type];
+							}
 						}
-					}
-					if (Level == 2) { // 10
-						EnemyCount = GetRand_(2, 3);
-						for (int cc = 0; cc < EnemyCount; cc++) {
-							type = GetRand_(0, 5);
-							data[cc] = ENdatas[type];
+						if (Level == 2) { // 10
+							EnemyCount = 3;
+							for (int cc = 0; cc < EnemyCount; cc++) {
+								type = GetRand_(0, 5);
+								data[cc] = ENdatas[type];
+							}
 						}
-					}
-					if (Level == 3) { // 15
-						EnemyCount = 3;
-						for (int cc = 0; cc < EnemyCount; cc++) {
-							type = GetRand_(3, 5);
-							data[cc] = ENdatas[type];
+						if (Level == 3) { // 15
+							EnemyCount = 3;
+							for (int cc = 0; cc < EnemyCount; cc++) {
+								type = GetRand_(3, 5);
+								data[cc] = ENdatas[type];
+							}
 						}
-					}
-					if (Level == 4) { // 20
-						EnemyCount = 3;
-						for (int cc = 0; cc < EnemyCount; cc++) {
-							type = GetRand_(3, 8);
-							data[cc] = ENdatas[type];
+						if (Level == 4) { // 20
+							EnemyCount = 3;
+							for (int cc = 0; cc < EnemyCount; cc++) {
+								type = GetRand_(3, 8);
+								data[cc] = ENdatas[type];
+							}
 						}
-					}
-					if (Level == 5) { // 25
-						EnemyCount = 3;
-						for (int cc = 0; cc < EnemyCount; cc++) {
-							type = GetRand_(6, 8);
-							data[cc] = ENdatas[type];
+						if (Level == 5) { // 25
+							EnemyCount = 3;
+							for (int cc = 0; cc < EnemyCount; cc++) {
+								type = GetRand_(6, 8);
+								data[cc] = ENdatas[type];
+							}
 						}
-					}
-					if (Level == 6) { // 30
-						EnemyCount = 3;
-						for (int cc = 0; cc < EnemyCount; cc++) {
-							type = GetRand_(6, 8);
-							data[cc] = ENdatas[type];
+						if (Level == 6) { // 30
+							EnemyCount = 3;
+							for (int cc = 0; cc < EnemyCount; cc++) {
+								type = GetRand_(6, 8);
+								data[cc] = ENdatas[type];
+							}
 						}
-					}
-					if (Level == 7) { // 35
-						EnemyCount = 4;
-					}
+						if (Level == 7) { // 35
+							EnemyCount = 4;
+						}
 
-					if (EnemyCount == 1) {
-						m_Data.back().AddWave(data[0]);
+						if (EnemyCount == 1) {
+							m_Data.back().AddWave(data[0]);
+						}
+						else if (EnemyCount == 2) {
+							m_Data.back().AddWave(data[0], data[1]);
+						}
+						else if (EnemyCount == 3) {
+							m_Data.back().AddWave(data[0], data[1], data[2]);
+						}
+						else if (EnemyCount == 4) {
+							m_Data.back().AddWave(Token_0, DebugEnemy_Boss_1);
+						}
 					}
-					else if (EnemyCount == 2) {
-						m_Data.back().AddWave(data[0], data[1]);
-					}
-					else if (EnemyCount == 3) {
-						m_Data.back().AddWave(data[0], data[1], data[2]);
-					}
-					else if (EnemyCount == 4) {
-						m_Data.back().AddWave(Token_0, DebugEnemy_Boss_1);
-					}
-
 					Level++;
 				}
 			}
