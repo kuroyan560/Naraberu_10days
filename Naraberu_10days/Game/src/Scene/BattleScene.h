@@ -11,6 +11,7 @@
 #include"../Effect/SetPrismEffect.h"
 #include "../UI/PlayerDamageUi.h"
 #include "../Effect/UltAttackEffect.h"
+#include "../Effect/UltActivateEffect.h"
 #include "../Effect/BackGroundEffect.h"
 
 class ParticleEmitter;
@@ -183,6 +184,9 @@ class BattleScene :
 
 	//プリズム設置演出
 	std::shared_ptr<SetPrismEffect>m_setPrismEffect;
+
+	//ULT発動演出
+	std::shared_ptr<UltActivateEffect>m_ultActivateEffect;
 
 	//敵に対する与ダメージUI
 	static const int ENEMY_COUNT_MAX = 3;

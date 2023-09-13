@@ -130,6 +130,8 @@ void BattleScene::OnInitialize()
 	//背景
 	backGroundEffect.reset(new BackGroundEffect());
 	backGroundEffect->Initialize();
+
+	m_ultActivateEffect->Init();
 }
 
 void BattleScene::OnUpdate()
@@ -335,6 +337,7 @@ void BattleScene::OnUpdate()
 	ParticleManager::Instance()->Update();
 	ScreenShakeManager::Instance()->Update();
 	backGroundEffect->Update();
+	m_ultActivateEffect->Update();
 }
 
 void BattleScene::OnDraw()
@@ -1194,6 +1197,7 @@ void BattleScene::TutorialUpdate()
 	for (auto& ui : m_enemyDamageUI)ui->Update(m_ultPtEmitter);
 	ParticleManager::Instance()->Update();
 	ScreenShakeManager::Instance()->Update();
+	m_ultActivateEffect->Update();
 }
 
 void BattleScene::TutorialDraw()
@@ -1358,6 +1362,7 @@ BattleScene::BattleScene()
 	}
 
 	m_setPrismEffect = std::make_shared<SetPrismEffect>(enemyDamageUiWeakPtr);
+	m_ultActivateEffect = std::make_shared<UltActivateEffect>();
 
 	m_healPtEmitter = ParticleManager::Instance()->Register<HealParticle>(1000, false);
 	m_backPrismPtEmitter = ParticleManager::Instance()->Register<BackPrismParticle>(1000, true);
