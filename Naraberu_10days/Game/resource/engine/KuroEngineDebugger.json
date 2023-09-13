@@ -246,6 +246,7 @@
         "heal": 1.0,
         "pause_close": 1.0,
         "pause_open": 1.0,
+        "perfect_bonus_damage": 1.0,
         "put_gold": 0.4000000059604645,
         "put_ojama": 1.0,
         "select": 1.0,

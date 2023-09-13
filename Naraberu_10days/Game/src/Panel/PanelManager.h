@@ -6,6 +6,7 @@
 
 class SetPrismEffect;
 class SkillResultUI;
+class PerfectBonusEffect;
 
 class PanelManager
 {
@@ -21,6 +22,7 @@ public:
 		non,
 		count,
 		add,
+		perfect,
 	};
 
 	PanelManager(){};
@@ -34,7 +36,7 @@ public:
 	/// <summary>
 	/// 更新
 	/// </summary>
-	void Update(std::vector<std::weak_ptr<SkillResultUI>>arg_enemyDamageUI);
+	void Update(std::vector<std::weak_ptr<SkillResultUI>>arg_enemyDamageUI, std::weak_ptr<PerfectBonusEffect>arg_perfectBonusEffect);
 
 	/// <summary>
 	/// 描画
@@ -118,7 +120,12 @@ public:
 	/// <summary>
 	/// ボーナス演出
 	/// </summary>
-	void BonusDirection(std::vector<std::weak_ptr<SkillResultUI>>arg_enemyDamageUI);
+	void BonusDirection(std::vector<std::weak_ptr<SkillResultUI>>arg_enemyDamageUI, std::weak_ptr<PerfectBonusEffect>arg_perfectBonusEffect);
+
+	/// <summary>
+	/// パーフェクト演出
+	/// </summary>
+	void PerfectBonus(std::vector<std::weak_ptr<SkillResultUI>>arg_enemyDamageUI, std::weak_ptr<PerfectBonusEffect>arg_perfectBonusEffect);
 
 	/// <summary>
 	/// 一つのみの空きを判定
@@ -178,6 +185,8 @@ public:
 	std::vector<std::vector<int>>* GetMapChipPtr() { return &mapchip; }
 
 	void SetBouns() { isBonusDirection = Bonus::count; }
+
+	bool IsPerfect()const;
 
 private:
 	

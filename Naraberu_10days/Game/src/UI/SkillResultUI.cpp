@@ -67,6 +67,7 @@ void SkillResultUI::Init()
 {
 	m_isActive = false;
 	m_impactShake.Init();
+	m_stopDisappear = false;
 }
 
 #include "../BattleManager/ExistUnits.h"
@@ -82,7 +83,7 @@ void SkillResultUI::Update(std::weak_ptr<ParticleEmitter>arg_ultParticleEmitter)
 	m_impactShake.Update(1.0f);
 
 	//‘ŞêŠJn‚Ü‚Å‚ÌŠÔ
-	if (m_appearTimer.UpdateTimer(1.0f / RefreshRate::RefreshRate_Mag))
+	if (m_appearTimer.UpdateTimer(1.0f / RefreshRate::RefreshRate_Mag) && !m_stopDisappear)
 	{
 		//‘Şê’†
 		m_disappearTimer.UpdateTimer(1.0f / RefreshRate::RefreshRate_Mag);

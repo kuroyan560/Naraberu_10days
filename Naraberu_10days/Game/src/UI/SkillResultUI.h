@@ -76,6 +76,8 @@ private:
 	//与ダメージ履歴キュー
 	std::list<HistoryInfo>m_history;
 
+	bool m_stopDisappear = false;
+
 	void CommonInitOnStart(float arg_appearTime);
 public:
 	SkillResultUI();
@@ -96,4 +98,10 @@ public:
 
 	//アクティブ状態のゲッタ
 	const bool& GetIsActive()const { return m_isActive; }
+
+	void SetStopDisappear(bool arg_flg) 
+	{
+		if (arg_flg)m_history.clear();
+		m_stopDisappear = arg_flg; 
+	}
 };

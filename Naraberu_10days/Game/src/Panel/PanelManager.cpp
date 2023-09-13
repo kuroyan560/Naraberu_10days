@@ -7,6 +7,7 @@
 #include"../Effect/SetPrismEffect.h"
 #include "../Effect/ScreenShakeManager.h"
 #include"../SoundConfig.h"
+#include"../Effect/PerfectBonusEffect.h"
 
 KuroEngine::Vec2<int> PanelManager::mapMax;
 
@@ -70,13 +71,16 @@ void PanelManager::Initialize()
 	totalBounsNum = 0;
 }
 
-void PanelManager::Update(std::vector<std::weak_ptr<SkillResultUI>>arg_enemyDamageUI)
+void PanelManager::Update(std::vector<std::weak_ptr<SkillResultUI>>arg_enemyDamageUI, std::weak_ptr<PerfectBonusEffect>arg_perfectBonusEffect)
 {
 	if (isBonusDirection == Bonus::count) {
 		BonusCount();
 	}
 	else if (isBonusDirection == Bonus::add) {
-		BonusDirection(arg_enemyDamageUI);
+		BonusDirection(arg_enemyDamageUI,arg_perfectBonusEffect);
+	}
+	else if (isBonusDirection == Bonus::perfect) {
+		PerfectBonus(arg_enemyDamageUI, arg_perfectBonusEffect);
 	}
 
 	OneProcess();
@@ -427,7 +431,7 @@ void PanelManager::BonusCount()
 	isBonusDirection=Bonus::add;
 }
 
-void PanelManager::BonusDirection(std::vector<std::weak_ptr<SkillResultUI>>arg_enemyDamageUI)
+void PanelManager::BonusDirection(std::vector<std::weak_ptr<SkillResultUI>>arg_enemyDamageUI, std::weak_ptr<PerfectBonusEffect>arg_perfectBonusEffect)
 {
 	if (bonusData.empty())
 	{
@@ -455,16 +459,25 @@ void PanelManager::BonusDirection(std::vector<std::weak_ptr<SkillResultUI>>arg_e
 	//時間になったら次に行く
 	bonusTimer++;
 	if (bonusTimer > maxTimer) {
-		if (int(bonusData.size()) == nowBonusNum && !arg_enemyDamageUI[0].lock()->GetIsActive()) {
-			isBonusDirection = Bonus::non;
-			ExistUnits::Instance()->m_IsEndBonusCount = true;
-			Reset();
+		if (int(bonusData.size()) <= nowBonusNum) {
 
-			// ボーナスアタック
-			PlayerSkills::PlayerSkillMgr::Instance()->StartAction("Bonus_01", ExistUnits::Instance()->m_NowBonusCount, ExistUnits::Instance()->m_pPlayer, ExistUnits::Instance()->m_Enemys[0]);
-			return;
+			if (IsPerfect())
+			{
+				arg_perfectBonusEffect.lock()->Start(arg_enemyDamageUI);
+				isBonusDirection = Bonus::perfect;
+			}
+			else if (!arg_enemyDamageUI[0].lock()->GetIsActive())
+			{
+				isBonusDirection = Bonus::non;
+				ExistUnits::Instance()->m_IsEndBonusCount = true;
+				Reset();
+
+				// ボーナスアタック
+				PlayerSkills::PlayerSkillMgr::Instance()->StartAction("Bonus_01", ExistUnits::Instance()->m_NowBonusCount, ExistUnits::Instance()->m_pPlayer, ExistUnits::Instance()->m_Enemys[0]);
+				return;
+			}
 		}
-		else if (nowBonusNum < int(bonusData.size()))
+		else
 		{
 			nowBonusNum++;
 			bonusTimer = 0;
@@ -474,6 +487,20 @@ void PanelManager::BonusDirection(std::vector<std::weak_ptr<SkillResultUI>>arg_e
 				ui.lock()->Add(1, true);
 			}
 		}
+	}
+}
+
+void PanelManager::PerfectBonus(std::vector<std::weak_ptr<SkillResultUI>> arg_enemyDamageUI, std::weak_ptr<PerfectBonusEffect> arg_perfectBonusEffect)
+{
+	if (!arg_enemyDamageUI[0].lock()->GetIsActive())
+	{
+		isBonusDirection = Bonus::non;
+		ExistUnits::Instance()->m_IsEndBonusCount = true;
+		Reset();
+
+		// ボーナスアタック
+		PlayerSkills::PlayerSkillMgr::Instance()->StartAction("Bonus_01", ExistUnits::Instance()->m_NowBonusCount * 3, ExistUnits::Instance()->m_pPlayer, ExistUnits::Instance()->m_Enemys[0]);
+		return;
 	}
 }
 
@@ -556,4 +583,14 @@ void PanelManager::SetGold()
 	for (auto& i : onePos) {
 		mapchip[i.y][i.x] = int(BlockColor::gold);
 	}
+}
+
+bool PanelManager::IsPerfect() const
+{
+	for (auto& y : mapchip) {
+		for (auto& x : y) {
+			if (x == int(BlockColor::yuka))return false;
+		}
+	}
+	return true;
 }

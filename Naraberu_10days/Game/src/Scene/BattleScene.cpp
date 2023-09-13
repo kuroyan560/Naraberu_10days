@@ -142,11 +142,6 @@ void BattleScene::OnUpdate()
 
 	static int mmmm = 0;
 
-	if (OperationConfig::Instance()->DebugKeyInputOnTrigger(DIK_J))
-	{
-		m_perfectBonusEffect->Start();
-	}
-
 	//ダメージ表記（移動する）
 	{
 		if (OperationConfig::Instance()->DebugKeyInput(DIK_H)) {
@@ -324,7 +319,7 @@ void BattleScene::OnUpdate()
 	}
 
 	Mgr.OnUpdate();
-	stage->Update(GetAliveEnemyDamageUIArray());
+	stage->Update(GetAliveEnemyDamageUIArray(),m_perfectBonusEffect);
 	if (!Mgr.GetDefeat() && !m_Stage_End) {
 		block->Update();
 	}
@@ -505,7 +500,10 @@ void BattleScene::OnDraw()
 	ParticleManager::Instance()->FrontDraw();
 	m_setPrismEffect->Draw();
 	m_ultActivateEffect->Draw();
+
+	m_perfectBonusEffect->DrawBlackOut();
 	for (auto& ui : m_enemyDamageUI)ui->Draw();
+	m_perfectBonusEffect->Draw();
 
 	// ステージ終了(敗北)
 	if (Mgr.GetDefeat()) {
@@ -518,7 +516,6 @@ void BattleScene::OnDraw()
 
 	dame->Draw();
 
-	m_perfectBonusEffect->Draw();
 
 	// チュートリアル
 	if (ExistUnits::Instance()->m_StageName == "Tutorial") {
@@ -1317,7 +1314,7 @@ void BattleScene::TutorialUpdate()
 
 	Mgr.OnUpdate();
 
-	stage->Update(GetAliveEnemyDamageUIArray());
+	stage->Update(GetAliveEnemyDamageUIArray(), m_perfectBonusEffect);
 	if (!Mgr.GetDefeat() && !m_Stage_End) {
 		block->Update(m_NowTutorial_Step);
 	}

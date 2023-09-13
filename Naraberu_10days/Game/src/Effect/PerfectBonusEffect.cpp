@@ -3,6 +3,7 @@
 #include"FrameWork/WinApp.h"
 #include"../RefreshRate.h"
 #include"DirectX12/D3D12App.h"
+#include"../UI/SkillResultUI.h"
 
 void PerfectBonusEffect::OnChangeStatus()
 {
@@ -13,6 +14,11 @@ void PerfectBonusEffect::OnChangeStatus()
 			m_perfect.m_draw = true;
 			return;
 		case STATUS_APPEAR_BONUS:
+			for (auto& ui : m_enemyDamageUIArray)
+			{
+				ui.lock()->SetStopDisappear(false);
+				ui.lock()->Mul(3, true, true);
+			}
 			m_bonus.m_draw = true;
 			return;
 		case STATUS_DIAPPEAR:
@@ -49,8 +55,8 @@ void PerfectBonusEffect::Update()
 	}
 
 	const float BLACK_OUT_ALPHA = 0.4f;
-	const Vec2<float>PERFECT_DEF_POS = { 648.0f,287.0f };
-	const Vec2<float>BONUS_DEF_POS = { 693.0f,424.0f };
+	const Vec2<float>PERFECT_DEF_POS = { 596.0f,287.0f };
+	const Vec2<float>BONUS_DEF_POS = { 642.0f,424.0f };
 	const float DISAPPEAR_OFFSET_Y = 100.0f;
 
 	switch (m_nowStatus)
@@ -81,7 +87,7 @@ void PerfectBonusEffect::Update()
 
 }
 
-void PerfectBonusEffect::Draw()
+void PerfectBonusEffect::DrawBlackOut()
 {
 	using namespace KuroEngine;
 
@@ -92,6 +98,13 @@ void PerfectBonusEffect::Draw()
 
 	// ƒpƒlƒ‹‚ðˆÃ‚­
 	DrawFunc2D::DrawBox2D(Panel_LT, Panel_RB, Color(0.0f, 0.0f, 0.0f, m_blackOutAlpha), true);
+}
+
+void PerfectBonusEffect::Draw()
+{
+	using namespace KuroEngine;
+
+	if (m_nowStatus == STATUS_PASSIVE)return;
 
 	if (m_perfect.m_draw)
 	{
@@ -104,7 +117,7 @@ void PerfectBonusEffect::Draw()
 	}
 }
 
-void PerfectBonusEffect::Start()
+void PerfectBonusEffect::Start(std::vector<std::weak_ptr<SkillResultUI>>arg_enemyDamageUI)
 {
 	m_nowStatus = STATUS_BLACK_OUT;
 	m_interval =
@@ -121,4 +134,8 @@ void PerfectBonusEffect::Start()
 
 	m_perfect.m_draw = false;
 	m_bonus.m_draw = false;
+
+	m_enemyDamageUIArray = arg_enemyDamageUI;
+
+	for (auto& ui : m_enemyDamageUIArray)ui.lock()->SetStopDisappear(true);
 }

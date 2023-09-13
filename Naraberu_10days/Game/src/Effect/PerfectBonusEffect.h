@@ -4,11 +4,13 @@
 #include<array>
 #include"ForUser/ImpactShake.h"
 #include"Common/Vec.h"
+#include<vector>
 
 namespace KuroEngine
 {
 	class TextureBuffer;
 };
+class SkillResultUI;
 
 class PerfectBonusEffect
 {
@@ -44,13 +46,17 @@ class PerfectBonusEffect
 
 	Content m_bonus;
 
+	std::vector<std::weak_ptr<SkillResultUI>>m_enemyDamageUIArray;
+
 	void OnChangeStatus();
 
 public:
 	PerfectBonusEffect();
 	void Init() { m_nowStatus = STATUS_PASSIVE; }
 	void Update();
+	void DrawBlackOut();
 	void Draw();
 
-	void Start();
+	void Start(std::vector<std::weak_ptr<SkillResultUI>>arg_enemyDamageUI);
+	bool IsActive() { return m_nowStatus != STATUS_PASSIVE; }
 };
