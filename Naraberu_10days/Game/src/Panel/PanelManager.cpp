@@ -158,8 +158,8 @@ void PanelManager::Reset()
 	for (auto& y : mapchip) {
 		for (auto& x : y) {
 			if (x == int(BlockColor::eizoku_obstacle)) { continue; }
-			//x = int(BlockColor::yuka);
-			x = int(BlockColor::red);
+			x = int(BlockColor::yuka);
+			//x = int(BlockColor::red);
 		}
 	}
 }
