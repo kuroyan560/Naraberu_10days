@@ -6,6 +6,9 @@
 #include"../SoundConfig.h"
 #include"FrameWork/AudioApp.h"
 #include"ForUser/Debugger.h"
+#include"../Effect/ParticleManager.h"
+#include"../Effect/Particle/SelectBackPrismParticle.h"
+#include"../RefreshRate.h"
 
 void TitleScene::OnInitialize()
 {
@@ -39,6 +42,8 @@ void TitleScene::OnInitialize()
 		{
 			SoundConfig::Instance(),
 		});
+
+	ParticleManager::Instance()->Init();
 }
 
 void TitleScene::OnUpdate()
@@ -52,6 +57,13 @@ void TitleScene::OnUpdate()
 	
 	title->Update();
 	character->Update();
+	ParticleManager::Instance()->Update();
+
+	if (m_backPtEmitTimer.UpdateTimer(1.0f / RefreshRate::RefreshRate_Mag))
+	{
+		m_ptEmitter.lock()->Emit({ 0,0 }, 1);
+		m_backPtEmitTimer.Reset(20.0f);
+	}
 }
 
 void TitleScene::OnDraw()
@@ -66,6 +78,8 @@ void TitleScene::OnDraw()
 	if (UsersInput::Instance()->KeyInput(DIK_V)) {
 		DrawFunc2D::DrawExtendGraph2D(Vec2(0.0f, 0.0f), WinApp::Instance()->GetExpandWinSize(), m_SukasiTex);
 	}
+
+	ParticleManager::Instance()->Draw(0);
 
 	//‘JˆÚˆÚ“®—Ê
 	float move = character->GetMove();
@@ -111,6 +125,9 @@ TitleScene::TitleScene()
 
 	character.reset(new TitleVtuber());
 	character->Initialize();
+
+	m_ptEmitter = ParticleManager::Instance()->Register<SelectBackPrismParticle>(1000, 0);
+	m_backPtEmitTimer.Reset(1.0f);
 }
 
 void TitleScene::Title()

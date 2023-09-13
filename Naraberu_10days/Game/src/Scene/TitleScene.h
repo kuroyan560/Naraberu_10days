@@ -3,6 +3,9 @@
 #include "../Titel/TitleUi.h"
 #include "../Fade/Fade.h"
 #include "../Titel/TitleVtuber.h"
+#include<memory>
+class ParticleEmitter;
+#include"ForUser/Timer.h"
 
 class TitleScene : public KuroEngine::BaseScene
 {	
@@ -42,6 +45,9 @@ class TitleScene : public KuroEngine::BaseScene
 	Select selectNum;
 	// 選択を行っている
 	bool onSelect;
+
+	KuroEngine::Timer m_backPtEmitTimer;
+	std::weak_ptr<ParticleEmitter>m_ptEmitter;
 
 	/// <summary>
 	/// タイトル

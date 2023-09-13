@@ -463,6 +463,9 @@
     <ClCompile Include="src\Effect\Particle\PerfectParticle.cpp">
       <Filter>src\user\Effect\Particle</Filter>
     </ClCompile>
+    <ClCompile Include="src\Effect\Particle\SelectBackPrismParticle.cpp">
+      <Filter>src\user\Effect\Particle</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="..\..\src\engine\KuroEngineDevice.h">
@@ -877,6 +880,9 @@
       <Filter>src\user\Effect</Filter>
     </ClInclude>
     <ClInclude Include="src\Effect\Particle\PerfectParticle.h">
+      <Filter>src\user\Effect\Particle</Filter>
+    </ClInclude>
+    <ClInclude Include="src\Effect\Particle\SelectBackPrismParticle.h">
       <Filter>src\user\Effect\Particle</Filter>
     </ClInclude>
   </ItemGroup>
