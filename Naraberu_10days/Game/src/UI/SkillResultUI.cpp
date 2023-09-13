@@ -7,6 +7,34 @@
 #include"../SoundConfig.h"
 #include"../RefreshRate.h"
 
+void SkillResultUI::CommonInitOnStart(float arg_appearTime)
+{
+	//振動パラメータ
+	const float SHAKE_TIME = 15.0f;
+	const float SHAKE_SPAN = 2.0f;
+	const float SHAKE_POWER_MIN = 6.0f;
+	const float SHAKE_POWER_MAX = 18.0f;
+
+	//表示時間
+	m_appearTimer.Reset(arg_appearTime);
+
+	//退場時間
+	const float DISAPPEAR_TIME = 25.0f;
+	m_disappearTimer.Reset(DISAPPEAR_TIME);
+
+	//非表示状態
+	if (!m_isActive)
+	{
+		m_amount = 0;
+		if (m_skillType != SKILL_PLAYER_HEAL)m_skillType = SKILL_ENEMY_DAMAGE;
+	}
+
+	m_isActive = true;
+	m_impactShake.Shake(SHAKE_TIME, SHAKE_SPAN, SHAKE_POWER_MIN, SHAKE_POWER_MAX);
+	m_nowPos = m_appearPos;
+	m_expand = 1.0f;
+}
+
 SkillResultUI::SkillResultUI()
 {
 	using namespace KuroEngine;
@@ -14,7 +42,8 @@ SkillResultUI::SkillResultUI()
 	std::array<std::string, SKILL_NUM>fileNameArray =
 	{
 		"damage",
-		"heal"
+		"heal",
+		"perfect"
 	};
 
 	std::string dir = "resource/user/tex/battle_scene/";
@@ -30,7 +59,7 @@ SkillResultUI::SkillResultUI()
 
 		//履歴数字画像
 		D3D12App::Instance()->GenerateTextureBuffer(
-			m_historyNumTex[skillIdx].data(), dir + fileNameArray[skillIdx] + "_rireki_number.png", 11, Vec2(11, 1));
+			m_historyNumTex[skillIdx].data(), dir + fileNameArray[skillIdx] + "_rireki_number.png", 12, Vec2(12, 1));
 	}
 }
 
@@ -67,7 +96,7 @@ void SkillResultUI::Update(std::weak_ptr<ParticleEmitter>arg_ultParticleEmitter)
 			m_isActive = false;
 
 			//ULTのパーティクルを出す
-			if (m_skillType == SKILL_ENEMY_DAMAGE)
+			if (m_skillType == SKILL_ENEMY_DAMAGE || m_skillType == SKILL_ENEMY_DAMAGE_PERFECT)
 			{
 				bool isBoss = false;
 				for (auto& data : ExistUnits::Instance()->m_Enemys) {
@@ -87,7 +116,13 @@ void SkillResultUI::Update(std::weak_ptr<ParticleEmitter>arg_ultParticleEmitter)
 	{
 		size_t idx = std::distance(m_history.begin(), itr);
 		float baseAlpha = 1.0f - static_cast<float>(idx) / m_history.size();
-		itr->second = Math::Lerp(baseAlpha, 0.0f, m_appearTimer.GetTimeRate(std::min(1.0f, baseAlpha + 0.5f)));
+		itr->m_alpha = Math::Lerp(baseAlpha, 0.0f, m_appearTimer.GetTimeRate(std::min(1.0f, baseAlpha + 0.5f)));
+	}
+
+	//if (m_skillType == SKILL_ENEMY_DAMAGE_PERFECT)
+	{
+		m_expandTimer.UpdateTimer(1.0f / RefreshRate::RefreshRate_Mag);
+		m_expand = Math::Ease(Out, Elastic, m_expandTimer.GetTimeRate(), 5.0f, 1.0f);
 	}
 }
 
@@ -102,9 +137,9 @@ void SkillResultUI::Draw()
 
 	Vec2<float>shake = { 0.0f,m_impactShake.GetOffset().y };
 	auto pos = m_nowPos + shake;
-	DrawFunc2D::DrawRotaGraph2D(pos, {1.0f,1.0f}, 0.0f, m_skillTex[m_skillType]);
+	DrawFunc2D::DrawRotaGraph2D(pos, {m_expand,m_expand }, 0.0f, m_skillTex[m_skillType]);
 	DrawFunc2D::DrawNumber2D(m_amount, pos + NUMBER_OFFSET_POS,
-		m_amountNumTex[m_skillType].data(), {1.0f,1.0f}, 1.0f, 0.0f,
+		m_amountNumTex[m_skillType].data(), { m_expand,m_expand }, 1.0f, 0.0f,
 		HORIZONTAL_ALIGN::CENTER, VERTICAL_ALIGN::CENTER, 2);
 
 	//最新のダメージ履歴の描画オフセット座標
@@ -115,9 +150,9 @@ void SkillResultUI::Draw()
 	auto damageHisPos = m_appearPos + shake + DAMAGE_HIS_OFFSET_POS;
 	for (auto itr = m_history.begin(); itr != m_history.end(); ++itr)
 	{
-		DrawFunc2D::DrawNumber2D(itr->first, damageHisPos,
-			m_historyNumTex[m_skillType].data(), {1.0f,1.0f}, itr->second, 0.0f, HORIZONTAL_ALIGN::RIGHT,
-			VERTICAL_ALIGN::TOP, -1, 10, -1);
+		DrawFunc2D::DrawNumber2D(itr->m_amount, damageHisPos,
+			m_historyNumTex[m_skillType].data(), { m_expand,m_expand }, itr->m_alpha, 0.0f, HORIZONTAL_ALIGN::RIGHT,
+			VERTICAL_ALIGN::TOP, -1, itr->m_isMul ? 11 : 10);
 
 		//行間ずらし
 		damageHisPos.y += DAMAGE_HIS_LINE_SPACE;
@@ -126,40 +161,40 @@ void SkillResultUI::Draw()
 
 void SkillResultUI::Add(int arg_damage, bool arg_drawHistory)
 {
-	//振動パラメータ
-	const float SHAKE_TIME = 15.0f;
-	const float SHAKE_SPAN = 2.0f;
-	const float SHAKE_POWER_MIN = 6.0f;
-	const float SHAKE_POWER_MAX = 18.0f;
-
-	//表示時間
 	const float APPEAR_TIME = 45.0f;
-	m_appearTimer.Reset(APPEAR_TIME);
 
-	//退場時間
-	const float DISAPPEAR_TIME = 25.0f;
-	m_disappearTimer.Reset(DISAPPEAR_TIME);
+	CommonInitOnStart(APPEAR_TIME);
 
-	//与ダメージ最大履歴数
-	const int QUEUE_MAX = 3;
-
-	//非表示状態
-	if (!m_isActive)
-	{
-		m_amount = 0;
-	}
-
-	m_isActive = true;
 	m_amount += arg_damage;
-	m_impactShake.Shake(SHAKE_TIME, SHAKE_SPAN, SHAKE_POWER_MIN, SHAKE_POWER_MAX);
-	m_nowPos = m_appearPos;
-
 	if (arg_drawHistory)
 	{
-		m_history.push_front({ arg_damage,1.0f });
+		m_history.push_front(HistoryInfo(arg_damage, false));
 		if (QUEUE_MAX < static_cast<int>(m_history.size()))
 		{
 			m_history.pop_back();
 		}
 	}
+}
+
+void SkillResultUI::Mul(int arg_mulAmount, bool arg_drawHistory, bool arg_isPerfect)
+{
+	if (m_amount == 0)return;
+
+	const float APPEAR_TIME = 90.0f;
+
+	CommonInitOnStart(APPEAR_TIME);
+
+	m_amount *= arg_mulAmount;
+	if (arg_drawHistory)
+	{
+		m_history.push_front(HistoryInfo(arg_mulAmount, true));
+		if (QUEUE_MAX < static_cast<int>(m_history.size()))
+		{
+			m_history.pop_back();
+		}
+	}
+
+	m_expandTimer.Reset(20.0f);
+	if (arg_isPerfect && m_skillType != SKILL_PLAYER_HEAL)m_skillType = SKILL_ENEMY_DAMAGE_PERFECT;
+	SoundConfig::Instance()->Play(SoundConfig::SE_PERFECT_BONUS_DAMAGE, 5);
 }

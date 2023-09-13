@@ -21,6 +21,7 @@ public:
 	{
 		SKILL_ENEMY_DAMAGE,
 		SKILL_PLAYER_HEAL,
+		SKILL_ENEMY_DAMAGE_PERFECT,
 		SKILL_NUM
 	};
 
@@ -30,7 +31,7 @@ private:
 	//デカ数字画像
 	std::array<std::array<std::shared_ptr<KuroEngine::TextureBuffer>, 10>, SKILL_NUM>m_amountNumTex;
 	//履歴数字画像（１１枚なのは「+」分）
-	std::array <std::array<std::shared_ptr<KuroEngine::TextureBuffer>, 11>, SKILL_NUM>m_historyNumTex;
+	std::array <std::array<std::shared_ptr<KuroEngine::TextureBuffer>, 12>, SKILL_NUM>m_historyNumTex;
 
 	//振動
 	KuroEngine::ImpactShake m_impactShake;
@@ -55,13 +56,27 @@ private:
 	//UI退場後のX座標
 	float m_disappearPosX = 0.0f;
 
+	KuroEngine::Timer m_expandTimer;
+	float m_expand = 1.0f;
 
 	//現在のUI表示座標
 	KuroEngine::Vec2<float>m_nowPos;
 
-	//与ダメージ履歴キュー
-	std::list<std::pair<int, float>>m_history;
+	struct HistoryInfo
+	{
+		int m_amount = 0;
+		bool m_isMul = false;
+		float m_alpha = 1.0f;
 
+		HistoryInfo(int arg_amount, bool arg_isMul)
+			:m_amount(arg_amount), m_isMul(arg_isMul) {}
+	};
+	//与ダメージ最大履歴数
+	static const int QUEUE_MAX = 3;
+	//与ダメージ履歴キュー
+	std::list<HistoryInfo>m_history;
+
+	void CommonInitOnStart(float arg_appearTime);
 public:
 	SkillResultUI();
 	void Init();
@@ -69,6 +84,7 @@ public:
 	void Draw();
 
 	void Add(int arg_damage, bool arg_drawHistory);
+	void Mul(int arg_mulAmount, bool arg_drawHistory, bool arg_isPerfect);
 
 	//登場位置の設定
 	void Set(SKILL arg_skill, KuroEngine::Vec2<float>arg_appearPos, float arg_disappearPosX)
