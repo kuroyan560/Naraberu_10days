@@ -23,6 +23,8 @@ Enemy::Enemy()
 	m_Already_Act = false;
 	m_Timer = 0;
 	m_Tutorial_Act_Count = 0;
+	m_Next_Act_Icon_Timer = 0;
+	m_Next_Act_Icon_Timer_Max = int(40.0f * RefreshRate::RefreshRate_Mag);
 }
 
 void Enemy::OnInitialize()
@@ -49,7 +51,6 @@ void Enemy::OnUpdate()
 		}
 		EnemyActions::EnemyActionMgr::Instance()->StartAction(m_Data.ActionList[m_NextAction]);
 		m_Now_Action = true;
-		m_NextAction = -1;
 	}
 	// ƒAƒNƒVƒ‡ƒ“’†‚Å‚ ‚ê‚Î
 	if (m_Now_Action) {
@@ -61,6 +62,7 @@ void Enemy::OnUpdate()
 			m_Now_Action = false;
 			m_Already_Act = true;
 			m_Timer = 0;
+			m_NextAction = -1;
 		}
 	}
 	if (m_Already_Act == true) {
@@ -75,14 +77,20 @@ void Enemy::OnUpdate()
 void Enemy::OnAlwaysUpdate()
 {
 	using namespace KuroEngine;
-	if (OperationConfig::Instance()->DebugKeyInput(DIK_G)) {
+	/*if (OperationConfig::Instance()->DebugKeyInput(DIK_G)) {
 		m_HP > 0 ? m_HP-- : 0;
 	}
 	if (OperationConfig::Instance()->DebugKeyInput(DIK_H)) {
 		m_HP < m_MaxHP ? m_HP++ : 0;
-	}
-	if (OperationConfig::Instance()->DebugKeyInputOnTrigger(DIK_M)) {
+	}*/
+	/*if (OperationConfig::Instance()->DebugKeyInputOnTrigger(DIK_M)) {
 		Damage(m_HP / 2);
+	}*/
+	if (m_Next_Act_Icon_Timer < m_Next_Act_Icon_Timer_Max && m_Now_Action == false && m_NextAction != -1) {
+		m_Next_Act_Icon_Timer++;
+	}
+	if (m_Now_Action) {
+		m_Next_Act_Icon_Timer > 0 ? m_Next_Act_Icon_Timer-- : m_Next_Act_Icon_Timer = 0;
 	}
 }
 
@@ -447,59 +455,95 @@ void Enemy::DrawActionIcon()
 		return;
 	}
 
+	float IconSizeRate = OutBack(float(m_Next_Act_Icon_Timer) / float(m_Next_Act_Icon_Timer_Max));
+
 	if (m_Data.m_Name == "Boss_1") {
 		if (m_NextAction != -1 && m_NextAction < m_Data.ActionList.size()) {
 			std::string NextActionName = m_Data.ActionList[m_NextAction];
+
+			float Move = 196.0f - 196.0f * IconSizeRate;
+			Vec2 Move_v = Vec2(Move, 0.0f);
+			Vec2 Sc = Vec2(1.0f, 1.0f);
+			Vec2 Sc_2 = Vec2(1.0f, 1.0f);
+
+			if (m_Now_Action) {
+				if (NextActionName == "Heal_01") {
+					Move_v = Vec2(Move, 0.0f);
+				}
+				else {
+					Move_v = Vec2(-Move, 0.0f);
+				}
+				Sc = (Vec2(76.0f, 76.0f) / 2.0f) * (1.0f - IconSizeRate);
+				Sc_2 = (Vec2(50.0f, 50.0f) / 2.0f) * (1.0f - IconSizeRate);
+			}
+
 			if (NextActionName == "Attack_01" || NextActionName == "Attack_02") {
 				DrawFunc2D::DrawExtendGraph2D(
-					Vec2(1094.0f, 542.0f) + ScreenShakeManager::Instance()->GetOffset()
-					, Vec2(1154.0f, 564.0f) + ScreenShakeManager::Instance()->GetOffset(), m_Data.m_AttackIcon);
+					Vec2(1094.0f, 534.0f) + ScreenShakeManager::Instance()->GetOffset() + Move_v + Sc
+					, Vec2(1154.0f, 564.0f) + ScreenShakeManager::Instance()->GetOffset() + Move_v - Sc, m_Data.m_AttackIcon);
 			}
 			else if (NextActionName == "Jamming_01" && m_Data.m_Name == "zako_blue") {
 				DrawFunc2D::DrawExtendGraph2D(
-					Vec2(1123.0f, 533.0f) + ScreenShakeManager::Instance()->GetOffset()
-					, Vec2(1154.0f, 564.0f) + ScreenShakeManager::Instance()->GetOffset(), m_Data.m_JammingIcon);
+					Vec2(1124.0f, 534.0f) + ScreenShakeManager::Instance()->GetOffset() + Move_v + Sc
+					, Vec2(1154.0f, 564.0f) + ScreenShakeManager::Instance()->GetOffset() + Move_v - Sc, m_Data.m_JammingIcon);
 			}
 			else if (NextActionName == "Jamming_01") {
 				DrawFunc2D::DrawExtendGraph2D(
-					Vec2(1094.0f, 542.0f) + ScreenShakeManager::Instance()->GetOffset()
-					, Vec2(1170.0f, 618.0f) + ScreenShakeManager::Instance()->GetOffset(), m_Data.m_JammingIcon);
+					Vec2(1094.0f, 542.0f) + ScreenShakeManager::Instance()->GetOffset() + Move_v + Sc
+					, Vec2(1170.0f, 618.0f) + ScreenShakeManager::Instance()->GetOffset() + Move_v - Sc, m_Data.m_JammingIcon);
 				DrawFunc2D::DrawExtendGraph2D(
-					Vec2(1154.0f, 569.0f) + ScreenShakeManager::Instance()->GetOffset()
-					, Vec2(1203.0f, 618.0f) + ScreenShakeManager::Instance()->GetOffset(), m_Data.m_AttackIcon);
+					Vec2(1154.0f, 568.0f) + ScreenShakeManager::Instance()->GetOffset() + Move_v + Sc_2
+					, Vec2(1204.0f, 618.0f) + ScreenShakeManager::Instance()->GetOffset() + Move_v - Sc_2, m_Data.m_AttackIcon);
 			}
 			else if (NextActionName == "Heal_01") {
 				DrawFunc2D::DrawExtendGraph2D(
-					Vec2(1123.0f, 533.0f) + ScreenShakeManager::Instance()->GetOffset()
-					, Vec2(1154.0f, 564.0f) + ScreenShakeManager::Instance()->GetOffset(), m_Data.m_HealIcon);
+					Vec2(1124.0f, 534.0f) + ScreenShakeManager::Instance()->GetOffset() + Move_v + Sc
+					, Vec2(1154.0f, 564.0f) + ScreenShakeManager::Instance()->GetOffset() + Move_v - Sc, m_Data.m_HealIcon);
 			}
 		}
 	}
 
+
 	if (m_NextAction != -1 && m_NextAction < m_Data.ActionList.size()) {
-		std::string NextActionName = m_Data.ActionList[m_NextAction];
+		std::string NextActionName = m_Data.ActionList[m_NextAction]; 
+		float Move = 163.0f - 163.0f * IconSizeRate;
+		Vec2 Move_v = Vec2(Move, 0.0f);
+		Vec2 Sc = Vec2(1.0f, 1.0f);
+		Vec2 Sc_2 = Vec2(1.0f, 1.0f);
+
+		if (m_Now_Action) {
+			if (NextActionName == "Heal_01") {
+				Move_v = Vec2(Move, 0.0f);
+			}
+			else {
+				Move_v = Vec2(-Move, 0.0f);
+			}
+			Sc = (Vec2(30.0f, 30.0f) / 2.0f) * (1.0f - IconSizeRate);
+			Sc_2 = (Vec2(20.0f, 20.0f) / 2.0f) * (1.0f - IconSizeRate);
+		}
+
 		if (NextActionName == "Attack_01" || NextActionName == "Attack_02") {
 			DrawFunc2D::DrawExtendGraph2D(
-				Vec2(1127.0f - D_Move_Width, 203.0f + D_IndexDiff) + ScreenShakeManager::Instance()->GetOffset()
-				, Vec2(1158.0f - D_Move_Width, 234.0f + D_IndexDiff) + ScreenShakeManager::Instance()->GetOffset(), m_Data.m_AttackIcon);
+				Vec2(1128.0f - D_Move_Width, 204.0f + D_IndexDiff) + ScreenShakeManager::Instance()->GetOffset() + Move_v + Sc
+				, Vec2(1158.0f - D_Move_Width, 234.0f + D_IndexDiff) + ScreenShakeManager::Instance()->GetOffset() + Move_v - Sc, m_Data.m_AttackIcon);
 		}
 		else if (NextActionName == "Jamming_01" && m_Data.m_Name == "zako_blue") {
 			DrawFunc2D::DrawExtendGraph2D(
-				Vec2(1127.0f - D_Move_Width, 203.0f + D_IndexDiff) + ScreenShakeManager::Instance()->GetOffset()
-				, Vec2(1158.0f - D_Move_Width, 234.0f + D_IndexDiff) + ScreenShakeManager::Instance()->GetOffset(), m_Data.m_JammingIcon);
+				Vec2(1128.0f - D_Move_Width, 204.0f + D_IndexDiff) + ScreenShakeManager::Instance()->GetOffset() + Move_v + Sc
+				, Vec2(1158.0f - D_Move_Width, 234.0f + D_IndexDiff) + ScreenShakeManager::Instance()->GetOffset() + Move_v - Sc, m_Data.m_JammingIcon);
 		}
 		else if (NextActionName == "Jamming_01") {
 			DrawFunc2D::DrawExtendGraph2D(
-				Vec2(1127.0f - D_Move_Width, 203.0f + D_IndexDiff) + ScreenShakeManager::Instance()->GetOffset()
-				, Vec2(1158.0f - D_Move_Width, 234.0f + D_IndexDiff) + ScreenShakeManager::Instance()->GetOffset(), m_Data.m_JammingIcon);
+				Vec2(1128.0f - D_Move_Width, 204.0f + D_IndexDiff) + ScreenShakeManager::Instance()->GetOffset() + Move_v + Sc
+				, Vec2(1158.0f - D_Move_Width, 234.0f + D_IndexDiff) + ScreenShakeManager::Instance()->GetOffset() + Move_v - Sc, m_Data.m_JammingIcon);
 			DrawFunc2D::DrawExtendGraph2D(
-				Vec2(1152.0f - D_Move_Width, 213.0f + D_IndexDiff) + ScreenShakeManager::Instance()->GetOffset()
-				, Vec2(1172.0f - D_Move_Width, 234.0f + D_IndexDiff) + ScreenShakeManager::Instance()->GetOffset(), m_Data.m_AttackIcon);
+				Vec2(1152.0f - D_Move_Width, 214.0f + D_IndexDiff) + ScreenShakeManager::Instance()->GetOffset() + Move_v + Sc_2
+				, Vec2(1172.0f - D_Move_Width, 234.0f + D_IndexDiff) + ScreenShakeManager::Instance()->GetOffset() + Move_v - Sc_2, m_Data.m_AttackIcon);
 		}
 		else if (NextActionName == "Heal_01") {
 			DrawFunc2D::DrawExtendGraph2D(
-				Vec2(1127.0f - D_Move_Width, 203.0f + D_IndexDiff) + ScreenShakeManager::Instance()->GetOffset()
-				, Vec2(1158.0f - D_Move_Width, 234.0f + D_IndexDiff) + ScreenShakeManager::Instance()->GetOffset(), m_Data.m_HealIcon);
+				Vec2(1128.0f - D_Move_Width, 204.0f + D_IndexDiff) + ScreenShakeManager::Instance()->GetOffset() + Move_v + Sc
+				, Vec2(1158.0f - D_Move_Width, 234.0f + D_IndexDiff) + ScreenShakeManager::Instance()->GetOffset() + Move_v - Sc, m_Data.m_HealIcon);
 		}
 	}
 }

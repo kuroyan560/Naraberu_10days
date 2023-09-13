@@ -22,6 +22,14 @@ private:
 	
 	// 次に行う行動
 	int m_NextAction;
+	int m_Next_Act_Icon_Timer;
+	int m_Next_Act_Icon_Timer_Max;
+	int m_Icon_Size_Timer;
+	float OutBack(float t) {
+		const float c1 = 1.70158f;
+		const float c3 = c1 + 1.0f;
+		return 1.0f + c3 * pow(t - 1.0f, 3.0f) + c1 * powf(t - 1.0f, 2.0f);
+	}
 
 	// チュートリアル用
 	int m_Tutorial_Act_Count;
