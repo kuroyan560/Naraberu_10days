@@ -135,6 +135,8 @@ class BattleScene :
 	// 注目タイマー
 	int m_TaegetTimer;
 	int m_TaegetTimer_Max;
+	// あ
+	int Tuto_Set;
 	KuroEngine::Vec2<float> m_LastTarget_LT;
 	KuroEngine::Vec2<float> m_LastTarget_RB;
 	KuroEngine::Vec2<float> m_NowTarget_LT;

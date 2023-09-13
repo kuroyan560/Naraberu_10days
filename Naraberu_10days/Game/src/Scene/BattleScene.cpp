@@ -58,7 +58,7 @@ void BattleScene::OnInitialize()
 	m_Taeget_Alpha_Timer = 0;
 
 	m_Done_Timer = 0;
-
+	Tuto_Set = 0;
 	m_Already_Selected = false;
 
 	ExistUnits::Instance()->m_MaxBonusCount = 0;
@@ -633,7 +633,7 @@ void BattleScene::GameClearDraw()
 	Value = Vec2(0.0f, ResultEasing(((ResultTimer - SubFrame) / ResultTimer_Max))) * 450.0f;
 
 	Value = Vec2(0.0f, ResultEasing(((ResultTimer - SubFrame * 2.0f) / ResultTimer_Max))) * 450.0f;
-	DrawFunc2D_Mask::DrawGraph(Vec2(484.0f, 257.0f) + Value, m_MaxComboTex, Panel_LT, Panel_RB);
+	DrawFunc2D_Mask::DrawGraph(Vec2(490.0f, 257.0f) + Value, m_MaxComboTex, Panel_LT, Panel_RB);
 	if (ResultTimer >= ResultTimer_Max + 30 * RefreshRate::RefreshRate_Mag) {
 		DrawFunc2D::DrawNumber2D(ExistUnits::Instance()->m_MaxBonusCount, Vec2(697.0f, 257.0f) + Value, &m_ClearNumberTex.front(), { 1.0f, 1.0f }, 1.0f, 2.0f);
 	}
@@ -647,7 +647,7 @@ void BattleScene::GameClearDraw()
 
 	Value = Vec2(0.0f, ResultEasing(((ResultTimer - SubFrame * 4.0f) / ResultTimer_Max))) * 450.0f;
 	int T = int(200.0f * RefreshRate::RefreshRate_Mag);
-	DrawFunc2D_Mask::DrawGraph(Vec2(489.0f, 329.0f) + Value, m_TotalTurnTex, Panel_LT, Panel_RB);
+	DrawFunc2D_Mask::DrawGraph(Vec2(493.0f, 329.0f) + Value, m_TotalTurnTex, Panel_LT, Panel_RB);
 	if (ResultTimer >= ResultTimer_Max + 90 * RefreshRate::RefreshRate_Mag) {
 		DrawFunc2D::DrawNumber2D(Mgr.GetTotalTurn(), Vec2(697.0f, 329.0f) + Value, &m_ClearNumberTex.front(), { 1.0f, 1.0f }, 1.0f, 2.0f);
 	}
@@ -986,23 +986,6 @@ void BattleScene::TutorialUpdate()
 				if (m_NowTutorial_Step == 24) {
 					// アルティメットを上げる
 					GetUnitPtr_nama<Player*>(ExistUnits::Instance()->m_pPlayer)->AddUltPoint(1000);
-					// パネルを整える
-					std::array<std::array<int,10>,10> _pos={ 
-						{{0,0,0,1,1,1,1,1,1,0},
-						{0,0,0,0,1,1,1,1,3,0},
-						{0,0,0,0,0,1,3,1,1,0},
-						{3,0,2,0,0,0,1,3,1,0},
-						{0,0,2,2,0,3,1,1,1,1},
-						{0,0,3,3,0,0,3,2,3,1},
-						{0,2,2,2,3,0,2,2,3,0},
-						{0,2,2,3,3,1,1,2,1,0},
-						{0,0,0,0,1,1,1,1,1,0},
-						{0,0,0,0,1,2,2,2,2,0}}};
-					for (int y = 0; y < 10; y++) {
-						for (int x = 0; x < 10; x++) {
-							stage->SetBlock({ x,y }, _pos[y][x]);
-						}
-					}
 				}
 			}
 
@@ -1018,6 +1001,25 @@ void BattleScene::TutorialUpdate()
 				m_NowTutorial_Step == 17) {
 				m_NowTargeting = true;
 			}
+		}
+
+		if (m_NowTutorial_Step == 24 && Tuto_Set < 10) {
+			// パネルを整える
+			std::array<std::array<int, 10>, 10> _pos = {
+				{{0,0,0,1,1,1,1,1,1,0},
+				{0,0,0,0,1,1,1,1,3,0},
+				{0,0,0,0,0,1,3,1,1,0},
+				{3,0,2,0,0,0,1,3,1,0},
+				{0,0,2,2,0,3,1,1,1,1},
+				{0,0,3,3,0,0,3,2,3,1},
+				{0,2,2,2,3,0,2,2,3,0},
+				{0,2,2,3,3,1,1,2,1,0},
+				{0,0,0,0,1,1,1,1,1,0},
+				{0,0,0,0,1,2,2,2,2,0}} };
+				for (int x = 0; x < 10; x++) {
+					stage->SetBlock({ x,Tuto_Set }, _pos[Tuto_Set][x]);
+			}
+			Tuto_Set++;
 		}
 
 		//演出更新
