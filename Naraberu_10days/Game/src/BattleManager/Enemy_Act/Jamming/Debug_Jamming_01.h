@@ -1,6 +1,8 @@
 #pragma once
 #include <memory>
 #include <vector>
+#include <cstdlib>
+#include <ctime>
 
 #include "../E_Ac_Base.h"
 #include "../EnemyActionParametor.h"
@@ -17,6 +19,16 @@ private:
 	UnitBase* m_Initiator;
 	std::vector<std::vector<int>>* m_Mapchip;
 
+	int GetRand_(int Min, int Max)
+	{
+		static bool initialized = false;
+		if (!initialized) {
+			std::srand(static_cast<unsigned int>(std::time(nullptr)));
+			initialized = true;
+		}
+		int result = Min + std::rand() % (Max - Min + 1);
+		return result;
+	}
 public:
 	Debug_Jamming_01() {
 		m_Initiator = nullptr;

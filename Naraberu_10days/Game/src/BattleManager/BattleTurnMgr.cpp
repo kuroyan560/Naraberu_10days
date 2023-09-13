@@ -15,6 +15,7 @@
 
 BattleTurnMgr::BattleTurnMgr() {
 	m_Whole_Turn_Count = 0;
+	m_Total_Turn_Count = 1;
 	TurnNum = 0;
 	TurnFrameTime = 0;
 	NextGameTimer = 0;
@@ -272,8 +273,10 @@ void BattleTurnMgr::AutoTurnEndTimerDraw()
 	// 現在のゲージの長さ
 	float Gauge_Width = Gauge_Max_Width * Now_Rate;
 
-	//ドクンドクン
-	JustInTime(Now_Rate, LT_Gauge, RB_Gauge - Vec2(Gauge_Width, 0.0f));
+	if (!(!AliveEnemys() || !UnitList[0]->IsAlive() || ExistUnits::Instance()->m_StageName == "Tutorial")) {
+		//ドクンドクン
+		JustInTime(Now_Rate, LT_Gauge, RB_Gauge - Vec2(Gauge_Width, 0.0f));
+	}
 
 	if (ExistUnits::Instance()->m_StageName != "Tutorial") {
 		DrawFunc2D_Mask::DrawExtendGraph2D(LT_Gauge + ScreenShakeManager::Instance()->GetOffset(), RB_Gauge + ScreenShakeManager::Instance()->GetOffset(), m_Timer_Gauge_Tex,
@@ -419,7 +422,6 @@ void BattleTurnMgr::SetUnits(std::shared_ptr<UnitBase> Player, std::vector<std::
 		UnitList.emplace_back(en);
 	}
 	m_Whole_Turn_Count = 0;
-	m_Total_Turn_Count++;
 	TurnNum = 0;
 	TurnFrameTime = 0;
 	NextGameTimer = 0;
@@ -586,6 +588,7 @@ void BattleTurnMgr::Update_Battle()
 						UnitList[TurnNum]->StartTurn();
 						if (TurnNum == 0) {
 							m_Moving_Flag = false;
+							m_Total_Turn_Count++;
 							//m_AutoTurnEndTimer = 0;
 							m_PauseTime = 0;
 							m_PauseTimeContainer.clear();

@@ -41,7 +41,7 @@ namespace En_Ac_Param {
 	static std::array<EnemyActionData, size_t(EnemyActionList::ACTION_MAX)> Action_Original_Datas{
 		EnemyActionData("Attack_01", 1.0f, 0.0f, 50),
 		EnemyActionData("Attack_02", 1.5f, 0.0f, 50),
-		EnemyActionData("Heal_01", 0.0f, 10.0f, 50),
+		EnemyActionData("Heal_01", 0.0f, 20.0f, 50),
 		EnemyActionData("Jamming_01", 0.0f, 0.0f, 50)
 	};
 }

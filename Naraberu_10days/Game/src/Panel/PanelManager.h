@@ -215,4 +215,6 @@ private:
 	std::vector<KuroEngine::Vec2<int>> bonusPos;
 	//一つだけの空き格納
 	std::vector<KuroEngine::Vec2<int>> onePos;
+	//ボーナスの合計
+	int totalBounsNum;
 };

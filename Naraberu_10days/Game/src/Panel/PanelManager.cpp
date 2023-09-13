@@ -65,6 +65,8 @@ void PanelManager::Initialize()
 	oneMapchip = massMapchip;
 
 	mapMax = { int(mapchip.size()), int(mapchip[0].size()) };
+
+	totalBounsNum = 0;
 }
 
 void PanelManager::Update(std::vector<std::weak_ptr<SkillResultUI>>arg_enemyDamageUI)
@@ -409,6 +411,7 @@ void PanelManager::BonusCount()
 
 	ExistUnits::Instance()->SetBonusCount(int(bonusData.size()));
 
+	totalBounsNum += int(bonusData.size());
 	nowBonusNum = 0;
 	bonusTimer = 0;
 	isBonusDirection=Bonus::add;

@@ -42,6 +42,7 @@ class BattleScene :
 	// ステージクリア
 	std::shared_ptr<KuroEngine::TextureBuffer> m_ClearTex;
 	std::shared_ptr<KuroEngine::TextureBuffer> m_MaxComboTex;
+	std::shared_ptr<KuroEngine::TextureBuffer> m_TotalBonusTex;
 	std::shared_ptr<KuroEngine::TextureBuffer> m_TotalTurnTex;
 	std::shared_ptr<KuroEngine::TextureBuffer> m_Done_KeyTex_Clear;
 	std::shared_ptr<KuroEngine::TextureBuffer> m_Done_ControllerTex_Clear;
