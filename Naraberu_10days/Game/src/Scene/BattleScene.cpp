@@ -556,9 +556,9 @@ void BattleScene::GameClearDraw()
 	}
 
 	Value = Vec2(0.0f, ResultEasing(((ResultTimer - SubFrame * 3.0f) / ResultTimer_Max))) * 450.0f;
-	DrawFunc2D_Mask::DrawGraph(Vec2(484.0f, 277.0f) + Value, m_TotalBonusTex, Panel_LT, Panel_RB);
+	DrawFunc2D_Mask::DrawGraph(Vec2(484.0f, 296.0f) + Value, m_TotalBonusTex, Panel_LT, Panel_RB);
 	if (ResultTimer >= ResultTimer_Max + 60 * RefreshRate::RefreshRate_Mag) {
-		//DrawFunc2D::DrawNumber2D(ExistUnits::Instance()->, Vec2(697.0f, 257.0f) + Value, &m_ClearNumberTex.front());
+		//DrawFunc2D::DrawNumber2D(ExistUnits::Instance()->, Vec2(697.0f, 296.0f) + Value, &m_ClearNumberTex.front());
 	}
 
 
