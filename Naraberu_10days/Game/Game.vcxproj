@@ -203,6 +203,7 @@ xcopy "$(SolutionDir)dxil.dll" $(TargetDir) /Y</Command>
     <ClCompile Include="src\Effect\Particle\BackPrismParticle.cpp" />
     <ClCompile Include="src\Effect\Particle\GoldPrismParticle.cpp" />
     <ClCompile Include="src\Effect\Particle\HealParticle.cpp" />
+    <ClCompile Include="src\Effect\Particle\PerfectParticle.cpp" />
     <ClCompile Include="src\Effect\Particle\UltParticle.cpp" />
     <ClCompile Include="src\Effect\PerfectBonusEffect.cpp" />
     <ClCompile Include="src\Effect\SetPrismEffect.cpp" />
@@ -341,6 +342,7 @@ xcopy "$(SolutionDir)dxil.dll" $(TargetDir) /Y</Command>
     <ClInclude Include="src\Effect\Particle\BackPrismParticle.h" />
     <ClInclude Include="src\Effect\Particle\GoldPrismParticle.h" />
     <ClInclude Include="src\Effect\Particle\HealParticle.h" />
+    <ClInclude Include="src\Effect\Particle\PerfectParticle.h" />
     <ClInclude Include="src\Effect\Particle\UltParticle.h" />
     <ClInclude Include="src\Effect\PerfectBonusEffect.h" />
     <ClInclude Include="src\Effect\SetPrismEffect.h" />

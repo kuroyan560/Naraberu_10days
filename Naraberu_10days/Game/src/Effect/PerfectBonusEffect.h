@@ -11,6 +11,7 @@ namespace KuroEngine
 	class TextureBuffer;
 };
 class SkillResultUI;
+class ParticleEmitter;
 
 class PerfectBonusEffect
 {
@@ -47,6 +48,7 @@ class PerfectBonusEffect
 	Content m_bonus;
 
 	std::vector<std::weak_ptr<SkillResultUI>>m_enemyDamageUIArray;
+	std::weak_ptr<ParticleEmitter>m_ptEmitter;
 
 	void OnChangeStatus();
 

@@ -32,13 +32,13 @@ class ParticleManager : public KuroEngine::DesignPattern::Singleton<ParticleMana
 		//生きているパーティクル
 		std::forward_list<ParticleBase*>m_aliveParticles;
 
-		bool m_back = false;
+		int m_layer = 0;
 
 		void Emit(KuroEngine::Vec2<float>arg_pos, int arg_emitNum, ParticleCustomParameter* arg_customParams)override;
 
 	public:
-		ParticleArray(int arg_elem, size_t arg_onePtSize, std::shared_ptr<ParticleBase>arg_ptData, bool arg_back)
-			:m_elem(arg_elem), m_ptData(arg_ptData), m_back(arg_back)
+		ParticleArray(int arg_elem, size_t arg_onePtSize, std::shared_ptr<ParticleBase>arg_ptData, int arg_layer)
+			:m_elem(arg_elem), m_ptData(arg_ptData), m_layer(arg_layer)
 		{
 			char* head = (char*)m_ptData.get();
 			for (int i = 0; i < arg_elem; ++i)
@@ -51,21 +51,21 @@ class ParticleManager : public KuroEngine::DesignPattern::Singleton<ParticleMana
 		void Init();
 		void Update();
 		void Draw();
-		const bool& GetIsBack()const { return m_back; }
+		const int& GetLayer()const { return m_layer; }
 	};
 	std::vector<std::shared_ptr<ParticleArray>>m_particles;
 
 public:
 	~ParticleManager();
 	template<class _T>
-	std::shared_ptr<ParticleEmitter>Register(int arg_elem, bool arg_back)
+	std::shared_ptr<ParticleEmitter>Register(int arg_elem, int arg_layer)
 	{
 		if (std::is_base_of<ParticleBase, _T>::value == false)
 		{
 			assert(0);
 		}
 		auto pt = std::make_shared<_T[]>(arg_elem);
-		auto newParticles = std::make_shared<ParticleArray>(arg_elem, sizeof(_T), std::dynamic_pointer_cast<ParticleBase>(pt), arg_back);
+		auto newParticles = std::make_shared<ParticleArray>(arg_elem, sizeof(_T), std::dynamic_pointer_cast<ParticleBase>(pt), arg_layer);
 		m_particles.emplace_back(newParticles);
 
 		return std::dynamic_pointer_cast<ParticleEmitter>(newParticles);
@@ -73,7 +73,6 @@ public:
 
 	void Init();
 	void Update();
-	void FrontDraw();
-	void BackDraw();
+	void Draw(int arg_layer);
 };
 
