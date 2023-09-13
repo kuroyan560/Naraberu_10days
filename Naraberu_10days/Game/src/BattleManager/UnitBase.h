@@ -83,6 +83,10 @@ public:
 
 	// ‰ñ•œ‚·‚é(Š„‡)
 	void Heal_Par(int value) {
+		// €‚ñ‚Å‚½‚ç‰ñ•œ‚µ‚È‚¢
+		if (!IsAlive()) {
+			return;
+		}
 		// HP‚ª‰ñ•œ‚·‚é‰‰o—p
 		m_Before_HP = m_HP;
 		m_HP_Break_Timer = 1;

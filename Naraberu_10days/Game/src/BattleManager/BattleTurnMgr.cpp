@@ -272,8 +272,10 @@ void BattleTurnMgr::AutoTurnEndTimerDraw()
 	// 現在のゲージの長さ
 	float Gauge_Width = Gauge_Max_Width * Now_Rate;
 
-	//ドクンドクン
-	JustInTime(Now_Rate, LT_Gauge, RB_Gauge - Vec2(Gauge_Width, 0.0f));
+	if (!(!AliveEnemys() || !UnitList[0]->IsAlive() || ExistUnits::Instance()->m_StageName == "Tutorial")) {
+		//ドクンドクン
+		JustInTime(Now_Rate, LT_Gauge, RB_Gauge - Vec2(Gauge_Width, 0.0f));
+	}
 
 	if (ExistUnits::Instance()->m_StageName != "Tutorial") {
 		DrawFunc2D_Mask::DrawExtendGraph2D(LT_Gauge + ScreenShakeManager::Instance()->GetOffset(), RB_Gauge + ScreenShakeManager::Instance()->GetOffset(), m_Timer_Gauge_Tex,

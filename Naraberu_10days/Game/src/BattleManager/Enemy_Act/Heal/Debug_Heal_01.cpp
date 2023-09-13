@@ -5,7 +5,7 @@
 #include "ForUser/DrawFunc/2D/DrawFunc2D.h"
 #include "FrameWork/WinApp.h"
 #include "FrameWork/UsersInput.h"
-
+#include "../../ExistUnits.h"
 #include"../../../SoundConfig.h"
 
 void Debug_Heal_01::Action_Start()
@@ -31,8 +31,14 @@ void Debug_Heal_01::Action_Update()
 		if (m_Targets.size() < 1 || m_Targets[0] == nullptr) {
 			exit(1);
 		}
-		// Ž©•ª‚ð‰ñ•œ‚·‚é
+		// ‘S‘Ì‚ð‰ñ•œ‚·‚é
 		m_Initiator->Heal_Par(int(m_Data.m_HealRate));
+		
+		for (auto& tgt : ExistUnits::Instance()->m_Enemys) {
+			tgt->Heal_Par(int(m_Data.m_HealRate));
+			//tgt->Damage(800);
+		}
+		
 		//m_Targets[0]->Damage(int(m_Data.m_HealRate));
 		SoundConfig::Instance()->Play(SoundConfig::SE_HEAL);
 	}

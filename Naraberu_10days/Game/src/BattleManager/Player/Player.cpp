@@ -19,6 +19,9 @@ Player::Player()
 	m_UltimatePoint = 0;
 	m_BeforeUltimatePoint = 0;
 	Max_UltimatePoint = 400;
+	m_Damage_Timer = 0;
+
+	m_Player_Mabataki_Timer = 0;
 
 	using namespace KuroEngine;
 	std::string TexDir = "resource/user/tex/battle_scene/";
@@ -30,6 +33,8 @@ Player::Player()
 	m_Ult_Gauge = D3D12App::Instance()->GenerateTextureBuffer(TexDir + "ult_gauge.png");
 
 	m_CharacterTex = D3D12App::Instance()->GenerateTextureBuffer(TexDir + "character/player_character_normal.png");
+	m_CharacterDamageTex = D3D12App::Instance()->GenerateTextureBuffer(TexDir + "character/player_character_damage.png");
+	m_CharacterMabatakiTex = D3D12App::Instance()->GenerateTextureBuffer(TexDir + "character/player_character_mabadaki.png");
 	D3D12App::Instance()->GenerateTextureBuffer(&m_NumberTex.front(), TexDir + "player_hp_number.png", 11, Vec2(11, 1));
 
 	TurnChangeTimer = 0;
@@ -51,6 +56,7 @@ void Player::OnInitialize()
 {
 	m_IsEndBonus = true;
 	m_DoBonus = false;
+	m_Damage_Timer = 0;
 }
 
 void Player::OnUpdate()
@@ -81,12 +87,26 @@ void Player::OnUpdate()
 void Player::OnAlwaysUpdate()
 {
 	using namespace KuroEngine;
-	if (OperationConfig::Instance()->DebugKeyInput(DIK_B)) {
+	// ダメージ差分用タイマー
+	if (m_Damage_Timer > 0) {
+		m_Damage_Timer--;
+	}
+	// まばたき用タイマー
+	if (m_Player_Mabataki_Timer > 0) {
+		m_Player_Mabataki_Timer--;
+	}
+	else {
+		int Mabataki_ = GetRand(0, 100);
+		if (Mabataki_ == 1) {
+			m_Player_Mabataki_Timer = 500;
+		}
+	}
+	/*if (OperationConfig::Instance()->DebugKeyInput(DIK_B)) {
 		m_HP > 0 ? m_HP-- : 0;
 	}
 	if (OperationConfig::Instance()->DebugKeyInput(DIK_N)) {
 		m_HP < m_MaxHP ? m_HP++ : 0;
-	}
+	}*/
 }
 
 void Player::OnDraw()
@@ -94,8 +114,21 @@ void Player::OnDraw()
 	using namespace KuroEngine;
 
 	//キャラクターの描画
-	DrawFunc2D::DrawGraph(
-		Vec2(39.0f, 66.0f) + ScreenShakeManager::Instance()->GetOffset(), m_CharacterTex);
+	if (m_Player_Mabataki_Timer > 480) {
+		DrawFunc2D::DrawGraph(
+			Vec2(39.0f, 66.0f) + ScreenShakeManager::Instance()->GetOffset(), m_CharacterMabatakiTex);
+	}
+	else {
+		DrawFunc2D::DrawGraph(
+			Vec2(39.0f, 66.0f) + ScreenShakeManager::Instance()->GetOffset(), m_CharacterTex);
+	}
+
+	// ダメージ差分
+	if (m_Damage_Timer > 0) {
+		DrawFunc2D::DrawGraph(
+			Vec2(39.0f, 66.0f) + ScreenShakeManager::Instance()->GetOffset(), m_CharacterDamageTex);
+	}
+
 
 	DrawFunc2D::DrawExtendGraph2D(Vec2(11.0f, 410.0f) + ScreenShakeManager::Instance()->GetOffset(),
 		Vec2(368.0f, 595.0f) + ScreenShakeManager::Instance()->GetOffset(), m_HpFrameTex);
@@ -211,9 +244,12 @@ void Player::Damage(int value)
 		m_HP = 0;
 	}
 
+	// タイマー
+	m_Damage_Timer = int(40.0f * RefreshRate::RefreshRate_Mag);
+
 	// チュートリアルなら死なない
 	if (ExistUnits::Instance()->m_StageName == "Tutorial") {
-		if (m_HP < 0) {
+		if (m_HP <= 0) {
 			m_HP = 1;
 		}
 	}

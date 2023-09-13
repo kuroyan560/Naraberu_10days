@@ -25,7 +25,10 @@ private:
 
 	//キャラ画像
 	std::shared_ptr<KuroEngine::TextureBuffer> m_CharacterTex;
-
+	std::shared_ptr<KuroEngine::TextureBuffer> m_CharacterDamageTex;
+	std::shared_ptr<KuroEngine::TextureBuffer> m_CharacterMabatakiTex;
+	// まばたき用タイマー
+	int m_Player_Mabataki_Timer;
 public:
 	int TurnChangeTimer;
 	int TurnChangeTime_Fin;
@@ -39,7 +42,9 @@ public:
 	void OnDraw()override;
 	void OnImguiDebug()override;
 	void OnFinalize()override;
-
+private:
+	int m_Damage_Timer;
+public:
 	// ダメージを受ける
 	void Damage(int value)override;
 

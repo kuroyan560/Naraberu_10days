@@ -71,6 +71,10 @@ namespace EnemysData {
 		std::vector<std::string> ActionList;
 		// タグ
 		ENEMY_TAG m_Tag;
+		// 回復力
+		int m_HealPower;
+		// ジャミング 行動回数(1000)行動パターン(0001)
+		int m_JammingPattern;
 
 		// 画像
 		std::shared_ptr<KuroEngine::TextureBuffer> m_FrameTex;
@@ -92,11 +96,11 @@ namespace EnemysData {
 
 		std::shared_ptr<KuroEngine::TextureBuffer> m_ReticleTex;
 
-		EnemyData() : m_Name("NONE"), m_HP(1), m_MaxHP(1), m_ATK(1), m_AI_Type(AI_TYPE::DEFAULT), m_Tag(ENEMY_TAG::DEFAULT) {}
+		EnemyData() : m_Name("NONE"), m_HP(1), m_MaxHP(1), m_ATK(1), m_HealPower(0), m_JammingPattern(0), m_AI_Type(AI_TYPE::DEFAULT), m_Tag(ENEMY_TAG::DEFAULT) {}
 
 		template<class... A>
-		EnemyData(std::string Name, ENEMY_TAG Tag, int HP, int ATK, AI_TYPE AI_Type, A... ActPatterns) :
-			m_Name(Name), m_Tag(Tag), m_HP(HP), m_MaxHP(HP), m_ATK(ATK), m_AI_Type(AI_Type) {
+		EnemyData(std::string Name, ENEMY_TAG Tag, int HP, int ATK, int Heal, int Jamming, AI_TYPE AI_Type, A... ActPatterns) :
+			m_Name(Name), m_Tag(Tag), m_HP(HP), m_MaxHP(HP), m_ATK(ATK), m_HealPower(Heal), m_JammingPattern(Jamming), m_AI_Type(AI_Type) {
 
 			for (std::string ActionName : std::initializer_list<std::string>{ ActPatterns... }) {
 				ActionList.emplace_back(ActionName);
@@ -145,7 +149,11 @@ namespace EnemysData {
 			m_IndexTex_3_Target = D3D12App::Instance()->GenerateTextureBuffer(TexDir + "target_enemy_number_3.png");
 
 			// 被ダメ
-			if (m_Name == "Boss_1" || m_Name == "Token") {
+			if (m_Name == "Token") {
+				return;
+			}
+			if (m_Name == "Boss_1") {
+				m_UnitTex_Damage  = D3D12App::Instance()->GenerateTextureBuffer("resource/user/tex/battle_scene/character/boss_character_damage.png");
 				return;
 			}
 			auto First = Moji_kugiri::split(m_Name, '_');
@@ -154,22 +162,22 @@ namespace EnemysData {
 	};
 
 	// ここに敵を追加していく
-	static const EnemyData Token_0 =			EnemyData("Token", ENEMY_TAG::DEFAULT, 0, 0, AI_TYPE::TUTORIAL, "Heal_01");
+	static const EnemyData Token_0 =			EnemyData("Token", ENEMY_TAG::DEFAULT, 0, 0, 0, 0, AI_TYPE::TUTORIAL, "Heal_01");
 
-	static const EnemyData Inu_Tutorial_1 =		EnemyData("inu_blue", ENEMY_TAG::DEFAULT, 16, 5, AI_TYPE::TUTORIAL, "Attack_01", "Attack_01", "Attack_01");
-	static const EnemyData Inu_Tutorial_2 =		EnemyData("inu_blue", ENEMY_TAG::DEFAULT, 32, 5, AI_TYPE::TUTORIAL, "Attack_01", "Attack_01", "Attack_01");
+	static const EnemyData Inu_Tutorial_1 =		EnemyData("inu_blue", ENEMY_TAG::DEFAULT, 16, 5, 0, 0, AI_TYPE::TUTORIAL, "Attack_01", "Attack_01", "Attack_01");
+	static const EnemyData Inu_Tutorial_2 =		EnemyData("inu_blue", ENEMY_TAG::DEFAULT, 32, 5, 0, 0, AI_TYPE::TUTORIAL, "Attack_01", "Attack_01", "Attack_01");
 
-	static const EnemyData Inu_Blue_1 =			EnemyData("inu_blue", ENEMY_TAG::DEFAULT, 48, 15, AI_TYPE::DEFAULT, "Attack_01", "Heal_01", "Heal_01");
-	static const EnemyData Inu_Yellow_1 =		EnemyData("inu_yellow", ENEMY_TAG::DEFAULT, 64, 15, AI_TYPE::DEFAULT, "Attack_01", "Heal_01", "Heal_01");
-	static const EnemyData Inu_Red_1 =			EnemyData("inu_red", ENEMY_TAG::DEFAULT, 96, 15, AI_TYPE::DEFAULT, "Attack_01", "Heal_01", "Heal_01");
+	static const EnemyData Inu_Blue_1 =			EnemyData("inu_blue", ENEMY_TAG::DEFAULT, 48, 15, 20, 0, AI_TYPE::DEFAULT, "Attack_01", "Heal_01", "Heal_01");
+	static const EnemyData Inu_Yellow_1 =		EnemyData("inu_yellow", ENEMY_TAG::DEFAULT, 64, 15, 20, 0, AI_TYPE::DEFAULT, "Attack_01", "Heal_01", "Heal_01");
+	static const EnemyData Inu_Red_1 =			EnemyData("inu_red", ENEMY_TAG::DEFAULT, 96, 15, 20, 0, AI_TYPE::DEFAULT, "Attack_01", "Heal_01", "Heal_01");
 
-	static const EnemyData Lizard_Blue_1 =		EnemyData("lizard_blue", ENEMY_TAG::DEFAULT, 64, 25, AI_TYPE::DEFAULT, "Attack_01", "Attack_01", "Attack_02");
-	static const EnemyData Lizard_Yellow_1 =	EnemyData("lizard_yellow", ENEMY_TAG::DEFAULT, 96, 30, AI_TYPE::DEFAULT, "Attack_01", "Attack_01", "Attack_02");
-	static const EnemyData Lizard_Red_1 =		EnemyData("lizard_red", ENEMY_TAG::DEFAULT, 128, 40, AI_TYPE::DEFAULT, "Attack_01", "Attack_01", "Attack_02");
+	static const EnemyData Lizard_Blue_1 =		EnemyData("lizard_blue", ENEMY_TAG::DEFAULT, 64, 25, 0, 0, AI_TYPE::DEFAULT, "Attack_01", "Attack_01", "Attack_01");
+	static const EnemyData Lizard_Yellow_1 =	EnemyData("lizard_yellow", ENEMY_TAG::DEFAULT, 96, 30, 0, 0, AI_TYPE::DEFAULT, "Attack_01", "Attack_01", "Attack_01");
+	static const EnemyData Lizard_Red_1 =		EnemyData("lizard_red", ENEMY_TAG::DEFAULT, 128, 40, 0, 0, AI_TYPE::DEFAULT, "Attack_01", "Attack_01", "Attack_01");
 
-	static const EnemyData Zako_Blue_1 =		EnemyData("zako_blue", ENEMY_TAG::DEFAULT, 64, 20, AI_TYPE::DEFAULT, "Attack_01", "Jamming_01", "Jamming_01");
-	static const EnemyData Zako_Yellow_1 =		EnemyData("zako_yellow", ENEMY_TAG::DEFAULT, 96, 20, AI_TYPE::DEFAULT, "Attack_01", "Jamming_01", "Jamming_01");
-	static const EnemyData Zako_Red_1 =			EnemyData("zako_red", ENEMY_TAG::DEFAULT, 128, 20, AI_TYPE::DEFAULT, "Attack_01", "Jamming_01", "Jamming_01");
+	static const EnemyData Zako_Blue_1 =		EnemyData("zako_blue", ENEMY_TAG::DEFAULT, 48, 20, 0, 1112, AI_TYPE::DEFAULT, "Attack_01", "Jamming_01", "Jamming_01");
+	static const EnemyData Zako_Yellow_1 =		EnemyData("zako_yellow", ENEMY_TAG::DEFAULT, 64, 20, 0, 1112, AI_TYPE::DEFAULT, "Attack_01", "Jamming_01", "Jamming_01");
+	static const EnemyData Zako_Red_1 =			EnemyData("zako_red", ENEMY_TAG::DEFAULT, 96, 20, 0, 1112, AI_TYPE::DEFAULT, "Attack_01", "Jamming_01", "Jamming_01");
 
-	static const EnemyData DebugEnemy_Boss_1 =	EnemyData("Boss_1", ENEMY_TAG::BOSS, 512, 70, AI_TYPE::DEFAULT, "Attack_01", "Attack_01", "Attack_01");
+	static const EnemyData DebugEnemy_Boss_1 =	EnemyData("Boss_1", ENEMY_TAG::BOSS, 512, 70, 0, 1557, AI_TYPE::DEFAULT, "Jamming_01", "Jamming_01", "Jamming_01");
 }
