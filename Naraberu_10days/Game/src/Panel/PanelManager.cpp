@@ -52,7 +52,8 @@ void PanelManager::Initialize()
 	mapchip.resize(10);
 	for (auto& i : mapchip) {
 		for (int range = 0; range < 10; range++) {
-			i.emplace_back(int(BlockColor::yuka));
+			//i.emplace_back(int(BlockColor::yuka));
+			i.emplace_back(int(BlockColor::red));
 		}
 	}
 
@@ -153,7 +154,8 @@ void PanelManager::Reset()
 	for (auto& y : mapchip) {
 		for (auto& x : y) {
 			if (x == int(BlockColor::eizoku_obstacle)) { continue; }
-			x = int(BlockColor::yuka);
+			//x = int(BlockColor::yuka);
+			x = int(BlockColor::red);
 		}
 	}
 }
