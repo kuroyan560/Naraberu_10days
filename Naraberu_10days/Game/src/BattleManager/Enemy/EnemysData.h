@@ -166,6 +166,7 @@ namespace EnemysData {
 
 	static const EnemyData Inu_Tutorial_1 =		EnemyData("inu_blue", ENEMY_TAG::DEFAULT, 16, 5, 0, 0, AI_TYPE::TUTORIAL, "Attack_01", "Attack_01", "Attack_01");
 	static const EnemyData Inu_Tutorial_2 =		EnemyData("inu_blue", ENEMY_TAG::DEFAULT, 32, 5, 0, 0, AI_TYPE::TUTORIAL, "Attack_01", "Attack_01", "Attack_01");
+	static const EnemyData Inu_Tutorial_3 =		EnemyData("inu_blue", ENEMY_TAG::DEFAULT, 48, 5, 0, 0, AI_TYPE::TUTORIAL, "Attack_01", "Attack_01", "Attack_01");
 
 	static const EnemyData Inu_Blue_1 =			EnemyData("inu_blue", ENEMY_TAG::DEFAULT, 48, 15, 20, 0, AI_TYPE::DEFAULT, "Attack_01", "Heal_01", "Heal_01");
 	static const EnemyData Inu_Yellow_1 =		EnemyData("inu_yellow", ENEMY_TAG::DEFAULT, 64, 15, 20, 0, AI_TYPE::DEFAULT, "Attack_01", "Heal_01", "Heal_01");

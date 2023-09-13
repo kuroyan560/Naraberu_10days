@@ -59,6 +59,8 @@ void BattleScene::OnInitialize()
 
 	m_Already_Selected = false;
 
+	ExistUnits::Instance()->m_MaxBonusCount = 0;
+
 	Pl = std::make_shared<Player>();
 	Pl->OnInitialize();
 	Pl->StartTurn();
@@ -554,16 +556,16 @@ void BattleScene::GameClearDraw()
 	}
 
 	Value = Vec2(0.0f, ResultEasing(((ResultTimer - SubFrame * 3.0f) / ResultTimer_Max))) * 450.0f;
-	DrawFunc2D_Mask::DrawGraph(Vec2(484.0f, 296.0f) + Value, m_TotalBonusTex, Panel_LT, Panel_RB);
+	DrawFunc2D_Mask::DrawGraph(Vec2(473.0f, 293.0f) + Value, m_TotalBonusTex, Panel_LT, Panel_RB);
 	if (ResultTimer >= ResultTimer_Max + 60 * RefreshRate::RefreshRate_Mag) {
-		//DrawFunc2D::DrawNumber2D(ExistUnits::Instance()->, Vec2(697.0f, 296.0f) + Value, &m_ClearNumberTex.front());
+		DrawFunc2D::DrawNumber2D(stage->GetTotalBonus(), Vec2(697.0f, 293.0f) + Value, &m_ClearNumberTex.front());
 	}
 
 
 	Value = Vec2(0.0f, ResultEasing(((ResultTimer - SubFrame * 4.0f) / ResultTimer_Max))) * 450.0f;
-	DrawFunc2D_Mask::DrawGraph(Vec2(489.0f, 328.0f) + Value, m_TotalTurnTex, Panel_LT, Panel_RB);
+	DrawFunc2D_Mask::DrawGraph(Vec2(489.0f, 329.0f) + Value, m_TotalTurnTex, Panel_LT, Panel_RB);
 	if (ResultTimer >= ResultTimer_Max + 90 * RefreshRate::RefreshRate_Mag) {
-		DrawFunc2D::DrawNumber2D(Mgr.GetTotalTurn(), Vec2(697.0f, 328.0f) + Value, &m_ClearNumberTex.front());
+		DrawFunc2D::DrawNumber2D(Mgr.GetTotalTurn(), Vec2(697.0f, 329.0f) + Value, &m_ClearNumberTex.front());
 	}
 
 	Value = Vec2(0.0f, ResultEasing(((ResultTimer - SubFrame * 5.0f) / ResultTimer_Max))) * 450.0f;
@@ -844,6 +846,8 @@ void BattleScene::TutorialUpdate()
 			}
 			else if (m_NowTutorial_Step == 33) {
 				// 実践
+				// アルティメットを上げる
+				GetUnitPtr_nama<Player*>(ExistUnits::Instance()->m_pPlayer)->AddUltPoint(1000);
 				m_Tutorial_Pause[m_NowTutorial_Step] = false;
 				m_Tutorial_Jissen_Text_Timer = 0;
 				m_Tutorial_None_Ctrl_Timer = int(900.0f * RefreshRate::RefreshRate_Mag);
@@ -1263,6 +1267,15 @@ void BattleScene::TutorialDraw()
 		}
 		else {
 			DrawFunc2D::DrawGraph(Vec2(0.0f, WinSize.y - 249.0f) + Vec2(0.0f, Move_Y + TextMoveY), Tutorial_Tex[m_NowTutorial_Step]);
+		}
+
+		if (1) {
+			if (OperationConfig::Instance()->GetLatestDevice() == OperationConfig::Instance()->KEY_BOARD_MOUSE) {
+				DrawFunc2D::DrawGraph(Vec2(1197.0f, 648.0f) + Vec2(0.0f, Move_Y + TextMoveY), m_Done_KeyTex_Clear);
+			}
+			else {
+				DrawFunc2D::DrawGraph(Vec2(1197.0f, 648.0f) + Vec2(0.0f, Move_Y + TextMoveY), m_Done_ControllerTex_Clear);
+			}
 		}
 		//else {
 		//	DrawFunc2D::DrawExtendGraph2D(Vec2(0.0f, WinSize.y - 249.0f) + Vec2(0.0f, Move_Y), Vec2(WinSize.x, WinSize.y) + Vec2(0.0f, Move_Y), Tutorial_Back_Tex);
