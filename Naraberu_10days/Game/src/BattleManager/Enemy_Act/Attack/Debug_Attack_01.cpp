@@ -27,7 +27,7 @@ void Debug_Attack_01::Action_Update()
 	m_Timer++;
 
 	// UŒ‚‚Íˆê‰ñ‚Ì‚İ
-	if (m_Timer == 10) {
+	if (m_Timer == 20) {
 		// 
 		if (m_Targets.size() < 1 || m_Targets[0] == nullptr) {
 			exit(1);

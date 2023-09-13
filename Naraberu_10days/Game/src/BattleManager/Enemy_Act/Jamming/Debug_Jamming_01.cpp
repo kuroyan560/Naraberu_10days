@@ -30,7 +30,7 @@ void Debug_Jamming_01::Action_Update()
 
 	// お邪魔プリズムを設置
 	// 行動は一回のみ
-	if (m_Timer == 10) {
+	if (m_Timer == 20) {
 		// パターンを決定
 		int JamPattern = GetUnitPtr_nama<Enemy*>(m_Initiator)->m_Data.m_JammingPattern;
 		// 
@@ -60,7 +60,7 @@ void Debug_Jamming_01::Action_Update()
 				Vec2<int> SetPos = Vec2<int>(KuroEngine::GetRand(0, 10), KuroEngine::GetRand(0, 10));
 				ExistUnits::Instance()->m_StageManager->SetObstacle(SetPos);
 			}
-			ExistUnits::Instance()->m_pPlayer->Damage(20);
+			ExistUnits::Instance()->m_pPlayer->Damage(15);
 			SoundConfig::Instance()->Play(SoundConfig::SE_DAMAGE);
 		}
 		// 2 * 2 を生成
@@ -139,7 +139,7 @@ void Debug_Jamming_01::Action_Update()
 			ExistUnits::Instance()->m_StageManager->SetObstacle(SetPos + Vec2(1, 0));
 			ExistUnits::Instance()->m_StageManager->SetObstacle(SetPos + Vec2(1, 1));
 		}
-		// 2 * 2 を 2個 生成 ＆ プレイヤーに40ダメージ
+		// 2 * 2 を 2個 生成 ＆ プレイヤーに50ダメージ
 		else if (pattern == 8) {
 			Vec2<int> SetPos = Vec2<int>(KuroEngine::GetRand(0, 9), KuroEngine::GetRand(0, 9));
 			ExistUnits::Instance()->m_StageManager->SetObstacle(SetPos);
@@ -158,7 +158,7 @@ void Debug_Jamming_01::Action_Update()
 			ExistUnits::Instance()->m_StageManager->SetObstacle(SetPos + Vec2(0, 1));
 			ExistUnits::Instance()->m_StageManager->SetObstacle(SetPos + Vec2(1, 0));
 			ExistUnits::Instance()->m_StageManager->SetObstacle(SetPos + Vec2(1, 1));
-			ExistUnits::Instance()->m_pPlayer->Damage(40);
+			ExistUnits::Instance()->m_pPlayer->Damage(50);
 			SoundConfig::Instance()->Play(SoundConfig::SE_DAMAGE);
 		}
 		// 3 * 3 で十字の穴あき を生成 ＆ プレイヤーに70ダメージ
