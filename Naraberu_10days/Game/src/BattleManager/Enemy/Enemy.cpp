@@ -443,6 +443,10 @@ void Enemy::DrawActionIcon()
 {
 	using namespace KuroEngine;
 
+	if (m_HP <= 0) {
+		return;
+	}
+
 	if (m_Data.m_Name == "Boss_1") {
 		if (m_NextAction != -1 && m_NextAction < m_Data.ActionList.size()) {
 			std::string NextActionName = m_Data.ActionList[m_NextAction];
