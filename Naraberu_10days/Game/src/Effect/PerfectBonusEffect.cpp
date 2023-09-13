@@ -4,6 +4,7 @@
 #include"../RefreshRate.h"
 #include"DirectX12/D3D12App.h"
 #include"../UI/SkillResultUI.h"
+#include"../SoundConfig.h"
 
 void PerfectBonusEffect::OnChangeStatus()
 {
@@ -12,6 +13,7 @@ void PerfectBonusEffect::OnChangeStatus()
 		case STATUS_APPEAR_PERFECT:
 			m_perfectImpactShake.Shake(m_interval[STATUS_APPEAR_PERFECT], 2.0f, 2.0f, 32.0f);
 			m_perfect.m_draw = true;
+			SoundConfig::Instance()->Play(SoundConfig::SE_PERFECT, 3);
 			return;
 		case STATUS_APPEAR_BONUS:
 			for (auto& ui : m_enemyDamageUIArray)

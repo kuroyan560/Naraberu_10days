@@ -21,6 +21,7 @@ public:
 
 		SE_HEAL,
 		SE_DAMAGE,	//敵にダメージ
+		SE_PERFECT,
 		SE_PERFECT_BONUS_DAMAGE,
 		SE_CHARGE_ULT,	//ULTのチャージ
 		SE_ACTIVATE_ULT,
