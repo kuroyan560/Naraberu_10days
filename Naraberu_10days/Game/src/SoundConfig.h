@@ -22,6 +22,7 @@ public:
 		SE_HEAL,
 		SE_DAMAGE,	//敵にダメージ
 		SE_CHARGE_ULT,	//ULTのチャージ
+		SE_ACTIVATE_ULT,
 		SE_BONUS_ATTACK_COUNT,
 
 		SE_PUT_OJAMA,

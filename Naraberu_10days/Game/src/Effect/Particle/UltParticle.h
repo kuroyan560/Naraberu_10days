@@ -35,7 +35,7 @@ class UltParticle : public ParticleBase
 	void OnInit()override;
 	void OnUpdate()override;
 	void OnDraw()override;
-	void OnEmit(KuroEngine::Vec2<float>arg_pos)override;
+	void OnEmit(KuroEngine::Vec2<float>arg_pos, ParticleCustomParameter* arg_params)override;
 
 public:
 	static void SetPlayer(std::weak_ptr<Player>arg_player)

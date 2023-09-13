@@ -9,6 +9,9 @@
 
 #include "../../RefreshRate.h"
 
+#include<memory>
+class UltActivateEffect;
+
 class Player :
     public UnitBase
 {
@@ -71,6 +74,9 @@ private:
 	// アルティメットポイントの最大値
 	int Max_UltimatePoint;
 
+	//アルティメットの発動演出
+	std::weak_ptr<UltActivateEffect>m_UltimateActivateEffect;
+
 public:
 	// アルティメットポイントを加算する
 	void AddUltPoint(int Amount) {
@@ -97,6 +103,8 @@ public:
 
 	void EndBonusAttack() { m_IsEndBonus = true; }
 	bool GetEndBonusAttack() { return m_IsEndBonus; }
+
+	void SetUltActivateEffect(std::shared_ptr<UltActivateEffect>Effect) { m_UltimateActivateEffect = Effect; }
 
 	// 描画位置関連
 private:

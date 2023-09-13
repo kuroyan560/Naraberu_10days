@@ -13,6 +13,7 @@
 #include"../../../SoundConfig.h"
 #include "../../../BattleManager/ExistUnits.h"
 #include "../../../Panel/PanelManager.h"
+#include"../../../RefreshRate.h"
 
 void Player_Ultimate_01::Param_Set(int Damage, int Duration)
 {
@@ -40,7 +41,7 @@ void Player_Ultimate_01::Action_Update()
 	m_Timer++;
 
 	// 攻撃は一回のみ
-	if (m_Timer == 1) {
+	if (m_Timer == static_cast<int>(70.0f * RefreshRate::RefreshRate_Mag)) {
 		// 
 		//if (m_Targets.size() < 1 || m_Targets[0] == nullptr) {
 		//	return;
@@ -52,7 +53,6 @@ void Player_Ultimate_01::Action_Update()
 
 		ExistUnits::Instance()->m_StageManager->SetGold();
 
-		SoundConfig::Instance()->Play(SoundConfig::SE_DAMAGE);
 		// アルティメットポイントを加算
 		//GetUnitPtr_nama<Player*>(m_Initiator)->AddUltPoint(1);
 	}

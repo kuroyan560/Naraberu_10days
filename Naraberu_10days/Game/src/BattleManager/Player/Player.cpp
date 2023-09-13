@@ -8,6 +8,10 @@
 
 #include"../../Effect/ScreenShakeManager.h"
 
+#include"../../Effect/UltActivateEffect.h"
+
+#include"../../SoundConfig.h"
+
 Player::Player()
 {
 	// ターン関連変数の初期化
@@ -78,9 +82,19 @@ void Player::OnUpdate()
 	}
 
 	// ウルト発動
+	m_UltimatePoint = Max_UltimatePoint;
 	if (OperationConfig::Instance()->GetOperationInput(OperationConfig::EXECUTE_ULT, OperationConfig::ON_TRIGGER) && GetUltRate() == 1.0f) {
-		SubUltPoint(Max_UltimatePoint);
-		PlayerSkills::PlayerSkillMgr::Instance()->StartAction("Ultimate_01", 0, ExistUnits::Instance()->m_pPlayer);
+		
+		if (ExistUnits::Instance()->m_StageManager->GetOneSpacePosArray().empty())
+		{
+			SoundConfig::Instance()->Play(SoundConfig::SE_CANNOT_SELECT);
+		}
+		else
+		{
+			SubUltPoint(Max_UltimatePoint);
+			m_UltimateActivateEffect.lock()->Start();
+			PlayerSkills::PlayerSkillMgr::Instance()->StartAction("Ultimate_01", 0, ExistUnits::Instance()->m_pPlayer);
+		}
 	}
 }
 

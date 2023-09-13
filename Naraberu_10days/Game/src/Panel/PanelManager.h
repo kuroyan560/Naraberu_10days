@@ -148,6 +148,20 @@ public:
 		mapchip[_mapchip.y][_mapchip.x] = 4;
 	}
 
+
+	/// <summary>
+	/// 指定したマップチップの描画中心座標を求める
+	/// </summary>
+	/// <param name="_mapchip">中心座標を求めたいマップチップ</param>
+	/// <returns>指定したマップチップの描画中心座標</returns>
+	KuroEngine::Vec2<float> GetChipCenterPos(const KuroEngine::Vec2<int>_mapchip);
+
+	/// <summary>
+	/// １つだけの空きのマップチップ配列ゲッタ
+	/// </summary>
+	/// <returns>１つだけの空きのマップチップ配列</returns>
+	const std::vector<KuroEngine::Vec2<int>>& GetOneSpacePosArray() { return onePos; }
+
 	/// <summary>
 	/// 金セット
 	/// </summary>

@@ -111,7 +111,7 @@ void UltParticle::OnDraw()
 		KuroEngine::AlphaBlendMode_Add);
 }
 
-void UltParticle::OnEmit(KuroEngine::Vec2<float> arg_pos)
+void UltParticle::OnEmit(KuroEngine::Vec2<float> arg_pos, ParticleCustomParameter* arg_params)
 {
 	using namespace KuroEngine;
 
