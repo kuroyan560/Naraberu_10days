@@ -188,9 +188,9 @@ namespace EnemysData {
 	static const EnemyData Zako_Yellow_1 =		EnemyData("zako_yellow", ENEMY_TAG::DEFAULT, 64, 20, 0, 111111, AI_TYPE::JAMMING, "Jamming_01", "Jamming_01", "Jamming_01");
 	static const EnemyData Zako_Red_1 =			EnemyData("zako_red", ENEMY_TAG::DEFAULT, 96, 20, 0, 122222, AI_TYPE::JAMMING, "Jamming_01", "Jamming_01", "Jamming_01");
 
-	static const EnemyData DebugEnemy_Boss_1 =	EnemyData("Boss_1", ENEMY_TAG::BOSS, 512, 90, 0, 166889, AI_TYPE::DEFAULT, "Attack_01", "Attack_01", "Attack_01");
-		/*"Jamming_01", "Jamming_01", "Jamming_01", "Jamming_01", "Jamming_01"
+	static const EnemyData DebugEnemy_Boss_1 =	EnemyData("Boss_1", ENEMY_TAG::BOSS, 512, 90, 10, 166889, AI_TYPE::DEFAULT,
+		"Jamming_01", "Jamming_01", "Jamming_01", "Jamming_01", "Jamming_01"
 		, "Jamming_01", "Jamming_01", "Jamming_01", "Jamming_01", "Jamming_01"
 		, "Jamming_01", "Jamming_01", "Jamming_01", "Jamming_01", "Jamming_01"
-		, "Jamming_01", "Jamming_01", "Heal_01", "Heal_01", "Attack_01");*/
+		, "Jamming_01", "Jamming_01", "Heal_01", "Heal_01", "Attack_01");
 }
