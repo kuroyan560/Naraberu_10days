@@ -42,20 +42,14 @@ void Enemy::OnUpdate()
 
 	// 行動の決定
 	if (!m_Now_Action && !m_Already_Act) {
-		// とりあえず最初のアクションに決定しとく
-		m_Action_Num = 0;
-		// 必要な情報をセット(あとで分岐無しでいい設計にする)
-		//m_Actions[m_Action_Num]->Action_Start();
-		if (m_Data.m_AI_Type == EnemysData::AI_TYPE::DEFAULT) {
-			EnemyActions::EnemyActionMgr::Instance()->SetUnits(this, ExistUnits::Instance()->m_pPlayer);
-			EnemyActions::EnemyActionMgr::Instance()->StartAction(m_Data.ActionList[GetRand(0, int(m_Data.ActionList.size()))]);
+		EnemyActions::EnemyActionMgr::Instance()->SetUnits(this, ExistUnits::Instance()->m_pPlayer);
+		// 万が一の為に
+		if (m_NextAction == -1) {
+			m_NextAction = 0;
 		}
-		if (m_Data.m_AI_Type == EnemysData::AI_TYPE::TUTORIAL) {
-			EnemyActions::EnemyActionMgr::Instance()->SetUnits(this, ExistUnits::Instance()->m_pPlayer);
-			EnemyActions::EnemyActionMgr::Instance()->StartAction(m_Data.ActionList[0]);
-		}
-
+		EnemyActions::EnemyActionMgr::Instance()->StartAction(m_Data.ActionList[m_NextAction]);
 		m_Now_Action = true;
+		m_NextAction = -1;
 	}
 	// アクション中であれば
 	if (m_Now_Action) {
@@ -117,6 +111,22 @@ void Enemy::SetEnemyData(EnemysData::EnemyData Data)
 	// HPをセットする
 	m_HP = m_Data.m_HP;
 	m_MaxHP = m_Data.m_MaxHP;
+
+	using namespace KuroEngine;
+	// 次の行動をセット
+	if (m_Data.m_AI_Type == EnemysData::AI_TYPE::DEFAULT) {
+		m_NextAction = GetRand(0, int(m_Data.ActionList.size()));
+	}
+	else if (m_Data.m_AI_Type == EnemysData::AI_TYPE::TUTORIAL) {
+		m_NextAction = 0;
+	}
+	else if (m_Data.m_AI_Type == EnemysData::AI_TYPE::HEAL) {
+		m_NextAction = GetRand(0, int(m_Data.ActionList.size()));
+	}
+	else if (m_Data.m_AI_Type == EnemysData::AI_TYPE::JAMMING) {
+		m_NextAction = GetRand(0, int(m_Data.ActionList.size()));
+	}
+
 	// アクション名からアクションをセットする
 	/*for (auto& data : m_Data.ActionList) {
 		m_Actions.emplace_back(EnemyActions::SetActionOnName(data));
@@ -376,6 +386,9 @@ void Enemy::DrawHpGauge()
 			, Vec2(1258.0f, 580.0f) + ScreenShakeManager::Instance()->GetOffset(), HP_Gauge,
 			Vec2(923.0f, 427.0f) + ScreenShakeManager::Instance()->GetOffset()
 			, Vec2(923.0f + Gauge_Width2, 580.0f) + ScreenShakeManager::Instance()->GetOffset());
+
+		// 行動アイコン描画
+		DrawActionIcon();
 		return;
 	}
 	using namespace KuroEngine;
@@ -421,4 +434,98 @@ void Enemy::DrawHpGauge()
 		, Vec2(1264.0f - D_Move_Width, 197.0f + D_IndexDiff) + ScreenShakeManager::Instance()->GetOffset(), HP_Gauge,
 		Vec2(1132.0f - D_Move_Width, 187.0f + D_IndexDiff) + ScreenShakeManager::Instance()->GetOffset()
 		, Vec2(1132.0f - D_Move_Width + Gauge_Width2, 197.0f + D_IndexDiff) + ScreenShakeManager::Instance()->GetOffset());
+
+	// 行動アイコン描画
+	DrawActionIcon();
+}
+
+void Enemy::DrawActionIcon()
+{
+	using namespace KuroEngine;
+
+	if (m_Data.m_Name == "Boss_1") {
+		if (m_NextAction != -1 && m_NextAction < m_Data.ActionList.size()) {
+			std::string NextActionName = m_Data.ActionList[m_NextAction];
+			if (NextActionName == "Attack_01" || NextActionName == "Attack_02") {
+				DrawFunc2D::DrawExtendGraph2D(
+					Vec2(1094.0f, 542.0f) + ScreenShakeManager::Instance()->GetOffset()
+					, Vec2(1154.0f, 564.0f) + ScreenShakeManager::Instance()->GetOffset(), m_Data.m_AttackIcon);
+			}
+			else if (NextActionName == "Jamming_01" && m_Data.m_Name == "zako_blue") {
+				DrawFunc2D::DrawExtendGraph2D(
+					Vec2(1123.0f, 533.0f) + ScreenShakeManager::Instance()->GetOffset()
+					, Vec2(1154.0f, 564.0f) + ScreenShakeManager::Instance()->GetOffset(), m_Data.m_JammingIcon);
+			}
+			else if (NextActionName == "Jamming_01") {
+				DrawFunc2D::DrawExtendGraph2D(
+					Vec2(1094.0f, 542.0f) + ScreenShakeManager::Instance()->GetOffset()
+					, Vec2(1170.0f, 618.0f) + ScreenShakeManager::Instance()->GetOffset(), m_Data.m_JammingIcon);
+				DrawFunc2D::DrawExtendGraph2D(
+					Vec2(1154.0f, 569.0f) + ScreenShakeManager::Instance()->GetOffset()
+					, Vec2(1203.0f, 618.0f) + ScreenShakeManager::Instance()->GetOffset(), m_Data.m_AttackIcon);
+			}
+			else if (NextActionName == "Heal_01") {
+				DrawFunc2D::DrawExtendGraph2D(
+					Vec2(1123.0f, 533.0f) + ScreenShakeManager::Instance()->GetOffset()
+					, Vec2(1154.0f, 564.0f) + ScreenShakeManager::Instance()->GetOffset(), m_Data.m_HealIcon);
+			}
+		}
+	}
+
+	if (m_NextAction != -1 && m_NextAction < m_Data.ActionList.size()) {
+		std::string NextActionName = m_Data.ActionList[m_NextAction];
+		if (NextActionName == "Attack_01" || NextActionName == "Attack_02") {
+			DrawFunc2D::DrawExtendGraph2D(
+				Vec2(1127.0f - D_Move_Width, 203.0f + D_IndexDiff) + ScreenShakeManager::Instance()->GetOffset()
+				, Vec2(1158.0f - D_Move_Width, 234.0f + D_IndexDiff) + ScreenShakeManager::Instance()->GetOffset(), m_Data.m_AttackIcon);
+		}
+		else if (NextActionName == "Jamming_01" && m_Data.m_Name == "zako_blue") {
+			DrawFunc2D::DrawExtendGraph2D(
+				Vec2(1127.0f - D_Move_Width, 203.0f + D_IndexDiff) + ScreenShakeManager::Instance()->GetOffset()
+				, Vec2(1158.0f - D_Move_Width, 234.0f + D_IndexDiff) + ScreenShakeManager::Instance()->GetOffset(), m_Data.m_JammingIcon);
+		}
+		else if (NextActionName == "Jamming_01") {
+			DrawFunc2D::DrawExtendGraph2D(
+				Vec2(1127.0f - D_Move_Width, 203.0f + D_IndexDiff) + ScreenShakeManager::Instance()->GetOffset()
+				, Vec2(1158.0f - D_Move_Width, 234.0f + D_IndexDiff) + ScreenShakeManager::Instance()->GetOffset(), m_Data.m_JammingIcon);
+			DrawFunc2D::DrawExtendGraph2D(
+				Vec2(1152.0f - D_Move_Width, 213.0f + D_IndexDiff) + ScreenShakeManager::Instance()->GetOffset()
+				, Vec2(1172.0f - D_Move_Width, 234.0f + D_IndexDiff) + ScreenShakeManager::Instance()->GetOffset(), m_Data.m_AttackIcon);
+		}
+		else if (NextActionName == "Heal_01") {
+			DrawFunc2D::DrawExtendGraph2D(
+				Vec2(1127.0f - D_Move_Width, 203.0f + D_IndexDiff) + ScreenShakeManager::Instance()->GetOffset()
+				, Vec2(1158.0f - D_Move_Width, 234.0f + D_IndexDiff) + ScreenShakeManager::Instance()->GetOffset(), m_Data.m_HealIcon);
+		}
+	}
+}
+
+void Enemy::SetAction()
+{
+	using namespace KuroEngine;
+	// 必要な情報をセット(あとで分岐無しでいい設計にする)
+	if (m_Data.m_AI_Type == EnemysData::AI_TYPE::DEFAULT) {
+		m_NextAction = GetRand(0, int(m_Data.ActionList.size()));
+	}
+	else if (m_Data.m_AI_Type == EnemysData::AI_TYPE::TUTORIAL) {
+		m_NextAction = GetRand(0, int(m_Data.ActionList.size()));
+	}
+	else if (m_Data.m_AI_Type == EnemysData::AI_TYPE::HEAL) {
+		// 自分だけの時攻撃
+		if (ExistUnits::Instance()->GetAliveUnit().size() == 1) {
+			m_NextAction = 0;
+		}
+		else {
+			m_NextAction = GetRand(0, int(m_Data.ActionList.size()));
+		}
+	}
+	else if (m_Data.m_AI_Type == EnemysData::AI_TYPE::JAMMING) {
+		// 自分だけの時攻撃
+		if (ExistUnits::Instance()->GetAliveUnit().size() == 1) {
+			m_NextAction = 0;
+		}
+		else {
+			m_NextAction = GetRand(0, int(m_Data.ActionList.size()));
+		}
+	}
 }

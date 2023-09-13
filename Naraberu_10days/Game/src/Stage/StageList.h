@@ -90,6 +90,7 @@ namespace Stages {
 			m_Data.back().AddWave(Lizard_Yellow_1, Zako_Red_1, Lizard_Yellow_1);
 			m_Data.back().AddWave(Zako_Yellow_1, Lizard_Red_1, Zako_Yellow_1);
 			m_Data.emplace_back(StageData("Stage4"));
+			//m_Data.back().AddWave(Token_0, DebugEnemy_Boss_1);
 			m_Data.back().AddWave(Lizard_Red_1, Zako_Red_1, Lizard_Red_1);
 			m_Data.back().AddWave(Inu_Red_1, Inu_Red_1, Lizard_Red_1);
 			m_Data.back().AddWave(Token_0, DebugEnemy_Boss_1);

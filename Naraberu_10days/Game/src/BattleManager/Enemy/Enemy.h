@@ -19,6 +19,9 @@ private:
 	bool m_Now_Action;
 	bool m_Already_Act;
 	int m_Timer;
+	
+	// 次に行う行動
+	int m_NextAction;
 
 	// チュートリアル用
 	int m_Tutorial_Act_Count;
@@ -54,9 +57,13 @@ private:
 	KuroEngine::Vec2<float> m_Left_Top;
 	KuroEngine::Vec2<float> m_Right_Bottom;
 	KuroEngine::Vec2<float> m_Center;
+
+	void DrawActionIcon();
 public:
 	KuroEngine::Vec2<float> Get_Left_Top() { return m_Left_Top; }
 	KuroEngine::Vec2<float> Get_Right_Bottom() { return m_Right_Bottom; }
 	KuroEngine::Vec2<float> Get_Center() { return m_Center; }
+
+	void SetAction();
 };
 

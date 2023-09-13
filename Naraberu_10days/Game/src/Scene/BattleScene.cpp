@@ -367,108 +367,108 @@ void BattleScene::OnDraw()
 	// ウェーブ数描画
 	if (m_NowStage.m_Stage_Wave_Count > 9 && m_NowWave > 9) {
 		if (ExistUnits::Instance()->m_StageName == "Challenge") {
-			DrawFunc2D::DrawGraph(Vec2(829.0f, 19.0f) + ScreenShakeManager::Instance()->GetOffset(), m_ChallengeTex);
+			DrawFunc2D::DrawGraph(Vec2(829.0f - 10.0f, 19.0f) + ScreenShakeManager::Instance()->GetOffset(), m_ChallengeTex);
 		}
 		else {
-			DrawFunc2D::DrawGraph(Vec2(829.0f, 19.0f) + ScreenShakeManager::Instance()->GetOffset(), m_StageTex);
+			DrawFunc2D::DrawGraph(Vec2(829.0f - 10.0f, 19.0f) + ScreenShakeManager::Instance()->GetOffset(), m_StageTex);
 		}
-		DrawFunc2D::DrawGraph(Vec2(1010.0f, 13.0f) + ScreenShakeManager::Instance()->GetOffset(), m_BattleTex);
+		DrawFunc2D::DrawGraph(Vec2(1010.0f - 10.0f, 13.0f) + ScreenShakeManager::Instance()->GetOffset(), m_BattleTex);
 
 		if (ExistUnits::Instance()->m_StageName == "Stage1") {
-			DrawFunc2D::DrawNumber2D(1, Vec2(934.0f, 19.0f) + ScreenShakeManager::Instance()->GetOffset(), &m_NumberTex.front());
-			DrawFunc2D::DrawGraph(Vec2(948.0f, 19.0f) + ScreenShakeManager::Instance()->GetOffset(), m_NumberTex[10]);
-			DrawFunc2D::DrawNumber2D(1, Vec2(970.0f, 19.0f) + ScreenShakeManager::Instance()->GetOffset(), &m_NumberTex.front());
+			DrawFunc2D::DrawNumber2D(1, Vec2(934.0f - 10.0f, 19.0f) + ScreenShakeManager::Instance()->GetOffset(), &m_NumberTex.front());
+			DrawFunc2D::DrawGraph(Vec2(948.0f - 10.0f, 19.0f) + ScreenShakeManager::Instance()->GetOffset(), m_NumberTex[10]);
+			DrawFunc2D::DrawNumber2D(1, Vec2(970.0f - 10.0f, 19.0f) + ScreenShakeManager::Instance()->GetOffset(), &m_NumberTex.front());
 		}
 		else if (ExistUnits::Instance()->m_StageName == "Stage2") {
 			DrawFunc2D::DrawNumber2D(1, Vec2(934.0f, 19.0f) + ScreenShakeManager::Instance()->GetOffset(), &m_NumberTex.front());
-			DrawFunc2D::DrawGraph(Vec2(948.0f, 19.0f) + ScreenShakeManager::Instance()->GetOffset(), m_NumberTex[10]);
-			DrawFunc2D::DrawNumber2D(2, Vec2(970.0f, 19.0f) + ScreenShakeManager::Instance()->GetOffset(), &m_NumberTex.front());
+			DrawFunc2D::DrawGraph(Vec2(948.0f - 10.0f, 19.0f) + ScreenShakeManager::Instance()->GetOffset(), m_NumberTex[10]);
+			DrawFunc2D::DrawNumber2D(2, Vec2(970.0f - 10.0f, 19.0f) + ScreenShakeManager::Instance()->GetOffset(), &m_NumberTex.front());
 		}
 		else if (ExistUnits::Instance()->m_StageName == "Stage3") {
-			DrawFunc2D::DrawNumber2D(1, Vec2(934.0f, 19.0f) + ScreenShakeManager::Instance()->GetOffset(), &m_NumberTex.front());
-			DrawFunc2D::DrawGraph(Vec2(948.0f, 19.0f) + ScreenShakeManager::Instance()->GetOffset(), m_NumberTex[10]);
-			DrawFunc2D::DrawNumber2D(3, Vec2(970.0f, 19.0f) + ScreenShakeManager::Instance()->GetOffset(), &m_NumberTex.front());
+			DrawFunc2D::DrawNumber2D(1, Vec2(934.0f - 10.0f, 19.0f) + ScreenShakeManager::Instance()->GetOffset(), &m_NumberTex.front());
+			DrawFunc2D::DrawGraph(Vec2(948.0f - 10.0f, 19.0f) + ScreenShakeManager::Instance()->GetOffset(), m_NumberTex[10]);
+			DrawFunc2D::DrawNumber2D(3, Vec2(970.0f - 10.0f, 19.0f) + ScreenShakeManager::Instance()->GetOffset(), &m_NumberTex.front());
 		}
 		else if (ExistUnits::Instance()->m_StageName == "Stage4") {
 			DrawFunc2D::DrawNumber2D(1, Vec2(934.0f, 19.0f) + ScreenShakeManager::Instance()->GetOffset(), &m_NumberTex.front());
-			DrawFunc2D::DrawGraph(Vec2(948.0f, 19.0f) + ScreenShakeManager::Instance()->GetOffset(), m_NumberTex[10]);
-			DrawFunc2D::DrawNumber2D(4, Vec2(970.0f, 19.0f) + ScreenShakeManager::Instance()->GetOffset(), &m_NumberTex.front());
+			DrawFunc2D::DrawGraph(Vec2(948.0f - 10.0f, 19.0f) + ScreenShakeManager::Instance()->GetOffset(), m_NumberTex[10]);
+			DrawFunc2D::DrawNumber2D(4, Vec2(970.0f - 10.0f, 19.0f) + ScreenShakeManager::Instance()->GetOffset(), &m_NumberTex.front());
 		}
 
 		DrawFunc2D::DrawNumber2D(m_NowWave > m_NowStage.m_Stage_Wave_Count ? m_NowStage.m_Stage_Wave_Count : m_NowWave,
-			Vec2(1146.0f, 13.0f) + ScreenShakeManager::Instance()->GetOffset(), &m_NumberTex_Battle.front(), { 1.0f, 1.0f }, 1.0f, 2.0f);
-		DrawFunc2D::DrawGraph(Vec2(1198.0f, 13.0f) + ScreenShakeManager::Instance()->GetOffset(), m_NumberTex_Battle[10]);
-		DrawFunc2D::DrawNumber2D(m_NowStage.m_Stage_Wave_Count, Vec2(1223.0f, 13.0f) + ScreenShakeManager::Instance()->GetOffset(), &m_NumberTex_Battle.front(), { 1.0f, 1.0f }, 1.0f, 2.0f);
+			Vec2(1146.0f - 10.0f, 13.0f) + ScreenShakeManager::Instance()->GetOffset(), &m_NumberTex_Battle.front(), { 1.0f, 1.0f }, 1.0f, 2.0f);
+		DrawFunc2D::DrawGraph(Vec2(1198.0f - 10.0f, 13.0f) + ScreenShakeManager::Instance()->GetOffset(), m_NumberTex_Battle[10]);
+		DrawFunc2D::DrawNumber2D(m_NowStage.m_Stage_Wave_Count, Vec2(1223.0f - 10.0f, 13.0f) + ScreenShakeManager::Instance()->GetOffset(), &m_NumberTex_Battle.front(), { 1.0f, 1.0f }, 1.0f, 2.0f);
 	}
 	else if (m_NowStage.m_Stage_Wave_Count > 9) {
 		if (ExistUnits::Instance()->m_StageName == "Challenge") {
-			DrawFunc2D::DrawGraph(Vec2(861.0f, 19.0f) + ScreenShakeManager::Instance()->GetOffset(), m_ChallengeTex);
+			DrawFunc2D::DrawGraph(Vec2(861.0f - 10.0f, 19.0f) + ScreenShakeManager::Instance()->GetOffset(), m_ChallengeTex);
 		}
 		else {
-			DrawFunc2D::DrawGraph(Vec2(861.0f, 19.0f) + ScreenShakeManager::Instance()->GetOffset(), m_StageTex);
+			DrawFunc2D::DrawGraph(Vec2(861.0f - 10.0f, 19.0f) + ScreenShakeManager::Instance()->GetOffset(), m_StageTex);
 		}
-		DrawFunc2D::DrawGraph(Vec2(1042.0f, 13.0f) + ScreenShakeManager::Instance()->GetOffset(), m_BattleTex);
+		DrawFunc2D::DrawGraph(Vec2(1042.0f - 10.0f, 13.0f) + ScreenShakeManager::Instance()->GetOffset(), m_BattleTex);
 
 		if (ExistUnits::Instance()->m_StageName == "Stage1") {
-			DrawFunc2D::DrawNumber2D(1, Vec2(964.0f, 19.0f) + ScreenShakeManager::Instance()->GetOffset(), &m_NumberTex.front());
-			DrawFunc2D::DrawGraph(Vec2(978.0f, 19.0f) + ScreenShakeManager::Instance()->GetOffset(), m_NumberTex[10]);
-			DrawFunc2D::DrawNumber2D(1, Vec2(1000.0f, 19.0f) + ScreenShakeManager::Instance()->GetOffset(), &m_NumberTex.front());
+			DrawFunc2D::DrawNumber2D(1, Vec2(964.0f - 10.0f, 19.0f) + ScreenShakeManager::Instance()->GetOffset(), &m_NumberTex.front());
+			DrawFunc2D::DrawGraph(Vec2(978.0f - 10.0f, 19.0f) + ScreenShakeManager::Instance()->GetOffset(), m_NumberTex[10]);
+			DrawFunc2D::DrawNumber2D(1, Vec2(1000.0f - 10.0f, 19.0f) + ScreenShakeManager::Instance()->GetOffset(), &m_NumberTex.front());
 		}
 		else if (ExistUnits::Instance()->m_StageName == "Stage2") {
-			DrawFunc2D::DrawNumber2D(1, Vec2(964.0f, 19.0f) + ScreenShakeManager::Instance()->GetOffset(), &m_NumberTex.front());
-			DrawFunc2D::DrawGraph(Vec2(978.0f, 19.0f) + ScreenShakeManager::Instance()->GetOffset(), m_NumberTex[10]);
-			DrawFunc2D::DrawNumber2D(2, Vec2(1000.0f, 19.0f) + ScreenShakeManager::Instance()->GetOffset(), &m_NumberTex.front());
+			DrawFunc2D::DrawNumber2D(1, Vec2(964.0f - 10.0f, 19.0f) + ScreenShakeManager::Instance()->GetOffset(), &m_NumberTex.front());
+			DrawFunc2D::DrawGraph(Vec2(978.0f - 10.0f, 19.0f) + ScreenShakeManager::Instance()->GetOffset(), m_NumberTex[10]);
+			DrawFunc2D::DrawNumber2D(2, Vec2(1000.0f - 10.0f, 19.0f) + ScreenShakeManager::Instance()->GetOffset(), &m_NumberTex.front());
 		}
 		else if (ExistUnits::Instance()->m_StageName == "Stage3") {
-			DrawFunc2D::DrawNumber2D(1, Vec2(964.0f, 19.0f) + ScreenShakeManager::Instance()->GetOffset(), &m_NumberTex.front());
-			DrawFunc2D::DrawGraph(Vec2(978.0f, 19.0f) + ScreenShakeManager::Instance()->GetOffset(), m_NumberTex[10]);
-			DrawFunc2D::DrawNumber2D(3, Vec2(1000.0f, 19.0f) + ScreenShakeManager::Instance()->GetOffset(), &m_NumberTex.front());
+			DrawFunc2D::DrawNumber2D(1, Vec2(964.0f - 10.0f, 19.0f) + ScreenShakeManager::Instance()->GetOffset(), &m_NumberTex.front());
+			DrawFunc2D::DrawGraph(Vec2(978.0f - 10.0f, 19.0f) + ScreenShakeManager::Instance()->GetOffset(), m_NumberTex[10]);
+			DrawFunc2D::DrawNumber2D(3, Vec2(1000.0f - 10.0f, 19.0f) + ScreenShakeManager::Instance()->GetOffset(), &m_NumberTex.front());
 		}
 		else if (ExistUnits::Instance()->m_StageName == "Stage4") {
-			DrawFunc2D::DrawNumber2D(1, Vec2(964.0f, 19.0f) + ScreenShakeManager::Instance()->GetOffset(), &m_NumberTex.front());
-			DrawFunc2D::DrawGraph(Vec2(978.0f, 19.0f) + ScreenShakeManager::Instance()->GetOffset(), m_NumberTex[10]);
-			DrawFunc2D::DrawNumber2D(4, Vec2(1000.0f, 19.0f) + ScreenShakeManager::Instance()->GetOffset(), &m_NumberTex.front());
+			DrawFunc2D::DrawNumber2D(1, Vec2(964.0f - 10.0f, 19.0f) + ScreenShakeManager::Instance()->GetOffset(), &m_NumberTex.front());
+			DrawFunc2D::DrawGraph(Vec2(978.0f - 10.0f, 19.0f) + ScreenShakeManager::Instance()->GetOffset(), m_NumberTex[10]);
+			DrawFunc2D::DrawNumber2D(4, Vec2(1000.0f - 10.0f, 19.0f) + ScreenShakeManager::Instance()->GetOffset(), &m_NumberTex.front());
 		}
 
 		DrawFunc2D::DrawNumber2D(m_NowWave > m_NowStage.m_Stage_Wave_Count ? m_NowStage.m_Stage_Wave_Count : m_NowWave,
-			Vec2(1174.0f, 13.0f) + ScreenShakeManager::Instance()->GetOffset(), &m_NumberTex_Battle.front());
-		DrawFunc2D::DrawGraph(Vec2(1198.0f, 13.0f) + ScreenShakeManager::Instance()->GetOffset(), m_NumberTex_Battle[10]);
-		DrawFunc2D::DrawNumber2D(m_NowStage.m_Stage_Wave_Count, Vec2(1223.0f, 13.0f) + ScreenShakeManager::Instance()->GetOffset(), &m_NumberTex_Battle.front(), {1.0f, 1.0f}, 1.0f, 2.0f);
+			Vec2(1174.0f - 10.0f, 13.0f) + ScreenShakeManager::Instance()->GetOffset(), &m_NumberTex_Battle.front());
+		DrawFunc2D::DrawGraph(Vec2(1198.0f - 10.0f, 13.0f) + ScreenShakeManager::Instance()->GetOffset(), m_NumberTex_Battle[10]);
+		DrawFunc2D::DrawNumber2D(m_NowStage.m_Stage_Wave_Count, Vec2(1223.0f - 10.0f, 13.0f) + ScreenShakeManager::Instance()->GetOffset(), &m_NumberTex_Battle.front(), {1.0f, 1.0f}, 1.0f, 2.0f);
 	}
 	else {
 		if (ExistUnits::Instance()->m_StageName == "Challenge") {
-			DrawFunc2D::DrawGraph(Vec2(893.0f, 19.0f) + ScreenShakeManager::Instance()->GetOffset(), m_ChallengeTex);
+			DrawFunc2D::DrawGraph(Vec2(893.0f - 10.0f, 19.0f) + ScreenShakeManager::Instance()->GetOffset(), m_ChallengeTex);
 		}
 		else {
-			DrawFunc2D::DrawGraph(Vec2(893.0f, 19.0f) + ScreenShakeManager::Instance()->GetOffset(), m_StageTex);
+			DrawFunc2D::DrawGraph(Vec2(893.0f - 10.0f, 19.0f) + ScreenShakeManager::Instance()->GetOffset(), m_StageTex);
 		}
-		DrawFunc2D::DrawGraph(Vec2(1074.0f, 13.0f) + ScreenShakeManager::Instance()->GetOffset(), m_BattleTex);
+		DrawFunc2D::DrawGraph(Vec2(1074.0f - 10.0f, 13.0f) + ScreenShakeManager::Instance()->GetOffset(), m_BattleTex);
 
 		if (ExistUnits::Instance()->m_StageName == "Stage1") {
-			DrawFunc2D::DrawNumber2D(1, Vec2(998.0f, 19.0f) + ScreenShakeManager::Instance()->GetOffset(), &m_NumberTex.front());
-			DrawFunc2D::DrawGraph(Vec2(1015.0f, 19.0f) + ScreenShakeManager::Instance()->GetOffset(), m_NumberTex[10]);
-			DrawFunc2D::DrawNumber2D(1, Vec2(1034.0f, 19.0f) + ScreenShakeManager::Instance()->GetOffset(), &m_NumberTex.front());
+			DrawFunc2D::DrawNumber2D(1, Vec2(998.0f - 10.0f, 19.0f) + ScreenShakeManager::Instance()->GetOffset(), &m_NumberTex.front());
+			DrawFunc2D::DrawGraph(Vec2(1015.0f - 10.0f, 19.0f) + ScreenShakeManager::Instance()->GetOffset(), m_NumberTex[10]);
+			DrawFunc2D::DrawNumber2D(1, Vec2(1034.0f - 10.0f, 19.0f) + ScreenShakeManager::Instance()->GetOffset(), &m_NumberTex.front());
 		}
 		else if (ExistUnits::Instance()->m_StageName == "Stage2") {
-			DrawFunc2D::DrawNumber2D(1, Vec2(998.0f, 19.0f) + ScreenShakeManager::Instance()->GetOffset(), &m_NumberTex.front());
-			DrawFunc2D::DrawGraph(Vec2(1015.0f, 19.0f) + ScreenShakeManager::Instance()->GetOffset(), m_NumberTex[10]);
-			DrawFunc2D::DrawNumber2D(2, Vec2(1034.0f, 19.0f) + ScreenShakeManager::Instance()->GetOffset(), &m_NumberTex.front());
+			DrawFunc2D::DrawNumber2D(1, Vec2(998.0f - 10.0f, 19.0f) + ScreenShakeManager::Instance()->GetOffset(), &m_NumberTex.front());
+			DrawFunc2D::DrawGraph(Vec2(1015.0f - 10.0f, 19.0f) + ScreenShakeManager::Instance()->GetOffset(), m_NumberTex[10]);
+			DrawFunc2D::DrawNumber2D(2, Vec2(1034.0f - 10.0f, 19.0f) + ScreenShakeManager::Instance()->GetOffset(), &m_NumberTex.front());
 		}
 		else if (ExistUnits::Instance()->m_StageName == "Stage3") {
-			DrawFunc2D::DrawNumber2D(1, Vec2(998.0f, 19.0f) + ScreenShakeManager::Instance()->GetOffset(), &m_NumberTex.front());
-			DrawFunc2D::DrawGraph(Vec2(1015.0f, 19.0f) + ScreenShakeManager::Instance()->GetOffset(), m_NumberTex[10]);
-			DrawFunc2D::DrawNumber2D(3, Vec2(1034.0f, 19.0f) + ScreenShakeManager::Instance()->GetOffset(), &m_NumberTex.front());
+			DrawFunc2D::DrawNumber2D(1, Vec2(998.0f - 10.0f, 19.0f) + ScreenShakeManager::Instance()->GetOffset(), &m_NumberTex.front());
+			DrawFunc2D::DrawGraph(Vec2(1015.0f - 10.0f, 19.0f) + ScreenShakeManager::Instance()->GetOffset(), m_NumberTex[10]);
+			DrawFunc2D::DrawNumber2D(3, Vec2(1034.0f - 10.0f, 19.0f) + ScreenShakeManager::Instance()->GetOffset(), &m_NumberTex.front());
 		}
 		else if (ExistUnits::Instance()->m_StageName == "Stage4") {
-			DrawFunc2D::DrawNumber2D(1, Vec2(998.0f, 19.0f) + ScreenShakeManager::Instance()->GetOffset(), &m_NumberTex.front());
-			DrawFunc2D::DrawGraph(Vec2(1015.0f, 19.0f) + ScreenShakeManager::Instance()->GetOffset(), m_NumberTex[10]);
-			DrawFunc2D::DrawNumber2D(4, Vec2(1034.0f, 19.0f) + ScreenShakeManager::Instance()->GetOffset(), &m_NumberTex.front());
+			DrawFunc2D::DrawNumber2D(1, Vec2(998.0f - 10.0f, 19.0f) + ScreenShakeManager::Instance()->GetOffset(), &m_NumberTex.front());
+			DrawFunc2D::DrawGraph(Vec2(1015.0f - 10.0f, 19.0f) + ScreenShakeManager::Instance()->GetOffset(), m_NumberTex[10]);
+			DrawFunc2D::DrawNumber2D(4, Vec2(1034.0f - 10.0f, 19.0f) + ScreenShakeManager::Instance()->GetOffset(), &m_NumberTex.front());
 		}
 
 		DrawFunc2D::DrawNumber2D(m_NowWave > m_NowStage.m_Stage_Wave_Count ? m_NowStage.m_Stage_Wave_Count : m_NowWave,
-			Vec2(1206.0f, 13.0f) + ScreenShakeManager::Instance()->GetOffset(), &m_NumberTex_Battle.front());
-		DrawFunc2D::DrawGraph(Vec2(1230.0f, 13.0f) + ScreenShakeManager::Instance()->GetOffset(), m_NumberTex_Battle[10]);
-		DrawFunc2D::DrawNumber2D(m_NowStage.m_Stage_Wave_Count, Vec2(1255.0f, 13.0f) + ScreenShakeManager::Instance()->GetOffset(), &m_NumberTex_Battle.front());
+			Vec2(1206.0f - 10.0f, 13.0f) + ScreenShakeManager::Instance()->GetOffset(), &m_NumberTex_Battle.front());
+		DrawFunc2D::DrawGraph(Vec2(1230.0f - 10.0f, 13.0f) + ScreenShakeManager::Instance()->GetOffset(), m_NumberTex_Battle[10]);
+		DrawFunc2D::DrawNumber2D(m_NowStage.m_Stage_Wave_Count, Vec2(1255.0f - 10.0f, 13.0f) + ScreenShakeManager::Instance()->GetOffset(), &m_NumberTex_Battle.front());
 	}
 
 	// プレイヤーはバトル中以外でも描画する為こっち
@@ -620,7 +620,7 @@ void BattleScene::GameClearDraw()
 	float SubFrame = 6.6f * RefreshRate::RefreshRate_Mag;
 
 	Vec2 Panel_LT = Vec2(391.0f, 67.0f);
-	Vec2 Panel_RB = Vec2(892.0f, 564.0f);
+	Vec2 Panel_RB = Vec2(892.0f, 565.0f);
 
 	// 後ろを暗く
 	float alpha = 0.6f * (ResultTimer / ResultTimer_Max);
@@ -633,13 +633,13 @@ void BattleScene::GameClearDraw()
 	Value = Vec2(0.0f, ResultEasing(((ResultTimer - SubFrame * 2.0f) / ResultTimer_Max))) * 450.0f;
 	DrawFunc2D_Mask::DrawGraph(Vec2(484.0f, 257.0f) + Value, m_MaxComboTex, Panel_LT, Panel_RB);
 	if (ResultTimer >= ResultTimer_Max + 30 * RefreshRate::RefreshRate_Mag) {
-		DrawFunc2D::DrawNumber2D(ExistUnits::Instance()->m_MaxBonusCount, Vec2(697.0f, 257.0f) + Value, &m_ClearNumberTex.front());
+		DrawFunc2D::DrawNumber2D(ExistUnits::Instance()->m_MaxBonusCount, Vec2(697.0f, 257.0f) + Value, &m_ClearNumberTex.front(), { 1.0f, 1.0f }, 1.0f, 2.0f);
 	}
 
 	Value = Vec2(0.0f, ResultEasing(((ResultTimer - SubFrame * 3.0f) / ResultTimer_Max))) * 450.0f;
 	DrawFunc2D_Mask::DrawGraph(Vec2(473.0f, 293.0f) + Value, m_TotalBonusTex, Panel_LT, Panel_RB);
 	if (ResultTimer >= ResultTimer_Max + 60 * RefreshRate::RefreshRate_Mag) {
-		DrawFunc2D::DrawNumber2D(stage->GetTotalBonus(), Vec2(697.0f, 293.0f) + Value, &m_ClearNumberTex.front());
+		DrawFunc2D::DrawNumber2D(stage->GetTotalBonus(), Vec2(697.0f, 293.0f) + Value, &m_ClearNumberTex.front(), { 1.0f, 1.0f }, 1.0f, 2.0f);
 	}
 
 
@@ -647,7 +647,7 @@ void BattleScene::GameClearDraw()
 	int T = int(200.0f * RefreshRate::RefreshRate_Mag);
 	DrawFunc2D_Mask::DrawGraph(Vec2(489.0f, 329.0f) + Value, m_TotalTurnTex, Panel_LT, Panel_RB);
 	if (ResultTimer >= ResultTimer_Max + 90 * RefreshRate::RefreshRate_Mag) {
-		DrawFunc2D::DrawNumber2D(Mgr.GetTotalTurn(), Vec2(697.0f, 329.0f) + Value, &m_ClearNumberTex.front());
+		DrawFunc2D::DrawNumber2D(Mgr.GetTotalTurn(), Vec2(697.0f, 329.0f) + Value, &m_ClearNumberTex.front(), { 1.0f, 1.0f }, 1.0f, 2.0f);
 	}
 
 	Value = Vec2(0.0f, ResultEasing(((ResultTimer - SubFrame * 5.0f) / ResultTimer_Max))) * 450.0f;
@@ -677,7 +677,7 @@ void BattleScene::GameOverDraw()
 	float SubFrame = 6.6f * RefreshRate::RefreshRate_Mag;
 
 	Vec2 Panel_LT = Vec2(391.0f, 67.0f);
-	Vec2 Panel_RB = Vec2(892.0f, 564.0f);
+	Vec2 Panel_RB = Vec2(892.0f, 565.0f);
 
 	// 後ろを暗く
 	float alpha = 0.6f * (ResultTimer / ResultTimer_Max);
@@ -730,7 +730,7 @@ void BattleScene::PauseDraw()
 	float SubFrame = 0.0f * RefreshRate::RefreshRate_Mag;
 
 	Vec2 Panel_LT = Vec2(391.0f, 67.0f);
-	Vec2 Panel_RB = Vec2(892.0f, 564.0f);
+	Vec2 Panel_RB = Vec2(892.0f, 565.0f);
 
 	// 後ろを暗く
 	//float alpha = 0.4f * (ResultTimer / ResultTimer_Max);

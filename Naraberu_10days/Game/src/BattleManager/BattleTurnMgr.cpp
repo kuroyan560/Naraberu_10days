@@ -72,7 +72,9 @@ void BattleTurnMgr::TurnEndButtonUpdate()
 		__int64* nTime2 = (__int64*)&ftime2;
 		// 経過秒
 		//m_ProgressTime = (*nTime2 - *nTime1) / 10000 / 1000;
-		m_ProgressTime = (*nTime2 - *nTime1);
+		if (!(!AliveEnemys() || !UnitList[0]->IsAlive())) {
+			m_ProgressTime = (*nTime2 - *nTime1);
+		}
 
 		// ボーズタイムコンテナ
 		__int64 TotalPuaseTime = 0;
@@ -247,7 +249,9 @@ void BattleTurnMgr::AutoTurnEndTimerDraw()
 		__int64* nTime1 = (__int64*)&ftime1;
 		__int64* nTime2 = (__int64*)&ftime2;
 		// 経過秒
-		m_ProgressTime = (*nTime2 - *nTime1);
+		if (!(!AliveEnemys() || !UnitList[0]->IsAlive())) {
+			m_ProgressTime = (*nTime2 - *nTime1);
+		}
 	}
 
 	using namespace KuroEngine;
@@ -593,6 +597,16 @@ void BattleTurnMgr::Update_Battle()
 							m_PauseTime = 0;
 							m_PauseTimeContainer.clear();
 							GetLocalTime(&StartTime);
+
+							// 敵の行動をセット
+							bool fst = false;
+							for (auto& data : UnitList) {
+								if (fst == false) {
+									fst = true;
+									continue;
+								}
+								GetUnitPtr<Enemy>(data)->SetAction();
+							}
 						}
 						m_Checked_TurnEnd = false;
 						m_Selected_TurnEnd = false;
@@ -635,6 +649,16 @@ void BattleTurnMgr::Update_Battle()
 						m_PauseTime = 0;
 						m_PauseTimeContainer.clear();
 						GetLocalTime(&StartTime);
+
+						// 敵の行動をセット
+						bool fst = false;
+						for (auto& data : UnitList) {
+							if (fst == false) {
+								fst = true;
+								continue;
+							}
+							GetUnitPtr<Enemy>(data)->SetAction();
+						}
 					}
 					m_Checked_TurnEnd = false;
 					m_Selected_TurnEnd = false;
