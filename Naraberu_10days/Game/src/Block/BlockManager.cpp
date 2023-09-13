@@ -65,6 +65,8 @@ void BlockManager::Update(int Step)
 		&& ExistUnits::Instance()->m_NowTurn == 0 && recharge == 0 && Step == 33) {
 		ChangeBlock();
 		passNum--;
+
+		SoundConfig::Instance()->Play(SoundConfig::SE_PASS);
 	}
 
 	if (recharge!=0) {

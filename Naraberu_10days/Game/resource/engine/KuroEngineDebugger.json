@@ -244,6 +244,7 @@
         "done": 1.0,
         "game_over": 1.0,
         "heal": 1.0,
+        "pass": 0.3499999940395355,
         "pause_close": 1.0,
         "pause_open": 1.0,
         "perfect": 1.0,
