@@ -74,11 +74,6 @@ void TitleScene::OnDraw()
 	D3D12App::Instance()->GetBackBuffRenderTarget()
 		});
 
-	// VƒL[‚ð‰Ÿ‚µ‚Ä‚éŠÔ‚¾‚¯“§‚©‚µ‚ð•`‰æ
-	if (UsersInput::Instance()->KeyInput(DIK_V)) {
-		DrawFunc2D::DrawExtendGraph2D(Vec2(0.0f, 0.0f), WinApp::Instance()->GetExpandWinSize(), m_SukasiTex);
-	}
-
 	ParticleManager::Instance()->Draw(0);
 
 	//‘JˆÚˆÚ“®—Ê

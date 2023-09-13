@@ -54,6 +54,14 @@ void Player_Bonus_Attack_01::Action_Update()
 		}
 		if (m_BonusCount > 0) {
 			SoundConfig::Instance()->Play(SoundConfig::SE_DAMAGE);
+			float rate = m_BonusCount / 20.0f;
+			if (rate < 0.6f) {
+				rate = 0.6f;
+			}
+			if (rate > 1.0f) {
+				rate = 1.0f;
+			}
+			KuroEngine::UsersInput::Instance()->ShakeController(0, rate, 35);
 		}
 
 		GetUnitPtr_nama<Player*>(m_Initiator)->EndBonusAttack();

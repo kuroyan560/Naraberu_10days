@@ -40,7 +40,7 @@ private:
 	OperationConfig();
 	
 	//デバッグのキー入力を受け付けるか
-	bool m_isDebug = true;
+	bool m_isDebug = false;
 
 public:
 	enum INPUT_DEVICE { KEY_BOARD_MOUSE, CONTROLLER, NUM }m_nowInputDevice = INPUT_DEVICE::KEY_BOARD_MOUSE;
