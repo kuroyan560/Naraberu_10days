@@ -36,6 +36,8 @@ SoundConfig::SoundConfig() : Debugger("SoundConfig", false)
 		"select",
 		"cancel",
 
+		"pass",
+
 		"heal",
 		"damage",
 		"perfect",
@@ -70,6 +72,8 @@ SoundConfig::SoundConfig() : Debugger("SoundConfig", false)
 	m_seTable[SE_CANCEL].Load(audioApp->LoadAudio(seDir + seFileName[SE_CANCEL] + ".wav"));
 	m_seTable[SE_MOVE_PRISM].Load(audioApp->LoadAudio(seDir + seFileName[SE_MOVE_PRISM] + ".wav"));
 	m_seTable[SE_SELECT_PRISM].Load(audioApp->LoadAudio(seDir + seFileName[SE_SELECT_PRISM] + ".wav"));
+
+	m_seTable[SE_PASS].Load(audioApp->LoadAudio(seDir + seFileName[SE_PASS] + ".wav"));
 
 	m_seTable[SE_HEAL].Load(audioApp->LoadAudio(seDir + seFileName[SE_HEAL] + ".wav"));
 	m_seTable[SE_DAMAGE].Load(audioApp->LoadAudio(seDir + seFileName[SE_DAMAGE] + ".wav"));

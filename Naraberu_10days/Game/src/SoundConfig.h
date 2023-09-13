@@ -19,6 +19,8 @@ public:
 		SE_MOVE_PRISM,	//プリズム設置位置移動
 		SE_SELECT_PRISM,	//プリズム選択
 
+		SE_PASS,//パス
+
 		SE_HEAL,
 		SE_DAMAGE,	//敵にダメージ
 		SE_PERFECT,
