@@ -38,6 +38,7 @@ SoundConfig::SoundConfig() : Debugger("SoundConfig", false)
 
 		"heal",
 		"damage",
+		"perfect_bonus_damage",
 		"ult_charge",
 		"ult",
 		"attack_count",
@@ -71,6 +72,7 @@ SoundConfig::SoundConfig() : Debugger("SoundConfig", false)
 
 	m_seTable[SE_HEAL].Load(audioApp->LoadAudio(seDir + seFileName[SE_HEAL] + ".wav"));
 	m_seTable[SE_DAMAGE].Load(audioApp->LoadAudio(seDir + seFileName[SE_DAMAGE] + ".wav"));
+	m_seTable[SE_PERFECT_BONUS_DAMAGE].Load(audioApp->LoadAudio(seDir + seFileName[SE_PERFECT_BONUS_DAMAGE] + ".wav"));
 	m_seTable[SE_CHARGE_ULT].Load(LoadSoundArray(seDir, seFileName[SE_CHARGE_ULT]), SoundSE::RANDOM);
 	m_seTable[SE_ACTIVATE_ULT].Load(audioApp->LoadAudio(seDir + seFileName[SE_ACTIVATE_ULT] + ".wav"));
 
