@@ -1,6 +1,10 @@
 #include "UltActivateEffect.h"
 #include"ParticleManager.h"
 #include"Particle/GoldPrismParticle.h"
+#include"../BattleManager/ExistUnits.h"
+#include"../Panel/PanelManager.h"
+#include"../RefreshRate.h"
+#include"../SoundConfig.h"
 
 UltActivateEffect::UltActivateEffect()
 {
@@ -9,17 +13,43 @@ UltActivateEffect::UltActivateEffect()
 
 void UltActivateEffect::Init()
 {
+	m_isActive = false;
 }
 
 #include"../OperationConfig.h"
 void UltActivateEffect::Update()
 {
-	static int timer = 0;
-	static float x = 0.0f;
+	if (!m_isActive)return;
 
-	if (OperationConfig::Instance()->DebugKeyInput(DIK_M) && (++timer % 3 == 0))
+	if (m_timer.UpdateTimer(1.0f / RefreshRate::RefreshRate_Mag))m_isActive = false;
+
+	const KuroEngine::Vec2<float>from = { 305.0f,71.0f };
+
+	if (std::fmod(m_timer.GetElaspedTime(), 3.0f) <= FLT_EPSILON)
 	{
-		m_ptEmitter.lock()->Emit({ x,300.0f }, 1);
-		if (1280.0f < (x += 30.0f))x = 0.0f;
+		for (auto& destPos : m_emitDestPosArray)
+		{
+			auto emitPos = KuroEngine::Math::Lerp(from, destPos, m_timer.GetTimeRate());
+			m_ptEmitter.lock()->Emit(emitPos, KuroEngine::GetRand(1, 3));
+		}
 	}
+}
+
+void UltActivateEffect::Start()
+{
+	if (m_isActive)return;
+
+	const float TOTAL_TIME = 70.0f;
+
+	m_isActive = true;
+	m_timer.Reset(TOTAL_TIME);
+
+	m_emitDestPosArray.clear();
+
+	for (auto& oneSpaceChip : ExistUnits::Instance()->m_StageManager->GetOneSpacePosArray())
+	{
+		m_emitDestPosArray.emplace_back(ExistUnits::Instance()->m_StageManager->GetChipCenterPos(oneSpaceChip));
+	}
+
+	SoundConfig::Instance()->Play(SoundConfig::SE_ACTIVATE_ULT);
 }

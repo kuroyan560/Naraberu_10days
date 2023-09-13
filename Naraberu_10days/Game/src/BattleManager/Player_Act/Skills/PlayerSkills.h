@@ -104,7 +104,7 @@ namespace PlayerSkills {
 			}
 			if (Action_Name == "Ultimate_01") {
 				m_List.emplace_front(std::make_shared<Player_Ultimate_01>());
-				GetPtr<Player_Ultimate_01>(m_List.front())->Param_Set(50, int(60.0f * RefreshRate::RefreshRate_Mag));
+				GetPtr<Player_Ultimate_01>(m_List.front())->Param_Set(50, int(71.0f * RefreshRate::RefreshRate_Mag));
 				m_Initiator = Initiator;
 				GetPtr<Player_Ultimate_01>(m_List.front())->Need_Object_Set(Initiator, ExistUnits::Instance()->GetAliveUnit());
 			}

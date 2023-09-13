@@ -248,6 +248,7 @@
         "pause_open": 1.0,
         "put_ojama": 1.0,
         "select": 1.0,
+        "ult": 1.0,
         "ult_charge": 1.0
       }
     }

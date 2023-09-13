@@ -63,6 +63,7 @@ void BattleScene::OnInitialize()
 	Pl->OnInitialize();
 	Pl->StartTurn();
 	UltParticle::SetPlayer(Pl);
+	Pl->SetUltActivateEffect(m_ultActivateEffect);
 
 	// レティクルが動くように
 	Reticle::Instance()->m_CanMove = true;

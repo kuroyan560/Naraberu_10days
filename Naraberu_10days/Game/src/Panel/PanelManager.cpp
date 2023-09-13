@@ -526,6 +526,18 @@ void PanelManager::OneBlock(int* _massNum, KuroEngine::Vec2<int> _mapchip)
 	}
 }
 
+KuroEngine::Vec2<float> PanelManager::GetChipCenterPos(const KuroEngine::Vec2<int> _mapchip)
+{
+	//ç∂è„
+	KuroEngine::Vec2<float> pos = { _mapchip.x * blockSize + difference.x ,_mapchip.y * blockSize + difference.y };
+
+	//íÜêSÇ…Ç∏ÇÁÇ∑
+	pos.x += blockSize * 0.5f;
+	pos.y += blockSize * 0.5f;
+
+	return pos;
+}
+
 void PanelManager::SetGold()
 {
 	for (auto& i : onePos) {
