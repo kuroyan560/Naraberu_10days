@@ -276,11 +276,7 @@ void PanelManager::MassProcess()
 				bonusData.emplace_back(bonusData[count]);
 				bonusPos.emplace_back(center(bonusData[count].pos));
 			}
-			if (massNum > 10) {
-				bonusData.emplace_back(bonusData[count]);
-				bonusPos.emplace_back(center(bonusData[count].pos));
-			}
-			if (massNum > 12) {
+			if (massNum > 11) {
 				bonusData.emplace_back(bonusData[count]);
 				bonusPos.emplace_back(center(bonusData[count].pos));
 			}
@@ -358,7 +354,7 @@ bool PanelManager::LineBlock(int _number, const KuroEngine::Vec2<int> _lineMap, 
 	//‰º
 	if (!_direction) {
 		for (int i = 0; i < mapMax.y; i++) {
-			if (mapchip[i][_lineMap.x] >= int(BlockColor::yuka)) { return false; }
+			if (mapchip[i][_lineMap.x] == int(BlockColor::yuka)) { return false; }
 		}
 
 		bonusData.emplace_back();
@@ -371,7 +367,7 @@ bool PanelManager::LineBlock(int _number, const KuroEngine::Vec2<int> _lineMap, 
 	//‰E
 	else {
 		for (int i = 0; i < mapMax.x; i++) {
-			if (mapchip[_lineMap.y][i] >= int(BlockColor::yuka)) { return false; }
+			if (mapchip[_lineMap.y][i] == int(BlockColor::yuka)) { return false; }
 		}
 
 		bonusData.emplace_back();
