@@ -25,6 +25,7 @@ Enemy::Enemy()
 	m_Tutorial_Act_Count = 0;
 	m_Next_Act_Icon_Timer = 0;
 	m_Next_Act_Icon_Timer_Max = int(40.0f * RefreshRate::RefreshRate_Mag);
+	m_Next_Act_Icon_Timer = m_Next_Act_Icon_Timer_Max;
 }
 
 void Enemy::OnInitialize()
