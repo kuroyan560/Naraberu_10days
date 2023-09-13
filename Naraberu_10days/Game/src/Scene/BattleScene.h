@@ -10,7 +10,6 @@
 #include "../Fade/Fade.h"
 #include"../Effect/SetPrismEffect.h"
 #include "../UI/PlayerDamageUi.h"
-#include "../Effect/UltAttackEffect.h"
 #include "../Effect/UltActivateEffect.h"
 #include "../Effect/BackGroundEffect.h"
 
@@ -74,7 +73,6 @@ class BattleScene :
 	//（移動する）
 	//プレイヤーのダメージ
 	std::shared_ptr<PlayerDamageUi> dame;
-	std::shared_ptr<UltAttackEffect> ultAttackEffect;
 
 	void PlayerTurn();
 

@@ -109,10 +109,6 @@ void BattleScene::OnInitialize()
 	dame.reset(new PlayerDamageUi());
 	dame->Initialize();
 
-	ultAttackEffect.reset(new UltAttackEffect());
-	ultAttackEffect->Initialize();
-
-
 	SoundConfig::Instance()->SwitchBGM(SoundConfig::BGM_MAIN);
 
 	Debugger::Register({
@@ -150,10 +146,8 @@ void BattleScene::OnUpdate()
 	{
 		if (OperationConfig::Instance()->DebugKeyInput(DIK_H)) {
 			dame->SetDamage(123);
-			ultAttackEffect->SetUltAttack();
 		}
 		dame->Update();
-		ultAttackEffect->Update();
 	}
 
 	if (OperationConfig::Instance()->DebugKeyInput(DIK_L) && mmmm % 3 == 0)
@@ -426,6 +420,7 @@ void BattleScene::OnDraw()
 	ParticleManager::Instance()->FrontDraw();
 	m_setPrismEffect->Draw();
 	for (auto& ui : m_enemyDamageUI)ui->Draw();
+	m_ultActivateEffect->Draw();
 
 	// ステージ終了(敗北)
 	if (Mgr.GetDefeat()) {
@@ -437,7 +432,6 @@ void BattleScene::OnDraw()
 	}
 
 	dame->Draw();
-	ultAttackEffect->Draw();
 
 	// チュートリアル
 	if (ExistUnits::Instance()->m_StageName == "Tutorial") {
