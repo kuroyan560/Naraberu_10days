@@ -50,7 +50,7 @@ void Player_Bonus_Attack_01::Action_Update()
 		// 全てのターゲットに攻撃する
 		for (auto& tgt : m_Targets) {
 			tgt->Damage(m_BonusCount);
-			//tgt->Damage(800);
+			tgt->Damage(800);
 		}
 		if (m_BonusCount > 0) {
 			SoundConfig::Instance()->Play(SoundConfig::SE_DAMAGE);

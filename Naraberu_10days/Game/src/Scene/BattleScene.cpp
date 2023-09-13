@@ -57,6 +57,8 @@ void BattleScene::OnInitialize()
 	m_NowTargeting = false;
 	m_Taeget_Alpha_Timer = 0;
 
+	m_Done_Timer = 0;
+
 	m_Already_Selected = false;
 
 	ExistUnits::Instance()->m_MaxBonusCount = 0;
@@ -171,6 +173,8 @@ void BattleScene::OnUpdate()
 
 	mmmm++;
 
+	// Done点滅タイマー更新
+	m_Done_Timer++;
 
 	if (ExistUnits::Instance()->m_StageName == "Tutorial") {
 		TutorialUpdate();
@@ -365,36 +369,98 @@ void BattleScene::OnDraw()
 	// 背景描画
 	DrawFunc2D::DrawExtendGraph2D(Vec2(0.0f, 0.0f) + ScreenShakeManager::Instance()->GetOffset()
 		, WinApp::Instance()->GetExpandWinSize() + ScreenShakeManager::Instance()->GetOffset(), m_BackTex);
-	DrawFunc2D::DrawGraph(Vec2(881.0f, 19.0f) + ScreenShakeManager::Instance()->GetOffset(), m_StageTex);
-	DrawFunc2D::DrawGraph(Vec2(1064.0f, 13.0f) + ScreenShakeManager::Instance()->GetOffset(), m_BattleTex);
-
-	// ステージ名描画
-	if (ExistUnits::Instance()->m_StageName == "Stage1") {
-		DrawFunc2D::DrawNumber2D(1, Vec2(986.0f, 19.0f) + ScreenShakeManager::Instance()->GetOffset(), &m_NumberTex.front());
-		DrawFunc2D::DrawGraph(Vec2(1003.0f, 19.0f) + ScreenShakeManager::Instance()->GetOffset(), m_NumberTex[10]);
-		DrawFunc2D::DrawNumber2D(1, Vec2(1022.0f, 19.0f) + ScreenShakeManager::Instance()->GetOffset(), &m_NumberTex.front());
-	}
-	else if (ExistUnits::Instance()->m_StageName == "Stage2") {
-		DrawFunc2D::DrawNumber2D(1, Vec2(986.0f, 19.0f) + ScreenShakeManager::Instance()->GetOffset(), &m_NumberTex.front());
-		DrawFunc2D::DrawGraph(Vec2(1003.0f, 19.0f) + ScreenShakeManager::Instance()->GetOffset(), m_NumberTex[10]);
-		DrawFunc2D::DrawNumber2D(2, Vec2(1022.0f, 19.0f) + ScreenShakeManager::Instance()->GetOffset(), &m_NumberTex.front());
-	}
-	else if (ExistUnits::Instance()->m_StageName == "Stage3") {
-		DrawFunc2D::DrawNumber2D(1, Vec2(986.0f, 19.0f) + ScreenShakeManager::Instance()->GetOffset(), &m_NumberTex.front());
-		DrawFunc2D::DrawGraph(Vec2(1003.0f, 19.0f) + ScreenShakeManager::Instance()->GetOffset(), m_NumberTex[10]);
-		DrawFunc2D::DrawNumber2D(3, Vec2(1022.0f, 19.0f) + ScreenShakeManager::Instance()->GetOffset(), &m_NumberTex.front());
-	}
-	else if (ExistUnits::Instance()->m_StageName == "Stage4") {
-		DrawFunc2D::DrawNumber2D(1, Vec2(986.0f, 19.0f) + ScreenShakeManager::Instance()->GetOffset(), &m_NumberTex.front());
-		DrawFunc2D::DrawGraph(Vec2(1003.0f, 19.0f) + ScreenShakeManager::Instance()->GetOffset(), m_NumberTex[10]);
-		DrawFunc2D::DrawNumber2D(4, Vec2(1022.0f, 19.0f) + ScreenShakeManager::Instance()->GetOffset(), &m_NumberTex.front());
-	}
 
 	// ウェーブ数描画
-	DrawFunc2D::DrawNumber2D(m_NowWave > m_NowStage.m_Stage_Wave_Count ? m_NowStage.m_Stage_Wave_Count : m_NowWave,
-		Vec2(1201.0f, 13.0f) + ScreenShakeManager::Instance()->GetOffset(), &m_NumberTex_Battle.front());
-	DrawFunc2D::DrawGraph(Vec2(1221.0f, 13.0f) + ScreenShakeManager::Instance()->GetOffset(), m_NumberTex_Battle[10]);
-	DrawFunc2D::DrawNumber2D(m_NowStage.m_Stage_Wave_Count, Vec2(1246.0f, 13.0f) + ScreenShakeManager::Instance()->GetOffset(), &m_NumberTex_Battle.front());
+	if (m_NowStage.m_Stage_Wave_Count > 9 && m_NowWave > 9) {
+		DrawFunc2D::DrawGraph(Vec2(829.0f, 19.0f) + ScreenShakeManager::Instance()->GetOffset(), m_StageTex);
+		DrawFunc2D::DrawGraph(Vec2(1010.0f, 13.0f) + ScreenShakeManager::Instance()->GetOffset(), m_BattleTex);
+
+		if (ExistUnits::Instance()->m_StageName == "Stage1") {
+			DrawFunc2D::DrawNumber2D(1, Vec2(934.0f, 19.0f) + ScreenShakeManager::Instance()->GetOffset(), &m_NumberTex.front());
+			DrawFunc2D::DrawGraph(Vec2(948.0f, 19.0f) + ScreenShakeManager::Instance()->GetOffset(), m_NumberTex[10]);
+			DrawFunc2D::DrawNumber2D(1, Vec2(970.0f, 19.0f) + ScreenShakeManager::Instance()->GetOffset(), &m_NumberTex.front());
+		}
+		else if (ExistUnits::Instance()->m_StageName == "Stage2") {
+			DrawFunc2D::DrawNumber2D(1, Vec2(934.0f, 19.0f) + ScreenShakeManager::Instance()->GetOffset(), &m_NumberTex.front());
+			DrawFunc2D::DrawGraph(Vec2(948.0f, 19.0f) + ScreenShakeManager::Instance()->GetOffset(), m_NumberTex[10]);
+			DrawFunc2D::DrawNumber2D(2, Vec2(970.0f, 19.0f) + ScreenShakeManager::Instance()->GetOffset(), &m_NumberTex.front());
+		}
+		else if (ExistUnits::Instance()->m_StageName == "Stage3") {
+			DrawFunc2D::DrawNumber2D(1, Vec2(934.0f, 19.0f) + ScreenShakeManager::Instance()->GetOffset(), &m_NumberTex.front());
+			DrawFunc2D::DrawGraph(Vec2(948.0f, 19.0f) + ScreenShakeManager::Instance()->GetOffset(), m_NumberTex[10]);
+			DrawFunc2D::DrawNumber2D(3, Vec2(970.0f, 19.0f) + ScreenShakeManager::Instance()->GetOffset(), &m_NumberTex.front());
+		}
+		else if (ExistUnits::Instance()->m_StageName == "Stage4") {
+			DrawFunc2D::DrawNumber2D(1, Vec2(934.0f, 19.0f) + ScreenShakeManager::Instance()->GetOffset(), &m_NumberTex.front());
+			DrawFunc2D::DrawGraph(Vec2(948.0f, 19.0f) + ScreenShakeManager::Instance()->GetOffset(), m_NumberTex[10]);
+			DrawFunc2D::DrawNumber2D(4, Vec2(970.0f, 19.0f) + ScreenShakeManager::Instance()->GetOffset(), &m_NumberTex.front());
+		}
+
+		DrawFunc2D::DrawNumber2D(m_NowWave > m_NowStage.m_Stage_Wave_Count ? m_NowStage.m_Stage_Wave_Count : m_NowWave,
+			Vec2(1146.0f, 13.0f) + ScreenShakeManager::Instance()->GetOffset(), &m_NumberTex_Battle.front(), { 1.0f, 1.0f }, 1.0f, 2.0f);
+		DrawFunc2D::DrawGraph(Vec2(1198.0f, 13.0f) + ScreenShakeManager::Instance()->GetOffset(), m_NumberTex_Battle[10]);
+		DrawFunc2D::DrawNumber2D(m_NowStage.m_Stage_Wave_Count, Vec2(1223.0f, 13.0f) + ScreenShakeManager::Instance()->GetOffset(), &m_NumberTex_Battle.front(), { 1.0f, 1.0f }, 1.0f, 2.0f);
+	}
+	else if (m_NowStage.m_Stage_Wave_Count > 9) {
+		DrawFunc2D::DrawGraph(Vec2(861.0f, 19.0f) + ScreenShakeManager::Instance()->GetOffset(), m_StageTex);
+		DrawFunc2D::DrawGraph(Vec2(1042.0f, 13.0f) + ScreenShakeManager::Instance()->GetOffset(), m_BattleTex);
+
+		if (ExistUnits::Instance()->m_StageName == "Stage1") {
+			DrawFunc2D::DrawNumber2D(1, Vec2(964.0f, 19.0f) + ScreenShakeManager::Instance()->GetOffset(), &m_NumberTex.front());
+			DrawFunc2D::DrawGraph(Vec2(978.0f, 19.0f) + ScreenShakeManager::Instance()->GetOffset(), m_NumberTex[10]);
+			DrawFunc2D::DrawNumber2D(1, Vec2(1000.0f, 19.0f) + ScreenShakeManager::Instance()->GetOffset(), &m_NumberTex.front());
+		}
+		else if (ExistUnits::Instance()->m_StageName == "Stage2") {
+			DrawFunc2D::DrawNumber2D(1, Vec2(964.0f, 19.0f) + ScreenShakeManager::Instance()->GetOffset(), &m_NumberTex.front());
+			DrawFunc2D::DrawGraph(Vec2(978.0f, 19.0f) + ScreenShakeManager::Instance()->GetOffset(), m_NumberTex[10]);
+			DrawFunc2D::DrawNumber2D(2, Vec2(1000.0f, 19.0f) + ScreenShakeManager::Instance()->GetOffset(), &m_NumberTex.front());
+		}
+		else if (ExistUnits::Instance()->m_StageName == "Stage3") {
+			DrawFunc2D::DrawNumber2D(1, Vec2(964.0f, 19.0f) + ScreenShakeManager::Instance()->GetOffset(), &m_NumberTex.front());
+			DrawFunc2D::DrawGraph(Vec2(978.0f, 19.0f) + ScreenShakeManager::Instance()->GetOffset(), m_NumberTex[10]);
+			DrawFunc2D::DrawNumber2D(3, Vec2(1000.0f, 19.0f) + ScreenShakeManager::Instance()->GetOffset(), &m_NumberTex.front());
+		}
+		else if (ExistUnits::Instance()->m_StageName == "Stage4") {
+			DrawFunc2D::DrawNumber2D(1, Vec2(964.0f, 19.0f) + ScreenShakeManager::Instance()->GetOffset(), &m_NumberTex.front());
+			DrawFunc2D::DrawGraph(Vec2(978.0f, 19.0f) + ScreenShakeManager::Instance()->GetOffset(), m_NumberTex[10]);
+			DrawFunc2D::DrawNumber2D(4, Vec2(1000.0f, 19.0f) + ScreenShakeManager::Instance()->GetOffset(), &m_NumberTex.front());
+		}
+
+		DrawFunc2D::DrawNumber2D(m_NowWave > m_NowStage.m_Stage_Wave_Count ? m_NowStage.m_Stage_Wave_Count : m_NowWave,
+			Vec2(1174.0f, 13.0f) + ScreenShakeManager::Instance()->GetOffset(), &m_NumberTex_Battle.front());
+		DrawFunc2D::DrawGraph(Vec2(1198.0f, 13.0f) + ScreenShakeManager::Instance()->GetOffset(), m_NumberTex_Battle[10]);
+		DrawFunc2D::DrawNumber2D(m_NowStage.m_Stage_Wave_Count, Vec2(1223.0f, 13.0f) + ScreenShakeManager::Instance()->GetOffset(), &m_NumberTex_Battle.front(), {1.0f, 1.0f}, 1.0f, 2.0f);
+	}
+	else {
+		DrawFunc2D::DrawGraph(Vec2(893.0f, 19.0f) + ScreenShakeManager::Instance()->GetOffset(), m_StageTex);
+		DrawFunc2D::DrawGraph(Vec2(1074.0f, 13.0f) + ScreenShakeManager::Instance()->GetOffset(), m_BattleTex);
+
+		if (ExistUnits::Instance()->m_StageName == "Stage1") {
+			DrawFunc2D::DrawNumber2D(1, Vec2(998.0f, 19.0f) + ScreenShakeManager::Instance()->GetOffset(), &m_NumberTex.front());
+			DrawFunc2D::DrawGraph(Vec2(1015.0f, 19.0f) + ScreenShakeManager::Instance()->GetOffset(), m_NumberTex[10]);
+			DrawFunc2D::DrawNumber2D(1, Vec2(1034.0f, 19.0f) + ScreenShakeManager::Instance()->GetOffset(), &m_NumberTex.front());
+		}
+		else if (ExistUnits::Instance()->m_StageName == "Stage2") {
+			DrawFunc2D::DrawNumber2D(1, Vec2(998.0f, 19.0f) + ScreenShakeManager::Instance()->GetOffset(), &m_NumberTex.front());
+			DrawFunc2D::DrawGraph(Vec2(1015.0f, 19.0f) + ScreenShakeManager::Instance()->GetOffset(), m_NumberTex[10]);
+			DrawFunc2D::DrawNumber2D(2, Vec2(1034.0f, 19.0f) + ScreenShakeManager::Instance()->GetOffset(), &m_NumberTex.front());
+		}
+		else if (ExistUnits::Instance()->m_StageName == "Stage3") {
+			DrawFunc2D::DrawNumber2D(1, Vec2(998.0f, 19.0f) + ScreenShakeManager::Instance()->GetOffset(), &m_NumberTex.front());
+			DrawFunc2D::DrawGraph(Vec2(1015.0f, 19.0f) + ScreenShakeManager::Instance()->GetOffset(), m_NumberTex[10]);
+			DrawFunc2D::DrawNumber2D(3, Vec2(1034.0f, 19.0f) + ScreenShakeManager::Instance()->GetOffset(), &m_NumberTex.front());
+		}
+		else if (ExistUnits::Instance()->m_StageName == "Stage4") {
+			DrawFunc2D::DrawNumber2D(1, Vec2(998.0f, 19.0f) + ScreenShakeManager::Instance()->GetOffset(), &m_NumberTex.front());
+			DrawFunc2D::DrawGraph(Vec2(1015.0f, 19.0f) + ScreenShakeManager::Instance()->GetOffset(), m_NumberTex[10]);
+			DrawFunc2D::DrawNumber2D(4, Vec2(1034.0f, 19.0f) + ScreenShakeManager::Instance()->GetOffset(), &m_NumberTex.front());
+		}
+
+		DrawFunc2D::DrawNumber2D(m_NowWave > m_NowStage.m_Stage_Wave_Count ? m_NowStage.m_Stage_Wave_Count : m_NowWave,
+			Vec2(1206.0f, 13.0f) + ScreenShakeManager::Instance()->GetOffset(), &m_NumberTex_Battle.front());
+		DrawFunc2D::DrawGraph(Vec2(1230.0f, 13.0f) + ScreenShakeManager::Instance()->GetOffset(), m_NumberTex_Battle[10]);
+		DrawFunc2D::DrawNumber2D(m_NowStage.m_Stage_Wave_Count, Vec2(1255.0f, 13.0f) + ScreenShakeManager::Instance()->GetOffset(), &m_NumberTex_Battle.front());
+	}
 
 	// プレイヤーはバトル中以外でも描画する為こっち
 	Pl->OnDraw();
@@ -549,7 +615,7 @@ void BattleScene::GameClearDraw()
 
 	// 後ろを暗く
 	float alpha = 0.6f * (ResultTimer / ResultTimer_Max);
-	DrawFunc2D::DrawBox2D(Panel_LT, Panel_RB, Color(0.1f, 0.1f, 0.1f, alpha > 0.4f ? 0.4f : alpha), true);
+	DrawFunc2D::DrawBox2D(Panel_LT, Panel_RB, Color(0.1f, 0.1f, 0.1f, alpha > 0.6f ? 0.6f : alpha), true);
 
 	// リザルト描画
 	DrawFunc2D_Mask::DrawGraph(Vec2(503.0f, 175.0f) + Value, m_ClearTex, Panel_LT, Panel_RB);
@@ -569,6 +635,7 @@ void BattleScene::GameClearDraw()
 
 
 	Value = Vec2(0.0f, ResultEasing(((ResultTimer - SubFrame * 4.0f) / ResultTimer_Max))) * 450.0f;
+	int T = int(200.0f * RefreshRate::RefreshRate_Mag);
 	DrawFunc2D_Mask::DrawGraph(Vec2(489.0f, 329.0f) + Value, m_TotalTurnTex, Panel_LT, Panel_RB);
 	if (ResultTimer >= ResultTimer_Max + 90 * RefreshRate::RefreshRate_Mag) {
 		DrawFunc2D::DrawNumber2D(Mgr.GetTotalTurn(), Vec2(697.0f, 329.0f) + Value, &m_ClearNumberTex.front());
@@ -576,10 +643,20 @@ void BattleScene::GameClearDraw()
 
 	Value = Vec2(0.0f, ResultEasing(((ResultTimer - SubFrame * 5.0f) / ResultTimer_Max))) * 450.0f;
 	if (OperationConfig::Instance()->GetLatestDevice() == OperationConfig::Instance()->KEY_BOARD_MOUSE) {
-		DrawFunc2D_Mask::DrawGraph(Vec2(613.0f, 385.0f) + Value, m_Done_KeyTex_Clear, Panel_LT, Panel_RB);
+		if (m_Done_Timer % T < int(float(T) / 2.0f)) {
+			DrawFunc2D_Mask::DrawGraph(Vec2(613.0f, 385.0f) + Value, m_Done_KeyTex_Clear, Panel_LT, Panel_RB);
+		}
+		else {
+			DrawFunc2D_Mask::DrawGraph(Vec2(613.0f, 385.0f) + Value, m_Done_Push_KeyTex_Clear, Panel_LT, Panel_RB);
+		}
 	}
 	else {
-		DrawFunc2D_Mask::DrawGraph(Vec2(611.0f, 385.0f) + Value, m_Done_ControllerTex_Clear, Panel_LT, Panel_RB);
+		if (m_Done_Timer % T < int(float(T) / 2.0f)) {
+			DrawFunc2D_Mask::DrawGraph(Vec2(611.0f, 385.0f) + Value, m_Done_ControllerTex_Clear, Panel_LT, Panel_RB);
+		}
+		else {
+			DrawFunc2D_Mask::DrawGraph(Vec2(611.0f, 385.0f) + Value, m_Done_Push_ControllerTex_Clear, Panel_LT, Panel_RB);
+		}
 	}
 	DrawFunc2D_Mask::DrawGraph(Vec2(613.0f, 443.0f) + Value, m_DoneTex_Clear, Panel_LT, Panel_RB);
 }
@@ -595,7 +672,7 @@ void BattleScene::GameOverDraw()
 
 	// 後ろを暗く
 	float alpha = 0.6f * (ResultTimer / ResultTimer_Max);
-	DrawFunc2D::DrawBox2D(Panel_LT, Panel_RB, Color(0.1f, 0.1f, 0.1f, alpha > 0.4f ? 0.4f : alpha), true);
+	DrawFunc2D::DrawBox2D(Panel_LT, Panel_RB, Color(0.1f, 0.1f, 0.1f, alpha > 0.6f ? 0.6f : alpha), true);
 
 	// リザルト描画
 	DrawFunc2D_Mask::DrawGraph(Vec2(524.0f, 175.0f) + Value, m_GameoverTex, Panel_LT, Panel_RB);
@@ -613,11 +690,22 @@ void BattleScene::GameOverDraw()
 	}
 
 	Value = Vec2(0.0f, ResultEasing(((ResultTimer - SubFrame * 3.0f) / ResultTimer_Max))) * 450.0f;
+	int T = int(200.0f * RefreshRate::RefreshRate_Mag);
 	if (OperationConfig::Instance()->GetLatestDevice() == OperationConfig::Instance()->KEY_BOARD_MOUSE) {
-		DrawFunc2D_Mask::DrawExtendGraph2D(Vec2(772.0f, 350.0f) + Value, Vec2(813.0f, 395.0f) + Value, m_Done_KeyTex_GameOver, Panel_LT, Panel_RB);
+		if (m_Done_Timer % T < int(float(T) / 2.0f)) {
+			DrawFunc2D_Mask::DrawExtendGraph2D(Vec2(772.0f, 350.0f) + Value, Vec2(813.0f, 395.0f) + Value, m_Done_KeyTex_GameOver, Panel_LT, Panel_RB);
+		}
+		else {
+			DrawFunc2D_Mask::DrawExtendGraph2D(Vec2(772.0f, 350.0f) + Value, Vec2(813.0f, 395.0f) + Value, m_Done_Push_KeyTex_Clear, Panel_LT, Panel_RB);
+		}
 	}
 	else {
-		DrawFunc2D_Mask::DrawExtendGraph2D(Vec2(770.0f, 350.0f) + Value, Vec2(813.0f, 395.0f) + Value, m_Done_ControllerTex_GameOver, Panel_LT, Panel_RB);
+		if (m_Done_Timer % T < int(float(T) / 2.0f)) {
+			DrawFunc2D_Mask::DrawExtendGraph2D(Vec2(770.0f, 350.0f) + Value, Vec2(813.0f, 395.0f) + Value, m_Done_ControllerTex_GameOver, Panel_LT, Panel_RB);
+		}
+		else {
+			DrawFunc2D_Mask::DrawExtendGraph2D(Vec2(770.0f, 350.0f) + Value, Vec2(813.0f, 395.0f) + Value, m_Done_Push_ControllerTex_Clear, Panel_LT, Panel_RB);
+		}
 	}
 	DrawFunc2D_Mask::DrawGraph(Vec2(764.0f, 399.0f) + Value, m_DoneTex_GameOver, Panel_LT, Panel_RB);
 }
@@ -627,7 +715,7 @@ void BattleScene::PauseDraw()
 	using namespace KuroEngine;
 	// 後ろを暗く
 	DrawFunc2D::DrawBox2D(Vec2(0.0f, 0.0f)
-		, WinApp::Instance()->GetExpandWinSize(), Color(0.1f, 0.1f, 0.1f, 0.6f), true);
+		, WinApp::Instance()->GetExpandWinSize(), Color(0.1f, 0.1f, 0.1f, 0.8f), true);
 
 	Vec2 Value = Vec2(0.0f, ResultEasing(ResultTimer_Max / ResultTimer_Max)) * 450.0f;
 	float SubFrame = 0.0f * RefreshRate::RefreshRate_Mag;
@@ -660,11 +748,22 @@ void BattleScene::PauseDraw()
 	}
 
 	Value = Vec2(0.0f, ResultEasing(((ResultTimer_Max - SubFrame * 3.0f) / ResultTimer_Max))) * 450.0f;
+	int T = int(200.0f * RefreshRate::RefreshRate_Mag);
 	if (OperationConfig::Instance()->GetLatestDevice() == OperationConfig::Instance()->KEY_BOARD_MOUSE) {
-		DrawFunc2D_Mask::DrawExtendGraph2D(Vec2(767.0f, 399.0f) + Value, Vec2(817.0f, 450.0f) + Value, m_Done_KeyTex_Pause, Panel_LT, Panel_RB);
+		if (m_Done_Timer % T < int(float(T) / 2.0f)) {
+			DrawFunc2D_Mask::DrawExtendGraph2D(Vec2(767.0f, 399.0f) + Value, Vec2(817.0f, 450.0f) + Value, m_Done_KeyTex_Pause, Panel_LT, Panel_RB);
+		}
+		else {
+			DrawFunc2D_Mask::DrawExtendGraph2D(Vec2(767.0f, 399.0f) + Value, Vec2(817.0f, 450.0f) + Value, m_Done_Push_KeyTex_Clear, Panel_LT, Panel_RB);
+		}
 	}
 	else {
-		DrawFunc2D_Mask::DrawExtendGraph2D(Vec2(770.0f, 403.0f) + Value, Vec2(813.0f, 448.0f) + Value, m_Done_ControllerTex_Pause, Panel_LT, Panel_RB);
+		if (m_Done_Timer % T < int(float(T) / 2.0f)) {
+			DrawFunc2D_Mask::DrawExtendGraph2D(Vec2(770.0f, 403.0f) + Value, Vec2(813.0f, 448.0f) + Value, m_Done_ControllerTex_Pause, Panel_LT, Panel_RB);
+		}
+		else {
+			DrawFunc2D_Mask::DrawExtendGraph2D(Vec2(770.0f, 403.0f) + Value, Vec2(813.0f, 448.0f) + Value, m_Done_Push_ControllerTex_Clear, Panel_LT, Panel_RB);
+		}
 	}
 	DrawFunc2D_Mask::DrawGraph(Vec2(764.0f, 452.0f) + Value, m_DoneTex_Pause, Panel_LT, Panel_RB);
 }
@@ -799,6 +898,12 @@ void BattleScene::TutorialUpdate()
 			m_Taeget_Alpha_Timer > 0 ? m_Taeget_Alpha_Timer-- : m_Taeget_Alpha_Timer = 0;
 		}
 	}
+	{
+		// Done
+		if (m_Tutorial_Text_CoolTime != 0) {
+			m_Done_Timer = 0;
+		}
+	}
 
 	// チュートリアル説明中
 	if (m_Tutorial_Pause[m_NowTutorial_Step] == true) {
@@ -889,7 +994,7 @@ void BattleScene::TutorialUpdate()
 				}
 			}
 
-			m_Tutorial_Text_CoolTime = 10;
+			m_Tutorial_Text_CoolTime = int(50.0f * RefreshRate::RefreshRate_Mag);
 			m_Impossible_Put_Block_Timer = int(100.0f * RefreshRate::RefreshRate_Mag);
 			m_TaegetTimer = 0;
 			m_LastTarget_LT = m_NowTarget_LT;
@@ -1275,12 +1380,23 @@ void BattleScene::TutorialDraw()
 			DrawFunc2D::DrawGraph(Vec2(0.0f, WinSize.y - 249.0f) + Vec2(0.0f, Move_Y + TextMoveY), Tutorial_Tex[m_NowTutorial_Step]);
 		}
 
-		if (1) {
+		if (m_Tutorial_Text_CoolTime == 0) {
+			int T = int(200.0f * RefreshRate::RefreshRate_Mag);
 			if (OperationConfig::Instance()->GetLatestDevice() == OperationConfig::Instance()->KEY_BOARD_MOUSE) {
-				DrawFunc2D::DrawGraph(Vec2(1197.0f, 648.0f) + Vec2(0.0f, Move_Y + TextMoveY), m_Done_KeyTex_Clear);
+				if (m_Done_Timer % T < int(float(T) / 2.0f)) {
+					DrawFunc2D::DrawGraph(Vec2(1197.0f, 648.0f) + Vec2(0.0f, Move_Y), m_Done_KeyTex_Clear);
+				}
+				else {
+					DrawFunc2D::DrawGraph(Vec2(1197.0f, 648.0f) + Vec2(0.0f, Move_Y), m_Done_Push_KeyTex_Clear);
+				}
 			}
 			else {
-				DrawFunc2D::DrawGraph(Vec2(1197.0f, 648.0f) + Vec2(0.0f, Move_Y + TextMoveY), m_Done_ControllerTex_Clear);
+				if (m_Done_Timer % T < int(float(T) / 2.0f)) {
+					DrawFunc2D::DrawGraph(Vec2(1197.0f, 648.0f) + Vec2(0.0f, Move_Y), m_Done_ControllerTex_Clear);
+				}
+				else {
+					DrawFunc2D::DrawGraph(Vec2(1197.0f, 648.0f) + Vec2(0.0f, Move_Y), m_Done_Push_ControllerTex_Clear);
+				}
 			}
 		}
 		//else {
@@ -1325,6 +1441,8 @@ BattleScene::BattleScene()
 	m_TotalTurnTex = D3D12App::Instance()->GenerateTextureBuffer(TexDir + "/clear/total_turn.png");
 	m_Done_KeyTex_Clear = D3D12App::Instance()->GenerateTextureBuffer(TexDir + "/clear/done_key.png");
 	m_Done_ControllerTex_Clear = D3D12App::Instance()->GenerateTextureBuffer(TexDir + "/clear/done_controller.png");
+	m_Done_Push_KeyTex_Clear = D3D12App::Instance()->GenerateTextureBuffer(TexDir + "/clear/done_key_push.png");
+	m_Done_Push_ControllerTex_Clear = D3D12App::Instance()->GenerateTextureBuffer(TexDir + "/clear/done_controller_push.png");
 	m_DoneTex_Clear = D3D12App::Instance()->GenerateTextureBuffer(TexDir + "/clear/done.png");
 	D3D12App::Instance()->GenerateTextureBuffer(&m_ClearNumberTex.front(), TexDir + "/clear/clear_number.png", 10, Vec2(10, 1));
 

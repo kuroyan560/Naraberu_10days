@@ -630,6 +630,7 @@ void BattleTurnMgr::Update_Battle()
 					UnitList[TurnNum]->StartTurn();
 					if (TurnNum == 0) {
 						m_Moving_Flag = false;
+						m_Total_Turn_Count++;
 						//m_AutoTurnEndTimer = 0;
 						m_PauseTime = 0;
 						m_PauseTimeContainer.clear();

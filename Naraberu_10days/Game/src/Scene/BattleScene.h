@@ -46,6 +46,8 @@ class BattleScene :
 	std::shared_ptr<KuroEngine::TextureBuffer> m_TotalTurnTex;
 	std::shared_ptr<KuroEngine::TextureBuffer> m_Done_KeyTex_Clear;
 	std::shared_ptr<KuroEngine::TextureBuffer> m_Done_ControllerTex_Clear;
+	std::shared_ptr<KuroEngine::TextureBuffer> m_Done_Push_KeyTex_Clear;
+	std::shared_ptr<KuroEngine::TextureBuffer> m_Done_Push_ControllerTex_Clear;
 	std::shared_ptr<KuroEngine::TextureBuffer> m_DoneTex_Clear;
 	std::array<std::shared_ptr<KuroEngine::TextureBuffer>, 10> m_ClearNumberTex;
 
@@ -182,6 +184,9 @@ class BattleScene :
 	std::array<std::shared_ptr<KuroEngine::TextureBuffer>, 2> m_Operation_Set;
 	std::array<std::shared_ptr<KuroEngine::TextureBuffer>, 2> m_Operation_TurnEnd;
 	std::array<std::shared_ptr<KuroEngine::TextureBuffer>, 2> m_Operation_Ult;
+
+	/// Done点滅用タイマー
+	int m_Done_Timer;
 
 	//プリズム設置演出
 	std::shared_ptr<SetPrismEffect>m_setPrismEffect;
