@@ -18,7 +18,7 @@ void HealParticle::OnDraw()
 		KuroEngine::Color(1.0f, 0.0f, 0.0f, 1.0f - m_timer.GetTimeRate()), true);
 }
 
-void HealParticle::OnEmit(KuroEngine::Vec2<float> arg_pos)
+void HealParticle::OnEmit(KuroEngine::Vec2<float> arg_pos, ParticleCustomParameter* arg_params)
 {
 	m_timer.Reset(60);
 	m_pos = arg_pos;

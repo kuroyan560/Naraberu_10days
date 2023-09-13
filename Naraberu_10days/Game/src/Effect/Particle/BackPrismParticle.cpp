@@ -61,7 +61,7 @@ void BackPrismParticle::OnDraw()
 	KuroEngine::DrawFunc2D_Color::DrawRotaGraph2D(m_pos, m_scale, m_angle, s_triangleTex[m_texNum], col);
 }
 
-void BackPrismParticle::OnEmit(KuroEngine::Vec2<float> arg_pos)
+void BackPrismParticle::OnEmit(KuroEngine::Vec2<float> arg_pos, ParticleCustomParameter* arg_params)
 {
 	m_alpha = 0.0f;
 	m_scale = { KuroEngine::GetRand(0.1f, 0.5f),KuroEngine::GetRand(0.1f, 0.5f) };
