@@ -72,6 +72,8 @@ public:
 	std::array<std::shared_ptr<KuroEngine::TextureBuffer>, 11> numTex;
 	//数字
 	std::shared_ptr<KuroEngine::TextureBuffer> tutorialTex;
+	//クリア
+	std::shared_ptr<KuroEngine::TextureBuffer> clearTex;
 
 	//タイトルからステージセレクトへ移動する
 	bool isStageSelectInMove;
