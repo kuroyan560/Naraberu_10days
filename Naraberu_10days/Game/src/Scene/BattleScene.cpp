@@ -556,19 +556,26 @@ void BattleScene::GameClearDraw()
 	}
 
 	Value = Vec2(0.0f, ResultEasing(((ResultTimer - SubFrame * 3.0f) / ResultTimer_Max))) * 450.0f;
-	DrawFunc2D_Mask::DrawGraph(Vec2(489.0f, 308.0f) + Value, m_TotalTurnTex, Panel_LT, Panel_RB);
+	DrawFunc2D_Mask::DrawGraph(Vec2(484.0f, 277.0f) + Value, m_TotalBonusTex, Panel_LT, Panel_RB);
 	if (ResultTimer >= ResultTimer_Max + 60 * RefreshRate::RefreshRate_Mag) {
-		DrawFunc2D::DrawNumber2D(Mgr.GetTotalTurn(), Vec2(697.0f, 308.0f) + Value, &m_ClearNumberTex.front());
+		//DrawFunc2D::DrawNumber2D(ExistUnits::Instance()->, Vec2(697.0f, 257.0f) + Value, &m_ClearNumberTex.front());
 	}
 
+
 	Value = Vec2(0.0f, ResultEasing(((ResultTimer - SubFrame * 4.0f) / ResultTimer_Max))) * 450.0f;
+	DrawFunc2D_Mask::DrawGraph(Vec2(489.0f, 328.0f) + Value, m_TotalTurnTex, Panel_LT, Panel_RB);
+	if (ResultTimer >= ResultTimer_Max + 90 * RefreshRate::RefreshRate_Mag) {
+		DrawFunc2D::DrawNumber2D(Mgr.GetTotalTurn(), Vec2(697.0f, 328.0f) + Value, &m_ClearNumberTex.front());
+	}
+
+	Value = Vec2(0.0f, ResultEasing(((ResultTimer - SubFrame * 5.0f) / ResultTimer_Max))) * 450.0f;
 	if (OperationConfig::Instance()->GetLatestDevice() == OperationConfig::Instance()->KEY_BOARD_MOUSE) {
-		DrawFunc2D_Mask::DrawGraph(Vec2(613.0f, 365.0f) + Value, m_Done_KeyTex_Clear, Panel_LT, Panel_RB);
+		DrawFunc2D_Mask::DrawGraph(Vec2(613.0f, 385.0f) + Value, m_Done_KeyTex_Clear, Panel_LT, Panel_RB);
 	}
 	else {
-		DrawFunc2D_Mask::DrawGraph(Vec2(611.0f, 365.0f) + Value, m_Done_ControllerTex_Clear, Panel_LT, Panel_RB);
+		DrawFunc2D_Mask::DrawGraph(Vec2(611.0f, 385.0f) + Value, m_Done_ControllerTex_Clear, Panel_LT, Panel_RB);
 	}
-	DrawFunc2D_Mask::DrawGraph(Vec2(613.0f, 423.0f) + Value, m_DoneTex_Clear, Panel_LT, Panel_RB);
+	DrawFunc2D_Mask::DrawGraph(Vec2(613.0f, 443.0f) + Value, m_DoneTex_Clear, Panel_LT, Panel_RB);
 }
 
 void BattleScene::GameOverDraw()
@@ -1044,7 +1051,7 @@ void BattleScene::TutorialUpdate()
 				if (m_Tutorial_Trigger_Timer == 2) {
 					ExistUnits::Instance()->m_CanTurnEnd = false;
 				}
-				if (m_Tutorial_Trigger_Timer == int(1000.0f * RefreshRate::RefreshRate_Mag)) {
+				if (m_Tutorial_Trigger_Timer == int(500.0f * RefreshRate::RefreshRate_Mag)) {
 					m_NowTutorial_Step++;
 					m_Tutorial_Step_Complete_Flag = false;
 					// ターンエンド不可に
@@ -1246,7 +1253,7 @@ void BattleScene::TutorialDraw()
 			TextMoveY = Rate_2 * 50.0f;
 		}
 		if (m_NowTutorial_Step == 18) {
-			TextMoveY = 50 - Rate_2 * 70.0f;
+			TextMoveY = 50 - Rate_2 * 50.0f;
 		}
 
 
@@ -1296,6 +1303,7 @@ BattleScene::BattleScene()
 	// ステージクリア
 	m_ClearTex = D3D12App::Instance()->GenerateTextureBuffer(TexDir + "/clear/stage_clear.png");
 	m_MaxComboTex = D3D12App::Instance()->GenerateTextureBuffer(TexDir + "/clear/max_combo.png");
+	m_TotalBonusTex = D3D12App::Instance()->GenerateTextureBuffer(TexDir + "/clear/total_bonus.png");
 	m_TotalTurnTex = D3D12App::Instance()->GenerateTextureBuffer(TexDir + "/clear/total_turn.png");
 	m_Done_KeyTex_Clear = D3D12App::Instance()->GenerateTextureBuffer(TexDir + "/clear/done_key.png");
 	m_Done_ControllerTex_Clear = D3D12App::Instance()->GenerateTextureBuffer(TexDir + "/clear/done_controller.png");
