@@ -7,9 +7,17 @@
 
 class ParticleEmitter;
 
+namespace KuroEngine
+{
+	class TextureBuffer;
+}
+
 class UltActivateEffect
 {
+	std::shared_ptr<KuroEngine::TextureBuffer>m_goldPrismTex;
+
 	KuroEngine::Timer m_timer;
+	KuroEngine::Timer m_putTimer;
 
 	bool m_isActive = false;
 	std::weak_ptr<ParticleEmitter>m_ptEmitter;

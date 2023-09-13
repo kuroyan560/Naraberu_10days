@@ -43,6 +43,7 @@ SoundConfig::SoundConfig() : Debugger("SoundConfig", false)
 		"attack_count",
 
 		"put_ojama",
+		"put_gold",
 
 		"clear",
 		"game_over",
@@ -76,6 +77,7 @@ SoundConfig::SoundConfig() : Debugger("SoundConfig", false)
 	m_seTable[SE_BONUS_ATTACK_COUNT].Load(LoadSoundArray(seDir + "attack_count/", seFileName[SE_BONUS_ATTACK_COUNT]), SoundSE::IN_ORDER);
 
 	m_seTable[SE_PUT_OJAMA].Load(audioApp->LoadAudio(seDir + seFileName[SE_PUT_OJAMA] + ".wav"));
+	m_seTable[SE_PUT_GOLD].Load(audioApp->LoadAudio(seDir + seFileName[SE_PUT_GOLD] + ".wav"));
 
 	m_seTable[SE_STAGE_CLEAR].Load(audioApp->LoadAudio(seDir + seFileName[SE_STAGE_CLEAR] + ".wav"));
 	m_seTable[SE_GAME_OVER].Load(audioApp->LoadAudio(seDir + seFileName[SE_GAME_OVER] + ".wav"));
