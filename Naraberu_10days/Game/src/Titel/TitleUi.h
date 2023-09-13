@@ -90,7 +90,7 @@ public:
 	//ステージ変化+-判定
 	bool stageUpDown;
 	//ステージ数
-	static const int stage = 5;
+	static const int stage = 6;
 	//セレクト情報
 	std::array<StageTexInfo, stage> stageTexInfo;
 };

@@ -82,7 +82,6 @@ void Player::OnUpdate()
 	}
 
 	// ƒEƒ‹ƒg”­“®
-	m_UltimatePoint = Max_UltimatePoint;
 	if (OperationConfig::Instance()->GetOperationInput(OperationConfig::EXECUTE_ULT, OperationConfig::ON_TRIGGER) && GetUltRate() == 1.0f) {
 		
 		if (ExistUnits::Instance()->m_StageManager->GetOneSpacePosArray().empty())
