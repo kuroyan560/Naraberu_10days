@@ -12,6 +12,7 @@
 #include "../UI/PlayerDamageUi.h"
 #include "../Effect/UltActivateEffect.h"
 #include "../Effect/BackGroundEffect.h"
+#include"../Effect/PerfectBonusEffect.h"
 
 class ParticleEmitter;
 
@@ -186,6 +187,9 @@ class BattleScene :
 
 	//ULT発動演出
 	std::shared_ptr<UltActivateEffect>m_ultActivateEffect;
+
+	//パーフェクト演出
+	std::shared_ptr<PerfectBonusEffect>m_perfectBonusEffect;
 
 	//敵に対する与ダメージUI
 	static const int ENEMY_COUNT_MAX = 3;

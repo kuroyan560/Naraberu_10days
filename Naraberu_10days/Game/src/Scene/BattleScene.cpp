@@ -131,6 +131,7 @@ void BattleScene::OnInitialize()
 	backGroundEffect->Initialize();
 
 	m_ultActivateEffect->Init();
+	m_perfectBonusEffect->Init();
 }
 
 void BattleScene::OnUpdate()
@@ -141,7 +142,7 @@ void BattleScene::OnUpdate()
 
 	if (OperationConfig::Instance()->DebugKeyInputOnTrigger(DIK_J))
 	{
-		ScreenShakeManager::Instance()->Shake();
+		m_perfectBonusEffect->Start();
 	}
 
 	//ダメージ表記（移動する）
@@ -335,6 +336,7 @@ void BattleScene::OnUpdate()
 	ScreenShakeManager::Instance()->Update();
 	backGroundEffect->Update();
 	m_ultActivateEffect->Update();
+	m_perfectBonusEffect->Update();
 }
 
 void BattleScene::OnDraw()
@@ -421,8 +423,8 @@ void BattleScene::OnDraw()
 	//演出
 	ParticleManager::Instance()->FrontDraw();
 	m_setPrismEffect->Draw();
-	for (auto& ui : m_enemyDamageUI)ui->Draw();
 	m_ultActivateEffect->Draw();
+	for (auto& ui : m_enemyDamageUI)ui->Draw();
 
 	// ステージ終了(敗北)
 	if (Mgr.GetDefeat()) {
@@ -434,6 +436,8 @@ void BattleScene::OnDraw()
 	}
 
 	dame->Draw();
+
+	m_perfectBonusEffect->Draw();
 
 	// チュートリアル
 	if (ExistUnits::Instance()->m_StageName == "Tutorial") {
@@ -1209,6 +1213,7 @@ void BattleScene::TutorialUpdate()
 	ParticleManager::Instance()->Update();
 	ScreenShakeManager::Instance()->Update();
 	m_ultActivateEffect->Update();
+	m_perfectBonusEffect->Update();
 }
 
 void BattleScene::TutorialDraw()
@@ -1384,6 +1389,7 @@ BattleScene::BattleScene()
 
 	m_setPrismEffect = std::make_shared<SetPrismEffect>(enemyDamageUiWeakPtr);
 	m_ultActivateEffect = std::make_shared<UltActivateEffect>();
+	m_perfectBonusEffect = std::make_shared<PerfectBonusEffect>();
 
 	m_healPtEmitter = ParticleManager::Instance()->Register<HealParticle>(1000, false);
 	m_backPrismPtEmitter = ParticleManager::Instance()->Register<BackPrismParticle>(1000, true);
