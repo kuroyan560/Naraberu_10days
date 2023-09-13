@@ -73,6 +73,8 @@ public:
 	//数字
 	std::shared_ptr<KuroEngine::TextureBuffer> tutorialTex;
 	//クリア
+	std::shared_ptr<KuroEngine::TextureBuffer> challengeTex;
+	//クリア
 	std::shared_ptr<KuroEngine::TextureBuffer> clearTex;
 
 	//タイトルからステージセレクトへ移動する
