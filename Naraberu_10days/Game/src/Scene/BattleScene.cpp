@@ -925,6 +925,7 @@ void BattleScene::TutorialUpdate()
 		if (OperationConfig::Instance()->GetOperationInput(OperationConfig::OPERATION_TYPE::DONE, OperationConfig::INPUT_PATTERN::ON_TRIGGER) &&
 			m_Tutorial_Jissen_Text_Timer == 0 && m_Tutorial_Text_CoolTime == 0) {
 			m_NowTutorial_Step++;
+			SoundConfig::Instance()->Play(SoundConfig::SE_DONE);
 
 			if (m_NowTutorial_Step == 7) {
 				// 実践
