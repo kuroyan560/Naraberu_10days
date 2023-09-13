@@ -57,6 +57,8 @@ public:
 private: // ”íƒ_ƒ•`‰æ—p
 	float D_Move_Width;
 	float D_IndexDiff;
+	int D_NowTarget;
+	int D_Index;
 public:
 	void Draw_Damage();
 	void DrawHpGauge();

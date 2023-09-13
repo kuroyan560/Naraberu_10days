@@ -93,7 +93,7 @@ namespace PlayerSkills {
 			}
 			if (Action_Name == "Bonus_01") {
 				m_List.emplace_front(std::make_shared<Player_Bonus_Attack_01>());
-				GetPtr<Player_Bonus_Attack_01>(m_List.front())->Param_Set(3, int(60.0f * RefreshRate::RefreshRate_Mag));
+				GetPtr<Player_Bonus_Attack_01>(m_List.front())->Param_Set(Block_Count, int(60.0f * RefreshRate::RefreshRate_Mag));
 				m_Initiator = Initiator;
 				std::vector<UnitBase*>m_Targets;
 				m_Targets.clear();

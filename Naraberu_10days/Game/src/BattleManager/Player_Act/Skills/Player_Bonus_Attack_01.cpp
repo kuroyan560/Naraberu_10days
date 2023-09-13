@@ -45,7 +45,7 @@ void Player_Bonus_Attack_01::Action_Update()
 			return;
 		}
 
-		m_BonusCount = ExistUnits::Instance()->m_NowBonusCount;
+		m_BonusCount = m_Damage;
 
 		// 全てのターゲットに攻撃する
 		for (auto& tgt : m_Targets) {
