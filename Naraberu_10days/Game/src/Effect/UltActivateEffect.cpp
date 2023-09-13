@@ -9,7 +9,7 @@
 
 UltActivateEffect::UltActivateEffect()
 {
-	m_ptEmitter = ParticleManager::Instance()->Register<GoldPrismParticle>(200, false);
+	m_ptEmitter = ParticleManager::Instance()->Register<GoldPrismParticle>(200, 1);
 	m_goldPrismTex = KuroEngine::D3D12App::Instance()->GenerateTextureBuffer("resource/user/tex/block/block_gold.png");
 }
 

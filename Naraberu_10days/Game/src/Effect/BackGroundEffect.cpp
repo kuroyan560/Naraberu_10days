@@ -10,7 +10,7 @@ BackGroundEffect::BackGroundEffect()
 {
 	using namespace KuroEngine;
 
-	m_ptEmitter = ParticleManager::Instance()->Register<BackPrismParticle>(1200, true);
+	m_ptEmitter = ParticleManager::Instance()->Register<BackPrismParticle>(1200, 0);
 }
 
 void BackGroundEffect::Update()

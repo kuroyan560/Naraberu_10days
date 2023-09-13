@@ -350,7 +350,7 @@ void BattleScene::OnDraw()
 	DrawFunc2D::DrawBox2D(Vec2(0.0f, 0.0f)
 		, WinApp::Instance()->GetExpandWinSize(), Color(50, 49, 59, 255), true);
 
-	ParticleManager::Instance()->BackDraw();
+	ParticleManager::Instance()->Draw(0);
 
 
 	// Vキーを押してる間だけ透かしを描画
@@ -497,11 +497,12 @@ void BattleScene::OnDraw()
 	}
 
 	//演出
-	ParticleManager::Instance()->FrontDraw();
+	ParticleManager::Instance()->Draw(1);
 	m_setPrismEffect->Draw();
 	m_ultActivateEffect->Draw();
 
 	m_perfectBonusEffect->DrawBlackOut();
+	ParticleManager::Instance()->Draw(2);
 	for (auto& ui : m_enemyDamageUI)ui->Draw();
 	m_perfectBonusEffect->Draw();
 
@@ -1522,9 +1523,9 @@ BattleScene::BattleScene()
 	m_ultActivateEffect = std::make_shared<UltActivateEffect>();
 	m_perfectBonusEffect = std::make_shared<PerfectBonusEffect>();
 
-	m_healPtEmitter = ParticleManager::Instance()->Register<HealParticle>(1000, false);
-	m_backPrismPtEmitter = ParticleManager::Instance()->Register<BackPrismParticle>(1000, true);
-	m_ultPtEmitter = ParticleManager::Instance()->Register<UltParticle>(1000, false);
+	m_healPtEmitter = ParticleManager::Instance()->Register<HealParticle>(1000, 1);
+	m_backPrismPtEmitter = ParticleManager::Instance()->Register<BackPrismParticle>(1000, 0);
+	m_ultPtEmitter = ParticleManager::Instance()->Register<UltParticle>(1000, 1);
 }
 
 void BattleScene::PlayerTurn()
