@@ -501,6 +501,7 @@ void Enemy::DrawActionIcon()
 					, Vec2(1154.0f, 564.0f) + ScreenShakeManager::Instance()->GetOffset() + Move_v - Sc, m_Data.m_HealIcon);
 			}
 		}
+		return;
 	}
 
 

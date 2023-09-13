@@ -53,8 +53,8 @@ void PanelManager::Initialize()
 	mapchip.resize(10);
 	for (auto& i : mapchip) {
 		for (int range = 0; range < 10; range++) {
-			//i.emplace_back(int(BlockColor::yuka));
-			i.emplace_back(int(BlockColor::red));
+			i.emplace_back(int(BlockColor::yuka));
+			//i.emplace_back(int(BlockColor::red));
 		}
 	}
 
