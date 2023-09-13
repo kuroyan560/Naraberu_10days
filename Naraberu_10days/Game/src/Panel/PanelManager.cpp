@@ -53,8 +53,8 @@ void PanelManager::Initialize()
 	mapchip.resize(10);
 	for (auto& i : mapchip) {
 		for (int range = 0; range < 10; range++) {
-			//i.emplace_back(int(BlockColor::yuka));
-			i.emplace_back(int(BlockColor::red));
+			i.emplace_back(int(BlockColor::yuka));
+			//i.emplace_back(int(BlockColor::red));
 		}
 	}
 
@@ -276,11 +276,7 @@ void PanelManager::MassProcess()
 				bonusData.emplace_back(bonusData[count]);
 				bonusPos.emplace_back(center(bonusData[count].pos));
 			}
-			if (massNum > 10) {
-				bonusData.emplace_back(bonusData[count]);
-				bonusPos.emplace_back(center(bonusData[count].pos));
-			}
-			if (massNum > 12) {
+			if (massNum > 11) {
 				bonusData.emplace_back(bonusData[count]);
 				bonusPos.emplace_back(center(bonusData[count].pos));
 			}
@@ -358,7 +354,7 @@ bool PanelManager::LineBlock(int _number, const KuroEngine::Vec2<int> _lineMap, 
 	//‰º
 	if (!_direction) {
 		for (int i = 0; i < mapMax.y; i++) {
-			if (mapchip[i][_lineMap.x] >= int(BlockColor::yuka)) { return false; }
+			if (mapchip[i][_lineMap.x] == int(BlockColor::yuka)) { return false; }
 		}
 
 		bonusData.emplace_back();
@@ -371,7 +367,7 @@ bool PanelManager::LineBlock(int _number, const KuroEngine::Vec2<int> _lineMap, 
 	//‰E
 	else {
 		for (int i = 0; i < mapMax.x; i++) {
-			if (mapchip[_lineMap.y][i] >= int(BlockColor::yuka)) { return false; }
+			if (mapchip[_lineMap.y][i] == int(BlockColor::yuka)) { return false; }
 		}
 
 		bonusData.emplace_back();

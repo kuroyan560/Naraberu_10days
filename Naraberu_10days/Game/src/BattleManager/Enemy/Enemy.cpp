@@ -284,7 +284,8 @@ void Enemy::Draw(int Index, int NowTurn_Index, int Index_Max, bool Dark, int Fra
 		Reticle::Instance()->Draw(Index, m_Left_Top, m_Right_Bottom, Mask);
 	}
 
-
+	D_NowTarget = NowTarget;
+	D_Index = Index;
 
 }
 
@@ -383,6 +384,10 @@ void Enemy::DrawHpGauge()
 
 		using namespace KuroEngine;
 
+		DrawFunc2D_Color::DrawExtendGraph2D(Vec2(912.0f, 410.0f) + ScreenShakeManager::Instance()->GetOffset()
+			, Vec2(1269.0f, 595.0f) + ScreenShakeManager::Instance()->GetOffset(), m_Data.m_HpFrameTex, Color(255, 255, 255, 255),
+			{ false,false }, { 0.0f,0.0f }, { 1.0f,1.0f }, KuroEngine::DrawFunc2D_Color::FILL_MDOE::MUL);
+
 		DrawFunc2D_Mask::DrawExtendGraph2D(
 			Vec2(923.0f, 427.0f) + ScreenShakeManager::Instance()->GetOffset()
 			, Vec2(1258.0f, 580.0f) + ScreenShakeManager::Instance()->GetOffset(), m_Data.m_HpTex_break,
@@ -430,6 +435,17 @@ void Enemy::DrawHpGauge()
 	else if (Now_HP_Rate <= 0.5f) {
 		HP_Gauge = m_Data.m_HpTex_yellow;
 	}
+
+
+	std::shared_ptr<KuroEngine::TextureBuffer> FrameTex = m_Data.m_FrameTex;
+	std::shared_ptr<KuroEngine::TextureBuffer> HPFrameTex = m_Data.m_HpFrameTex;
+	if (D_NowTarget == D_Index) {
+		FrameTex = m_Data.m_FrameTex_Target;
+		HPFrameTex = m_Data.m_HpFrameTex_Target;
+	}
+	DrawFunc2D_Color::DrawExtendGraph2D(Vec2(1126.0f - D_Move_Width, 181.0f + D_IndexDiff) + ScreenShakeManager::Instance()->GetOffset()
+		, Vec2(1270.0f - D_Move_Width, 203.0f + D_IndexDiff) + ScreenShakeManager::Instance()->GetOffset(), HPFrameTex, Color(255, 255, 255, 255),
+		{ false,false }, { 0.0f,0.0f }, { 1.0f,1.0f }, KuroEngine::DrawFunc2D_Color::FILL_MDOE::MUL);
 
 	DrawFunc2D_Mask::DrawExtendGraph2D(
 		Vec2(1132.0f - D_Move_Width, 187.0f + D_IndexDiff) + ScreenShakeManager::Instance()->GetOffset()
@@ -479,13 +495,13 @@ void Enemy::DrawActionIcon()
 
 			if (NextActionName == "Attack_01" || NextActionName == "Attack_02") {
 				DrawFunc2D::DrawExtendGraph2D(
-					Vec2(1094.0f, 534.0f) + ScreenShakeManager::Instance()->GetOffset() + Move_v + Sc
-					, Vec2(1154.0f, 564.0f) + ScreenShakeManager::Instance()->GetOffset() + Move_v - Sc, m_Data.m_AttackIcon);
+					Vec2(1094.0f, 542.0f) + ScreenShakeManager::Instance()->GetOffset() + Move_v + Sc
+					, Vec2(1170.0f, 618.0f) + ScreenShakeManager::Instance()->GetOffset() + Move_v - Sc, m_Data.m_AttackIcon);
 			}
 			else if (NextActionName == "Jamming_01" && m_Data.m_Name == "zako_blue") {
 				DrawFunc2D::DrawExtendGraph2D(
-					Vec2(1124.0f, 534.0f) + ScreenShakeManager::Instance()->GetOffset() + Move_v + Sc
-					, Vec2(1154.0f, 564.0f) + ScreenShakeManager::Instance()->GetOffset() + Move_v - Sc, m_Data.m_JammingIcon);
+					Vec2(1094.0f, 542.0f) + ScreenShakeManager::Instance()->GetOffset() + Move_v + Sc
+					, Vec2(1170.0f, 618.0f) + ScreenShakeManager::Instance()->GetOffset() + Move_v - Sc, m_Data.m_JammingIcon);
 			}
 			else if (NextActionName == "Jamming_01") {
 				DrawFunc2D::DrawExtendGraph2D(
@@ -497,10 +513,11 @@ void Enemy::DrawActionIcon()
 			}
 			else if (NextActionName == "Heal_01") {
 				DrawFunc2D::DrawExtendGraph2D(
-					Vec2(1124.0f, 534.0f) + ScreenShakeManager::Instance()->GetOffset() + Move_v + Sc
-					, Vec2(1154.0f, 564.0f) + ScreenShakeManager::Instance()->GetOffset() + Move_v - Sc, m_Data.m_HealIcon);
+					Vec2(1094.0f, 542.0f) + ScreenShakeManager::Instance()->GetOffset() + Move_v + Sc
+					, Vec2(1170.0f, 618.0f) + ScreenShakeManager::Instance()->GetOffset() + Move_v - Sc, m_Data.m_HealIcon);
 			}
 		}
+		return;
 	}
 
 

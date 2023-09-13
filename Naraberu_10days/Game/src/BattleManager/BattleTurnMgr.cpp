@@ -519,10 +519,7 @@ void BattleTurnMgr::OnDraw()
 	// プレイヤースキル描画
 	PlayerSkills::PlayerSkillMgr::Instance()->Draw();
 
-	for (int i = 1; i < UnitList.size(); i++) {
-		std::shared_ptr<Enemy> En = GetUnitPtr<Enemy>(UnitList[i]);
-		En->DrawHpGauge();
-	}
+	DrawEnemy_HP_Gauge();
 
 	// ターンエンドボタン
 	TurnEndButtonDraw();
@@ -556,6 +553,14 @@ void BattleTurnMgr::OnImguiDebug()
 void BattleTurnMgr::NextTurnStart()
 {
 	TurnFrameTime = 0;
+}
+
+void BattleTurnMgr::DrawEnemy_HP_Gauge()
+{
+	for (int i = 1; i < UnitList.size(); i++) {
+		std::shared_ptr<Enemy> En = GetUnitPtr<Enemy>(UnitList[i]);
+		En->DrawHpGauge();
+	}
 }
 
 void BattleTurnMgr::Update_NextWave()

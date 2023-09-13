@@ -123,6 +123,8 @@ public:
 
 	void NextTurnStart();
 
+	void DrawEnemy_HP_Gauge();
+
 	// 次のバトルに行く場合の更新処理
 	void Update_NextWave();
 	// プレイヤーと敵が生きている場合の更新処理
