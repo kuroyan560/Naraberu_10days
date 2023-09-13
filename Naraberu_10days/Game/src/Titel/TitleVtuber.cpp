@@ -282,17 +282,17 @@ void TitleVtuber::MoveStageSelect()
 	isMove = true;
 
 	if (isLeftMove) {
-		move = KuroEngine::Math::Ease(KuroEngine::EASE_CHANGE_TYPE::In, KuroEngine::EASING_TYPE::Circ,
+		move = KuroEngine::Math::Ease(KuroEngine::EASE_CHANGE_TYPE::InOut, KuroEngine::EASING_TYPE::Circ,
 			moveTimer, maxTimer, 0.0f, -1500.0f);
-		playerMove = KuroEngine::Math::Ease(KuroEngine::EASE_CHANGE_TYPE::In, KuroEngine::EASING_TYPE::Circ,
+		playerMove = KuroEngine::Math::Ease(KuroEngine::EASE_CHANGE_TYPE::InOut, KuroEngine::EASING_TYPE::Circ,
 			moveTimer, maxTimer, 0.0f, -500.0f);
 		if (moveTimer > maxTimer) {
 			isLeftMove = false;
 		}
 	} else if(isRightMove){
-		move = KuroEngine::Math::Ease(KuroEngine::EASE_CHANGE_TYPE::Out, KuroEngine::EASING_TYPE::Back,
+		move = KuroEngine::Math::Ease(KuroEngine::EASE_CHANGE_TYPE::Out, KuroEngine::EASING_TYPE::Circ,
 			moveTimer, maxTimer, -1500.0f, 0.0f);
-		playerMove = KuroEngine::Math::Ease(KuroEngine::EASE_CHANGE_TYPE::In, KuroEngine::EASING_TYPE::Circ,
+		playerMove = KuroEngine::Math::Ease(KuroEngine::EASE_CHANGE_TYPE::InOut, KuroEngine::EASING_TYPE::Circ,
 			moveTimer, maxTimer, -500.0f, 0.0f);
 		if (moveTimer > maxTimer) {
 			isRightMove = false;

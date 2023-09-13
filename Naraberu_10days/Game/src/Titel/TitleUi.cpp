@@ -140,7 +140,7 @@ void TitleUi::Draw()
 				clearTex);
 		}
 		//チュートリアル文字
-		else if(i==0) {
+		else if (i == 0) {
 			KuroEngine::Vec2<float> inpos = {
 			stageTexInfo[i].pos.x + tutorial_moji_dist.x * stageTexInfo[i].scale + 100.0f * stageTexInfo[i].scale,
 			stageTexInfo[i].pos.y + tutorial_moji_dist.x * stageTexInfo[i].scale };
