@@ -203,4 +203,6 @@ private:
 	std::vector<KuroEngine::Vec2<int>> onePos;
 	//ボーナスの合計
 	int totalBounsNum;
+public:
+	int GetTotalBonus() { return totalBounsNum; }
 };
