@@ -42,19 +42,19 @@ void Block::Draw(const std::vector<KuroEngine::Vec2<int>> _shape, BlockAttribute
 		BlockOneDraw(inpos, _color, _rota, ExistUnits::Instance()->m_StageManager->CanSetBlock(pos + i), _alpha);
 	}
 
-	ActionDraw({ (pos.x + shapeMax.x) * blockSize + difference.x, (pos.y + shapeMin.y) * blockSize + difference.y }, _attribute);
+	ActionDraw({ (pos.x + shapeMax.x) * blockSize + difference.x, (pos.y + shapeMin.y) * blockSize + difference.y }, _attribute, _alpha);
 }
 
 void Block::Draw(const std::vector<KuroEngine::Vec2<int>> _shape, const KuroEngine::Vec2<float> shape_dist,
-	BlockAttribute _attribute, const BlockColor _color, const KuroEngine::Vec2<float>& _pos)
+	BlockAttribute _attribute, const BlockColor _color, const KuroEngine::Vec2<float>& _pos, const float _alpha)
 {
 	KuroEngine::Vec2<float> pos = { _pos.x - shape_dist.x,_pos.y - shape_dist.y };
 	pos += ScreenShakeManager::Instance()->GetOffset();
 	for (auto& i : _shape) {
-		BlockOneDraw(i, pos, _color);
+		BlockOneDraw(i, pos, _color, _alpha);
 	}
 
-	ActionDraw({ shapeMax.x * blockSize + _pos.x, shapeMin.y * blockSize + _pos.y }, _attribute);
+	ActionDraw({ shapeMax.x * blockSize + _pos.x, shapeMin.y * blockSize + _pos.y }, _attribute, _alpha);
 }
 
 void Block::Reset()
@@ -136,7 +136,7 @@ void Block::BlockOneDraw(const KuroEngine::Vec2<float> _pos, BlockColor _color, 
 	DrawFunc2D::DrawRotaGraph2D(pos1, { 0.75f,0.75f }, rota, tex, alpha);
 }
 
-void Block::BlockOneDraw(const KuroEngine::Vec2<int> _shape, const KuroEngine::Vec2<float> pos, const BlockColor _color)
+void Block::BlockOneDraw(const KuroEngine::Vec2<int> _shape, const KuroEngine::Vec2<float> pos, const BlockColor _color,const float _alpha)
 {
 	using namespace KuroEngine;
 	const float blockSizeUnder = 20.0f;
@@ -153,19 +153,19 @@ void Block::BlockOneDraw(const KuroEngine::Vec2<int> _shape, const KuroEngine::V
 	pos2 += ScreenShakeManager::Instance()->GetOffset();
 
 	if (_color == BlockColor::red) {
-		DrawFunc2D::DrawExtendGraph2D(pos1, pos2, blockTex[int(BlockColor::red)]);
+		DrawFunc2D::DrawExtendGraph2D(pos1, pos2, blockTex[int(BlockColor::red)],_alpha);
 	} else if (_color == BlockColor::blue) {
-		DrawFunc2D::DrawExtendGraph2D(pos1, pos2, blockTex[int(BlockColor::blue)]);
+		DrawFunc2D::DrawExtendGraph2D(pos1, pos2, blockTex[int(BlockColor::blue)],_alpha);
 	} else if (_color == BlockColor::yellow) {
-		DrawFunc2D::DrawExtendGraph2D(pos1, pos2, blockTex[int(BlockColor::yellow)]);
+		DrawFunc2D::DrawExtendGraph2D(pos1, pos2, blockTex[int(BlockColor::yellow)], _alpha);
 	}
 }
 
-void Block::ActionDraw(const KuroEngine::Vec2<float> _pos, const BlockAttribute _attribute)
+void Block::ActionDraw(const KuroEngine::Vec2<float> _pos, const BlockAttribute _attribute, const float _alpha)
 {
 	KuroEngine::Vec2<float> actionPos = { _pos.x + 50.0f,_pos.y - 10.0f };
 
 	actionPos += ScreenShakeManager::Instance()->GetOffset();
 
-	KuroEngine::DrawFunc2D::DrawRotaGraph2D(actionPos, { 0.5f,0.5f }, 0.0f, actionTex[int(_attribute)]);
+	KuroEngine::DrawFunc2D::DrawRotaGraph2D(actionPos, { 0.5f,0.5f }, 0.0f, actionTex[int(_attribute)], _alpha);
 }

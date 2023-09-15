@@ -5,6 +5,7 @@
 #include"../SoundConfig.h"
 #include "../BattleManager/ExistUnits.h"
 #include "../Effect/ScreenShakeManager.h"
+#include"../RefreshRate.h"
 
 const std::array<std::array<BlockManager::TutorialBlock, 10>, 1>BlockManager::tutorialBlock =
 {
@@ -56,6 +57,7 @@ void BlockManager::Initialize()
 	passNum = passMaxNum;
 
 	tutorialNum = 0;
+	m_changePrismTimer.Reset(0.0f);
 }
 
 void BlockManager::Update(int Step)
@@ -81,10 +83,21 @@ void BlockManager::Update(int Step)
 	for (auto& i : block) {
 		i.block->Update();
 	}
+
+	m_changePrismTimer.UpdateTimer(1.0f / RefreshRate::RefreshRate_Mag);
 }
 
 void BlockManager::Draw()
 {
+	//ブロックが変わった瞬間の演出
+	using namespace KuroEngine;
+	const float nextChoiceAlphaMin = 0.4f;
+
+	float choiceOffsetX = KuroEngine::Math::Ease(Out, Circ, m_changePrismTimer.GetTimeRate(), 8.0f, 0.0f);
+	float nextChoiceOffsetX = choiceOffsetX * 2.0f;
+	float nowChoiceAlpha = KuroEngine::Math::Ease(Out, Cubic, m_changePrismTimer.GetTimeRate(), nextChoiceAlphaMin, 1.0f);
+	float nextChoiceAlpha = KuroEngine::Math::Ease(Out, Cubic, m_changePrismTimer.GetTimeRate(), 0.0f, nextChoiceAlphaMin);
+
 	float y = 633.0f;
 	//移動処理を行っているブロック
 	block[int(ObjectType::use)].block->Draw(shape[block[int(ObjectType::use)].blockNum],
@@ -93,22 +106,22 @@ void BlockManager::Draw()
 	block[int(ObjectType::choice1)].block->Draw(shape[block[int(ObjectType::choice1)].blockNum],
 		shape_dist[block[int(ObjectType::choice1)].blockNum],
 		block[int(ObjectType::choice1)].attribute,
-		block[int(ObjectType::choice1)].color, { 555.0f,y });
+		block[int(ObjectType::choice1)].color, { 555.0f + choiceOffsetX,y }, nowChoiceAlpha);
 	//choice2表示のブロック
 	block[int(ObjectType::choice2)].block->Draw(shape[block[int(ObjectType::choice2)].blockNum],
 		shape_dist[block[int(ObjectType::choice2)].blockNum],
 		block[int(ObjectType::choice2)].attribute,
-		block[int(ObjectType::choice2)].color, { 445.0f,y });
+		block[int(ObjectType::choice2)].color, { 445.0f + choiceOffsetX,y }, nowChoiceAlpha);
 	//nextChoice1表示のブロック
 	block[int(ObjectType::nextChoice1)].block->Draw(shape[block[int(ObjectType::nextChoice1)].blockNum],
 		shape_dist[block[int(ObjectType::nextChoice1)].blockNum],
 		block[int(ObjectType::nextChoice1)].attribute,
-		block[int(ObjectType::nextChoice1)].color, { 815.0f,y });
+		block[int(ObjectType::nextChoice1)].color, { 815.0f + nextChoiceOffsetX,y }, nextChoiceAlpha);
 	//nextChoice2表示のブロック
 	block[int(ObjectType::nextChoice2)].block->Draw(shape[block[int(ObjectType::nextChoice2)].blockNum],
 		shape_dist[block[int(ObjectType::nextChoice2)].blockNum],
 		block[int(ObjectType::nextChoice2)].attribute,
-		block[int(ObjectType::nextChoice2)].color, { 710.0f,y });
+		block[int(ObjectType::nextChoice2)].color, { 710.0f + nextChoiceOffsetX,y }, nextChoiceAlpha);
 
 	//矢印
 	const KuroEngine::Vec2<float> arrowSize = { 39.0f,75.0f };
@@ -223,6 +236,8 @@ void BlockManager::ChangeBlock()
 	nowChoice = 0;
 
 	recharge = 25.0f;
+
+	m_changePrismTimer.Reset(30.0f);
 }
 
 void BlockManager::SetOneChangeBlock(const int a1, const int a2)

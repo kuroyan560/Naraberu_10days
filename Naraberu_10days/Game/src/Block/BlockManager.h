@@ -3,6 +3,7 @@
 #include "../Block/Block.h"
 #include <memory>
 #include <array>
+#include"ForUser/Timer.h"
 
 class BlockManager
 {
@@ -121,6 +122,8 @@ private:
 	float recharge;
 	//‰ñ“]
 	float passEffectRota;
+
+	KuroEngine::Timer m_changePrismTimer = KuroEngine::Timer(15.0f);
 
 };
 
