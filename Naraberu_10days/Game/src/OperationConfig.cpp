@@ -169,7 +169,7 @@ bool OperationConfig::GetMoveVec(SELECT_VEC arg_vec)
 	}
 
 	//長押しで入力判定にするフレーム
-	static const int INPUT_FRAME_MAX = static_cast<int>(12.0f * RefreshRate::RefreshRate_Mag);
+	const int INPUT_FRAME_MAX = static_cast<int>(23.0f * RefreshRate::RefreshRate_Mag);
 	static const float STICK_DEAD_RANGE = 0.4f;
 
 	bool con = false;
@@ -219,6 +219,13 @@ bool OperationConfig::GetMoveVec(SELECT_VEC arg_vec)
 	{
 		//長押し入力フレームリセット
 		m_moveInputFrame[device][arg_vec] = 0;
+
+		if (arg_vec == SELECT_VEC_LEFT)m_moveInputFrame[device][SELECT_VEC_RIGHT] = 0;
+		else if (arg_vec == SELECT_VEC_RIGHT)m_moveInputFrame[device][SELECT_VEC_LEFT] = 0;
+
+		if (arg_vec == SELECT_VEC_UP)m_moveInputFrame[device][SELECT_VEC_DOWN] = 0;
+		else if (arg_vec == SELECT_VEC_DOWN)m_moveInputFrame[device][SELECT_VEC_UP] = 0;
+
 		return true;
 	}
 
