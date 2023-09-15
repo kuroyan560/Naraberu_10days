@@ -56,7 +56,8 @@ static const std::vector<KuroEngine::Vec2<float>> shape_dist = {
 	BlockCenter(shape[16]),BlockCenter(shape[17]),//’¼ü(2)
 	BlockCenter(shape[18]),BlockCenter(shape[19]),BlockCenter(shape[20]),BlockCenter(shape[21]),//3‚Â‚ÌŠp‘å(4)
 	BlockCenter(shape[22]),//\š(1)
-	BlockCenter(shape[23]),BlockCenter(shape[24]),BlockCenter(shape[25]),BlockCenter(shape[26])//™Â‚È‚è‘¹‚Ë(4)
+	BlockCenter(shape[23]),BlockCenter(shape[24]),BlockCenter(shape[25]),BlockCenter(shape[26]),//™Â‚È‚è‘¹‚Ë(4)
+	BlockCenter(shape[27]),BlockCenter(shape[28]),	//‚R’¼ü
 };
 
 //F
