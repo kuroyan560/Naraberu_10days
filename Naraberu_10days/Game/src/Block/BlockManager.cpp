@@ -40,7 +40,7 @@ void BlockManager::Initialize()
 		for (int i = 1; i< int(ObjectType::size); i++) {
 			block[i].block.reset(new Block());
 			block[i].attribute = BlockAttribute(rand() % int(BlockAttribute::size));
-			block[i].blockNum = rand() % shapeNum;
+			block[i].blockNum = rand() % int(shape.size());;
 			block[i].color = BlockColor(rand() % (int(BlockColor::size) - 4));
 		}
 	}
@@ -201,18 +201,18 @@ void BlockManager::ChangeBlock()
 		//セーフティ―
 		else {
 			block[int(ObjectType::nextChoice1)].attribute = BlockAttribute(rand() % int(BlockAttribute::size));
-			block[int(ObjectType::nextChoice1)].blockNum = rand() % shapeNum;
+			block[int(ObjectType::nextChoice1)].blockNum = rand() % int(shape.size());
 			block[int(ObjectType::nextChoice1)].color = BlockColor(rand() % (int(BlockColor::size) - 4));
 			block[int(ObjectType::nextChoice2)].attribute = BlockAttribute(rand() % int(BlockAttribute::size));
-			block[int(ObjectType::nextChoice2)].blockNum = rand() % shapeNum;
+			block[int(ObjectType::nextChoice2)].blockNum = rand() % int(shape.size());
 			block[int(ObjectType::nextChoice2)].color = BlockColor(rand() % (int(BlockColor::size) - 4));
 		}
 	} else {
 		block[int(ObjectType::nextChoice1)].attribute = BlockAttribute(rand() % int(BlockAttribute::size));
-		block[int(ObjectType::nextChoice1)].blockNum = rand() % shapeNum;
+		block[int(ObjectType::nextChoice1)].blockNum = rand() % int(shape.size());
 		block[int(ObjectType::nextChoice1)].color = BlockColor(rand() % (int(BlockColor::size) - 4));
 		block[int(ObjectType::nextChoice2)].attribute = BlockAttribute(rand() % int(BlockAttribute::size));
-		block[int(ObjectType::nextChoice2)].blockNum = rand() % shapeNum;
+		block[int(ObjectType::nextChoice2)].blockNum = rand() % int(shape.size());
 		block[int(ObjectType::nextChoice2)].color = BlockColor(rand() % (int(BlockColor::size) - 4));
 	}
 	//使用ブロックをセット
