@@ -223,6 +223,9 @@ bool PanelManager::JudgeWithEffect(KuroEngine::Vec2<int> _nowMapchip, std::vecto
 	for (auto& i : setChipIdxArray) {
 		//ステージとの判定 ダメならfalse
 		if (mapchip[i.y][i.x] != int(BlockColor::yuka)) {
+
+			SoundConfig::Instance()->Play(SoundConfig::SE_CANNOT_SELECT);
+
 			return false;
 		}
 	}

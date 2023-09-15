@@ -88,7 +88,7 @@ void BlockManager::Draw()
 	float y = 633.0f;
 	//移動処理を行っているブロック
 	block[int(ObjectType::use)].block->Draw(shape[block[int(ObjectType::use)].blockNum],
-		block[int(ObjectType::use)].attribute, block[int(ObjectType::use)].color, passEffectRota);
+		block[int(ObjectType::use)].attribute, block[int(ObjectType::use)].color, passEffectRota, 0.6f);
 	//choice1表示のブロック
 	block[int(ObjectType::choice1)].block->Draw(shape[block[int(ObjectType::choice1)].blockNum],
 		shape_dist[block[int(ObjectType::choice1)].blockNum],

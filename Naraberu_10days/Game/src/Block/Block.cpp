@@ -8,6 +8,7 @@
 #include"../SoundConfig.h"
 
 #include "../Effect/ScreenShakeManager.h"
+#include"../BattleManager/ExistUnits.h"
 
 Block::Block(bool _isMove)
 {
@@ -33,12 +34,12 @@ void Block::Update()
 {
 }
 
-void Block::Draw(const std::vector<KuroEngine::Vec2<int>> _shape, BlockAttribute _attribute, const BlockColor _color, const float _rota)
+void Block::Draw(const std::vector<KuroEngine::Vec2<int>> _shape, BlockAttribute _attribute, const BlockColor _color, const float _rota, const float _alpha)
 {
 	for (auto& i : _shape) {
 		KuroEngine::Vec2<float> inpos = { (pos.x + i.x) * blockSize + difference.x , (pos.y + i.y) * blockSize + difference.y };
 		inpos += ScreenShakeManager::Instance()->GetOffset();
-		BlockOneDraw(inpos, _color, _rota);
+		BlockOneDraw(inpos, _color, _rota, ExistUnits::Instance()->m_StageManager->CanSetBlock(pos + i), _alpha);
 	}
 
 	ActionDraw({ (pos.x + shapeMax.x) * blockSize + difference.x, (pos.y + shapeMin.y) * blockSize + difference.y }, _attribute);
@@ -118,7 +119,7 @@ void Block::ChangeBlock(const KuroEngine::Vec2<int> _mapchipNum, const std::vect
 	pos.y -= int(shapeMax.y + pos.y >= max.y) * (shapeMax.y + pos.y - max.y + 1);
 }
 
-void Block::BlockOneDraw(const KuroEngine::Vec2<float> _pos, BlockColor _color, const float _rota)
+void Block::BlockOneDraw(const KuroEngine::Vec2<float> _pos, BlockColor _color, const float _rota, const bool _canPut, const float _alpha)
 {
 	using namespace KuroEngine;
 
@@ -129,18 +130,10 @@ void Block::BlockOneDraw(const KuroEngine::Vec2<float> _pos, BlockColor _color, 
 	pos1 += ScreenShakeManager::Instance()->GetOffset();
 
 	float rota = _rota * (3.14f / 180.0f);
+	auto tex = _canPut ? blockTex[int(_color)] : lineTex[int(_color)];
+	float alpha = _canPut ? _alpha : 1.0f;
 
-	if (_color == BlockColor::red) {
-		//DrawFunc2D::DrawExtendGraph2D(_pos + ScreenShakeManager::Instance()->GetOffset(), pos1, lineTex[int(BlockColor::red)]);
-		DrawFunc2D::DrawRotaGraph2D(pos1, { 0.75f,0.75f }, rota, lineTex[int(BlockColor::red)]);
-	} else if (_color == BlockColor::blue) {
-		//DrawFunc2D::DrawExtendGraph2D(_pos + ScreenShakeManager::Instance()->GetOffset(), pos1, lineTex[int(BlockColor::blue)]);
-		DrawFunc2D::DrawRotaGraph2D(pos1, { 0.75f,0.75f }, rota, lineTex[int(BlockColor::blue)]);
-	} else if (_color == BlockColor::yellow) {
-		//DrawFunc2D::DrawExtendGraph2D(_pos + ScreenShakeManager::Instance()->GetOffset(), pos1, lineTex[int(BlockColor::yellow)]);
-		DrawFunc2D::DrawRotaGraph2D(pos1, { 0.75f,0.75f }, rota, lineTex[int(BlockColor::yellow)]);
-	}
-
+	DrawFunc2D::DrawRotaGraph2D(pos1, { 0.75f,0.75f }, rota, tex, alpha);
 }
 
 void Block::BlockOneDraw(const KuroEngine::Vec2<int> _shape, const KuroEngine::Vec2<float> pos, const BlockColor _color)

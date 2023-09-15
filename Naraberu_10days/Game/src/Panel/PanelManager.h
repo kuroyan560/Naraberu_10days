@@ -188,6 +188,16 @@ public:
 
 	bool IsPerfect()const;
 
+	/// <summary>
+	/// 指定したチップインデックスにブロックを置けるか
+	/// </summary>
+	/// <param name="_chip">マップチップインデックス</param>
+	/// <returns>ブロックを置けるか</returns>
+	bool CanSetBlock(KuroEngine::Vec2<int>_chip)const
+	{
+		return mapchip[_chip.y][_chip.x] == int(BlockColor::yuka);
+	}
+
 private:
 	
 	//ボーナス文字画像
