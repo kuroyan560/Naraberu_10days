@@ -30,7 +30,7 @@ int WINAPI WinMain(HINSTANCE, HINSTANCE, LPSTR, int)
 {
 	//エンジン設定（ユーザー設定）========
 	KuroEngine::EngineOption engineOption;
-	engineOption.m_windowName = "4001_マジカプリズム_v1.2";
+	engineOption.m_windowName = "4001_マジカプリズム_v1.3";
 	engineOption.m_windowSize = { 1280,720 };
 	//engineOption.m_windowSize = { 1920,1080 };
 	engineOption.m_fullScreen = false;
