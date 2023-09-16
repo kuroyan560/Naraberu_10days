@@ -78,6 +78,8 @@ private:
 	std::weak_ptr<UltActivateEffect>m_UltimateActivateEffect;
 
 public:
+	// ウルト演出のポインタ
+	std::shared_ptr<UltActivateEffect> GetUltEffectPtr() { return m_UltimateActivateEffect.lock(); }
 	// アルティメットポイントを加算する
 	void AddUltPoint(int Amount) {
 		// 変化前の値を保存

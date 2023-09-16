@@ -9,7 +9,7 @@
 #include "ExistUnits.h"
 #include "Reticle/Reticle.h"
 #include"../OperationConfig.h"
-
+#include "../Effect/UltActivateEffect.h"
 #include "../Effect/ScreenShakeManager.h"
 #include"../SoundConfig.h"
 
@@ -51,6 +51,7 @@ BattleTurnMgr::BattleTurnMgr() {
 
 	gageBG = false;
 	gageBGTimer = 0.0f;
+	m_StandByTurnEnd = false;
 }
 
 void BattleTurnMgr::TurnEndButtonUpdate()
@@ -59,6 +60,13 @@ void BattleTurnMgr::TurnEndButtonUpdate()
 	
 	// プレイヤーターンのみ
 	if (TurnNum == 0 && UnitList[0]->IsAlive() && AliveEnemys()) {
+		// ターンエンドが確定している
+		if (m_StandByTurnEnd && !GetUnitPtr<Player>(UnitList[0])->GetUltEffectPtr()->GetActive()) {
+			GetUnitPtr<Player>(UnitList[0])->TurnEndTrigger();
+			m_StandByTurnEnd = false;
+		}
+
+
 		// 自動ターンエンド
 		// 現在時刻
 		GetLocalTime(&NowTime);
@@ -101,8 +109,8 @@ void BattleTurnMgr::TurnEndButtonUpdate()
 			m_Checked_TurnEnd = true;
 			m_Moving_Flag = true;
 			m_TimeUp_Eff_Timer = 0;
-			GetUnitPtr<Player>(UnitList[0])->TurnEndTrigger();
 			m_FirstTurn = false;
+			m_StandByTurnEnd = true;
 		}
 
 		// ターンエンドボタンが押された(一回目)
@@ -126,9 +134,9 @@ void BattleTurnMgr::TurnEndButtonUpdate()
 			if (OperationConfig::Instance()->GetOperationInput(OperationConfig::END_TURN, OperationConfig::ON_TRIGGER)) {
 				m_Checked_TurnEnd = true;
 				m_Moving_Flag = true;
-				GetUnitPtr<Player>(UnitList[0])->TurnEndTrigger();
-				m_FirstTurn = false;
 				m_TimeUp_Eff_Timer = 0;
+				m_FirstTurn = false;
+				m_StandByTurnEnd = true;
 			}
 			// それ以外のボタンが押された
 			else if (OperationConfig::Instance()->CheckAllOperationInputTrigger()) {
@@ -410,6 +418,8 @@ void BattleTurnMgr::OnInitialize(std::shared_ptr<UnitBase> Player, std::vector<s
 	m_PauseTime = 0;
 	m_PauseTimeContainer.clear();
 	GetLocalTime(&StartTime);
+
+	m_StandByTurnEnd = false;
 
 	// レティクル
 	Reticle::Instance()->SetBattleTurnManager(this);

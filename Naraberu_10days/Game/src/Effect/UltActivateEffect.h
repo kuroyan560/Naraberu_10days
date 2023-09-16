@@ -34,4 +34,5 @@ public:
 	void Draw();
 
 	void Start();
+	bool GetActive() { return m_isActive; }
 };

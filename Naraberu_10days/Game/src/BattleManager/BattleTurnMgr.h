@@ -63,6 +63,7 @@ private:
 	__int64 m_ProgressTime;
 	std::shared_ptr<KuroEngine::TextureBuffer> m_Timer_Frame_Tex;
 	std::shared_ptr<KuroEngine::TextureBuffer> m_Timer_Gauge_Tex;
+	bool m_StandByTurnEnd;
 public:
 	int m_TimeUp_Eff_Timer;
 	void DrawTimerCutIn();

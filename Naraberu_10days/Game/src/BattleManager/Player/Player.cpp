@@ -81,10 +81,13 @@ void Player::OnUpdate()
 		EndTurn();
 	}
 
+	//AddUltPoint(1000);
+
 	// ƒEƒ‹ƒg”­“®
 	if (OperationConfig::Instance()->GetOperationInput(OperationConfig::EXECUTE_ULT, OperationConfig::ON_TRIGGER) && GetUltRate() == 1.0f) {
 		
-		if (ExistUnits::Instance()->m_StageManager->GetOneSpacePosArray().empty())
+		if (ExistUnits::Instance()->m_StageManager->GetOneSpacePosArray().empty() || m_DoBonus ||
+			TurnChangeTimer > 0)
 		{
 			SoundConfig::Instance()->Play(SoundConfig::SE_CANNOT_SELECT);
 		}
