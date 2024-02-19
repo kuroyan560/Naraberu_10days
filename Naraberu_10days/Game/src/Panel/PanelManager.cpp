@@ -40,6 +40,10 @@ void PanelManager::Initialize()
 	bonusMarkTex = KuroEngine::D3D12App::Instance()->GenerateTextureBuffer(TexBonusDir + "bonus_mark.png");
 	KuroEngine::D3D12App::Instance()->GenerateTextureBuffer(bonusNumberTex.data(), TexBonusDir + "bonus_number.png", 10, { 10, 1 });
 
+	bonusKindTex[int(BonusKind::color)] = KuroEngine::D3D12App::Instance()->GenerateTextureBuffer(TexBonusDir + "color.png");
+	bonusKindTex[int(BonusKind::line)] = KuroEngine::D3D12App::Instance()->GenerateTextureBuffer(TexBonusDir + "line.png");
+	bonusKindTex[int(BonusKind::gold)] = KuroEngine::D3D12App::Instance()->GenerateTextureBuffer(TexBonusDir + "gold.png");
+
 	std::string TexDir = "resource/user/tex/block/";
 	blockTex[int(BlockColor::red)] = KuroEngine::D3D12App::Instance()->GenerateTextureBuffer(TexDir + "block_pink.png");
 	blockTex[int(BlockColor::blue)] = KuroEngine::D3D12App::Instance()->GenerateTextureBuffer(TexDir + "block_blue.png");
@@ -150,10 +154,23 @@ void PanelManager::BonusDraw()
 			KuroEngine::Vec2<float> pos = { bonusPos[i].x * blockSize + difference.x,bonusPos[i].y * blockSize + difference.y };
 
 			//ボーナス文字
+			if (bonusData[i].bonusKind == BonusKind::color) {
+				const KuroEngine::Vec2 bonusSize = { 91.0f,26.0f };
+				const KuroEngine::Vec2 distPos = { 0.0f,-25.0f };
+				KuroEngine::DrawFunc2D::DrawExtendGraph2D(pos + distPos, pos + bonusSize + distPos, bonusKindTex[int(BonusKind::color)]);
+			}else if (bonusData[i].bonusKind == BonusKind::line) {
+				const KuroEngine::Vec2 bonusSize = { 72.0f,26.0f };
+				const KuroEngine::Vec2 distPos = { 0.0f,-25.0f };
+				KuroEngine::DrawFunc2D::DrawExtendGraph2D(pos + distPos, pos + bonusSize + distPos, bonusKindTex[int(BonusKind::line)]);
+			}if (bonusData[i].bonusKind == BonusKind::gold) {
+				const KuroEngine::Vec2 bonusSize = { 72.0f,26.0f };
+				const KuroEngine::Vec2 distPos = { 0.0f,-25.0f };
+				KuroEngine::DrawFunc2D::DrawExtendGraph2D(pos + distPos, pos + bonusSize + distPos, bonusKindTex[int(BonusKind::gold)]);
+			}
+
+			//ボーナス文字
 			const KuroEngine::Vec2 bonusSize = { 99.0f,20.0f };
 			KuroEngine::DrawFunc2D::DrawExtendGraph2D(pos, { pos.x + bonusSize.x,pos.y + bonusSize.y }, bonusTex);
-			////!!!
-			//KuroEngine::DrawFunc2D::DrawExtendGraph2D(pos, { pos.x + 20.0f,pos.y + 20.0f }, bonusMarkTex);
 
 			const KuroEngine::Vec2 numSize = { 18.0f,20.0f };
 			KuroEngine::DrawFunc2D::DrawNumber2D(i + 1, { pos.x + numSize.x + 20.0f ,pos.y + numSize.y }, bonusNumberTex.data());
@@ -291,6 +308,7 @@ void PanelManager::MassProcess()
 				bonusData.resize(size);
 				continue;
 			}
+			bonusData[count].bonusKind = BonusKind::color;
 			bonusData[count].color = BlockColor(mapchip[y][x]);
 			bonusData[count].mass = true;
 			//座標記録
@@ -404,6 +422,7 @@ bool PanelManager::LineBlock(int _number, const KuroEngine::Vec2<int> _lineMap, 
 	//座標記録
 	bonusPos.emplace_back(center(bonusData[_number].pos));
 
+	bonusData[_number].bonusKind = BonusKind::line;
 	bonusData[_number].color = BlockColor(mapchip[_lineMap.y][_lineMap.x]);
 	bonusData[_number].mass = false;
 
@@ -420,10 +439,12 @@ int PanelManager::GoldProcess()
 			//ボーナス加算
 			num += 1;
 			BonusData add;
+			add.bonusKind = BonusKind::gold;
 			add.pos.emplace_back(KuroEngine::Vec2<int>(x, y));
 			add.color = BlockColor(mapchip[y][x]);
 			add.mass = false;
 			bonusData.emplace_back(add);
+
 			bonusPos.emplace_back(KuroEngine::Vec2<int>(x, y));
 		}
 	}
