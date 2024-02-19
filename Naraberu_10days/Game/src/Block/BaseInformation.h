@@ -3,7 +3,8 @@
 #include <array>
 #include"Common/Vec.h"
 
-static const float blockSize = 50.0f;
+static const float blockSize8x8 = 63.0f;
+static const float blockSize10x10 = 50.0f;
 static const KuroEngine::Vec2<float> difference = { 391.0f,66.0f };//ç∑
 
 static const int shapeNum = 27;

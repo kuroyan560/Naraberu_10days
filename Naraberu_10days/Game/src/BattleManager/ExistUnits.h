@@ -16,6 +16,9 @@ public:
 	std::vector<std::vector<int>>* m_MapChipData;
 	PanelManager* m_StageManager = nullptr;
 
+	//マップsize
+	int m_mapSize;
+
 	int m_NowTurn;
 	int m_NowTarget;
 	int m_NowBonusCount = 0;
@@ -32,7 +35,7 @@ public:
 	bool m_CanTurnEnd;
 	// クリア済みフラグ
 	int m_Now_Stage_Index = 0;
-	std::array<bool, 6> m_Stage_Already_Clear = { false,false,false,false,false,false };
+	std::array<bool, 8> m_Stage_Already_Clear = { false,false,false,false,false,false,false,false };
 
 	ExistUnits() {
 	}

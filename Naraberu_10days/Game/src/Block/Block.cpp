@@ -28,6 +28,12 @@ Block::Block(bool _isMove)
 	actionTex[int(BlockAttribute::recovery)] = KuroEngine::D3D12App::Instance()->GenerateTextureBuffer(TexDir + acDir + "heal_icon.png");
 
 	isMove = _isMove;
+
+	if (ExistUnits::Instance()->m_mapSize==8) {
+		blockSize = blockSize8x8;
+	} else {
+		blockSize = blockSize10x10;
+	}
 }
 
 void Block::Update()
@@ -133,7 +139,7 @@ void Block::BlockOneDraw(const KuroEngine::Vec2<float> _pos, BlockColor _color, 
 	auto tex = _canPut ? blockTex[int(_color)] : lineTex[int(_color)];
 	float alpha = _canPut ? _alpha : 1.0f;
 
-	DrawFunc2D::DrawRotaGraph2D(pos1, { 0.75f,0.75f }, rota, tex, alpha);
+	DrawFunc2D::DrawRotaGraph2D(pos1, { 0.97f,0.97f }, rota, tex, alpha);
 }
 
 void Block::BlockOneDraw(const KuroEngine::Vec2<int> _shape, const KuroEngine::Vec2<float> pos, const BlockColor _color,const float _alpha)

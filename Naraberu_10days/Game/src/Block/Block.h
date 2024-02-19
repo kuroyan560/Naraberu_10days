@@ -87,5 +87,7 @@ private:
 	KuroEngine::Vec2<int> shapeMin;
 	//Œ`óÅ‘å
 	KuroEngine::Vec2<int> shapeMax;
+
+	float blockSize;
 };
 

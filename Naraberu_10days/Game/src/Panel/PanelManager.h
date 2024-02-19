@@ -25,6 +25,11 @@ public:
 		perfect,
 	};
 
+	enum class PanelSize {
+		_8x8,
+		_10x10
+	};
+
 	PanelManager(){};
 	~PanelManager(){};
 
@@ -51,7 +56,7 @@ public:
 	void Reset();
 
 	/// <summary>
-/// セット処理
+	/// セット処理
 	/// </summary>
 	/// <param name="_nowMapchip">セットするオブジェクトのmapchip</param>
 	/// <param name="_shape">セットするオブジェクトの形状</param>
@@ -200,6 +205,10 @@ public:
 
 private:
 	
+	//panelの大きさ
+	PanelSize panelSize;
+	//block一つの大きさ
+	float blockSize;
 	//ボーナス文字画像
 	std::shared_ptr<KuroEngine::TextureBuffer> bonusTex;
 	//ボーナス!!!画像

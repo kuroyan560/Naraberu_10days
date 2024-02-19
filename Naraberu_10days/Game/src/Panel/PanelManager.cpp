@@ -49,12 +49,33 @@ void PanelManager::Initialize()
 	blockTex[int(BlockColor::eizoku_obstacle)] = KuroEngine::D3D12App::Instance()->GenerateTextureBuffer(TexDir + "eizoku_oja.png");
 	blockTex[int(BlockColor::gold)] = KuroEngine::D3D12App::Instance()->GenerateTextureBuffer(TexDir + "block_gold.png");
 
+	//パネルの大きさ	
+	char stageName = ExistUnits::Instance()->m_StageName.back();
+
+	if (stageName == *std::string("l").c_str() || stageName == *std::string("1").c_str() || stageName == *std::string("2").c_str()) {
+		panelSize = PanelSize::_8x8;
+		ExistUnits::Instance()->m_mapSize = 8;
+		blockSize = blockSize8x8;
+	} else {
+		panelSize = PanelSize::_10x10;
+		ExistUnits::Instance()->m_mapSize = 10;
+		blockSize = blockSize10x10;
+	}
+
 	//配置場所の範囲決定
-	mapchip.resize(10);
-	for (auto& i : mapchip) {
-		for (int range = 0; range < 10; range++) {
-			i.emplace_back(int(BlockColor::yuka));
-			//i.emplace_back(int(BlockColor::red));
+	if (panelSize == PanelSize::_8x8) {
+		mapchip.resize(8);
+		for (auto& i : mapchip) {
+			for (int range = 0; range < 8; range++) {
+				i.emplace_back(int(BlockColor::yuka));
+			}
+		}
+	} else {
+		mapchip.resize(10);
+		for (auto& i : mapchip) {
+			for (int range = 0; range < 10; range++) {
+				i.emplace_back(int(BlockColor::yuka));
+			}
 		}
 	}
 
