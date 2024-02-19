@@ -73,8 +73,6 @@ void BlockManager::Update(int Step)
 
 	if (recharge!=0) {
 		PassRecharge();
-	} else {
-		passEffectRota = 0.0f;
 	}
 
 	//ブロック配置後に次ブロックの移動を行う
@@ -251,7 +249,8 @@ void BlockManager::SetOneChangeBlock(const int a1, const int a2)
 
 void BlockManager::PassRecharge()
 {
+	recharge--;
+
 	passEffectRota = KuroEngine::Math::Ease(KuroEngine::EASE_CHANGE_TYPE::Out, KuroEngine::EASING_TYPE::Exp,
 		25.0f - recharge, 25.0f, 0.0f, 180.0f);
-	recharge--;
 }

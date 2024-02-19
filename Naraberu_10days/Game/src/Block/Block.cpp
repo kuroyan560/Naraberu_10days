@@ -139,7 +139,7 @@ void Block::BlockOneDraw(const KuroEngine::Vec2<float> _pos, BlockColor _color, 
 	auto tex = _canPut ? blockTex[int(_color)] : lineTex[int(_color)];
 	float alpha = _canPut ? _alpha : 1.0f;
 
-	DrawFunc2D::DrawRotaGraph2D(pos1, { 0.97f,0.97f }, rota, tex, alpha);
+	DrawFunc2D::DrawRotaGraph2D(pos1, { blockSize / 64.0f,blockSize / 64.0f }, rota, tex, alpha);
 }
 
 void Block::BlockOneDraw(const KuroEngine::Vec2<int> _shape, const KuroEngine::Vec2<float> pos, const BlockColor _color,const float _alpha)
