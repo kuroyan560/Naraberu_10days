@@ -21,7 +21,7 @@ void PerfectBonusEffect::OnChangeStatus()
 			for (auto& ui : m_enemyDamageUIArray)
 			{
 				ui.lock()->SetStopDisappear(false);
-				ui.lock()->Mul(3, true, true);
+				ui.lock()->Mul(3, true, true, 0.0f);
 			}
 			m_bonus.m_draw = true;
 			return;

@@ -7,7 +7,7 @@
 #include"../SoundConfig.h"
 #include"../RefreshRate.h"
 
-void SkillResultUI::CommonInitOnStart(float arg_appearTime)
+void SkillResultUI::CommonInitOnStart(float arg_appearTime, float arg_disappearDelay)
 {
 	//振動パラメータ
 	const float SHAKE_TIME = 15.0f;
@@ -17,6 +17,9 @@ void SkillResultUI::CommonInitOnStart(float arg_appearTime)
 
 	//表示時間
 	m_appearTimer.Reset(arg_appearTime);
+
+	//待機時間
+	m_disappearDelayTimer.Reset(arg_disappearDelay);
 
 	//退場時間
 	const float DISAPPEAR_TIME = 25.0f;
@@ -83,7 +86,9 @@ void SkillResultUI::Update(std::weak_ptr<ParticleEmitter>arg_ultParticleEmitter)
 	m_impactShake.Update(1.0f);
 
 	//退場開始までの時間
-	if (m_appearTimer.UpdateTimer(1.0f / RefreshRate::RefreshRate_Mag) && !m_stopDisappear)
+	if (m_appearTimer.UpdateTimer(1.0f / RefreshRate::RefreshRate_Mag)
+		&& m_disappearDelayTimer.UpdateTimer(1.0f / RefreshRate::RefreshRate_Mag)
+		&& !m_stopDisappear)
 	{
 		//退場中
 		m_disappearTimer.UpdateTimer(1.0f / RefreshRate::RefreshRate_Mag);
@@ -160,11 +165,11 @@ void SkillResultUI::Draw()
 	}
 }
 
-void SkillResultUI::Add(int arg_damage, bool arg_drawHistory)
+void SkillResultUI::Add(int arg_damage, bool arg_drawHistory, float arg_disappearDelay)
 {
 	const float APPEAR_TIME = 45.0f;
 
-	CommonInitOnStart(APPEAR_TIME);
+	CommonInitOnStart(APPEAR_TIME, arg_disappearDelay);
 
 	m_amount += arg_damage;
 	if (arg_drawHistory)
@@ -177,13 +182,13 @@ void SkillResultUI::Add(int arg_damage, bool arg_drawHistory)
 	}
 }
 
-void SkillResultUI::Mul(int arg_mulAmount, bool arg_drawHistory, bool arg_isPerfect)
+void SkillResultUI::Mul(int arg_mulAmount, bool arg_drawHistory, bool arg_isPerfect, float arg_disappearDelay)
 {
 	if (m_amount == 0)return;
 
 	const float APPEAR_TIME = 90.0f;
 
-	CommonInitOnStart(APPEAR_TIME);
+	CommonInitOnStart(APPEAR_TIME, arg_disappearDelay);
 
 	m_amount *= arg_mulAmount;
 	if (arg_drawHistory)

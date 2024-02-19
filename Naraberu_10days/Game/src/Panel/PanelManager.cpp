@@ -504,7 +504,7 @@ void PanelManager::BonusDirection(std::vector<std::weak_ptr<SkillResultUI>>arg_e
 
 			for (auto& ui : arg_enemyDamageUI)
 			{
-				ui.lock()->Add(1, true);
+				ui.lock()->Add(1, true, 60.0f);
 			}
 		}
 	}

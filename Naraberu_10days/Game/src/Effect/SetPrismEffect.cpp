@@ -68,7 +68,7 @@ void SetPrismEffect::Update(std::weak_ptr<PanelManager>arg_panelManager, std::we
 
 		for (auto& ui : m_activeUIArray)
 		{
-			ui->Add(m_amountPerOneBlock, true);
+			ui->Add(m_amountPerOneBlock, true, 0.0f);
 		}
 
 		//SEÄ¶

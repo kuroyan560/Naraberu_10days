@@ -78,15 +78,17 @@ private:
 
 	bool m_stopDisappear = false;
 
-	void CommonInitOnStart(float arg_appearTime);
+	KuroEngine::Timer m_disappearDelayTimer;
+
+	void CommonInitOnStart(float arg_appearTime, float arg_disappearDelay);
 public:
 	SkillResultUI();
 	void Init();
 	void Update(std::weak_ptr<ParticleEmitter>arg_ultParticleEmitter);
 	void Draw();
 
-	void Add(int arg_damage, bool arg_drawHistory);
-	void Mul(int arg_mulAmount, bool arg_drawHistory, bool arg_isPerfect);
+	void Add(int arg_damage, bool arg_drawHistory, float arg_disappearDelay);
+	void Mul(int arg_mulAmount, bool arg_drawHistory, bool arg_isPerfect, float arg_disappearDelay);
 
 	//ìoèÍà íuÇÃê›íË
 	void Set(SKILL arg_skill, KuroEngine::Vec2<float>arg_appearPos, float arg_disappearPosX)
