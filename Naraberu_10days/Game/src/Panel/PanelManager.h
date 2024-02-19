@@ -12,7 +12,15 @@ class PanelManager
 {
 public:
 
+	enum class BonusKind {
+		color,
+		line,
+		gold,
+		size,
+	};
+
 	struct BonusData {
+		BonusKind bonusKind;
 		std::vector<KuroEngine::Vec2<int>> pos;
 		BlockColor color;
 		bool mass;
@@ -209,6 +217,8 @@ private:
 	PanelSize panelSize;
 	//block一つの大きさ
 	float blockSize;
+	//ボーナス種類文字画像
+	std::array<std::shared_ptr<KuroEngine::TextureBuffer>, int(BonusKind::size)> bonusKindTex;
 	//ボーナス文字画像
 	std::shared_ptr<KuroEngine::TextureBuffer> bonusTex;
 	//ボーナス!!!画像
