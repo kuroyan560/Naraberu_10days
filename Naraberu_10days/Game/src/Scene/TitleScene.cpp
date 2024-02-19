@@ -174,7 +174,7 @@ void TitleScene::StageSelect()
 			if (title->GetStageNum() == 1) {
 				ExistUnits::Instance()->m_StageName = "Tutorial";
 			}
-			else if (title->GetStageNum() == 6) {
+			else if (title->GetStageNum() == 9) {
 				ExistUnits::Instance()->m_StageName = "Challenge";
 			}
 			ExistUnits::Instance()->m_Now_Stage_Index = title->GetStageNum() - 1;

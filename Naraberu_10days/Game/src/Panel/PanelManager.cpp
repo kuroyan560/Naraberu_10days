@@ -441,7 +441,7 @@ void PanelManager::BonusDirection(std::vector<std::weak_ptr<SkillResultUI>>arg_e
 		return;
 	}
 
-	float maxTimer = 10.0f * RefreshRate::RefreshRate_Mag;
+	float maxTimer = 20.0f * RefreshRate::RefreshRate_Mag;
 
 	if (bonusTimer == 0) {
 		SoundConfig::Instance()->Play(SoundConfig::SE_BONUS_ATTACK_COUNT, -1, -1, nowBonusNum == 0);
