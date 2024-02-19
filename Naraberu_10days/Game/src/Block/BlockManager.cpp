@@ -73,6 +73,8 @@ void BlockManager::Update(int Step)
 
 	if (recharge!=0) {
 		PassRecharge();
+	} else {
+		passEffectRota = 0.0f;
 	}
 
 	//ブロック配置後に次ブロックの移動を行う
