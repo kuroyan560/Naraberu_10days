@@ -20,8 +20,14 @@ public:
 	};
 
 	struct BonusData {
+		bool isAlive;
+		float timer;
+		bool isUp;
+		char isAlpha;//0->0~1/1->1~1/2->1~0
 		BonusKind bonusKind;
 		std::vector<KuroEngine::Vec2<int>> pos;
+		float upY;
+		float alpha;
 		BlockColor color;
 		bool mass;
 	};

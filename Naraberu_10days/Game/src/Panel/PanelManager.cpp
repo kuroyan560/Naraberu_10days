@@ -108,6 +108,43 @@ void PanelManager::Update(std::vector<std::weak_ptr<SkillResultUI>>arg_enemyDama
 		PerfectBonus(arg_enemyDamageUI, arg_perfectBonusEffect);
 	}
 
+
+	for (auto& i : bonusData) {
+		if (!i.isAlive) { continue; }
+		i.timer++;
+		//alpha更新
+		if (i.isAlpha==0) {
+			i.alpha = KuroEngine::Math::Ease(KuroEngine::EASE_CHANGE_TYPE::Out, KuroEngine::EASING_TYPE::Back,
+				i.timer, 10.0f, 0.0f, 1.0f);
+			if (i.timer >= 20.0f) {
+				i.isAlpha = 1;
+			}
+		} else if (i.isAlpha == 2) {
+			i.alpha = KuroEngine::Math::Ease(KuroEngine::EASE_CHANGE_TYPE::Out, KuroEngine::EASING_TYPE::Back,
+				i.timer, 10.0f, 1.0f, 0.0f);
+
+			if (i.timer >= 20.0f) {
+				i.isAlive = false;
+				i.isAlpha = 1;
+			}
+		}
+
+		//位置
+		if (i.isUp == true) {
+			i.upY = KuroEngine::Math::Ease(KuroEngine::EASE_CHANGE_TYPE::Out, KuroEngine::EASING_TYPE::Back,
+				i.timer, 10.0f, -20.0f, 0.0f);
+			if (i.timer >= 20.0f) {
+				i.isUp = false;
+			}
+		}
+
+		if (i.timer >= 20.0f) {
+			if (i.isAlpha == 1) {
+				i.isAlpha = 2;
+			}
+		}
+	}
+
 	OneProcess();
 }
 
@@ -152,28 +189,33 @@ void PanelManager::BonusDraw()
 		for (int i = 0; i<int(bonusData.size()); i++) {
 			if (i > nowBonusNum) { continue; }
 			KuroEngine::Vec2<float> pos = { bonusPos[i].x * blockSize + difference.x,bonusPos[i].y * blockSize + difference.y };
+			KuroEngine::Vec2<float> upPos = { 0.0f,bonusData[i].upY };
 
 			//ボーナス文字
 			if (bonusData[i].bonusKind == BonusKind::color) {
 				const KuroEngine::Vec2 bonusSize = { 91.0f,26.0f };
 				const KuroEngine::Vec2 distPos = { 0.0f,-25.0f };
-				KuroEngine::DrawFunc2D::DrawExtendGraph2D(pos + distPos, pos + bonusSize + distPos, bonusKindTex[int(BonusKind::color)]);
-			}else if (bonusData[i].bonusKind == BonusKind::line) {
+				KuroEngine::DrawFunc2D::DrawExtendGraph2D(
+					pos + distPos + upPos, pos + bonusSize + distPos + upPos, bonusKindTex[int(BonusKind::color)], bonusData[i].alpha);
+			} else if (bonusData[i].bonusKind == BonusKind::line) {
 				const KuroEngine::Vec2 bonusSize = { 72.0f,26.0f };
 				const KuroEngine::Vec2 distPos = { 0.0f,-25.0f };
-				KuroEngine::DrawFunc2D::DrawExtendGraph2D(pos + distPos, pos + bonusSize + distPos, bonusKindTex[int(BonusKind::line)]);
+				KuroEngine::DrawFunc2D::DrawExtendGraph2D(
+					pos + distPos + upPos, pos + bonusSize + distPos + upPos, bonusKindTex[int(BonusKind::line)], bonusData[i].alpha);
 			}if (bonusData[i].bonusKind == BonusKind::gold) {
 				const KuroEngine::Vec2 bonusSize = { 72.0f,26.0f };
 				const KuroEngine::Vec2 distPos = { 0.0f,-25.0f };
-				KuroEngine::DrawFunc2D::DrawExtendGraph2D(pos + distPos, pos + bonusSize + distPos, bonusKindTex[int(BonusKind::gold)]);
+				KuroEngine::DrawFunc2D::DrawExtendGraph2D(
+					pos + distPos + upPos, pos + bonusSize + distPos + upPos, bonusKindTex[int(BonusKind::gold)], bonusData[i].alpha);
 			}
 
 			//ボーナス文字
 			const KuroEngine::Vec2 bonusSize = { 99.0f,20.0f };
-			KuroEngine::DrawFunc2D::DrawExtendGraph2D(pos, { pos.x + bonusSize.x,pos.y + bonusSize.y }, bonusTex);
+			KuroEngine::DrawFunc2D::DrawExtendGraph2D(pos + upPos, pos + bonusSize + upPos, bonusTex, bonusData[i].alpha);
 
 			const KuroEngine::Vec2 numSize = { 18.0f,20.0f };
-			KuroEngine::DrawFunc2D::DrawNumber2D(i + 1, { pos.x + numSize.x + 20.0f ,pos.y + numSize.y }, bonusNumberTex.data());
+			KuroEngine::DrawFunc2D::DrawNumber2D(i + 1, { pos.x + numSize.x + 20.0f ,pos.y + numSize.y + upPos.y },
+				bonusNumberTex.data(), { 1.0f,1.0f }, bonusData[i].alpha);
 		}
 
 		for (int i = 0; i<int(bonusData.size()); i++) {
@@ -310,6 +352,8 @@ void PanelManager::MassProcess()
 			}
 			bonusData[count].bonusKind = BonusKind::color;
 			bonusData[count].color = BlockColor(mapchip[y][x]);
+			bonusData[count].upY = -10.0f;
+			bonusData[count].alpha = 0.0f;
 			bonusData[count].mass = true;
 			//座標記録
 			bonusPos.emplace_back(center(bonusData[count].pos));
@@ -424,6 +468,8 @@ bool PanelManager::LineBlock(int _number, const KuroEngine::Vec2<int> _lineMap, 
 
 	bonusData[_number].bonusKind = BonusKind::line;
 	bonusData[_number].color = BlockColor(mapchip[_lineMap.y][_lineMap.x]);
+	bonusData[_number].upY = -10.0f;
+	bonusData[_number].alpha = 0.0f;
 	bonusData[_number].mass = false;
 
 	return true;
@@ -469,7 +515,7 @@ void PanelManager::BonusCount()
 	totalBounsNum += int(bonusData.size());
 	nowBonusNum = 0;
 	bonusTimer = 0;
-	isBonusDirection=Bonus::add;
+	isBonusDirection = Bonus::add;
 }
 
 void PanelManager::BonusDirection(std::vector<std::weak_ptr<SkillResultUI>>arg_enemyDamageUI, std::weak_ptr<PerfectBonusEffect>arg_perfectBonusEffect)
@@ -520,6 +566,11 @@ void PanelManager::BonusDirection(std::vector<std::weak_ptr<SkillResultUI>>arg_e
 		}
 		else
 		{
+			bonusData[nowBonusNum].isAlive = true;
+			bonusData[nowBonusNum].isUp = true;
+			bonusData[nowBonusNum].isAlpha = 0;
+			bonusData[nowBonusNum].timer = 0;
+
 			nowBonusNum++;
 			bonusTimer = 0;
 
