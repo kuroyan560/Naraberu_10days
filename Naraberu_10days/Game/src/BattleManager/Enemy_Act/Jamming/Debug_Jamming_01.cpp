@@ -41,14 +41,14 @@ void Debug_Jamming_01::Action_Update()
 		// ランダム生成 3個
 		if (pattern == 0) {
 			for (int i = 0; i < 3; i++) {
-				Vec2<int> SetPos = Vec2<int>(KuroEngine::GetRand(0, 10), KuroEngine::GetRand(0, 10));
+				Vec2<int> SetPos = Vec2<int>(KuroEngine::GetRand(0, ExistUnits::Instance()->m_mapSize), KuroEngine::GetRand(0, ExistUnits::Instance()->m_mapSize));
 				ExistUnits::Instance()->m_StageManager->SetObstacle(SetPos);
 			}
 		}
 		// ランダム生成 3個 プレイヤーに10ダメージ
 		if (pattern == 1) {
 			for (int i = 0; i < 3; i++) {
-				Vec2<int> SetPos = Vec2<int>(KuroEngine::GetRand(0, 10), KuroEngine::GetRand(0, 10));
+				Vec2<int> SetPos = Vec2<int>(KuroEngine::GetRand(0, ExistUnits::Instance()->m_mapSize), KuroEngine::GetRand(0, ExistUnits::Instance()->m_mapSize));
 				ExistUnits::Instance()->m_StageManager->SetObstacle(SetPos);
 			}
 			ExistUnits::Instance()->m_pPlayer->Damage(10);
@@ -57,7 +57,7 @@ void Debug_Jamming_01::Action_Update()
 		// ランダム生成 3個 プレイヤーに20ダメージ
 		if (pattern == 2) {
 			for (int i = 0; i < 3; i++) {
-				Vec2<int> SetPos = Vec2<int>(KuroEngine::GetRand(0, 10), KuroEngine::GetRand(0, 10));
+				Vec2<int> SetPos = Vec2<int>(KuroEngine::GetRand(0, ExistUnits::Instance()->m_mapSize), KuroEngine::GetRand(0, ExistUnits::Instance()->m_mapSize));
 				ExistUnits::Instance()->m_StageManager->SetObstacle(SetPos);
 			}
 			ExistUnits::Instance()->m_pPlayer->Damage(15);
@@ -65,7 +65,7 @@ void Debug_Jamming_01::Action_Update()
 		}
 		// 2 * 2 を生成
 		else if (pattern == 3) {
-			Vec2<int> SetPos = Vec2<int>(KuroEngine::GetRand(0, 9), KuroEngine::GetRand(0, 9));
+			Vec2<int> SetPos = Vec2<int>(KuroEngine::GetRand(0, ExistUnits::Instance()->m_mapSize - 1), KuroEngine::GetRand(0, ExistUnits::Instance()->m_mapSize - 1));
 			ExistUnits::Instance()->m_StageManager->SetObstacle(SetPos);
 			ExistUnits::Instance()->m_StageManager->SetObstacle(SetPos + Vec2(0, 1));
 			ExistUnits::Instance()->m_StageManager->SetObstacle(SetPos + Vec2(1, 0));
@@ -73,7 +73,7 @@ void Debug_Jamming_01::Action_Update()
 		}
 		// 3 * 3 で十字の穴あき を生成
 		else if (pattern == 4) {
-			Vec2<int> SetPos = Vec2<int>(KuroEngine::GetRand(0, 8), KuroEngine::GetRand(0, 8));
+			Vec2<int> SetPos = Vec2<int>(KuroEngine::GetRand(0, ExistUnits::Instance()->m_mapSize - 2), KuroEngine::GetRand(0, ExistUnits::Instance()->m_mapSize - 2));
 			ExistUnits::Instance()->m_StageManager->SetObstacle(SetPos);
 			ExistUnits::Instance()->m_StageManager->SetObstacle(SetPos + Vec2(0, 2));
 			ExistUnits::Instance()->m_StageManager->SetObstacle(SetPos + Vec2(2, 0));
@@ -84,8 +84,8 @@ void Debug_Jamming_01::Action_Update()
 			Vec2<int> SetPos;
 			// (1,1)等全消し不可が確定する配置はダメ
 			while (1) {
-				SetPos = Vec2<int>(KuroEngine::GetRand(1, 9), KuroEngine::GetRand(1, 9));
-				if (SetPos == Vec2(1, 1) || SetPos == Vec2(8, 8) || SetPos == Vec2(1, 8) || SetPos == Vec2(8, 1)) {
+				SetPos = Vec2<int>(KuroEngine::GetRand(1, ExistUnits::Instance()->m_mapSize - 1), KuroEngine::GetRand(1, ExistUnits::Instance()->m_mapSize - 1));
+				if (SetPos == Vec2(1, 1) || SetPos == Vec2(ExistUnits::Instance()->m_mapSize - 2, ExistUnits::Instance()->m_mapSize - 2) || SetPos == Vec2(1, ExistUnits::Instance()->m_mapSize - 2) || SetPos == Vec2(ExistUnits::Instance()->m_mapSize - 2, 1)) {
 					continue;
 				}
 				else {
@@ -103,8 +103,8 @@ void Debug_Jamming_01::Action_Update()
 			Vec2<int> SetPos;
 			// (1,1)等全消し不可が確定する配置はダメ
 			while (1) {
-				SetPos = Vec2<int>(KuroEngine::GetRand(1, 9), KuroEngine::GetRand(1, 9));
-				if (SetPos == Vec2(1, 1) || SetPos == Vec2(8, 8) || SetPos == Vec2(1, 8) || SetPos == Vec2(8, 1)) {
+				SetPos = Vec2<int>(KuroEngine::GetRand(1, ExistUnits::Instance()->m_mapSize - 1), KuroEngine::GetRand(1, ExistUnits::Instance()->m_mapSize - 1));
+				if (SetPos == Vec2(1, 1) || SetPos == Vec2(ExistUnits::Instance()->m_mapSize - 2, ExistUnits::Instance()->m_mapSize - 2) || SetPos == Vec2(1, ExistUnits::Instance()->m_mapSize - 2) || SetPos == Vec2(ExistUnits::Instance()->m_mapSize - 2, 1)) {
 					continue;
 				}
 				else {
@@ -121,7 +121,7 @@ void Debug_Jamming_01::Action_Update()
 		}
 		// 2 * 2 を 2個 生成
 		else if (pattern == 7) {
-			Vec2<int> SetPos = Vec2<int>(KuroEngine::GetRand(0, 9), KuroEngine::GetRand(0, 9));
+			Vec2<int> SetPos = Vec2<int>(KuroEngine::GetRand(0, ExistUnits::Instance()->m_mapSize - 1), KuroEngine::GetRand(0, ExistUnits::Instance()->m_mapSize - 1));
 			ExistUnits::Instance()->m_StageManager->SetObstacle(SetPos);
 			ExistUnits::Instance()->m_StageManager->SetObstacle(SetPos + Vec2(0, 1));
 			ExistUnits::Instance()->m_StageManager->SetObstacle(SetPos + Vec2(1, 0));
@@ -129,7 +129,7 @@ void Debug_Jamming_01::Action_Update()
 			// 同じ位置は避ける
 			Vec2 Old = SetPos;
 			while (1) {
-				SetPos = Vec2<int>(KuroEngine::GetRand(0, 9), KuroEngine::GetRand(0, 9));
+				SetPos = Vec2<int>(KuroEngine::GetRand(0, ExistUnits::Instance()->m_mapSize - 1), KuroEngine::GetRand(0, ExistUnits::Instance()->m_mapSize - 1));
 				if (Old != SetPos) {
 					break;
 				}
@@ -141,7 +141,7 @@ void Debug_Jamming_01::Action_Update()
 		}
 		// 2 * 2 を 2個 生成 ＆ プレイヤーに60ダメージ
 		else if (pattern == 8) {
-			Vec2<int> SetPos = Vec2<int>(KuroEngine::GetRand(0, 9), KuroEngine::GetRand(0, 9));
+			Vec2<int> SetPos = Vec2<int>(KuroEngine::GetRand(0, ExistUnits::Instance()->m_mapSize - 1), KuroEngine::GetRand(0, ExistUnits::Instance()->m_mapSize - 1));
 			ExistUnits::Instance()->m_StageManager->SetObstacle(SetPos);
 			ExistUnits::Instance()->m_StageManager->SetObstacle(SetPos + Vec2(0, 1));
 			ExistUnits::Instance()->m_StageManager->SetObstacle(SetPos + Vec2(1, 0));
@@ -149,7 +149,7 @@ void Debug_Jamming_01::Action_Update()
 			// 同じ位置は避ける
 			Vec2 Old = SetPos;
 			while (1) {
-				SetPos = Vec2<int>(KuroEngine::GetRand(0, 9), KuroEngine::GetRand(0, 9));
+				SetPos = Vec2<int>(KuroEngine::GetRand(0, ExistUnits::Instance()->m_mapSize - 1), KuroEngine::GetRand(0, ExistUnits::Instance()->m_mapSize - 1));
 				if (Old != SetPos) {
 					break;
 				}
@@ -163,7 +163,7 @@ void Debug_Jamming_01::Action_Update()
 		}
 		// 3 * 3 で十字の穴あき を生成 ＆ プレイヤーに70ダメージ
 		else if (pattern == 9) {
-		Vec2<int> SetPos = Vec2<int>(KuroEngine::GetRand(0, 8), KuroEngine::GetRand(0, 8));
+		Vec2<int> SetPos = Vec2<int>(KuroEngine::GetRand(0, ExistUnits::Instance()->m_mapSize - 2), KuroEngine::GetRand(0, ExistUnits::Instance()->m_mapSize - 2));
 		ExistUnits::Instance()->m_StageManager->SetObstacle(SetPos);
 		ExistUnits::Instance()->m_StageManager->SetObstacle(SetPos + Vec2(0, 2));
 		ExistUnits::Instance()->m_StageManager->SetObstacle(SetPos + Vec2(2, 0));
