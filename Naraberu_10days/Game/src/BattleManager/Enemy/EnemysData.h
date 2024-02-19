@@ -177,12 +177,12 @@ namespace EnemysData {
 	static const EnemyData Inu_Tutorial_3 =		EnemyData("inu_blue", ENEMY_TAG::DEFAULT, 48, 5, 0, 0, AI_TYPE::TUTORIAL, "Attack_01", "Attack_01", "Attack_01");
 
 	static const EnemyData Inu_Level_1 =		EnemyData("inu_blue", ENEMY_TAG::DEFAULT, 16, 5, 10, 0, AI_TYPE::HEAL, "Attack_01", "Heal_01", "Heal_01");
-	static const EnemyData Lizard_Level_1 =		EnemyData("lizard_blue", ENEMY_TAG::DEFAULT, 16, 10, 0, 0, AI_TYPE::DEFAULT, "Attack_01", "Attack_01", "Attack_01");
+	static const EnemyData Lizard_Level_1 =		EnemyData("lizard_blue", ENEMY_TAG::DEFAULT, 24, 10, 0, 0, AI_TYPE::DEFAULT, "Attack_01", "Attack_01", "Attack_01");
 	static const EnemyData Zako_Level_1 =		EnemyData("zako_blue", ENEMY_TAG::DEFAULT, 16, 5, 0, 100000, AI_TYPE::JAMMING, "Attack_01", "Jamming_01", "Jamming_01");
 
-	static const EnemyData Inu_Level_2 =		EnemyData("inu_yellow", ENEMY_TAG::DEFAULT, 32, 10, 20, 0, AI_TYPE::HEAL, "Attack_01", "Heal_01", "Heal_01");
+	static const EnemyData Inu_Level_2 =		EnemyData("inu_yellow", ENEMY_TAG::DEFAULT, 36, 10, 20, 0, AI_TYPE::HEAL, "Attack_01", "Heal_01", "Heal_01");
 	static const EnemyData Lizard_Level_2 =		EnemyData("lizard_yellow", ENEMY_TAG::DEFAULT, 48, 25, 0, 0, AI_TYPE::DEFAULT, "Attack_01", "Attack_01", "Attack_01");
-	static const EnemyData Zako_Level_2 =		EnemyData("zako_yellow", ENEMY_TAG::DEFAULT, 32, 15, 0, 111000, AI_TYPE::JAMMING, "Attack_01", "Jamming_01", "Jamming_01");
+	static const EnemyData Zako_Level_2 =		EnemyData("zako_yellow", ENEMY_TAG::DEFAULT, 36, 20, 0, 111000, AI_TYPE::JAMMING, "Attack_01", "Attack_01", "Jamming_01");
 
 	static const EnemyData Inu_Blue_1 =			EnemyData("inu_blue", ENEMY_TAG::DEFAULT, 48, 15, 20, 0, AI_TYPE::HEAL, "Attack_01", "Heal_01", "Heal_01");
 	static const EnemyData Inu_Yellow_1 =		EnemyData("inu_yellow", ENEMY_TAG::DEFAULT, 64, 15, 30, 0, AI_TYPE::HEAL, "Attack_01", "Heal_01", "Heal_01");
