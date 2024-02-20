@@ -8,6 +8,10 @@ const KuroEngine::Vec2<float> c_pos = { 700.0f,400.0f };
 const KuroEngine::Vec2<float> u_pos = { 950.0f,250.0f };
 const KuroEngine::Vec2<float> d_pos = { 850.0f,600.0f };
 
+//-1->tutorial/0->チャレンジ
+const std::array<int, TitleUi::stage> stageNameForward = { -1,1,1,2,2,2,3,0 };
+const std::array<int, TitleUi::stage> stageNameBackward = { -1,1,2,1,2,3,1,0 };
+
 TitleUi::TitleUi()
 {
 	using namespace KuroEngine;
@@ -119,14 +123,14 @@ void TitleUi::Draw()
 			stageTexInfo[i].pos.x + number_dist.x * stageTexInfo[i].scale,
 			stageTexInfo[i].pos.y + number_dist.y * stageTexInfo[i].scale};
 			//1-
-			KuroEngine::DrawFunc2D::DrawNumber2D(1, inpos, numTex.data(), { 1.0f,1.0f },
+			KuroEngine::DrawFunc2D::DrawNumber2D(stageNameForward[i], inpos, numTex.data(), {1.0f,1.0f},
 				1.0f, 0.0f, KuroEngine::HORIZONTAL_ALIGN::LEFT, KuroEngine::VERTICAL_ALIGN::TOP, 0, -1, 10);
 
 			inpos = {
 			stageTexInfo[i].pos.x + number_dist.x * stageTexInfo[i].scale + 120.0f * stageTexInfo[i].scale,
 			stageTexInfo[i].pos.y + number_dist.y * stageTexInfo[i].scale};
 			//ステージ番号
-			KuroEngine::DrawFunc2D::DrawNumber2D(i, inpos, numTex.data());
+			KuroEngine::DrawFunc2D::DrawNumber2D(stageNameBackward[i], inpos, numTex.data());
 
 			//クリア文字
 			if(!ExistUnits::Instance()->m_Stage_Already_Clear[i]){continue;}
