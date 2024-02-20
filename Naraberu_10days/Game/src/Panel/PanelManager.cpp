@@ -108,7 +108,7 @@ void PanelManager::Update(std::vector<std::weak_ptr<SkillResultUI>>arg_enemyDama
 		PerfectBonus(arg_enemyDamageUI, arg_perfectBonusEffect);
 	}
 
-
+	//ボーナス表示処理
 	for (auto& i : bonusData) {
 		if (!i.isAlive) { continue; }
 		i.timer++;
@@ -138,9 +138,11 @@ void PanelManager::Update(std::vector<std::weak_ptr<SkillResultUI>>arg_enemyDama
 			}
 		}
 
-		if (i.timer >= 20.0f) {
+		//消える処理に移行
+		if (i.timer >= 30.0f) {
 			if (i.isAlpha == 1) {
 				i.isAlpha = 2;
+				i.timer = 0;
 			}
 		}
 	}
