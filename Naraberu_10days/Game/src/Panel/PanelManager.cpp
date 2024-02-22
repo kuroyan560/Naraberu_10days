@@ -523,11 +523,14 @@ void PanelManager::BonusCount()
 	bonusTimer = 0;
 	isBonusDirection = Bonus::add;
 
-	bonusData[nowBonusNum].isAlive = true;
-	bonusData[nowBonusNum].isUp = true;
-	bonusData[nowBonusNum].isAlpha = 0;
-	bonusData[nowBonusNum].timer = 0;
-	nowBonusNum++;
+	if (!bonusData.empty())
+	{
+		bonusData[nowBonusNum].isAlive = true;
+		bonusData[nowBonusNum].isUp = true;
+		bonusData[nowBonusNum].isAlpha = 0;
+		bonusData[nowBonusNum].timer = 0;
+		nowBonusNum++;
+	}
 }
 
 void PanelManager::BonusDirection(std::vector<std::weak_ptr<SkillResultUI>>arg_enemyDamageUI, std::weak_ptr<PerfectBonusEffect>arg_perfectBonusEffect)
