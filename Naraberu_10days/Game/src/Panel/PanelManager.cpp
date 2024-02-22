@@ -56,7 +56,7 @@ void PanelManager::Initialize()
 	//ƒpƒlƒ‹‚Ì‘å‚«‚³	
 	char stageName = ExistUnits::Instance()->m_StageName.back();
 
-	if (stageName == *std::string("l").c_str() || stageName == *std::string("1").c_str() || stageName == *std::string("2").c_str()) {
+	if (stageName == *std::string("1").c_str() || stageName == *std::string("2").c_str()) {
 		panelSize = PanelSize::_8x8;
 		ExistUnits::Instance()->m_mapSize = 8;
 		blockSize = blockSize8x8;
@@ -363,14 +363,17 @@ void PanelManager::MassProcess()
 			if (massNum > 8) {
 				bonusData.emplace_back(bonusData[count]);
 				bonusPos.emplace_back(center(bonusData[count].pos));
+				count++;
 			}
 			if (massNum > 11) {
 				bonusData.emplace_back(bonusData[count]);
 				bonusPos.emplace_back(center(bonusData[count].pos));
+				count++;
 			}
 			if (massNum > 14) {
 				bonusData.emplace_back(bonusData[count]);
 				bonusPos.emplace_back(center(bonusData[count].pos));
+				count++;
 			}
 
 			//ŽŸ
