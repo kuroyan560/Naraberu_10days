@@ -114,16 +114,17 @@ void PanelManager::Update(std::vector<std::weak_ptr<SkillResultUI>>arg_enemyDama
 		i.timer++;
 		//alpha更新
 		if (i.isAlpha==0) {
-			i.alpha = KuroEngine::Math::Ease(KuroEngine::EASE_CHANGE_TYPE::Out, KuroEngine::EASING_TYPE::Back,
-				i.timer, 10.0f, 0.0f, 1.0f);
-			if (i.timer >= 20.0f) {
+			/*i.alpha = KuroEngine::Math::Ease(KuroEngine::EASE_CHANGE_TYPE::Out, KuroEngine::EASING_TYPE::Back,
+				i.timer, 10.0f, 0.0f, 1.0f);*/
+			i.alpha = 1.0f;
+			if (i.timer >= 90.0f) {
 				i.isAlpha = 1;
 			}
 		} else if (i.isAlpha == 2) {
 			i.alpha = KuroEngine::Math::Ease(KuroEngine::EASE_CHANGE_TYPE::Out, KuroEngine::EASING_TYPE::Back,
-				i.timer, 10.0f, 1.0f, 0.0f);
+				i.timer, 60.0f, 1.0f, 0.0f);
 
-			if (i.timer >= 20.0f) {
+			if (i.timer >= 60.0f) {
 				i.isAlive = false;
 				i.isAlpha = 1;
 			}
@@ -131,8 +132,8 @@ void PanelManager::Update(std::vector<std::weak_ptr<SkillResultUI>>arg_enemyDama
 
 		//位置
 		if (i.isUp == true) {
-			i.upY = KuroEngine::Math::Ease(KuroEngine::EASE_CHANGE_TYPE::Out, KuroEngine::EASING_TYPE::Back,
-				i.timer, 10.0f, -20.0f, 0.0f);
+			i.upY = KuroEngine::Math::Ease(KuroEngine::EASE_CHANGE_TYPE::Out, KuroEngine::EASING_TYPE::Elastic,
+				i.timer, 10.0f, -120.0f, 0.0f);
 			if (i.timer >= 20.0f) {
 				i.isUp = false;
 			}
@@ -228,7 +229,7 @@ void PanelManager::BonusDraw()
 				KuroEngine::Vec2<float> pos = {
 				itr.x * blockSize + difference.x + blockSize / 2.0f ,itr.y * blockSize + difference.y + blockSize / 2.0f };
 
-				KuroEngine::DrawFunc2D::DrawRotaGraph2D(pos, { 1.0f,1.0f }, bonusAngle * (3.14f / 180.0f),
+				KuroEngine::DrawFunc2D::DrawRotaGraph2D(pos, { bonusEaseScale,bonusEaseScale }, bonusAngle * (3.14f / 180.0f),
 					blockTex[int(bonusData[i].color)], bonusAlpha, { 0.5f,0.5f }, KuroEngine::AlphaBlendMode::AlphaBlendMode_Add);
 			}
 		}
@@ -521,6 +522,12 @@ void PanelManager::BonusCount()
 	nowBonusNum = 0;
 	bonusTimer = 0;
 	isBonusDirection = Bonus::add;
+
+	bonusData[nowBonusNum].isAlive = true;
+	bonusData[nowBonusNum].isUp = true;
+	bonusData[nowBonusNum].isAlpha = 0;
+	bonusData[nowBonusNum].timer = 0;
+	nowBonusNum++;
 }
 
 void PanelManager::BonusDirection(std::vector<std::weak_ptr<SkillResultUI>>arg_enemyDamageUI, std::weak_ptr<PerfectBonusEffect>arg_perfectBonusEffect)
@@ -534,19 +541,19 @@ void PanelManager::BonusDirection(std::vector<std::weak_ptr<SkillResultUI>>arg_e
 		return;
 	}
 
-	float maxTimer = 20.0f * RefreshRate::RefreshRate_Mag;
+	float maxTimer = 25.0f * RefreshRate::RefreshRate_Mag;
 
 	if (bonusTimer == 0) {
-		SoundConfig::Instance()->Play(SoundConfig::SE_BONUS_ATTACK_COUNT, -1, -1, nowBonusNum == 0);
+		SoundConfig::Instance()->Play(SoundConfig::SE_BONUS_ATTACK_COUNT, -1, -1, nowBonusNum == 1);
 
 	}
 
-	bonusEaseScale = KuroEngine::Math::Ease(KuroEngine::EASE_CHANGE_TYPE::Out, KuroEngine::EASING_TYPE::Quart,
-		bonusTimer, maxTimer, 1.0f, 1.5f);
-	bonusAngle = KuroEngine::Math::Ease(KuroEngine::EASE_CHANGE_TYPE::Out, KuroEngine::EASING_TYPE::Quart,
+	bonusEaseScale = KuroEngine::Math::Ease(KuroEngine::EASE_CHANGE_TYPE::Out, KuroEngine::EASING_TYPE::Back,
+		bonusTimer, maxTimer, 1.2f, 1.0f);
+	bonusAngle = KuroEngine::Math::Ease(KuroEngine::EASE_CHANGE_TYPE::Out, KuroEngine::EASING_TYPE::Elastic,
 		bonusTimer, maxTimer, 0, 90.0f);
-	bonusAlpha = KuroEngine::Math::Ease(KuroEngine::EASE_CHANGE_TYPE::Out, KuroEngine::EASING_TYPE::Quart,
-		bonusTimer, maxTimer, 1.0f, 0.0f);
+	bonusAlpha = KuroEngine::Math::Ease(KuroEngine::EASE_CHANGE_TYPE::In, KuroEngine::EASING_TYPE::Circ,
+		bonusTimer, maxTimer, 0.8f, 0.1f);
 
 	//時間になったら次に行く
 	bonusTimer++;
