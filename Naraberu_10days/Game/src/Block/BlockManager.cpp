@@ -109,6 +109,16 @@ void BlockManager::Draw()
 	block[int(m_nowChoice)].block->Draw(true, shape[block[int(m_nowChoice)].blockNum],
 		block[int(m_nowChoice)].attribute, block[int(m_nowChoice)].color, passEffectRota, 0.6f, changePrismScale);
 
+	//choice1表示のブロック
+	block[int(ObjectType::choice1)].block->Draw(shape[block[int(ObjectType::choice1)].blockNum],
+		shape_dist[block[int(ObjectType::choice1)].blockNum],
+		block[int(ObjectType::choice1)].attribute,
+		block[int(ObjectType::choice1)].color, { 555.0f + choiceOffsetX,y }, nowChoiceAlpha);
+	block[int(ObjectType::choice2)].block->Draw(shape[block[int(ObjectType::choice2)].blockNum],
+		shape_dist[block[int(ObjectType::choice2)].blockNum],
+		block[int(ObjectType::choice2)].attribute,
+		block[int(ObjectType::choice2)].color, { 445.0f + choiceOffsetX,y }, nowChoiceAlpha);
+
 	//nextChoice1表示のブロック
 	block[int(ObjectType::nextChoice1)].block->Draw(shape[block[int(ObjectType::nextChoice1)].blockNum],
 		shape_dist[block[int(ObjectType::nextChoice1)].blockNum],
