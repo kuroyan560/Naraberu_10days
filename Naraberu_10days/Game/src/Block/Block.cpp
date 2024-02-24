@@ -40,13 +40,13 @@ void Block::Update()
 {
 }
 
-void Block::Draw(bool _isSelect,const std::vector<KuroEngine::Vec2<int>> _shape, const BlockAttribute _attribute, const BlockColor _color, const float _rota, const float _alpha)
+void Block::Draw(bool _isSelect, const std::vector<KuroEngine::Vec2<int>> _shape, const BlockAttribute _attribute, const BlockColor _color, const float _rota, const float _alpha, const float _scale)
 {
 	for (auto& i : _shape) {
 		KuroEngine::Vec2<float> inpos = { (pos.x + i.x) * blockSize + difference.x , (pos.y + i.y) * blockSize + difference.y };
 		inpos += ScreenShakeManager::Instance()->GetOffset();
 		BlockOneDraw(inpos, _color, _rota,
-			_isSelect ? ExistUnits::Instance()->m_StageManager->CanSetBlock(pos + i) : false, _alpha);
+			_isSelect ? ExistUnits::Instance()->m_StageManager->CanSetBlock(pos + i) : false, _alpha, _scale);
 	}
 
 	ActionDraw({ (pos.x + shapeMax.x) * blockSize + difference.x, (pos.y + shapeMin.y) * blockSize + difference.y }, _attribute, _alpha);
@@ -128,7 +128,7 @@ void Block::ChangeBlock(const KuroEngine::Vec2<int> _mapchipNum, const std::vect
 	pos.y -= int(shapeMax.y + pos.y >= max.y) * (shapeMax.y + pos.y - max.y + 1);
 }
 
-void Block::BlockOneDraw(const KuroEngine::Vec2<float> _pos, BlockColor _color, const float _rota, const bool _canPut, const float _alpha)
+void Block::BlockOneDraw(const KuroEngine::Vec2<float> _pos, BlockColor _color, const float _rota, const bool _canPut, const float _alpha, const float _scale)
 {
 	using namespace KuroEngine;
 
@@ -142,7 +142,7 @@ void Block::BlockOneDraw(const KuroEngine::Vec2<float> _pos, BlockColor _color, 
 	auto tex = _canPut ? blockTex[int(_color)] : lineTex[int(_color)];
 	float alpha = _canPut ? _alpha : 1.0f;
 
-	DrawFunc2D::DrawRotaGraph2D(pos1, { blockSize / 64.0f,blockSize / 64.0f }, rota, tex, alpha);
+	DrawFunc2D::DrawRotaGraph2D(pos1, { blockSize / 64.0f * _scale,blockSize / 64.0f * _scale }, rota, tex, alpha);
 }
 
 void Block::BlockOneDraw(const KuroEngine::Vec2<int> _shape, const KuroEngine::Vec2<float> pos, const BlockColor _color,const float _alpha)

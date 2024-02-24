@@ -99,13 +99,15 @@ void BlockManager::Draw()
 	float nowChoiceAlpha = KuroEngine::Math::Ease(Out, Cubic, m_changePrismTimer.GetTimeRate(), nextChoiceAlphaMin, 1.0f);
 	float nextChoiceAlpha = KuroEngine::Math::Ease(Out, Cubic, m_changePrismTimer.GetTimeRate(), 0.0f, nextChoiceAlphaMin);
 
+	float changePrismScale = KuroEngine::Math::Ease(Out, Back, m_changePrismTimer.GetTimeRate(), 0.0f, 1.0f);
+
 	float y = 633.0f;
 	//選択可能なブロック
 	block[int(ObjectType::choice2) - int(m_nowChoice)].block->Draw(false, shape[block[int(ObjectType::choice2) - int(m_nowChoice)].blockNum],
-		block[int(ObjectType::choice2) - int(m_nowChoice)].attribute, block[int(ObjectType::choice2) - int(m_nowChoice)].color, 0.0f, 0.6f);
+		block[int(ObjectType::choice2) - int(m_nowChoice)].attribute, block[int(ObjectType::choice2) - int(m_nowChoice)].color, 0.0f, 0.6f, changePrismScale);
 	//現在選択されているブロック
 	block[int(m_nowChoice)].block->Draw(true, shape[block[int(m_nowChoice)].blockNum],
-		block[int(m_nowChoice)].attribute, block[int(m_nowChoice)].color, passEffectRota, 0.6f);
+		block[int(m_nowChoice)].attribute, block[int(m_nowChoice)].color, passEffectRota, 0.6f, changePrismScale);
 
 	//nextChoice1表示のブロック
 	block[int(ObjectType::nextChoice1)].block->Draw(shape[block[int(ObjectType::nextChoice1)].blockNum],

@@ -20,7 +20,8 @@ public:
 	/// <param name="_texNum">画像番号</param>
 	/// <param name="_color">色</param>
 	void Draw(bool _isSelect,
-		const std::vector<KuroEngine::Vec2<int>> _shape, const BlockAttribute _attribute, const BlockColor _color, const float _rota = 0.0f, const float _alpha = 1.0f);
+		const std::vector<KuroEngine::Vec2<int>> _shape, const BlockAttribute _attribute, const BlockColor _color, const float _rota = 0.0f, const float _alpha = 1.0f,
+		const float _scale = 1.0f);
 
 	/// <summary>
 	/// 座標有の描画
@@ -53,7 +54,7 @@ public:
 	/// </summary>
 	/// <param name="pos">座標</param>
 	/// <param name="_color">色</param>
-	void BlockOneDraw(const KuroEngine::Vec2<float> pos, const BlockColor _color, const float _rota, const bool _canPut, const float _alpha);
+	void BlockOneDraw(const KuroEngine::Vec2<float> pos, const BlockColor _color, const float _rota, const bool _canPut, const float _alpha, const float _scale);
 
 	/// <summary>
 	/// 
