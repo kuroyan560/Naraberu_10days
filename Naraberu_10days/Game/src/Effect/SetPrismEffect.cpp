@@ -66,9 +66,9 @@ void SetPrismEffect::Update(std::weak_ptr<PanelManager>arg_panelManager, std::we
 		arg_panelManager.lock()->JudgeSet(m_setChipIdxArray.back(), m_color);
 		m_setChipIdxArray.pop_back();
 
-		for (auto& ui : m_activeUIArray)
+		for (int i = 0; i<int(m_activeUIArray.size()); ++i)
 		{
-			ui->Add(m_amountPerOneBlock, true, 0.0f);
+			m_activeUIArray[i]->Add(m_amountPerOneBlock, i == 0, 0.0f);
 		}
 
 		//SEçƒê∂

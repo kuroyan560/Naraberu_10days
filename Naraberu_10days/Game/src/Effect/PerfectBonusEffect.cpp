@@ -18,10 +18,10 @@ void PerfectBonusEffect::OnChangeStatus()
 			SoundConfig::Instance()->Play(SoundConfig::SE_PERFECT, 3);
 			return;
 		case STATUS_APPEAR_BONUS:
-			for (auto& ui : m_enemyDamageUIArray)
+			for (int i = 0; i<int(m_enemyDamageUIArray.size()); ++i)
 			{
-				ui.lock()->SetStopDisappear(false);
-				ui.lock()->Mul(3, true, true, 0.0f);
+				m_enemyDamageUIArray[i].lock()->SetStopDisappear(false);
+				m_enemyDamageUIArray[i].lock()->Mul(3, i == 0, true, 0.0f);
 			}
 			m_bonus.m_draw = true;
 			return;

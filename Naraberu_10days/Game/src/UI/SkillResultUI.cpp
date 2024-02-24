@@ -122,7 +122,7 @@ void SkillResultUI::Update(std::weak_ptr<ParticleEmitter>arg_ultParticleEmitter)
 	{
 		size_t idx = std::distance(m_history.begin(), itr);
 		float baseAlpha = 1.0f - static_cast<float>(idx) / m_history.size();
-		itr->m_alpha = Math::Lerp(baseAlpha, 0.0f, m_appearTimer.GetTimeRate(std::min(1.0f, baseAlpha + 0.5f)));
+		//itr->m_alpha = Math::Lerp(baseAlpha, 0.0f, m_appearTimer.GetTimeRate(std::min(1.0f, baseAlpha + 0.5f)));
 	}
 
 	//if (m_skillType == SKILL_ENEMY_DAMAGE_PERFECT)
@@ -149,19 +149,25 @@ void SkillResultUI::Draw()
 		HORIZONTAL_ALIGN::CENTER, VERTICAL_ALIGN::CENTER, 2);
 
 	//最新のダメージ履歴の描画オフセット座標
-	const Vec2<float>DAMAGE_HIS_OFFSET_POS = { 40.0f,22.0f };
+	const Vec2<float>DAMAGE_HIS_OFFSET_POS = { 86.0f,-90.0f };
 	//履歴間の行間
 	const float DAMAGE_HIS_LINE_SPACE = 29.0f;
 
-	auto damageHisPos = m_appearPos + shake + DAMAGE_HIS_OFFSET_POS;
+	auto damageHisPos = m_nowPos + DAMAGE_HIS_OFFSET_POS;
 	for (auto itr = m_history.begin(); itr != m_history.end(); ++itr)
 	{
-		DrawFunc2D::DrawNumber2D(itr->m_amount, damageHisPos,
+		DrawFunc2D::DrawNumber2D(itr->m_amount, damageHisPos + shake,
 			m_historyNumTex[m_skillType].data(), { m_expand,m_expand }, itr->m_alpha, 0.0f, HORIZONTAL_ALIGN::RIGHT,
 			VERTICAL_ALIGN::TOP, -1, itr->m_isMul ? 11 : 10);
 
 		//行間ずらし
 		damageHisPos.y += DAMAGE_HIS_LINE_SPACE;
+
+		if (WinApp::Instance()->GetExpandWinSize().y < damageHisPos.y)
+		{
+			damageHisPos.x += 42.0f;
+			damageHisPos.y = 0.0f;
+		}
 	}
 }
 
@@ -175,10 +181,10 @@ void SkillResultUI::Add(int arg_damage, bool arg_drawHistory, float arg_disappea
 	if (arg_drawHistory)
 	{
 		m_history.push_front(HistoryInfo(arg_damage, false));
-		if (QUEUE_MAX < static_cast<int>(m_history.size()))
+		/*if (QUEUE_MAX < static_cast<int>(m_history.size()))
 		{
 			m_history.pop_back();
-		}
+		}*/
 	}
 }
 
@@ -193,14 +199,24 @@ void SkillResultUI::Mul(int arg_mulAmount, bool arg_drawHistory, bool arg_isPerf
 	m_amount *= arg_mulAmount;
 	if (arg_drawHistory)
 	{
-		m_history.push_front(HistoryInfo(arg_mulAmount, true));
-		if (QUEUE_MAX < static_cast<int>(m_history.size()))
+		for (int i = 0; i < arg_mulAmount; ++i)
 		{
-			m_history.pop_back();
+			auto copy = m_history;
+			m_history.splice(m_history.end(), copy);
 		}
+		//if (QUEUE_MAX < static_cast<int>(m_history.size()))
+		//{
+		//	m_history.pop_back();
+		//}
 	}
 
 	m_expandTimer.Reset(20.0f);
 	if (arg_isPerfect && m_skillType != SKILL_PLAYER_HEAL)m_skillType = SKILL_ENEMY_DAMAGE_PERFECT;
 	SoundConfig::Instance()->Play(SoundConfig::SE_PERFECT_BONUS_DAMAGE, 5);
+}
+
+void SkillResultUI::SetStopDisappear(bool arg_flg)
+{
+	//if (arg_flg)m_history.clear();
+	m_stopDisappear = arg_flg;
 }

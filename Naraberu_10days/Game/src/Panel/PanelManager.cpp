@@ -544,9 +544,9 @@ void PanelManager::BonusDirection(std::vector<std::weak_ptr<SkillResultUI>>arg_e
 			bonusData[nowBonusNum].isAlpha = 0;
 			bonusData[nowBonusNum].timer = 0;
 
-			for (auto& ui : arg_enemyDamageUI)
+			for (int i = 0; i < int(arg_enemyDamageUI.size()); ++i)
 			{
-				ui.lock()->Add(1, true, 60.0f);
+				arg_enemyDamageUI[i].lock()->Add(1, i == 0, 60.0f);
 			}
 		}
 	}

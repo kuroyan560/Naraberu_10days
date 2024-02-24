@@ -72,7 +72,7 @@ private:
 			:m_amount(arg_amount), m_isMul(arg_isMul) {}
 	};
 	//与ダメージ最大履歴数
-	static const int QUEUE_MAX = 3;
+	//static const int QUEUE_MAX = 3;
 	//与ダメージ履歴キュー
 	std::list<HistoryInfo>m_history;
 
@@ -101,9 +101,5 @@ public:
 	//アクティブ状態のゲッタ
 	const bool& GetIsActive()const { return m_isActive; }
 
-	void SetStopDisappear(bool arg_flg) 
-	{
-		if (arg_flg)m_history.clear();
-		m_stopDisappear = arg_flg; 
-	}
+	void SetStopDisappear(bool arg_flg);
 };
