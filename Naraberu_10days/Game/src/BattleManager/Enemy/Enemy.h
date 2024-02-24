@@ -13,6 +13,8 @@ class Enemy :
 {
 public:
 	EnemysData::EnemyData m_Data;
+	std::shared_ptr<KuroEngine::TextureBuffer> m_DeathFrameTex;
+
 private:
 	//std::vector<std::shared_ptr<E_Ac_Base>> m_Actions;
 	int m_Action_Num;
@@ -83,5 +85,9 @@ public:
 
 	// ƒ_ƒ[ƒW‚ğó‚¯‚é
 	void Damage(int value)override;
+
+	int DeathEffTimer;
+	int DeathEffEnd;
+	static int m_DeathSE;
 };
 

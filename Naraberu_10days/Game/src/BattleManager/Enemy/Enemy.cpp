@@ -12,6 +12,9 @@
 #include"../../OperationConfig.h"
 
 #include "../../Effect/ScreenShakeManager.h"
+#include "FrameWork/AudioApp.h"
+
+int Enemy::m_DeathSE = 0;
 
 Enemy::Enemy()
 {
@@ -30,6 +33,19 @@ Enemy::Enemy()
 	ShakeTimer = 0;
 	ShakeValue.x = 0.0f;
 	ShakeValue.y = 0.0f;
+
+	using namespace KuroEngine;
+	std::string TexDir = "resource/user/tex/battle_scene/";
+	m_DeathFrameTex = D3D12App::Instance()->GenerateTextureBuffer(TexDir + "enemy_icon_frame_DeathEff.png");
+
+	DeathEffTimer = 0;
+	DeathEffEnd = 60;
+
+	if (m_DeathSE == 0) {
+		std::string seDir = "resource/user/sound/";
+		m_DeathSE = AudioApp::Instance()->LoadAudio(seDir + "enemy_dead.wav");
+		AudioApp::Instance()->ChangeVolume(m_DeathSE, 0.5f);
+	}
 }
 
 void Enemy::OnInitialize()
@@ -99,6 +115,13 @@ void Enemy::OnAlwaysUpdate()
 	}
 
 	ShakeUpdate();
+
+	if (DeathEffTimer > 0 && DeathEffTimer < DeathEffEnd) {
+		DeathEffTimer++;
+		if (DeathEffTimer == 2) {
+			AudioApp::Instance()->PlayWave(m_DeathSE);
+		}
+	}
 }
 
 void Enemy::OnDraw()
@@ -236,7 +259,9 @@ void Enemy::Draw(int Index, int NowTurn_Index, int Index_Max, bool Dark, int Fra
 	// éÄÇÒÇ≈ÇΩÇÁã≠êßìIÇ…à√Ç≠Ç∑ÇÈ
 	// éÄÇÒÇ≈ÇΩÇÁã≠êßìIÇ…Move_WidthÇ™ìÆÇ©Ç»Ç¢ÇÊÇ§Ç…
 	if (m_HP <= 0) {
-		Mask = Color(255 - Mask_Black, 255 - Mask_Black, 255 - Mask_Black, 255);
+		if (DeathEffTimer >= DeathEffEnd / 2) {
+			Mask = Color(255 - Mask_Black, 255 - Mask_Black, 255 - Mask_Black, 255);
+		}
 		Move_Width = 0.0f;
 	}
 	
@@ -259,6 +284,34 @@ void Enemy::Draw(int Index, int NowTurn_Index, int Index_Max, bool Dark, int Fra
 	DrawFunc2D_Color::DrawExtendGraph2D(Vec2(1126.0f - Move_Width, 181.0f + IndexDiff) + ScreenShakeManager::Instance()->GetOffset() + ShakeValue
 		, Vec2(1270.0f - Move_Width, 203.0f + IndexDiff) + ScreenShakeManager::Instance()->GetOffset() + ShakeValue, HPFrameTex, Mask,
 		{ false,false }, { 0.0f,0.0f }, { 1.0f,1.0f }, KuroEngine::DrawFunc2D_Color::FILL_MDOE::MUL);
+
+	if (DeathEffTimer > 0 && DeathEffTimer < DeathEffEnd + 2) {
+		Vec2 Size = m_DeathFrameTex->GetGraphSize();
+		float Ms = 0;
+		if (DeathEffTimer < DeathEffEnd / 2) {
+			Ms = Math::Ease(EASE_CHANGE_TYPE::Out, EASING_TYPE::Quad,
+				float(DeathEffTimer), float(DeathEffEnd / 2), 0.0f, 1.0f) * float(Size.x);
+
+			DrawFunc2D_Mask::DrawExtendGraph2D(
+				Vec2(1002.0f - Move_Width, 108.0f + IndexDiff) + ScreenShakeManager::Instance()->GetOffset() + ShakeValue
+				, Vec2(1261.0f - Move_Width, 222.0f + IndexDiff) + ScreenShakeManager::Instance()->GetOffset() + ShakeValue, m_DeathFrameTex,
+				Vec2(1261.0f - Move_Width - Ms, 108.0f + IndexDiff) + ScreenShakeManager::Instance()->GetOffset() + ShakeValue
+				, Vec2(1261.0f - Move_Width, 222.0f + IndexDiff) + ScreenShakeManager::Instance()->GetOffset() + ShakeValue);
+		}
+		else {
+			Ms = Math::Ease(EASE_CHANGE_TYPE::In, EASING_TYPE::Quad,
+				float(DeathEffTimer - DeathEffEnd / 2), float(DeathEffEnd / 2), 0.0f, 1.0f) * float(Size.x);
+
+			DrawFunc2D_Mask::DrawExtendGraph2D(
+				Vec2(1002.0f - Move_Width, 108.0f + IndexDiff) + ScreenShakeManager::Instance()->GetOffset() + ShakeValue
+				, Vec2(1261.0f - Move_Width, 222.0f + IndexDiff) + ScreenShakeManager::Instance()->GetOffset() + ShakeValue, m_DeathFrameTex,
+				Vec2(1002.0f - Move_Width, 108.0f + IndexDiff) + ScreenShakeManager::Instance()->GetOffset() + ShakeValue
+				, Vec2(1261.0f - Move_Width - Ms, 222.0f + IndexDiff) + ScreenShakeManager::Instance()->GetOffset() + ShakeValue);
+		}
+		/*DrawFunc2D_Color::DrawExtendGraph2D(Vec2(1002.0f - Move_Width, 108.0f + IndexDiff) + ScreenShakeManager::Instance()->GetOffset() + ShakeValue
+			, Vec2(1261.0f - Move_Width, 222.0f + IndexDiff) + ScreenShakeManager::Instance()->GetOffset() + ShakeValue, m_DeathFrameTex, Mask,
+			{ false,false }, { 0.0f,0.0f }, { 1.0f,1.0f }, KuroEngine::DrawFunc2D_Color::FILL_MDOE::MUL);*/
+	}
 
 	std::shared_ptr<KuroEngine::TextureBuffer> IndexTex = m_Data.m_IndexTex_1;
 	if (NowTarget == Index) {
@@ -635,5 +688,9 @@ void Enemy::Damage(int value)
 	UnitBase::Damage(value);
 	if (m_Before_HP > 0 && m_Before_HP > m_HP) {
 		DamageShake();
+	}
+
+	if (m_Before_HP > 0 && m_HP == 0 && DeathEffTimer == 0) {
+		DeathEffTimer = 1;
 	}
 }
