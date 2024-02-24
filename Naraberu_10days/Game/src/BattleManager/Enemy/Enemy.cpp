@@ -26,6 +26,10 @@ Enemy::Enemy()
 	m_Next_Act_Icon_Timer = 0;
 	m_Next_Act_Icon_Timer_Max = int(40.0f * RefreshRate::RefreshRate_Mag);
 	m_Next_Act_Icon_Timer = m_Next_Act_Icon_Timer_Max;
+
+	ShakeTimer = 0;
+	ShakeValue.x = 0.0f;
+	ShakeValue.y = 0.0f;
 }
 
 void Enemy::OnInitialize()
@@ -93,6 +97,8 @@ void Enemy::OnAlwaysUpdate()
 	if (m_Now_Action) {
 		m_Next_Act_Icon_Timer > 0 ? m_Next_Act_Icon_Timer-- : m_Next_Act_Icon_Timer = 0;
 	}
+
+	ShakeUpdate();
 }
 
 void Enemy::OnDraw()
@@ -244,14 +250,14 @@ void Enemy::Draw(int Index, int NowTurn_Index, int Index_Max, bool Dark, int Fra
 	D_Move_Width = Move_Width;
 	D_IndexDiff = IndexDiff;
 	// ユニットの描画
-	DrawFunc2D_Color::DrawExtendGraph2D(Vec2(1009.0f - Move_Width, 115.0f + IndexDiff) + ScreenShakeManager::Instance()->GetOffset()
-		, Vec2(1254.0f - Move_Width, 215.0f + IndexDiff) + ScreenShakeManager::Instance()->GetOffset(), m_Data.m_UnitTex, Mask,
+	DrawFunc2D_Color::DrawExtendGraph2D(Vec2(1009.0f - Move_Width, 115.0f + IndexDiff) + ScreenShakeManager::Instance()->GetOffset() + ShakeValue
+		, Vec2(1254.0f - Move_Width, 215.0f + IndexDiff) + ScreenShakeManager::Instance()->GetOffset() + ShakeValue, m_Data.m_UnitTex, Mask,
 		{ false,false }, { 0.0f,0.0f }, { 1.0f,1.0f }, KuroEngine::DrawFunc2D_Color::FILL_MDOE::MUL);
-	DrawFunc2D_Color::DrawExtendGraph2D(Vec2(1002.0f - Move_Width, 108.0f + IndexDiff) + ScreenShakeManager::Instance()->GetOffset()
-		, Vec2(1261.0f - Move_Width, 222.0f + IndexDiff) + ScreenShakeManager::Instance()->GetOffset(), FrameTex, Mask,
+	DrawFunc2D_Color::DrawExtendGraph2D(Vec2(1002.0f - Move_Width, 108.0f + IndexDiff) + ScreenShakeManager::Instance()->GetOffset() + ShakeValue
+		, Vec2(1261.0f - Move_Width, 222.0f + IndexDiff) + ScreenShakeManager::Instance()->GetOffset() + ShakeValue, FrameTex, Mask,
 		{ false,false }, { 0.0f,0.0f }, { 1.0f,1.0f }, KuroEngine::DrawFunc2D_Color::FILL_MDOE::MUL);
-	DrawFunc2D_Color::DrawExtendGraph2D(Vec2(1126.0f - Move_Width, 181.0f + IndexDiff) + ScreenShakeManager::Instance()->GetOffset()
-		, Vec2(1270.0f - Move_Width, 203.0f + IndexDiff) + ScreenShakeManager::Instance()->GetOffset(), HPFrameTex, Mask,
+	DrawFunc2D_Color::DrawExtendGraph2D(Vec2(1126.0f - Move_Width, 181.0f + IndexDiff) + ScreenShakeManager::Instance()->GetOffset() + ShakeValue
+		, Vec2(1270.0f - Move_Width, 203.0f + IndexDiff) + ScreenShakeManager::Instance()->GetOffset() + ShakeValue, HPFrameTex, Mask,
 		{ false,false }, { 0.0f,0.0f }, { 1.0f,1.0f }, KuroEngine::DrawFunc2D_Color::FILL_MDOE::MUL);
 
 	std::shared_ptr<KuroEngine::TextureBuffer> IndexTex = m_Data.m_IndexTex_1;
@@ -265,8 +271,8 @@ void Enemy::Draw(int Index, int NowTurn_Index, int Index_Max, bool Dark, int Fra
 		else if (Index == 2) IndexTex = m_Data.m_IndexTex_3;
 	}
 
-	DrawFunc2D_Color::DrawExtendGraph2D(Vec2(1185.0f - Move_Width, 117.0f + IndexDiff) + ScreenShakeManager::Instance()->GetOffset()
-		, Vec2(1252.0f - Move_Width, 177.0f + IndexDiff) + ScreenShakeManager::Instance()->GetOffset(), IndexTex, Mask,
+	DrawFunc2D_Color::DrawExtendGraph2D(Vec2(1185.0f - Move_Width, 117.0f + IndexDiff) + ScreenShakeManager::Instance()->GetOffset() + ShakeValue
+		, Vec2(1252.0f - Move_Width, 177.0f + IndexDiff) + ScreenShakeManager::Instance()->GetOffset() + ShakeValue, IndexTex, Mask,
 		{ false,false }, { 0.0f,0.0f }, { 1.0f,1.0f }, KuroEngine::DrawFunc2D_Color::FILL_MDOE::MUL);
 
 	//DrawFunc2D::DrawExtendGraph2D(Vec2(977.0f, 115.0f + IndexDiff), Vec2(1222.0f, 215.0f + IndexDiff), m_Data.m_UnitTex);
@@ -315,14 +321,14 @@ void Enemy::Draw_Boss(int Index, int NowTurn_Index, int Index_Max, bool Dark, in
 
 	Vec2 Window_Size = WinApp::Instance()->GetExpandWinSize();
 	//DrawFunc2D::DrawExtendGraph2D(Vec2(0.0f, 0.0f), Vec2(Window_Size.x, Window_Size.y), m_Data.m_FrameTex);
-	DrawFunc2D_Color::DrawExtendGraph2D(Vec2(932.0f, 67.0f) + ScreenShakeManager::Instance()->GetOffset()
-		, Vec2(1240.0f, 603.0f) + ScreenShakeManager::Instance()->GetOffset(), m_Data.m_UnitTex, Mask,
+	DrawFunc2D_Color::DrawExtendGraph2D(Vec2(932.0f, 67.0f) + ScreenShakeManager::Instance()->GetOffset() + ShakeValue
+		, Vec2(1240.0f, 603.0f) + ScreenShakeManager::Instance()->GetOffset() + ShakeValue, m_Data.m_UnitTex, Mask,
 		{ false,false }, { 0.0f,0.0f }, { 1.0f,1.0f }, KuroEngine::DrawFunc2D_Color::FILL_MDOE::MUL);
-	DrawFunc2D_Color::DrawExtendGraph2D(Vec2(0.0f, 0.0f) + ScreenShakeManager::Instance()->GetOffset()
-		, Vec2(Window_Size.x, Window_Size.y) + ScreenShakeManager::Instance()->GetOffset(), m_Data.m_FrameTex, Mask,
+	DrawFunc2D_Color::DrawExtendGraph2D(Vec2(0.0f, 0.0f) + ScreenShakeManager::Instance()->GetOffset() + ShakeValue
+		, Vec2(Window_Size.x, Window_Size.y) + ScreenShakeManager::Instance()->GetOffset() + ShakeValue, m_Data.m_FrameTex, Mask,
 		{ false,false }, { 0.0f,0.0f }, { 1.0f,1.0f }, KuroEngine::DrawFunc2D_Color::FILL_MDOE::MUL);
-	DrawFunc2D_Color::DrawExtendGraph2D(Vec2(912.0f, 410.0f) + ScreenShakeManager::Instance()->GetOffset()
-		, Vec2(1269.0f, 595.0f) + ScreenShakeManager::Instance()->GetOffset(), m_Data.m_HpFrameTex, Mask,
+	DrawFunc2D_Color::DrawExtendGraph2D(Vec2(912.0f, 410.0f) + ScreenShakeManager::Instance()->GetOffset() + ShakeValue
+		, Vec2(1269.0f, 595.0f) + ScreenShakeManager::Instance()->GetOffset() + ShakeValue, m_Data.m_HpFrameTex, Mask,
 		{ false,false }, { 0.0f,0.0f }, { 1.0f,1.0f }, KuroEngine::DrawFunc2D_Color::FILL_MDOE::MUL);
 
 	// 描画位置の保存
@@ -338,13 +344,13 @@ void Enemy::Draw_Damage()
 		return;
 	}
 	if (m_Data.m_Name == "Boss_1") {
-		DrawFunc2D::DrawExtendGraph2D(Vec2(932.0f, 67.0f) + ScreenShakeManager::Instance()->GetOffset()
-			, Vec2(1240.0f, 603.0f) + ScreenShakeManager::Instance()->GetOffset(), m_Data.m_UnitTex_Damage);
+		DrawFunc2D::DrawExtendGraph2D(Vec2(932.0f, 67.0f) + ScreenShakeManager::Instance()->GetOffset() + ShakeValue
+			, Vec2(1240.0f, 603.0f) + ScreenShakeManager::Instance()->GetOffset() + ShakeValue, m_Data.m_UnitTex_Damage);
 		return;
 	}
 
-	DrawFunc2D::DrawExtendGraph2D(Vec2(1009.0f - D_Move_Width, 115.0f + D_IndexDiff) + ScreenShakeManager::Instance()->GetOffset()
-		, Vec2(1254.0f - D_Move_Width, 215.0f + D_IndexDiff) + ScreenShakeManager::Instance()->GetOffset(), m_Data.m_UnitTex_Damage, 0.6f);
+	DrawFunc2D::DrawExtendGraph2D(Vec2(1009.0f - D_Move_Width, 115.0f + D_IndexDiff) + ScreenShakeManager::Instance()->GetOffset() + ShakeValue
+		, Vec2(1254.0f - D_Move_Width, 215.0f + D_IndexDiff) + ScreenShakeManager::Instance()->GetOffset() + ShakeValue, m_Data.m_UnitTex_Damage, 0.6f);
 }
 
 void Enemy::DrawHpGauge()
@@ -385,21 +391,21 @@ void Enemy::DrawHpGauge()
 
 		using namespace KuroEngine;
 
-		DrawFunc2D_Color::DrawExtendGraph2D(Vec2(912.0f, 410.0f) + ScreenShakeManager::Instance()->GetOffset()
-			, Vec2(1269.0f, 595.0f) + ScreenShakeManager::Instance()->GetOffset(), m_Data.m_HpFrameTex, Color(255, 255, 255, 255),
+		DrawFunc2D_Color::DrawExtendGraph2D(Vec2(912.0f, 410.0f) + ScreenShakeManager::Instance()->GetOffset() + ShakeValue
+			, Vec2(1269.0f, 595.0f) + ScreenShakeManager::Instance()->GetOffset() + ShakeValue, m_Data.m_HpFrameTex, Color(255, 255, 255, 255),
 			{ false,false }, { 0.0f,0.0f }, { 1.0f,1.0f }, KuroEngine::DrawFunc2D_Color::FILL_MDOE::MUL);
 
 		DrawFunc2D_Mask::DrawExtendGraph2D(
-			Vec2(923.0f, 427.0f) + ScreenShakeManager::Instance()->GetOffset()
-			, Vec2(1258.0f, 580.0f) + ScreenShakeManager::Instance()->GetOffset(), m_Data.m_HpTex_break,
-			Vec2(923.0f, 427.0f) + ScreenShakeManager::Instance()->GetOffset()
-			, Vec2(923.0f + Gauge_Width, 580.0f) + ScreenShakeManager::Instance()->GetOffset());
+			Vec2(923.0f, 427.0f) + ScreenShakeManager::Instance()->GetOffset() + ShakeValue
+			, Vec2(1258.0f, 580.0f) + ScreenShakeManager::Instance()->GetOffset() + ShakeValue, m_Data.m_HpTex_break,
+			Vec2(923.0f, 427.0f) + ScreenShakeManager::Instance()->GetOffset() + ShakeValue
+			, Vec2(923.0f + Gauge_Width, 580.0f) + ScreenShakeManager::Instance()->GetOffset() + ShakeValue);
 
 		DrawFunc2D_Mask::DrawExtendGraph2D(
-			Vec2(923.0f, 427.0f) + ScreenShakeManager::Instance()->GetOffset()
-			, Vec2(1258.0f, 580.0f) + ScreenShakeManager::Instance()->GetOffset(), HP_Gauge,
-			Vec2(923.0f, 427.0f) + ScreenShakeManager::Instance()->GetOffset()
-			, Vec2(923.0f + Gauge_Width2, 580.0f) + ScreenShakeManager::Instance()->GetOffset());
+			Vec2(923.0f, 427.0f) + ScreenShakeManager::Instance()->GetOffset() + ShakeValue
+			, Vec2(1258.0f, 580.0f) + ScreenShakeManager::Instance()->GetOffset() + ShakeValue, HP_Gauge,
+			Vec2(923.0f, 427.0f) + ScreenShakeManager::Instance()->GetOffset() + ShakeValue
+			, Vec2(923.0f + Gauge_Width2, 580.0f) + ScreenShakeManager::Instance()->GetOffset() + ShakeValue);
 
 		// 行動アイコン描画
 		DrawActionIcon();
@@ -444,21 +450,21 @@ void Enemy::DrawHpGauge()
 		FrameTex = m_Data.m_FrameTex_Target;
 		HPFrameTex = m_Data.m_HpFrameTex_Target;
 	}
-	DrawFunc2D_Color::DrawExtendGraph2D(Vec2(1126.0f - D_Move_Width, 181.0f + D_IndexDiff) + ScreenShakeManager::Instance()->GetOffset()
-		, Vec2(1270.0f - D_Move_Width, 203.0f + D_IndexDiff) + ScreenShakeManager::Instance()->GetOffset(), HPFrameTex, Color(255, 255, 255, 255),
+	DrawFunc2D_Color::DrawExtendGraph2D(Vec2(1126.0f - D_Move_Width, 181.0f + D_IndexDiff) + ScreenShakeManager::Instance()->GetOffset() + ShakeValue
+		, Vec2(1270.0f - D_Move_Width, 203.0f + D_IndexDiff) + ScreenShakeManager::Instance()->GetOffset() + ShakeValue, HPFrameTex, Color(255, 255, 255, 255),
 		{ false,false }, { 0.0f,0.0f }, { 1.0f,1.0f }, KuroEngine::DrawFunc2D_Color::FILL_MDOE::MUL);
 
 	DrawFunc2D_Mask::DrawExtendGraph2D(
-		Vec2(1132.0f - D_Move_Width, 187.0f + D_IndexDiff) + ScreenShakeManager::Instance()->GetOffset()
-		, Vec2(1264.0f - D_Move_Width, 197.0f + D_IndexDiff) + ScreenShakeManager::Instance()->GetOffset(), m_Data.m_HpTex_break,
-		Vec2(1132.0f - D_Move_Width, 187.0f + D_IndexDiff) + ScreenShakeManager::Instance()->GetOffset()
-		, Vec2(1132.0f - D_Move_Width + Gauge_Width, 197.0f + D_IndexDiff) + ScreenShakeManager::Instance()->GetOffset());
+		Vec2(1132.0f - D_Move_Width, 187.0f + D_IndexDiff) + ScreenShakeManager::Instance()->GetOffset() + ShakeValue
+		, Vec2(1264.0f - D_Move_Width, 197.0f + D_IndexDiff) + ScreenShakeManager::Instance()->GetOffset() + ShakeValue, m_Data.m_HpTex_break,
+		Vec2(1132.0f - D_Move_Width, 187.0f + D_IndexDiff) + ScreenShakeManager::Instance()->GetOffset() + ShakeValue
+		, Vec2(1132.0f - D_Move_Width + Gauge_Width, 197.0f + D_IndexDiff) + ScreenShakeManager::Instance()->GetOffset() + ShakeValue);
 
 	DrawFunc2D_Mask::DrawExtendGraph2D(
-		Vec2(1132.0f - D_Move_Width, 187.0f + D_IndexDiff) + ScreenShakeManager::Instance()->GetOffset()
-		, Vec2(1264.0f - D_Move_Width, 197.0f + D_IndexDiff) + ScreenShakeManager::Instance()->GetOffset(), HP_Gauge,
-		Vec2(1132.0f - D_Move_Width, 187.0f + D_IndexDiff) + ScreenShakeManager::Instance()->GetOffset()
-		, Vec2(1132.0f - D_Move_Width + Gauge_Width2, 197.0f + D_IndexDiff) + ScreenShakeManager::Instance()->GetOffset());
+		Vec2(1132.0f - D_Move_Width, 187.0f + D_IndexDiff) + ScreenShakeManager::Instance()->GetOffset() + ShakeValue
+		, Vec2(1264.0f - D_Move_Width, 197.0f + D_IndexDiff) + ScreenShakeManager::Instance()->GetOffset() + ShakeValue, HP_Gauge,
+		Vec2(1132.0f - D_Move_Width, 187.0f + D_IndexDiff) + ScreenShakeManager::Instance()->GetOffset() + ShakeValue
+		, Vec2(1132.0f - D_Move_Width + Gauge_Width2, 197.0f + D_IndexDiff) + ScreenShakeManager::Instance()->GetOffset() + ShakeValue);
 
 	// 行動アイコン描画
 	DrawActionIcon();
@@ -496,26 +502,26 @@ void Enemy::DrawActionIcon()
 
 			if (NextActionName == "Attack_01" || NextActionName == "Attack_02") {
 				DrawFunc2D::DrawExtendGraph2D(
-					Vec2(1094.0f, 542.0f) + ScreenShakeManager::Instance()->GetOffset() + Move_v + Sc
-					, Vec2(1170.0f, 618.0f) + ScreenShakeManager::Instance()->GetOffset() + Move_v - Sc, m_Data.m_AttackIcon);
+					Vec2(1094.0f, 542.0f) + ScreenShakeManager::Instance()->GetOffset() + Move_v + Sc + ShakeValue
+					, Vec2(1170.0f, 618.0f) + ScreenShakeManager::Instance()->GetOffset() + Move_v - Sc + ShakeValue, m_Data.m_AttackIcon);
 			}
 			else if (NextActionName == "Jamming_01" && m_Data.m_Name == "zako_blue") {
 				DrawFunc2D::DrawExtendGraph2D(
-					Vec2(1094.0f, 542.0f) + ScreenShakeManager::Instance()->GetOffset() + Move_v + Sc
-					, Vec2(1170.0f, 618.0f) + ScreenShakeManager::Instance()->GetOffset() + Move_v - Sc, m_Data.m_JammingIcon);
+					Vec2(1094.0f, 542.0f) + ScreenShakeManager::Instance()->GetOffset() + Move_v + Sc + ShakeValue
+					, Vec2(1170.0f, 618.0f) + ScreenShakeManager::Instance()->GetOffset() + Move_v - Sc + ShakeValue, m_Data.m_JammingIcon);
 			}
 			else if (NextActionName == "Jamming_01") {
 				DrawFunc2D::DrawExtendGraph2D(
-					Vec2(1094.0f, 542.0f) + ScreenShakeManager::Instance()->GetOffset() + Move_v + Sc
-					, Vec2(1170.0f, 618.0f) + ScreenShakeManager::Instance()->GetOffset() + Move_v - Sc, m_Data.m_JammingIcon);
+					Vec2(1094.0f, 542.0f) + ScreenShakeManager::Instance()->GetOffset() + Move_v + Sc + ShakeValue
+					, Vec2(1170.0f, 618.0f) + ScreenShakeManager::Instance()->GetOffset() + Move_v - Sc + ShakeValue, m_Data.m_JammingIcon);
 				DrawFunc2D::DrawExtendGraph2D(
-					Vec2(1154.0f, 568.0f) + ScreenShakeManager::Instance()->GetOffset() + Move_v + Sc_2
-					, Vec2(1204.0f, 618.0f) + ScreenShakeManager::Instance()->GetOffset() + Move_v - Sc_2, m_Data.m_AttackIcon);
+					Vec2(1154.0f, 568.0f) + ScreenShakeManager::Instance()->GetOffset() + Move_v + Sc_2 + ShakeValue
+					, Vec2(1204.0f, 618.0f) + ScreenShakeManager::Instance()->GetOffset() + Move_v - Sc_2 + ShakeValue, m_Data.m_AttackIcon);
 			}
 			else if (NextActionName == "Heal_01") {
 				DrawFunc2D::DrawExtendGraph2D(
-					Vec2(1094.0f, 542.0f) + ScreenShakeManager::Instance()->GetOffset() + Move_v + Sc
-					, Vec2(1170.0f, 618.0f) + ScreenShakeManager::Instance()->GetOffset() + Move_v - Sc, m_Data.m_HealIcon);
+					Vec2(1094.0f, 542.0f) + ScreenShakeManager::Instance()->GetOffset() + Move_v + Sc + ShakeValue
+					, Vec2(1170.0f, 618.0f) + ScreenShakeManager::Instance()->GetOffset() + Move_v - Sc + ShakeValue, m_Data.m_HealIcon);
 			}
 		}
 		return;
@@ -545,26 +551,26 @@ void Enemy::DrawActionIcon()
 
 		if (NextActionName == "Attack_01" || NextActionName == "Attack_02") {
 			DrawFunc2D::DrawExtendGraph2D(
-				Vec2(994.0f - D_Move_Width, 112.0f + D_IndexDiff + yy) + ScreenShakeManager::Instance()->GetOffset() + Move_v + Sc
-				, Vec2(1060.0f - D_Move_Width + xx, 178.0f + D_IndexDiff + yy) + ScreenShakeManager::Instance()->GetOffset() + Move_v - Sc, m_Data.m_AttackIcon);
+				Vec2(994.0f - D_Move_Width, 112.0f + D_IndexDiff + yy) + ScreenShakeManager::Instance()->GetOffset() + Move_v + Sc + ShakeValue
+				, Vec2(1060.0f - D_Move_Width + xx, 178.0f + D_IndexDiff + yy) + ScreenShakeManager::Instance()->GetOffset() + Move_v - Sc + ShakeValue, m_Data.m_AttackIcon);
 		}
 		else if (NextActionName == "Jamming_01" && m_Data.m_Name == "zako_blue") {
 			DrawFunc2D::DrawExtendGraph2D(
-				Vec2(994.0f - D_Move_Width, 112.0f + D_IndexDiff + yy) + ScreenShakeManager::Instance()->GetOffset() + Move_v + Sc
-				, Vec2(1060.0f - D_Move_Width + xx, 178.0f + D_IndexDiff + yy) + ScreenShakeManager::Instance()->GetOffset() + Move_v - Sc, m_Data.m_JammingIcon);
+				Vec2(994.0f - D_Move_Width, 112.0f + D_IndexDiff + yy) + ScreenShakeManager::Instance()->GetOffset() + Move_v + Sc + ShakeValue
+				, Vec2(1060.0f - D_Move_Width + xx, 178.0f + D_IndexDiff + yy) + ScreenShakeManager::Instance()->GetOffset() + Move_v - Sc + ShakeValue, m_Data.m_JammingIcon);
 		}
 		else if (NextActionName == "Jamming_01") {
 			DrawFunc2D::DrawExtendGraph2D(
-				Vec2(994.0f - D_Move_Width, 112.0f + D_IndexDiff + yy) + ScreenShakeManager::Instance()->GetOffset() + Move_v + Sc
-				, Vec2(1060.0f - D_Move_Width + xx, 178.0f + D_IndexDiff + yy) + ScreenShakeManager::Instance()->GetOffset() + Move_v - Sc, m_Data.m_JammingIcon);
+				Vec2(994.0f - D_Move_Width, 112.0f + D_IndexDiff + yy) + ScreenShakeManager::Instance()->GetOffset() + Move_v + Sc + ShakeValue
+				, Vec2(1060.0f - D_Move_Width + xx, 178.0f + D_IndexDiff + yy) + ScreenShakeManager::Instance()->GetOffset() + Move_v - Sc + ShakeValue, m_Data.m_JammingIcon);
 			DrawFunc2D::DrawExtendGraph2D(
-				Vec2(1048.0f - D_Move_Width, 100.0f + D_IndexDiff + yy) + ScreenShakeManager::Instance()->GetOffset() + Move_v + Sc_2
-				, Vec2(1088.0f - D_Move_Width + xx, 140.0f + D_IndexDiff + yy) + ScreenShakeManager::Instance()->GetOffset() + Move_v - Sc_2, m_Data.m_AttackIcon);
+				Vec2(1048.0f - D_Move_Width, 100.0f + D_IndexDiff + yy) + ScreenShakeManager::Instance()->GetOffset() + Move_v + Sc_2 + ShakeValue
+				, Vec2(1088.0f - D_Move_Width + xx, 140.0f + D_IndexDiff + yy) + ScreenShakeManager::Instance()->GetOffset() + Move_v - Sc_2 + ShakeValue, m_Data.m_AttackIcon);
 		}
 		else if (NextActionName == "Heal_01") {
 			DrawFunc2D::DrawExtendGraph2D(
-				Vec2(994.0f - D_Move_Width, 112.0f + D_IndexDiff + yy) + ScreenShakeManager::Instance()->GetOffset() + Move_v + Sc
-				, Vec2(1060.0f - D_Move_Width + xx, 178.0f + D_IndexDiff + yy) + ScreenShakeManager::Instance()->GetOffset() + Move_v - Sc, m_Data.m_HealIcon);
+				Vec2(994.0f - D_Move_Width, 112.0f + D_IndexDiff + yy) + ScreenShakeManager::Instance()->GetOffset() + Move_v + Sc + ShakeValue
+				, Vec2(1060.0f - D_Move_Width + xx, 178.0f + D_IndexDiff + yy) + ScreenShakeManager::Instance()->GetOffset() + Move_v - Sc + ShakeValue, m_Data.m_HealIcon);
 		}
 	}
 }
@@ -596,5 +602,38 @@ void Enemy::SetAction()
 		else {
 			m_NextAction = GetRand(0, int(m_Data.ActionList.size()));
 		}
+	}
+}
+
+
+void Enemy::DamageShake()
+{
+	ShakeTimer = 40;
+	ShakeValue.x = float(KuroEngine::GetRand(8) - 4);
+	ShakeValue.y = float(KuroEngine::GetRand(4) - 2);
+}
+
+void Enemy::ShakeUpdate()
+{
+	if (ShakeValue.x >= 0.2f)ShakeValue.x -= 0.2f;
+	else if (ShakeValue.y <= -0.2f)ShakeValue.y += 0.2f;
+	if (ShakeValue.y >= 0.2f)ShakeValue.y -= 0.2f;
+	else if (ShakeValue.y <= -0.2f)ShakeValue.y += 0.2f;
+
+	if (ShakeTimer <= 0) return;
+
+	if (ShakeTimer % 3 == 0) {
+		ShakeValue.x = float(KuroEngine::GetRand(8) - 4);
+		ShakeValue.y = float(KuroEngine::GetRand(4) - 2);
+	}
+
+	ShakeTimer--;
+}
+
+void Enemy::Damage(int value)
+{
+	UnitBase::Damage(value);
+	if (m_Before_HP > 0 && m_Before_HP > m_HP) {
+		DamageShake();
 	}
 }

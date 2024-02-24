@@ -30,6 +30,7 @@ private:
 	std::shared_ptr<KuroEngine::TextureBuffer> m_CharacterTex;
 	std::shared_ptr<KuroEngine::TextureBuffer> m_CharacterDamageTex;
 	std::shared_ptr<KuroEngine::TextureBuffer> m_CharacterMabatakiTex;
+	std::shared_ptr<KuroEngine::TextureBuffer> m_CharacterFrameTex;
 	// まばたき用タイマー
 	int m_Player_Mabataki_Timer;
 public:
@@ -121,5 +122,10 @@ public:
 	KuroEngine::Vec2<float> Get_Left_Top() { return m_Left_Top; }
 	KuroEngine::Vec2<float> Get_Right_Bottom() { return m_Right_Bottom; }
 	KuroEngine::Vec2<float> Get_Center() { return m_Center; }
+
+	int ShakeTimer;
+	KuroEngine::Vec2<float> ShakeValue;
+	void DamageShake();
+	void ShakeUpdate();
 };
 
