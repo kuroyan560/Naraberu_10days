@@ -149,7 +149,7 @@ void SkillResultUI::Draw()
 		HORIZONTAL_ALIGN::CENTER, VERTICAL_ALIGN::CENTER, 2);
 
 	//最新のダメージ履歴の描画オフセット座標
-	const Vec2<float>DAMAGE_HIS_OFFSET_POS = { 86.0f,-90.0f };
+	const Vec2<float>DAMAGE_HIS_OFFSET_POS = { 92.0f,-90.0f };
 	//履歴間の行間
 	const float DAMAGE_HIS_LINE_SPACE = 29.0f;
 
