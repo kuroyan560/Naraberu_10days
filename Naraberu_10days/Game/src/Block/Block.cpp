@@ -61,7 +61,7 @@ void Block::Draw(const std::vector<KuroEngine::Vec2<int>> _shape, const KuroEngi
 		BlockOneDraw(i, pos, _color, _alpha);
 	}
 
-	ActionDraw({ shapeMax.x * blockSize + _pos.x, shapeMin.y * blockSize + _pos.y }, _attribute, _alpha);
+	ActionDraw(_pos, _attribute, _alpha);
 }
 
 void Block::Reset()

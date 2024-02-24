@@ -113,32 +113,32 @@ void BlockManager::Draw()
 	block[int(ObjectType::choice1)].block->Draw(shape[block[int(ObjectType::choice1)].blockNum],
 		shape_dist[block[int(ObjectType::choice1)].blockNum],
 		block[int(ObjectType::choice1)].attribute,
-		block[int(ObjectType::choice1)].color, { 555.0f + choiceOffsetX,y }, nowChoiceAlpha);
+		block[int(ObjectType::choice1)].color, { 445.0f + choiceOffsetX,y }, nowChoiceAlpha);
 	block[int(ObjectType::choice2)].block->Draw(shape[block[int(ObjectType::choice2)].blockNum],
 		shape_dist[block[int(ObjectType::choice2)].blockNum],
 		block[int(ObjectType::choice2)].attribute,
-		block[int(ObjectType::choice2)].color, { 445.0f + choiceOffsetX,y }, nowChoiceAlpha);
+		block[int(ObjectType::choice2)].color, { 555.0f + choiceOffsetX,y }, nowChoiceAlpha);
 
 	//nextChoice1表示のブロック
 	block[int(ObjectType::nextChoice1)].block->Draw(shape[block[int(ObjectType::nextChoice1)].blockNum],
 		shape_dist[block[int(ObjectType::nextChoice1)].blockNum],
 		block[int(ObjectType::nextChoice1)].attribute,
-		block[int(ObjectType::nextChoice1)].color, { 815.0f + nextChoiceOffsetX,y }, nextChoiceAlpha);
+		block[int(ObjectType::nextChoice1)].color, { 710.0f + nextChoiceOffsetX,y }, nextChoiceAlpha);
 	//nextChoice2表示のブロック
 	block[int(ObjectType::nextChoice2)].block->Draw(shape[block[int(ObjectType::nextChoice2)].blockNum],
 		shape_dist[block[int(ObjectType::nextChoice2)].blockNum],
 		block[int(ObjectType::nextChoice2)].attribute,
-		block[int(ObjectType::nextChoice2)].color, { 710.0f + nextChoiceOffsetX,y }, nextChoiceAlpha);
+		block[int(ObjectType::nextChoice2)].color, { 815.0f + nextChoiceOffsetX,y }, nextChoiceAlpha);
 
 	//矢印
 	const KuroEngine::Vec2<float> arrowSize = { 39.0f,75.0f };
 	if (m_nowChoice == ObjectType::choice1) {
-		KuroEngine::Vec2<float> arrowPos = { 585.0f,610.0f };
+		KuroEngine::Vec2<float> arrowPos = { 475.0f,610.0f };
 		arrowPos += ScreenShakeManager::Instance()->GetOffset();
 		KuroEngine::DrawFunc2D::DrawExtendGraph2D({ arrowPos.x - arrowSize.x ,arrowPos.y - arrowSize.y }, arrowPos, arrowTex);
 	}
 	else if (m_nowChoice == ObjectType::choice2) {
-		KuroEngine::Vec2<float> arrowPos = { 475.0f,610.0f };
+		KuroEngine::Vec2<float> arrowPos = { 585.0f,610.0f };
 		arrowPos += ScreenShakeManager::Instance()->GetOffset();
 		KuroEngine::DrawFunc2D::DrawExtendGraph2D({ arrowPos.x - arrowSize.x ,arrowPos.y - arrowSize.y }, arrowPos, arrowTex);
 	}
