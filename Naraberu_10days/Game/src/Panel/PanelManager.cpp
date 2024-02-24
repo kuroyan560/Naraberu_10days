@@ -530,9 +530,19 @@ void PanelManager::BonusDirection(std::vector<std::weak_ptr<SkillResultUI>>arg_e
 	//表示感覚
 	float maxTimer = 25.0f * RefreshRate::RefreshRate_Mag;
 
-	//音
-	if (bonusTimer == 0) {
+	if (bonusTimer == 0&& int(bonusData.size()) > nowBonusNum) {
 		SoundConfig::Instance()->Play(SoundConfig::SE_BONUS_ATTACK_COUNT, -1, -1, nowBonusNum == 0);
+		if (!bonusData[nowBonusNum].isAlive) {
+			bonusData[nowBonusNum].isAlive = true;
+			bonusData[nowBonusNum].isUp = true;
+			bonusData[nowBonusNum].isAlpha = 0;
+			bonusData[nowBonusNum].timer = 0;
+
+			for (auto& ui : arg_enemyDamageUI)
+			{
+				ui.lock()->Add(1, true, 60.0f);
+			}
+		}
 	}
 
 	//ボーナス演出用の透明blockの情報更新
@@ -549,22 +559,8 @@ void PanelManager::BonusDirection(std::vector<std::weak_ptr<SkillResultUI>>arg_e
 	nowBonusNum++;
 	bonusTimer = 0;
 
-	//表示するボーナスが残っている場合
-	if (int(bonusData.size()) > nowBonusNum) {
-		if (!bonusData[nowBonusNum].isAlive) {
-			bonusData[nowBonusNum].isAlive = true;
-			bonusData[nowBonusNum].isUp = true;
-			bonusData[nowBonusNum].isAlpha = 0;
-			bonusData[nowBonusNum].timer = 0;
-
-			for (auto& ui : arg_enemyDamageUI)
-			{
-				ui.lock()->Add(1, true, 60.0f);
-			}
-		}
-	}
 	//ボーナスが全て表示された場合
-	else {
+	if (int(bonusData.size()) <= nowBonusNum) {
 		if (IsPerfect())
 		{
 			arg_perfectBonusEffect.lock()->Start(arg_enemyDamageUI);
