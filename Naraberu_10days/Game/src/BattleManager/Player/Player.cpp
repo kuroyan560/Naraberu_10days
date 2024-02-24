@@ -12,6 +12,30 @@
 
 #include"../../SoundConfig.h"
 
+void Player::DamageShake()
+{
+	ShakeTimer = 20;
+	ShakeValue.x = float(KuroEngine::GetRand(20) - 10);
+	ShakeValue.y = float(KuroEngine::GetRand(10) - 5);
+}
+
+void Player::ShakeUpdate()
+{
+	if (ShakeValue.x >= 0.1f)ShakeValue.x -= 0.1f;
+	else if (ShakeValue.y <= -0.1f)ShakeValue.y += 0.1f;
+	if (ShakeValue.y >= 0.1f)ShakeValue.y -= 0.1f;
+	else if (ShakeValue.y <= -0.1f)ShakeValue.y += 0.1f;
+
+	if (ShakeTimer <= 0) return;
+
+	if (ShakeTimer % 3 == 0) {
+		ShakeValue.x = float(KuroEngine::GetRand(20) - 10);
+		ShakeValue.y = float(KuroEngine::GetRand(10) - 5);
+	}
+
+	ShakeTimer--;
+}
+
 Player::Player()
 {
 	// ターン関連変数の初期化
@@ -39,6 +63,7 @@ Player::Player()
 	m_CharacterTex = D3D12App::Instance()->GenerateTextureBuffer(TexDir + "character/player_character_normal.png");
 	m_CharacterDamageTex = D3D12App::Instance()->GenerateTextureBuffer(TexDir + "character/player_character_damage.png");
 	m_CharacterMabatakiTex = D3D12App::Instance()->GenerateTextureBuffer(TexDir + "character/player_character_mabadaki.png");
+	m_CharacterFrameTex = D3D12App::Instance()->GenerateTextureBuffer(TexDir + "PlayerFrame.png");
 	D3D12App::Instance()->GenerateTextureBuffer(&m_NumberTex.front(), TexDir + "player_hp_number.png", 11, Vec2(11, 1));
 
 	TurnChangeTimer = 0;
@@ -54,6 +79,10 @@ Player::Player()
 		}
 		ultSize[i] = KuroEngine::Vec2(size.x / float(i), size.y / float(i) );
 	}
+
+	ShakeTimer = 0;
+	ShakeValue.x = 0.0f;
+	ShakeValue.y = 0.0f;
 }
 
 void Player::OnInitialize()
@@ -117,6 +146,8 @@ void Player::OnAlwaysUpdate()
 			m_Player_Mabataki_Timer = 500;
 		}
 	}
+
+	ShakeUpdate();
 	/*if (OperationConfig::Instance()->DebugKeyInput(DIK_B)) {
 		m_HP > 0 ? m_HP-- : 0;
 	}
@@ -132,22 +163,25 @@ void Player::OnDraw()
 	//キャラクターの描画
 	if (m_Player_Mabataki_Timer > 480) {
 		DrawFunc2D::DrawGraph(
-			Vec2(39.0f, 66.0f) + ScreenShakeManager::Instance()->GetOffset(), m_CharacterMabatakiTex);
+			Vec2(39.0f, 66.0f) + ScreenShakeManager::Instance()->GetOffset() + ShakeValue, m_CharacterMabatakiTex);
 	}
 	else {
 		DrawFunc2D::DrawGraph(
-			Vec2(39.0f, 66.0f) + ScreenShakeManager::Instance()->GetOffset(), m_CharacterTex);
+			Vec2(39.0f, 66.0f) + ScreenShakeManager::Instance()->GetOffset() + ShakeValue, m_CharacterTex);
 	}
 
 	// ダメージ差分
 	if (m_Damage_Timer > 0) {
 		DrawFunc2D::DrawGraph(
-			Vec2(39.0f, 66.0f) + ScreenShakeManager::Instance()->GetOffset(), m_CharacterDamageTex);
+			Vec2(39.0f, 66.0f) + ScreenShakeManager::Instance()->GetOffset() + ShakeValue, m_CharacterDamageTex);
 	}
 
+	DrawFunc2D::DrawGraph(
+		Vec2(0.0f, 0.0f) + ScreenShakeManager::Instance()->GetOffset() + ShakeValue, m_CharacterFrameTex);
 
-	DrawFunc2D::DrawExtendGraph2D(Vec2(11.0f, 410.0f) + ScreenShakeManager::Instance()->GetOffset(),
-		Vec2(368.0f, 595.0f) + ScreenShakeManager::Instance()->GetOffset(), m_HpFrameTex);
+
+	DrawFunc2D::DrawExtendGraph2D(Vec2(11.0f, 410.0f) + ScreenShakeManager::Instance()->GetOffset() + ShakeValue,
+		Vec2(368.0f, 595.0f) + ScreenShakeManager::Instance()->GetOffset() + ShakeValue, m_HpFrameTex);
 	//DrawFunc2D::DrawExtendGraph2D(Vec2(22.0f, 427.0f), Vec2(357.0f, 580.0f), m_HpTex);
 
 	// HPゲージが削れる演出用
@@ -186,33 +220,33 @@ void Player::OnDraw()
 	}
 
 	DrawFunc2D_Mask::DrawExtendGraph2D(
-		Vec2(22.0f, 427.0f) + ScreenShakeManager::Instance()->GetOffset(), Vec2(357.0f, 580.0f) + ScreenShakeManager::Instance()->GetOffset(), m_HpTex_break,
-		Vec2(22.0f, 427.0f) + ScreenShakeManager::Instance()->GetOffset(), Vec2(22.0f + Gauge_Width, 580.0f) + ScreenShakeManager::Instance()->GetOffset());
+		Vec2(22.0f, 427.0f) + ScreenShakeManager::Instance()->GetOffset(), Vec2(357.0f, 580.0f) + ScreenShakeManager::Instance()->GetOffset() + ShakeValue, m_HpTex_break,
+		Vec2(22.0f, 427.0f) + ScreenShakeManager::Instance()->GetOffset(), Vec2(22.0f + Gauge_Width, 580.0f) + ScreenShakeManager::Instance()->GetOffset() + ShakeValue);
 
 	DrawFunc2D_Mask::DrawExtendGraph2D(
-		Vec2(22.0f, 427.0f) + ScreenShakeManager::Instance()->GetOffset(), Vec2(357.0f, 580.0f) + ScreenShakeManager::Instance()->GetOffset(), HP_Gauge,
-		Vec2(22.0f, 427.0f) + ScreenShakeManager::Instance()->GetOffset(), Vec2(22.0f + Gauge_Width2, 580.0f) + ScreenShakeManager::Instance()->GetOffset());
+		Vec2(22.0f, 427.0f) + ScreenShakeManager::Instance()->GetOffset(), Vec2(357.0f, 580.0f) + ScreenShakeManager::Instance()->GetOffset() + ShakeValue, HP_Gauge,
+		Vec2(22.0f, 427.0f) + ScreenShakeManager::Instance()->GetOffset(), Vec2(22.0f + Gauge_Width2, 580.0f) + ScreenShakeManager::Instance()->GetOffset() + ShakeValue);
 
 	// HPの数値描画
-	DrawFunc2D::DrawNumber2D(KuroEngine::GetSpecifiedDigitNum(m_MaxHP, 0, false), Vec2(333.0f + 5.0f, 489.0f - 2.0f) + ScreenShakeManager::Instance()->GetOffset(), &m_NumberTex.front());
+	DrawFunc2D::DrawNumber2D(KuroEngine::GetSpecifiedDigitNum(m_MaxHP, 0, false), Vec2(333.0f + 5.0f, 489.0f - 2.0f) + ScreenShakeManager::Instance()->GetOffset() + ShakeValue, &m_NumberTex.front());
 	if (m_MaxHP > 9) {// 2桁目の描画
-		DrawFunc2D::DrawNumber2D(KuroEngine::GetSpecifiedDigitNum(m_MaxHP, 1, false), Vec2(303.0f + 5.0f, 478.0f - 2.0f) + ScreenShakeManager::Instance()->GetOffset(), &m_NumberTex.front());
+		DrawFunc2D::DrawNumber2D(KuroEngine::GetSpecifiedDigitNum(m_MaxHP, 1, false), Vec2(303.0f + 5.0f, 478.0f - 2.0f) + ScreenShakeManager::Instance()->GetOffset() + ShakeValue, &m_NumberTex.front());
 	}
 
-	DrawFunc2D::DrawGraph(Vec2(252.0f - 7.0f, 461.0f - 2.0f) + ScreenShakeManager::Instance()->GetOffset(), m_NumberTex[10]);
+	DrawFunc2D::DrawGraph(Vec2(252.0f - 7.0f, 461.0f - 2.0f) + ScreenShakeManager::Instance()->GetOffset() + ShakeValue, m_NumberTex[10]);
 
 	if (m_MaxHP > 99) {// 3桁目の描画
-		DrawFunc2D::DrawNumber2D(KuroEngine::GetSpecifiedDigitNum(m_MaxHP, 2, false), Vec2(270.0f + 5.0f, 468.0f - 2.0f) + ScreenShakeManager::Instance()->GetOffset(), &m_NumberTex.front());
+		DrawFunc2D::DrawNumber2D(KuroEngine::GetSpecifiedDigitNum(m_MaxHP, 2, false), Vec2(270.0f + 5.0f, 468.0f - 2.0f) + ScreenShakeManager::Instance()->GetOffset() + ShakeValue, &m_NumberTex.front());
 	}
 	
 
 	// 1桁目の描画
-	DrawFunc2D::DrawNumber2D(KuroEngine::GetSpecifiedDigitNum(int(HP_Gauge_Now_Value), 0, false), Vec2(222.0f - 5.0f, 447.0f - 2.0f - Shake) + ScreenShakeManager::Instance()->GetOffset(), &m_NumberTex.front());
+	DrawFunc2D::DrawNumber2D(KuroEngine::GetSpecifiedDigitNum(int(HP_Gauge_Now_Value), 0, false), Vec2(222.0f - 5.0f, 447.0f - 2.0f - Shake) + ScreenShakeManager::Instance()->GetOffset() + ShakeValue, &m_NumberTex.front());
 	if (int(HP_Gauge_Now_Value) > 9) {// 2桁目の描画
-		DrawFunc2D::DrawNumber2D(KuroEngine::GetSpecifiedDigitNum(int(HP_Gauge_Now_Value), 1, false), Vec2(192.0f - 5.0f, 436.0f - 2.0f - Shake) + ScreenShakeManager::Instance()->GetOffset(), &m_NumberTex.front());
+		DrawFunc2D::DrawNumber2D(KuroEngine::GetSpecifiedDigitNum(int(HP_Gauge_Now_Value), 1, false), Vec2(192.0f - 5.0f, 436.0f - 2.0f - Shake) + ScreenShakeManager::Instance()->GetOffset() + ShakeValue, &m_NumberTex.front());
 	}
 	if (int(HP_Gauge_Now_Value) > 99) {// 3桁目の描画
-		DrawFunc2D::DrawNumber2D(KuroEngine::GetSpecifiedDigitNum(int(HP_Gauge_Now_Value), 2, false), Vec2(162.0f - 5.0f, 426.0f - 2.0f - Shake) + ScreenShakeManager::Instance()->GetOffset(), &m_NumberTex.front());
+		DrawFunc2D::DrawNumber2D(KuroEngine::GetSpecifiedDigitNum(int(HP_Gauge_Now_Value), 2, false), Vec2(162.0f - 5.0f, 426.0f - 2.0f - Shake) + ScreenShakeManager::Instance()->GetOffset() + ShakeValue, &m_NumberTex.front());
 	}
 
 	// アルティメットゲージの描画
@@ -223,15 +257,15 @@ void Player::OnDraw()
 	// 現在のゲージの高さ
 	float Gauge_ULT_Width = Gauge_ULT_Max_Width * Now_ULT_Rate;
 	DrawFunc2D_Mask::DrawExtendGraph2D(
-		Vec2(248.0f, 14.0f) + ScreenShakeManager::Instance()->GetOffset(), Vec2(363.0f, 129.0f) + ScreenShakeManager::Instance()->GetOffset(), m_Ult_Gauge,
-		Vec2(248.0f, 129.0f - Gauge_ULT_Width) + ScreenShakeManager::Instance()->GetOffset(), Vec2(363.0f, 129.0f) + ScreenShakeManager::Instance()->GetOffset());
+		Vec2(248.0f, 14.0f) + ScreenShakeManager::Instance()->GetOffset() + ShakeValue, Vec2(363.0f, 129.0f) + ScreenShakeManager::Instance()->GetOffset() + ShakeValue, m_Ult_Gauge,
+		Vec2(248.0f, 129.0f - Gauge_ULT_Width) + ScreenShakeManager::Instance()->GetOffset() + ShakeValue, Vec2(363.0f, 129.0f) + ScreenShakeManager::Instance()->GetOffset() + ShakeValue);
 
 	if (GetUltRate() == 1.0f) {
 		UltMaxEffect();
 		const KuroEngine::Vec2<float> ultPos = { 305.5f,71.5f };
 		for (auto& i : ultSize) {
-			DrawFunc2D::DrawExtendGraph2D(Vec2( ultPos.x - i.x,ultPos.y - i.y ) + ScreenShakeManager::Instance()->GetOffset(),
-				Vec2( ultPos.x + i.x,ultPos.y + i.y ) + ScreenShakeManager::Instance()->GetOffset(), m_Ult_Gauge, 0.1f, AlphaBlendMode::AlphaBlendMode_Add);
+			DrawFunc2D::DrawExtendGraph2D(Vec2( ultPos.x - i.x,ultPos.y - i.y ) + ScreenShakeManager::Instance()->GetOffset() + ShakeValue,
+				Vec2( ultPos.x + i.x,ultPos.y + i.y ) + ScreenShakeManager::Instance()->GetOffset() + ShakeValue, m_Ult_Gauge, 0.1f, AlphaBlendMode::AlphaBlendMode_Add);
 		}
 	}
 
@@ -262,6 +296,8 @@ void Player::Damage(int value)
 
 	// タイマー
 	m_Damage_Timer = int(40.0f * RefreshRate::RefreshRate_Mag);
+
+	DamageShake();
 
 	// チュートリアルなら死なない
 	if (ExistUnits::Instance()->m_StageName == "Tutorial") {
