@@ -130,6 +130,19 @@ void BlockManager::Draw()
 		block[int(ObjectType::nextChoice2)].attribute,
 		block[int(ObjectType::nextChoice2)].color, { 710.0f + nextChoiceOffsetX,y }, nextChoiceAlpha);
 
+	//矢印
+	const KuroEngine::Vec2<float> arrowSize = { 39.0f,75.0f };
+	if (m_nowChoice == ObjectType::choice1) {
+		KuroEngine::Vec2<float> arrowPos = { 585.0f,610.0f };
+		arrowPos += ScreenShakeManager::Instance()->GetOffset();
+		KuroEngine::DrawFunc2D::DrawExtendGraph2D({ arrowPos.x - arrowSize.x ,arrowPos.y - arrowSize.y }, arrowPos, arrowTex);
+	}
+	else if (m_nowChoice == ObjectType::choice2) {
+		KuroEngine::Vec2<float> arrowPos = { 475.0f,610.0f };
+		arrowPos += ScreenShakeManager::Instance()->GetOffset();
+		KuroEngine::DrawFunc2D::DrawExtendGraph2D({ arrowPos.x - arrowSize.x ,arrowPos.y - arrowSize.y }, arrowPos, arrowTex);
+	}
+
 	//パスの大本の座標
 	const KuroEngine::Vec2<float> passSize = { 107.0f,27.0f };
 	const KuroEngine::Vec2<float> passFoundationPos={ 287.0f,668.0f };
