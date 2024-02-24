@@ -51,6 +51,8 @@ private:
 	// BattleTurnMgrのポインタ
 	BattleTurnMgr* m_pBTM;
 
+	std::array<int, 3>m_rockOnSE;
+
 public:
 	// 操作可能かどうか
 	bool m_CanMove;

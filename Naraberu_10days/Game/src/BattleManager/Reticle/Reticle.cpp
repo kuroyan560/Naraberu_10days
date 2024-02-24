@@ -5,6 +5,7 @@
 #include "../../src/engine/DirectX12/D3D12App.h"
 #include "FrameWork/UsersInput.h"
 #include "../../Effect/ScreenShakeManager.h"
+#include "../../src/engine/FrameWork/AudioApp.h"
 
 Reticle::Reticle()
 {
@@ -13,6 +14,15 @@ Reticle::Reticle()
 	m_BigReticleTex = D3D12App::Instance()->GenerateTextureBuffer(TexDir + "reticle_big.png");
 	D3D12App::Instance()->GenerateTextureBuffer(&m_ReticleTex.front(), TexDir + "reticle.png", 4, Vec2(4, 1));
 	MaskColor = Color(1.0f, 1.0f, 1.0f, 1.0f);
+
+	std::string seDir = "resource/user/sound/";
+	m_rockOnSE[0] = AudioApp::Instance()->LoadAudio(seDir + "rockon_high.wav");
+	m_rockOnSE[1] = AudioApp::Instance()->LoadAudio(seDir + "rockon_middle.wav");
+	m_rockOnSE[2] = AudioApp::Instance()->LoadAudio(seDir + "rockon_low.wav");
+	for (auto& se : m_rockOnSE)
+	{
+		AudioApp::Instance()->ChangeVolume(se, 0.5f);
+	}
 }
 
 void Reticle::SetBattleTurnManager(BattleTurnMgr* ptr)
@@ -23,6 +33,9 @@ void Reticle::SetBattleTurnManager(BattleTurnMgr* ptr)
 void Reticle::Update()
 {
 	using namespace KuroEngine;
+
+	auto oldTarget = ExistUnits::Instance()->m_NowTarget;
+
 	// タイマー加算
 	m_Reticle_Timer += 1.0f / RefreshRate::RefreshRate_Mag;
 
@@ -86,10 +99,16 @@ void Reticle::Update()
 			for (int i = 1; i < m_pBTM->UnitList.size(); i++) {
 				if (m_pBTM->UnitList[i]->IsAlive()) {
 					ExistUnits::Instance()->m_NowTarget = i - 1;
+					oldTarget = ExistUnits::Instance()->m_NowTarget;
 					break;
 				}
 			}
 		}
+	}
+
+	if (oldTarget != ExistUnits::Instance()->m_NowTarget)
+	{
+		AudioApp::Instance()->PlayWave(m_rockOnSE[ExistUnits::Instance()->m_NowTarget]);
 	}
 
 	/*for (auto& data : m_Aura) {
