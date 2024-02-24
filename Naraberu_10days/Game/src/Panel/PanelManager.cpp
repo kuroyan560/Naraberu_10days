@@ -532,7 +532,7 @@ void PanelManager::BonusDirection(std::vector<std::weak_ptr<SkillResultUI>>arg_e
 
 	//音
 	if (bonusTimer == 0) {
-		SoundConfig::Instance()->Play(SoundConfig::SE_BONUS_ATTACK_COUNT, -1, -1, nowBonusNum == 1);
+		SoundConfig::Instance()->Play(SoundConfig::SE_BONUS_ATTACK_COUNT, -1, -1, nowBonusNum == 0);
 	}
 
 	//ボーナス演出用の透明blockの情報更新
