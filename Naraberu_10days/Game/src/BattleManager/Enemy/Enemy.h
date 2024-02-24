@@ -75,5 +75,13 @@ public:
 	KuroEngine::Vec2<float> Get_Center() { return m_Center; }
 
 	void SetAction();
+
+	int ShakeTimer;
+	KuroEngine::Vec2<float> ShakeValue;
+	void DamageShake();
+	void ShakeUpdate();
+
+	// ƒ_ƒ[ƒW‚ğó‚¯‚é
+	void Damage(int value)override;
 };
 
