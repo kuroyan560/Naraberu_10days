@@ -1235,7 +1235,7 @@ void BattleScene::TutorialUpdate()
 				if (m_Tutorial_Trigger_Timer == 2) {
 					ExistUnits::Instance()->m_CanTurnEnd = false;
 				}
-				if (m_Tutorial_Trigger_Timer == int(1000.0f * RefreshRate::RefreshRate_Mag)) {
+				if (m_Tutorial_Trigger_Timer == int(1300.0f * RefreshRate::RefreshRate_Mag)) {
 					m_NowTutorial_Step++;
 					m_Tutorial_Step_Complete_Flag = false;
 					// ターンエンド不可に
