@@ -10,7 +10,7 @@ class BlockManager
 private:
 
 	enum class ObjectType {
-		use,//使用しているブロック
+		//use,//使用しているブロック
 		choice1,//選択ブロック1
 		choice2,//選択ブロック2
 		nextChoice1,//次の選択ブロック1
@@ -70,10 +70,10 @@ public:
 	/// <param name="_color">色</param>
 	void GetBlock(KuroEngine::Vec2<int>* _nowMapchip, std::vector<KuroEngine::Vec2<int>>* _shape,
 		BlockAttribute* _attribute, BlockColor* _color) {
-		*_attribute = block[int(ObjectType::use)].attribute;
-		*_color = block[int(ObjectType::use)].color;
-		*_shape = shape[block[int(ObjectType::use)].blockNum];
-		*_nowMapchip = block[int(ObjectType::use)].block->GetMapChipNum();
+		*_attribute = block[int(m_nowChoice)].attribute;
+		*_color = block[int(m_nowChoice)].color;
+		*_shape = shape[block[int(m_nowChoice)].blockNum];
+		*_nowMapchip = block[int(m_nowChoice)].block->GetMapChipNum();
 	}
 
 	/// <summary>
@@ -113,7 +113,8 @@ private:
 	//使うブロック情報
 	std::array<UseBlockType, int(ObjectType::size)> block;
 	//選択中のブロック
-	int nowChoice;
+	ObjectType m_nowChoice;
+
 	//パス回数
 	const int passMaxNum=2;
 	//パス残り回数
@@ -125,5 +126,7 @@ private:
 
 	KuroEngine::Timer m_changePrismTimer = KuroEngine::Timer(15.0f);
 
-};
+	const KuroEngine::Vec2<float>SELECTABLE_BLOCK_OFFSET_MAX = { 60.0f,-60.0f };
+	KuroEngine::Vec2<float>m_selectableBlockOffset;
 
+};

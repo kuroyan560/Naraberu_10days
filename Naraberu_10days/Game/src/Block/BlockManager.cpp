@@ -46,18 +46,19 @@ void BlockManager::Initialize()
 		}
 	}
 
-	//使用ブロックをセット
-	block[int(ObjectType::use)].block.reset(new Block(true));
-	SetOneChangeBlock(int(ObjectType::use), int(ObjectType::choice1));
-	//使用ブロック変更処理
-	block[int(ObjectType::use)].block->ChangeBlock(center, shape[block[int(ObjectType::use)].blockNum]);
+	m_nowChoice = ObjectType::choice1;
 
-	nowChoice = 0;
+	//使用ブロックをセット
+	block[int(m_nowChoice)].block.reset(new Block(true));
+	//使用ブロック変更処理
+	block[int(ObjectType::choice1)].block->ChangeBlock(center + KuroEngine::Vec2<int>(-2, 0), shape[block[int(ObjectType::choice1)].blockNum]);
+	block[int(ObjectType::choice2)].block->ChangeBlock(center + KuroEngine::Vec2<int>(2, 0), shape[block[int(ObjectType::choice2)].blockNum]);
 
 	passNum = passMaxNum;
 
 	tutorialNum = 0;
 	m_changePrismTimer.Reset(0.0f);
+	m_selectableBlockOffset = SELECTABLE_BLOCK_OFFSET_MAX;
 }
 
 void BlockManager::Update(int Step)
@@ -76,7 +77,7 @@ void BlockManager::Update(int Step)
 	}
 
 	//ブロック配置後に次ブロックの移動を行う
-	block[int(ObjectType::use)].block->Move();
+	auto move = block[int(m_nowChoice)].block->Move();
 	//選択ブロック変更
 	ChoiceBlock();
 
@@ -99,19 +100,13 @@ void BlockManager::Draw()
 	float nextChoiceAlpha = KuroEngine::Math::Ease(Out, Cubic, m_changePrismTimer.GetTimeRate(), 0.0f, nextChoiceAlphaMin);
 
 	float y = 633.0f;
-	//移動処理を行っているブロック
-	block[int(ObjectType::use)].block->Draw(shape[block[int(ObjectType::use)].blockNum],
-		block[int(ObjectType::use)].attribute, block[int(ObjectType::use)].color, passEffectRota, 0.6f);
-	//choice1表示のブロック
-	block[int(ObjectType::choice1)].block->Draw(shape[block[int(ObjectType::choice1)].blockNum],
-		shape_dist[block[int(ObjectType::choice1)].blockNum],
-		block[int(ObjectType::choice1)].attribute,
-		block[int(ObjectType::choice1)].color, { 555.0f + choiceOffsetX,y }, nowChoiceAlpha);
-	//choice2表示のブロック
-	block[int(ObjectType::choice2)].block->Draw(shape[block[int(ObjectType::choice2)].blockNum],
-		shape_dist[block[int(ObjectType::choice2)].blockNum],
-		block[int(ObjectType::choice2)].attribute,
-		block[int(ObjectType::choice2)].color, { 445.0f + choiceOffsetX,y }, nowChoiceAlpha);
+	//選択可能なブロック
+	block[int(ObjectType::choice2) - int(m_nowChoice)].block->Draw(false, shape[block[int(ObjectType::choice2) - int(m_nowChoice)].blockNum],
+		block[int(ObjectType::choice2) - int(m_nowChoice)].attribute, block[int(ObjectType::choice2) - int(m_nowChoice)].color, 0.0f, 0.6f);
+	//現在選択されているブロック
+	block[int(m_nowChoice)].block->Draw(true, shape[block[int(m_nowChoice)].blockNum],
+		block[int(m_nowChoice)].attribute, block[int(m_nowChoice)].color, passEffectRota, 0.6f);
+
 	//nextChoice1表示のブロック
 	block[int(ObjectType::nextChoice1)].block->Draw(shape[block[int(ObjectType::nextChoice1)].blockNum],
 		shape_dist[block[int(ObjectType::nextChoice1)].blockNum],
@@ -122,18 +117,6 @@ void BlockManager::Draw()
 		shape_dist[block[int(ObjectType::nextChoice2)].blockNum],
 		block[int(ObjectType::nextChoice2)].attribute,
 		block[int(ObjectType::nextChoice2)].color, { 710.0f + nextChoiceOffsetX,y }, nextChoiceAlpha);
-
-	//矢印
-	const KuroEngine::Vec2<float> arrowSize = { 39.0f,75.0f };
-	if (nowChoice == 0) {
-		KuroEngine::Vec2<float> arrowPos={ 585.0f,610.0f };
-		arrowPos += ScreenShakeManager::Instance()->GetOffset();
-		KuroEngine::DrawFunc2D::DrawExtendGraph2D({ arrowPos .x- arrowSize.x ,arrowPos .y- arrowSize.y }, arrowPos, arrowTex);
-	}else if (nowChoice == 1) {
-		KuroEngine::Vec2<float> arrowPos = { 475.0f,610.0f };
-		arrowPos += ScreenShakeManager::Instance()->GetOffset();
-		KuroEngine::DrawFunc2D::DrawExtendGraph2D({ arrowPos.x - arrowSize.x ,arrowPos.y - arrowSize.y }, arrowPos, arrowTex);
-	}
 
 	//パスの大本の座標
 	const KuroEngine::Vec2<float> passSize = { 107.0f,27.0f };
@@ -170,26 +153,17 @@ void BlockManager::ChoiceBlock()
 
 	bool onKey = false;
 	//選択移動
-	if (OperationConfig::Instance()->GetOperationInput(OperationConfig::SELECT_RIGHT_PRISM, OperationConfig::ON_TRIGGER)) {
-		if (nowChoice == 0) {
-			nowChoice = 1;
-		} else {
-			nowChoice = 0;
-		}
-		onKey = true;
-	} else if (OperationConfig::Instance()->GetOperationInput(OperationConfig::SELECT_LEFT_PRISM, OperationConfig::ON_TRIGGER)) {
-		if (nowChoice == 1) {
-			nowChoice = 0;
-		} else {
-			nowChoice = 1;
-		}
+	if (OperationConfig::Instance()->GetOperationInput(OperationConfig::SELECT_LEFT_PRISM, OperationConfig::ON_TRIGGER)
+		|| OperationConfig::Instance()->GetOperationInput(OperationConfig::SELECT_RIGHT_PRISM, OperationConfig::ON_TRIGGER))
+	{
+		m_nowChoice = ObjectType(int(ObjectType::choice2) - int(m_nowChoice));
 		onKey = true;
 	}
 
 	if (onKey) {
-		SetOneChangeBlock(int(ObjectType::use), int(ObjectType::choice1) + nowChoice);
+		//SetOneChangeBlock(int(ObjectType::use), int(ObjectType::choice1) + nowChoice);
 		//使用ブロック変更処理
-		block[int(ObjectType::use)].block->ChangeBlock({ -1,-1 }, shape[block[int(ObjectType::use)].blockNum]);
+		//block[int(ObjectType::use)].block->ChangeBlock({ -1,-1 }, shape[block[int(ObjectType::use)].blockNum]);
 		SoundConfig::Instance()->Play(SoundConfig::SE_SELECT_PRISM);
 		recharge = 25.0f;
 	}
@@ -228,12 +202,13 @@ void BlockManager::ChangeBlock()
 		block[int(ObjectType::nextChoice2)].blockNum = rand() % int(shape.size());
 		block[int(ObjectType::nextChoice2)].color = BlockColor(rand() % (int(BlockColor::size) - 4));
 	}
-	//使用ブロックをセット
-	SetOneChangeBlock(int(ObjectType::use), int(ObjectType::choice1));
+
 	//使用ブロック変更処理
-	block[int(ObjectType::use)].block->ChangeBlock(center, shape[block[int(ObjectType::use)].blockNum]);
+	block[int(ObjectType::choice1)].block->ChangeBlock(center + KuroEngine::Vec2<int>(-2, 0), shape[block[int(ObjectType::choice1)].blockNum]);
+	block[int(ObjectType::choice2)].block->ChangeBlock(center + KuroEngine::Vec2<int>(2, 0), shape[block[int(ObjectType::choice2)].blockNum]);
+
 	//choice変更
-	nowChoice = 0;
+	m_nowChoice = ObjectType::choice1;
 
 	recharge = 25.0f;
 

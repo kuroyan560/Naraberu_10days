@@ -40,12 +40,13 @@ void Block::Update()
 {
 }
 
-void Block::Draw(const std::vector<KuroEngine::Vec2<int>> _shape, BlockAttribute _attribute, const BlockColor _color, const float _rota, const float _alpha)
+void Block::Draw(bool _isSelect,const std::vector<KuroEngine::Vec2<int>> _shape, const BlockAttribute _attribute, const BlockColor _color, const float _rota, const float _alpha)
 {
 	for (auto& i : _shape) {
 		KuroEngine::Vec2<float> inpos = { (pos.x + i.x) * blockSize + difference.x , (pos.y + i.y) * blockSize + difference.y };
 		inpos += ScreenShakeManager::Instance()->GetOffset();
-		BlockOneDraw(inpos, _color, _rota, ExistUnits::Instance()->m_StageManager->CanSetBlock(pos + i), _alpha);
+		BlockOneDraw(inpos, _color, _rota,
+			_isSelect ? ExistUnits::Instance()->m_StageManager->CanSetBlock(pos + i) : false, _alpha);
 	}
 
 	ActionDraw({ (pos.x + shapeMax.x) * blockSize + difference.x, (pos.y + shapeMin.y) * blockSize + difference.y }, _attribute, _alpha);
@@ -68,22 +69,22 @@ void Block::Reset()
 	
 }
 
-void Block::Move()
+KuroEngine::Vec2<int> Block::Move()
 {
 	KuroEngine::Vec2<int> max = PanelManager::GetMapMax();
 	KuroEngine::UsersInput* input = KuroEngine::UsersInput::Instance();
 	auto before = pos;
 	if (OperationConfig::Instance()->GetMoveVec(OperationConfig::SELECT_VEC_LEFT)) {
-		if (pos.x <= -shapeMin.x) { return; }
+		if (pos.x <= -shapeMin.x) { return { 0,0 }; }
 		pos.x -= 1;
 	} else if (OperationConfig::Instance()->GetMoveVec(OperationConfig::SELECT_VEC_RIGHT)) {
-		if (pos.x >= max.x - 1 - shapeMax.x) { return; }
+		if (pos.x >= max.x - 1 - shapeMax.x) { return { 0,0 }; }
 		pos.x += 1;
 	} else if (OperationConfig::Instance()->GetMoveVec(OperationConfig::SELECT_VEC_UP)) {
-		if (pos.y <= -shapeMin.y) { return; }
+		if (pos.y <= -shapeMin.y) { return { 0,0 }; }
 		pos.y -= 1;
 	} else if (OperationConfig::Instance()->GetMoveVec(OperationConfig::SELECT_VEC_DOWN)) {
-		if (pos.y >= max.y - 1 - shapeMax.y) { return; }
+		if (pos.y >= max.y - 1 - shapeMax.y) { return { 0,0 }; }
 		pos.y += 1;
 	}
 
@@ -91,6 +92,8 @@ void Block::Move()
 	{
 		SoundConfig::Instance()->Play(SoundConfig::SE_SELECT);
 	}
+
+	return pos - before;
 }
 
 void Block::ChangeBlock(const KuroEngine::Vec2<int> _mapchipNum, const std::vector<KuroEngine::Vec2<int>> _shape)
