@@ -468,6 +468,8 @@ bool PanelManager::LineBlock(int _number, const KuroEngine::Vec2<int> _lineMap, 
 	bonusData[_number].upY = -10.0f;
 	bonusData[_number].alpha = 0.0f;
 	bonusData[_number].mass = false;
+	bonusData[_number].isAlive = false;
+	bonusData[_number].isUp = false;
 
 	return true;
 }
@@ -485,7 +487,11 @@ int PanelManager::GoldProcess()
 			add.bonusKind = BonusKind::gold;
 			add.pos.emplace_back(KuroEngine::Vec2<int>(x, y));
 			add.color = BlockColor(mapchip[y][x]);
+			add.upY = -10.0f;
+			add.alpha = 0.0f;
 			add.mass = false;
+			add.isAlive = false;
+			add.isUp = false;
 			bonusData.emplace_back(add);
 
 			bonusPos.emplace_back(KuroEngine::Vec2<int>(x, y));
