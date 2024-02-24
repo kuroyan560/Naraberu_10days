@@ -111,7 +111,7 @@ public:
 	/// <param name="_number">‰ò”Ô†</param>
 	/// <param name="_massNum">Á‹”</param>
 	/// <param name="_massMap">Œ»İ‚Ìmapchip”Ô†</param>
-	void MassBlock(const int _number, int* _massNum, const KuroEngine::Vec2<int> _massMap);
+	void MassBlock(std::vector<KuroEngine::Vec2<int>>& _blockPos, const KuroEngine::Vec2<int> _massMap);
 
 	/// <summary>
 	/// ‰ò”»’è

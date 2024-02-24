@@ -338,90 +338,81 @@ void PanelManager::MassProcess()
 	}
 	
 	//塊箇所確認
-	int count = 0;
 	for (int y = 0; y < mapMax.y; y++) {
 		for (int x = 0; x < mapMax.x; x++) {
 			//確認済みなら次に行く
 			if (massMapchip[y][x] != 0 || mapchip[y][x] >= int(BlockColor::yuka)) { continue; }
 			//塊確認
-			int massNum = 0;
-			bonusData.emplace_back();
-			MassBlock(count, &massNum, { x,y });
+			std::vector<KuroEngine::Vec2<int>> blockPos;
+			MassBlock(blockPos, { x,y });
 			//塊個数5個から保存
-			if (massNum < 5) {
-				const int size = int(bonusData.size()) - 1;
-				bonusData.resize(size);
+			if (blockPos.size() < 5) {
 				continue;
 			}
-			bonusData[count].bonusKind = BonusKind::color;
-			bonusData[count].color = BlockColor(mapchip[y][x]);
-			bonusData[count].upY = -10.0f;
-			bonusData[count].alpha = 0.0f;
-			bonusData[count].mass = true;
-			//座標記録
-			bonusPos.emplace_back(center(bonusData[count].pos));
-			//追加のボーナス+2まで
-			if (massNum > 8) {
-				bonusData.emplace_back(bonusData[count]);
-				bonusPos.emplace_back(center(bonusData[count].pos));
-				count++;
-			}
-			if (massNum > 11) {
-				bonusData.emplace_back(bonusData[count]);
-				bonusPos.emplace_back(center(bonusData[count].pos));
-				count++;
-			}
-			if (massNum > 14) {
-				bonusData.emplace_back(bonusData[count]);
-				bonusPos.emplace_back(center(bonusData[count].pos));
-				count++;
-			}
 
-			//次
-			count++;
+			//追加用data
+			BonusData add;
+			add.bonusKind = BonusKind::color;
+			add.color = BlockColor(mapchip[y][x]);
+			add.upY = -10.0f;
+			add.alpha = 0.0f;
+			add.mass = true;
+			add.isAlive = false;
+			add.isUp = false;
+			add.pos = blockPos;
+			bonusData.emplace_back(add);
+			//座標記録
+			bonusPos.emplace_back(center(blockPos));
+			//追加のボーナス+2まで
+			if (blockPos.size() > 8) {
+				bonusData.emplace_back(add);
+				bonusPos.emplace_back(center(blockPos));
+			}
+			if (blockPos.size() > 11) {
+				bonusData.emplace_back(add);
+				bonusPos.emplace_back(center(blockPos));
+			}
+			if (blockPos.size() > 14) {
+				bonusData.emplace_back(add);
+				bonusPos.emplace_back(center(blockPos));
+			}
 		}
 	}
 }
 
-void PanelManager::MassBlock(const int _number, int* _massNum, const KuroEngine::Vec2<int> _massMap)
+void PanelManager::MassBlock(std::vector<KuroEngine::Vec2<int>>& _blockPos, const KuroEngine::Vec2<int> _massMap)
 {
-	//削除個数カウント
-	*_massNum += 1;
+	//個数カウント
+	_blockPos.emplace_back(_massMap);
 	massMapchip[_massMap.y][_massMap.x] = 1;
 
 	//下
 	if (_massMap.y + 1 < mapMax.y) {
 		if (mapchip[_massMap.y][_massMap.x] == mapchip[_massMap.y + 1][_massMap.x] &&
 			massMapchip[_massMap.y + 1][_massMap.x] != 1) {
-			MassBlock(_number, _massNum, { _massMap.x,_massMap.y + 1 });
+			MassBlock(_blockPos, { _massMap.x,_massMap.y + 1 });
 		}
 	}
 	//上
 	if (_massMap.y - 1 >= 0) {
 		if (mapchip[_massMap.y][_massMap.x] == mapchip[_massMap.y - 1][_massMap.x] &&
 			massMapchip[_massMap.y - 1][_massMap.x] != 1) {
-			MassBlock(_number, _massNum, { _massMap.x,_massMap.y - 1 });
+			MassBlock(_blockPos, { _massMap.x,_massMap.y - 1 });
 		}
 	}
 	//右
 	if (_massMap.x + 1 < mapMax.x) {
 		if (mapchip[_massMap.y][_massMap.x] == mapchip[_massMap.y][_massMap.x + 1] &&
 			massMapchip[_massMap.y][_massMap.x + 1] != 1) {
-			MassBlock(_number, _massNum, { _massMap.x + 1,_massMap.y });
+			MassBlock(_blockPos, { _massMap.x + 1,_massMap.y });
 		}
 	}
 	//左
 	if (_massMap.x - 1 >= 0) {
 		if (mapchip[_massMap.y][_massMap.x] == mapchip[_massMap.y][_massMap.x - 1] &&
 			massMapchip[_massMap.y][_massMap.x - 1] != 1) {
-			MassBlock(_number, _massNum, { _massMap.x - 1,_massMap.y });
+			MassBlock(_blockPos, { _massMap.x - 1,_massMap.y });
 		}
-	}
-
-	//削除場所記録
-	if (*_massNum >= 5) {
-		KuroEngine::Vec2<int> data = { _massMap.x,_massMap.y };
-		bonusData[_number].pos.emplace_back(data);
 	}
 }
 
@@ -518,23 +509,15 @@ void PanelManager::BonusCount()
 
 	ExistUnits::Instance()->SetBonusCount(int(bonusData.size()));
 
-	totalBounsNum += int(bonusData.size());
+	totalBounsNum = int(bonusData.size());
 	nowBonusNum = 0;
 	bonusTimer = 0;
 	isBonusDirection = Bonus::add;
-
-	if (!bonusData.empty())
-	{
-		bonusData[nowBonusNum].isAlive = true;
-		bonusData[nowBonusNum].isUp = true;
-		bonusData[nowBonusNum].isAlpha = 0;
-		bonusData[nowBonusNum].timer = 0;
-		nowBonusNum++;
-	}
 }
 
 void PanelManager::BonusDirection(std::vector<std::weak_ptr<SkillResultUI>>arg_enemyDamageUI, std::weak_ptr<PerfectBonusEffect>arg_perfectBonusEffect)
 {
+	//bonus無ければ抜ける
 	if (bonusData.empty())
 	{
 		isBonusDirection = Bonus::non;
@@ -544,13 +527,15 @@ void PanelManager::BonusDirection(std::vector<std::weak_ptr<SkillResultUI>>arg_e
 		return;
 	}
 
+	//表示感覚
 	float maxTimer = 25.0f * RefreshRate::RefreshRate_Mag;
 
+	//音
 	if (bonusTimer == 0) {
 		SoundConfig::Instance()->Play(SoundConfig::SE_BONUS_ATTACK_COUNT, -1, -1, nowBonusNum == 1);
-
 	}
 
+	//ボーナス演出用の透明blockの情報更新
 	bonusEaseScale = KuroEngine::Math::Ease(KuroEngine::EASE_CHANGE_TYPE::Out, KuroEngine::EASING_TYPE::Back,
 		bonusTimer, maxTimer, 1.2f, 1.0f);
 	bonusAngle = KuroEngine::Math::Ease(KuroEngine::EASE_CHANGE_TYPE::Out, KuroEngine::EASING_TYPE::Elastic,
@@ -560,39 +545,39 @@ void PanelManager::BonusDirection(std::vector<std::weak_ptr<SkillResultUI>>arg_e
 
 	//時間になったら次に行く
 	bonusTimer++;
-	if (bonusTimer > maxTimer) {
-		if (int(bonusData.size()) <= nowBonusNum) {
+	if (bonusTimer < maxTimer) {return;}
+	nowBonusNum++;
+	bonusTimer = 0;
 
-			if (IsPerfect())
-			{
-				arg_perfectBonusEffect.lock()->Start(arg_enemyDamageUI);
-				isBonusDirection = Bonus::perfect;
-			}
-			else if (!arg_enemyDamageUI[0].lock()->GetIsActive())
-			{
-				isBonusDirection = Bonus::non;
-				ExistUnits::Instance()->m_IsEndBonusCount = true;
-				Reset();
-
-				// ボーナスアタック
-				PlayerSkills::PlayerSkillMgr::Instance()->StartAction("Bonus_01", ExistUnits::Instance()->m_NowBonusCount, ExistUnits::Instance()->m_pPlayer, ExistUnits::Instance()->m_Enemys[0]);
-				return;
-			}
-		}
-		else
-		{
+	//表示するボーナスが残っている場合
+	if (int(bonusData.size()) > nowBonusNum) {
+		if (!bonusData[nowBonusNum].isAlive) {
 			bonusData[nowBonusNum].isAlive = true;
 			bonusData[nowBonusNum].isUp = true;
 			bonusData[nowBonusNum].isAlpha = 0;
 			bonusData[nowBonusNum].timer = 0;
 
-			nowBonusNum++;
-			bonusTimer = 0;
-
 			for (auto& ui : arg_enemyDamageUI)
 			{
 				ui.lock()->Add(1, true, 60.0f);
 			}
+		}
+	}
+	//ボーナスが全て表示された場合
+	else {
+		if (IsPerfect())
+		{
+			arg_perfectBonusEffect.lock()->Start(arg_enemyDamageUI);
+			isBonusDirection = Bonus::perfect;
+		} else if (!arg_enemyDamageUI[0].lock()->GetIsActive())
+		{
+			isBonusDirection = Bonus::non;
+			ExistUnits::Instance()->m_IsEndBonusCount = true;
+			Reset();
+
+			// ボーナスアタック
+			PlayerSkills::PlayerSkillMgr::Instance()->StartAction("Bonus_01", ExistUnits::Instance()->m_NowBonusCount, ExistUnits::Instance()->m_pPlayer, ExistUnits::Instance()->m_Enemys[0]);
+			return;
 		}
 	}
 }
